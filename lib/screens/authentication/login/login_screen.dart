@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:tmween/provider/login_provider.dart';
+import 'package:tmween/screens/authentication/login/store_owner_login_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
@@ -74,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen>
               Expanded(
                 child: TabBarView(
                   controller: _tabController,
-                  children: [IndividualLoginScreen(), IndividualLoginScreen()],
+                  children: [IndividualLoginScreen(), StoreOwnerLoginScreen()],
                 ),
               )
             ],
@@ -99,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen>
                     alignment: Alignment.topLeft,
                     child: ClipOval(
                       child: Material(
-                        color: Colors.white, // Button color
+                        color: Colors.white,
                         child: InkWell(
                           onTap: () {
                             loginProvider.exitScreen();

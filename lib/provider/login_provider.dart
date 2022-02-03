@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tmween/screens/authentication/signup/otp_screen.dart';
+import 'package:tmween/screens/authentication/signup/signup_screen.dart';
 
 class LoginProvider extends ChangeNotifier {
   final formKey = GlobalKey<FormState>();
@@ -11,7 +11,7 @@ class LoginProvider extends ChangeNotifier {
 
   void navigateToSignupScreen() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => OtpScreen()));
+        context, MaterialPageRoute(builder: (context) => SignUpScreen()));
   }
 
   void exitScreen() {

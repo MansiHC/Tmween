@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:tmween/provider/signup_provider.dart';
 import 'package:tmween/screens/authentication/signup/individual_signup_screen.dart';
+import 'package:tmween/screens/authentication/signup/store_owner_signup_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
@@ -74,7 +75,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                   controller: _tabController,
                   children: [
                     IndividualSignUpScreen(),
-                    IndividualSignUpScreen()
+                    StoreOwnerSignUpScreen()
                   ],
                 ),
               )
