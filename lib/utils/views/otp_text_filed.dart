@@ -8,9 +8,10 @@ class OtpTextFormField extends StatelessWidget {
   final bool clicked;
   final GestureTapCallback onTap;
   final ValueChanged<String>? onChanged;
+  final TextEditingController controller;
 
   OtpTextFormField(
-      {required this.clicked, required this.onTap, required this.onChanged});
+      {required this.clicked, required this.onTap, required this.onChanged,required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,7 @@ class OtpTextFormField extends StatelessWidget {
       height: 60,
       width: 50,
       child: TextField(
+        controller: controller,
         autofocus: true,
         onChanged: onChanged,
         showCursor: false,

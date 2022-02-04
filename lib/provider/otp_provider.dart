@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:tmween/service/api.dart';
+import 'package:tmween/utils/helper.dart';
 
 class OtpProvider extends ChangeNotifier {
   late BuildContext context;
@@ -7,6 +9,30 @@ class OtpProvider extends ChangeNotifier {
   bool click2 = false;
   bool click3 = false;
   bool click4 = false;
+  TextEditingController num1Controller = TextEditingController();
+  TextEditingController num2Controller = TextEditingController();
+  TextEditingController num3Controller = TextEditingController();
+  TextEditingController num4Controller = TextEditingController();
+
+  final api = Api();
+  bool loading = false;
+  late String phone, otp;
+
+  verifyOTP() async {
+    loading = true;
+    notifyListeners();
+
+    otp = num1Controller.text +
+        num2Controller.text +
+        num3Controller.text +
+        num4Controller.text;
+
+    await api.verifyOTP(context, 1, phone, otp).then((value) {
+      loading = false;
+      notifyListeners();
+      Helper.showSnackBar(context, value.status_message!);
+    });
+  }
 
   void exitScreen() {
     Navigator.of(context).pop();

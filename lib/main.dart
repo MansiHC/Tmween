@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,6 +11,8 @@ import 'package:tmween/utils/global.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+
   SharedPreferences prefs = await SharedPreferences.getInstance();
   var isDarkTheme = prefs.getBool(SharedPreferencesKeys.isDarkTheme);
   ThemeData theme;
@@ -20,11 +23,18 @@ void main() async {
   }
 
   runApp(
-    ChangeNotifierProvider<ThemeNotifier>(
+      EasyLocalization(
+        supportedLocales: [
+          Locale('en', 'US'),
+          Locale('ar', 'DZ'),
+        ],
+        path: 'asset/lang',
+        child:
+        ChangeNotifierProvider<ThemeNotifier>(
       create: (_) => ThemeNotifier(theme),
       child: MyApp(),
       builder: (context, wigdet) => MyApp(),
-    ),
+    ),)
   );
 }
 
@@ -40,26 +50,9 @@ class MyApp extends StatelessWidget {
         //  ListenableProvider(create: (context) => LoginProvider()),
       ],
       child: MaterialApp(
-        /* localizationsDelegates: [
-          _newLocaleDelegate,
-          GlobalCupertinoLocalizations.delegate,
-          DefaultCupertinoLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        supportedLocales: [
-          Locale('en', ''), // english, no country code
-          Locale('ar', ''), // gujarati, no country code
-        ],
-        localeResolutionCallback: (locale, supportedLocales) {
-          for (var supportedLocale in supportedLocales) {
-            if (supportedLocale.languageCode == locale.languageCode &&
-                supportedLocale.countryCode == locale.countryCode) {
-              return supportedLocale;
-            }
-          }
-          return supportedLocales.first;
-        },*/
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
         debugShowCheckedModeBanner: false,
         title: 'Tmween',
         theme: themeNotifier.getTheme(),

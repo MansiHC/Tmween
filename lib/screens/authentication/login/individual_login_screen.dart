@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,6 +18,33 @@ class IndividualLoginScreen extends StatefulWidget {
 }
 
 class _IndividualLoginScreenState extends State<IndividualLoginScreen> {
+ late LoginProvider loginProvider;
+
+  @override
+  void initState() {
+    loginProvider = Provider.of<LoginProvider>(context, listen: false);
+    initPlatformState();
+
+    super.initState();
+  }
+  Future<void> initPlatformState() async {
+
+    try {
+      if (Platform.isAndroid) {
+        loginProvider.getAndroidBuildData(await loginProvider.deviceInfoPlugin.androidInfo);
+      } else if (Platform.isIOS) {
+        loginProvider.getIosDeviceInfo(await loginProvider.deviceInfoPlugin.iosInfo);
+      }
+    } on PlatformException {
+      loginProvider.deviceData = <String, dynamic>{
+        'Error:': 'Failed to get platform version.'
+      };
+    }
+
+    if (!mounted) return;
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<LoginProvider>(builder: (context, loginProvider, _) {
@@ -111,6 +140,14 @@ class _IndividualLoginScreenState extends State<IndividualLoginScreen> {
                                     onPressed: () {
                                       loginProvider.login();
                                     }),
+                                Visibility(visible: loginProvider.loading, child: 5.heightBox),
+                                Visibility(
+                                  visible: loginProvider.loading,
+                                  child: Align(alignment: Alignment.topCenter,child:CircularProgressIndicator(
+                                    backgroundColor: AppColors.primaryColor,
+                                  )),
+                                ),
+                                Visibility(visible: loginProvider.loading, child: 5.heightBox),
                                 10.heightBox,
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,

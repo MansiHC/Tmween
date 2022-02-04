@@ -57,7 +57,7 @@ class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
                                       }
                                       return null;
                                     }),
-                                CustomTextFormField(
+                                /*CustomTextFormField(
                                     controller: signUpProvider.emailController,
                                     keyboardType: TextInputType.emailAddress,
                                     hintText: "Your Email",
@@ -74,7 +74,7 @@ class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
                                         return 'Please Enter Valid Email';
                                       }
                                       return null;
-                                    }),
+                                    }),*/
                                 CustomTextFormField(
                                     controller:
                                         signUpProvider.passwordController,
@@ -83,13 +83,13 @@ class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
                                     suffixIcon: IconButton(
                                         icon: Icon(
                                           signUpProvider.visiblePassword
-                                              ? Icons.visibility
-                                              : Icons.visibility_off,
+                                              ? Icons.visibility_off
+                                              : Icons.visibility,
                                           color: Colors.grey,
                                         ),
                                         onPressed: () {
                                           signUpProvider
-                                              .visibleConfirmPasswordIcon();
+                                              .visiblePasswordIcon();
                                         }),
                                     hintText: "Your Passowrd",
                                     validator: (value) {
@@ -109,11 +109,12 @@ class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
                                     controller: signUpProvider
                                         .confirmPasswordController,
                                     keyboardType: TextInputType.visiblePassword,
+                                    obscureText: signUpProvider.visibleConfirmPassword,
                                     suffixIcon: IconButton(
                                         icon: Icon(
                                           signUpProvider.visibleConfirmPassword
-                                              ? Icons.visibility
-                                              : Icons.visibility_off,
+                                              ? Icons.visibility_off
+                                              : Icons.visibility,
                                           color: Colors.grey,
                                         ),
                                         onPressed: () {
@@ -202,6 +203,14 @@ class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
                                     onPressed: () {
                                       signUpProvider.signUp();
                                     }),
+                                Visibility(visible: signUpProvider.loading, child: 5.heightBox),
+                                Visibility(
+                                  visible: signUpProvider.loading,
+                                  child: Align(alignment: Alignment.topCenter,child:CircularProgressIndicator(
+                                    backgroundColor: AppColors.primaryColor,
+                                  )),
+                                ),
+                                Visibility(visible: signUpProvider.loading, child: 5.heightBox),
                                 10.heightBox,
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,

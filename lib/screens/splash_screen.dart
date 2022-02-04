@@ -1,9 +1,13 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tmween/screens/authentication/login/login_screen.dart';
+import 'package:tmween/generated/locale_keys.g.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_button.dart';
+
+import 'authentication/login/login_screen.dart';
+import 'lang_view.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -32,6 +36,12 @@ class _SplashScreenState extends State<SplashScreen> {
               child: SvgPicture.asset(ImageConstanst.logo),
             ),
           ),
+          /*Padding(
+              padding: EdgeInsets.only(top: 100),
+              child: Text(
+                LocaleKeys.clickMe,
+                style: TextStyle(fontSize: 22, color: Colors.white),
+              ).tr()),*/
           Padding(
               padding: EdgeInsets.only(bottom: 50),
               child: Align(
@@ -44,6 +54,12 @@ class _SplashScreenState extends State<SplashScreen> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => LoginScreen()));
+                     /* Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => LanguageView(),
+                            fullscreenDialog: true),
+                      );*/
                     },
                   )))
         ],

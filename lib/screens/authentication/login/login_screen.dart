@@ -24,6 +24,7 @@ class _LoginScreenState extends State<LoginScreen>
 
   @override
   void initState() {
+
     tabList = <Tab>[];
     tabList.add(new Tab(
       text: 'Individual',

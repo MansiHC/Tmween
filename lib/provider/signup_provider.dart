@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tmween/screens/authentication/signup/otp_screen.dart';
+import 'package:tmween/service/api.dart';
 import 'package:tmween/utils/helper.dart';
 
 class SignUpProvider extends ChangeNotifier {
@@ -11,9 +12,30 @@ class SignUpProvider extends ChangeNotifier {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  bool visiblePassword = true, visibleConfirmPassword = true;
+  bool visiblePassword = false, visibleConfirmPassword = false;
   final formKey = GlobalKey<FormState>();
   late BuildContext context;
+
+  get agreeTo => agree ? 1 : 0;
+
+  final api = Api();
+  bool loading = false;
+
+  doRegister() async {
+    loading = true;
+    notifyListeners();
+    await api
+        .register(context, firstNameController.text, lastNameController.text, 1,
+            passwordController.text, phoneController.text, agreeTo, "en")
+        .then((value) {
+      loading = false;
+      notifyListeners();
+      Helper.showSnackBar(context, value.message!);
+      if (value.message == "Success") {
+        navigateToOtpScreen();
+      }
+    });
+  }
 
   void exitScreen() {
     Navigator.of(context).pop();
@@ -37,7 +59,8 @@ class SignUpProvider extends ChangeNotifier {
   void signUp() {
     if (formKey.currentState!.validate()) {
       if (agree) {
-        navigateToOtpScreen();
+        doRegister();
+        //navigateToOtpScreen();
       } else {
         Helper.showSnackBar(context, "Please Agree to the Terms of Use");
       }
@@ -46,6 +69,8 @@ class SignUpProvider extends ChangeNotifier {
 
   void navigateToOtpScreen() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => OtpScreen()));
+        context,
+        MaterialPageRoute(
+            builder: (context) => OtpScreen(phone: phoneController.text)));
   }
 }

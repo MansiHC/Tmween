@@ -20,10 +20,16 @@ abstract class AppColors {
   static const primaryColor = Color(0xFF0088CA);
 }
 
+abstract class AppConstants{
+  static const entity_type_id_customer = 4;
+  static const customer_token = "FbuaPNITXrR16tRwXBAJGexrgUKtXMsKMp52CfVxnBzn9L2CUMqEOIaYgbBbrf5LrdCg8wzbDLtn14MW";
+}
+
 abstract class UrlConstants {
-  static const String baseUrl = 'https://coronavirus-19-api.herokuapp.com';
-  static const String globalInfo = '$baseUrl/all';
-  static const String allCountries = '$baseUrl/countries';
+  static const String baseUrl = 'http://192.168.32.160/tmween/panel/public/api/v1/customer';
+  static const String registerUrl = '$baseUrl/register';
+  static const String loginUrl = '$baseUrl/login';
+  static const String verifyOTP = '$baseUrl/verify-otp';
 }
 
 abstract class ImageConstanst {
