@@ -16,7 +16,7 @@ class SignUpProvider extends ChangeNotifier {
   final formKey = GlobalKey<FormState>();
   late BuildContext context;
 
-  get agreeTo => agree ? 1 : 0;
+  get agreeTo => agree ? "1" : "0";
 
   final api = Api();
   bool loading = false;
@@ -25,15 +25,20 @@ class SignUpProvider extends ChangeNotifier {
     loading = true;
     notifyListeners();
     await api
-        .register(context, firstNameController.text, lastNameController.text, 1,
-            passwordController.text, phoneController.text, agreeTo, "en")
+        .register(context, firstNameController.text, lastNameController.text, "1",
+            passwordController.text, emailController.text,phoneController.text, agreeTo, "en")
         .then((value) {
       loading = false;
       notifyListeners();
+      print('value....${value.toString()}');
       Helper.showSnackBar(context, value.message!);
-      if (value.message == "Success") {
+     /* if(value.message==AppConstants.success) {
         navigateToOtpScreen();
-      }
+      }*/
+    }).catchError((error){
+      loading = false;
+      notifyListeners();
+      print('error....$error');
     });
   }
 
@@ -57,14 +62,14 @@ class SignUpProvider extends ChangeNotifier {
   }
 
   void signUp() {
-    if (formKey.currentState!.validate()) {
-      if (agree) {
+  //  if (formKey.currentState!.validate()) {
+      //if (agree) {
         doRegister();
         //navigateToOtpScreen();
-      } else {
-        Helper.showSnackBar(context, "Please Agree to the Terms of Use");
-      }
-    }
+      //} else {
+        //Helper.showSnackBar(context, "Please Agree to the Terms of Use");
+      //}
+    //}
   }
 
   void navigateToOtpScreen() {

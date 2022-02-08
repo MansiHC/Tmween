@@ -5,40 +5,54 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tmween/provider/login_provider.dart';
 import 'package:tmween/provider/otp_provider.dart';
 import 'package:tmween/provider/signup_provider.dart';
-import 'package:tmween/screens/splash_screen.dart';
+import 'package:tmween/screens/authentication/login/login_screen.dart';
+import 'package:tmween/screens/drawer/dashboard_screen.dart';
 import 'package:tmween/theme.dart';
 import 'package:tmween/utils/global.dart';
+import 'package:tmween/utils/my_shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
 
+/*
   SharedPreferences prefs = await SharedPreferences.getInstance();
   var isDarkTheme = prefs.getBool(SharedPreferencesKeys.isDarkTheme);
-  ThemeData theme;
+*/
+  ThemeData theme = lightTheme;
+  var isLogin = false;
+/*
   if (isDarkTheme != null) {
     theme = isDarkTheme ? darkTheme : lightTheme;
   } else {
     theme = lightTheme;
   }
+*/
+  MySharedPreferences.instance
+      .getBoolValuesSF(AppConstants.isLogin)
+      .then((value) async {
+    isLogin = value ?? false;
+  });
 
-  runApp(
-      EasyLocalization(
-        supportedLocales: [
-          Locale('en', 'US'),
-          Locale('ar', 'DZ'),
-        ],
-        path: 'asset/lang',
-        child:
-        ChangeNotifierProvider<ThemeNotifier>(
+  runApp(EasyLocalization(
+    supportedLocales: [
+      Locale('en', 'US'),
+      Locale('ar', 'DZ'),
+    ],
+    path: 'asset/lang',
+    child: ChangeNotifierProvider<ThemeNotifier>(
       create: (_) => ThemeNotifier(theme),
-      child: MyApp(),
-      builder: (context, wigdet) => MyApp(),
-    ),)
-  );
+      child: MyApp(isLogin: isLogin),
+      builder: (context, wigdet) => MyApp(isLogin: isLogin),
+    ),
+  ));
 }
 
 class MyApp extends StatelessWidget {
+  final bool isLogin;
+
+  MyApp({Key? key, required this.isLogin}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
@@ -56,7 +70,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Tmween',
         theme: themeNotifier.getTheme(),
-        home: SplashScreen(),
+        home: isLogin ? DashboardScreen() : LoginScreen(),
       ),
     );
   }

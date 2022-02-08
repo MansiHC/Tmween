@@ -57,7 +57,7 @@ class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
                                       }
                                       return null;
                                     }),
-                                /*CustomTextFormField(
+                                CustomTextFormField(
                                     controller: signUpProvider.emailController,
                                     keyboardType: TextInputType.emailAddress,
                                     hintText: "Your Email",
@@ -74,7 +74,7 @@ class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
                                         return 'Please Enter Valid Email';
                                       }
                                       return null;
-                                    }),*/
+                                    }),
                                 CustomTextFormField(
                                     controller:
                                         signUpProvider.passwordController,
@@ -100,8 +100,12 @@ class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
                                               .value
                                               .text
                                               .length <
-                                          6) {
-                                        return 'Password Length must be 10';
+                                          8) {
+                                        return 'Password Length must be 8';
+                                      }  else if (!signUpProvider
+                                          .passwordController.value.text
+                                          .validatePassword()) {
+                                      return 'Password should Contain at least one UpperCase, one LowerCase, one Digit,one Special Character';
                                       }
                                       return null;
                                     }),

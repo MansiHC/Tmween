@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:tmween/service/api.dart';
+import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/helper.dart';
 
 class OtpProvider extends ChangeNotifier {
@@ -31,6 +32,27 @@ class OtpProvider extends ChangeNotifier {
       loading = false;
       notifyListeners();
       Helper.showSnackBar(context, value.status_message!);
+      if(value.message==AppConstants.success) {}
+    }).catchError((error) {
+      loading = false;
+      notifyListeners();
+      print('error....$error');
+    });
+  }
+
+  resendOTP() async {
+    loading = true;
+    notifyListeners();
+
+    await api.resendOTP(context, "1", phone).then((value) {
+      loading = false;
+      notifyListeners();
+      Helper.showSnackBar(context, value.status_message!);
+      if(value.message==AppConstants.success) {}
+    }).catchError((error) {
+      loading = false;
+      notifyListeners();
+      print('error....$error');
     });
   }
 

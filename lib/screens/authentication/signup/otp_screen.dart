@@ -7,8 +7,8 @@ import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/otp_text_filed.dart';
 
 class OtpScreen extends StatefulWidget {
-
   final String phone;
+
   OtpScreen({Key? key, required this.phone}) : super(key: key);
 
   @override
@@ -57,7 +57,7 @@ class _OtpScreenState extends State<OtpScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             OtpTextFormField(
-              controller: otpProvider.num1Controller,
+                controller: otpProvider.num1Controller,
                 onChanged: (value) {
                   if (value.length == 1) {
                     FocusScope.of(context).nextFocus();
@@ -125,9 +125,11 @@ class _OtpScreenState extends State<OtpScreen> {
         Visibility(visible: otpProvider.loading, child: 5.heightBox),
         Visibility(
           visible: otpProvider.loading,
-          child: Align(alignment: Alignment.topCenter,child:CircularProgressIndicator(
-            backgroundColor: AppColors.primaryColor,
-          )),
+          child: Align(
+              alignment: Alignment.topCenter,
+              child: CircularProgressIndicator(
+                backgroundColor: AppColors.primaryColor,
+              )),
         ),
         Visibility(visible: otpProvider.loading, child: 5.heightBox),
         30.heightBox,
@@ -136,10 +138,14 @@ class _OtpScreenState extends State<OtpScreen> {
           style: TextStyle(fontSize: 16, color: Colors.black),
         ),
         5.heightBox,
-        Text(
-          "Resend a new code.",
-          style: TextStyle(fontSize: 16, color: AppColors.primaryColor),
-        ),
+        InkWell(
+            onTap: () {
+              otpProvider.resendOTP();
+            },
+            child: Text(
+              "Resend a new code.",
+              style: TextStyle(fontSize: 16, color: AppColors.primaryColor),
+            )),
       ],
     );
   }
@@ -148,8 +154,10 @@ class _OtpScreenState extends State<OtpScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Text('OTP will Expire in ',style: TextStyle(fontSize: 16,color: Colors.black),)
-            ,
+        Text(
+          'OTP will Expire in ',
+          style: TextStyle(fontSize: 16, color: Colors.black),
+        ),
         /*TweenAnimationBuilder(
           tween: Tween(begin: 60.0, end: 0.0),
           duration: Duration(seconds: 60),

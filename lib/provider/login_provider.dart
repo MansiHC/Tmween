@@ -2,8 +2,11 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tmween/screens/authentication/signup/signup_screen.dart';
+import 'package:tmween/screens/drawer/dashboard_screen.dart';
 import 'package:tmween/service/api.dart';
+import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/helper.dart';
+import 'package:tmween/utils/my_shared_preferences.dart';
 
 class LoginProvider extends ChangeNotifier {
   final formKey = GlobalKey<FormState>();
@@ -88,15 +91,35 @@ class LoginProvider extends ChangeNotifier {
         .login(context, 1, phoneController.text, uuid, deviceNo, deviceName,
             platform, model, version)
         .then((value) {
+          if(value.message==AppConstants.success) {
+            rememberMe == true
+                ? MySharedPreferences.instance.addBoolToSF(AppConstants.isLogin, true)
+                : MySharedPreferences.instance.addBoolToSF(AppConstants.isLogin, false);
+
+
+            loading = false;
+            notifyListeners();
+            navigateToDashboardScreen();
+          }else{
+            Helper.showSnackBar(context, value.message!);
+          }
+
+    }).catchError((error) {
       loading = false;
       notifyListeners();
-      Helper.showSnackBar(context, value.statusMessage!);
+      print('error....$error');
     });
+
   }
 
   void navigateToSignupScreen() {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => SignUpScreen()));
+  }
+
+  void navigateToDashboardScreen() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => DashboardScreen()));
   }
 
   void exitScreen() {

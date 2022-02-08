@@ -9,6 +9,7 @@ class CustomTextFormField extends StatelessWidget {
   final TextInputType keyboardType;
   final String hintText;
   final Widget? suffixIcon;
+  final Widget? prefixIcon;
   final bool? obscureText;
   final List<TextInputFormatter>? inputFormatters;
   final FormFieldValidator<String> validator;
@@ -24,11 +25,13 @@ class CustomTextFormField extends StatelessWidget {
       this.inputFormatters,
       required this.validator,
       this.textInputAction,
+      this.prefixIcon,
       this.onSubmitted});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+
       keyboardType: keyboardType,
       controller: controller,
       obscureText: obscureText ?? false,
@@ -57,7 +60,8 @@ class CustomTextFormField extends StatelessWidget {
             color: Colors.grey,
             fontSize: 16,
           ),
-          suffixIcon: suffixIcon),
+          suffixIcon: suffixIcon,
+          prefixIcon: prefixIcon),
     );
   }
 }
