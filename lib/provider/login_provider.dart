@@ -2,7 +2,8 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tmween/screens/authentication/signup/signup_screen.dart';
-import 'package:tmween/screens/drawer/dashboard_screen.dart';
+import 'package:tmween/screens/drawer/dashboard/dashboard_screen.dart';
+import 'package:tmween/screens/drawer/drawer_screen.dart';
 import 'package:tmween/service/api.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/helper.dart';
@@ -99,7 +100,7 @@ class LoginProvider extends ChangeNotifier {
 
             loading = false;
             notifyListeners();
-            navigateToDashboardScreen();
+            navigateToDrawerScreen();
           }else{
             Helper.showSnackBar(context, value.message!);
           }
@@ -117,9 +118,9 @@ class LoginProvider extends ChangeNotifier {
         context, MaterialPageRoute(builder: (context) => SignUpScreen()));
   }
 
-  void navigateToDashboardScreen() {
+  void navigateToDrawerScreen() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => DashboardScreen()));
+        context, MaterialPageRoute(builder: (context) => DrawerScreen()));
   }
 
   void exitScreen() {

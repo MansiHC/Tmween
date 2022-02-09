@@ -60,6 +60,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 controller: otpProvider.num1Controller,
                 onChanged: (value) {
                   if (value.length == 1) {
+                    otpProvider.notifyClick1(true);
                     FocusScope.of(context).nextFocus();
                     otpProvider.notifyClick2(true);
                   }

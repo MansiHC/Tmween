@@ -62,14 +62,14 @@ class SignUpProvider extends ChangeNotifier {
   }
 
   void signUp() {
-  //  if (formKey.currentState!.validate()) {
-      //if (agree) {
-        doRegister();
-        //navigateToOtpScreen();
-      //} else {
-        //Helper.showSnackBar(context, "Please Agree to the Terms of Use");
-      //}
-    //}
+    if (formKey.currentState!.validate()) {
+      if (agree) {
+        //doRegister();
+        navigateToOtpScreen();
+      } else {
+        Helper.showSnackBar(context, "Please Agree to the Terms of Use");
+      }
+    }
   }
 
   void navigateToOtpScreen() {

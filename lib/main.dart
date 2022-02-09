@@ -1,12 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tmween/provider/dashboard_provider.dart';
+import 'package:tmween/provider/drawer_provider.dart';
 import 'package:tmween/provider/login_provider.dart';
 import 'package:tmween/provider/otp_provider.dart';
 import 'package:tmween/provider/signup_provider.dart';
 import 'package:tmween/screens/authentication/login/login_screen.dart';
-import 'package:tmween/screens/drawer/dashboard_screen.dart';
+import 'package:tmween/screens/drawer/drawer_screen.dart';
+import 'package:tmween/screens/splash_screen.dart';
 import 'package:tmween/theme.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/my_shared_preferences.dart';
@@ -21,6 +23,7 @@ void main() async {
 */
   ThemeData theme = lightTheme;
   var isLogin = false;
+  var isSplash = false;
 /*
   if (isDarkTheme != null) {
     theme = isDarkTheme ? darkTheme : lightTheme;
@@ -29,9 +32,14 @@ void main() async {
   }
 */
   MySharedPreferences.instance
-      .getBoolValuesSF(AppConstants.isLogin)
+      .getBoolValuesSF(AppConstants.isSplash)
       .then((value) async {
-    isLogin = value ?? false;
+    isSplash = value ?? false;
+    MySharedPreferences.instance
+        .getBoolValuesSF(AppConstants.isLogin)
+        .then((value) async {
+      isLogin = value ?? false;
+    });
   });
 
   runApp(EasyLocalization(
@@ -42,16 +50,24 @@ void main() async {
     path: 'asset/lang',
     child: ChangeNotifierProvider<ThemeNotifier>(
       create: (_) => ThemeNotifier(theme),
-      child: MyApp(isLogin: isLogin),
-      builder: (context, wigdet) => MyApp(isLogin: isLogin),
+      child: MyApp(
+        isLogin: isLogin,
+        isSplash: isSplash,
+      ),
+      builder: (context, wigdet) => MyApp(
+        isLogin: isLogin,
+        isSplash: isSplash,
+      ),
     ),
   ));
 }
 
 class MyApp extends StatelessWidget {
   final bool isLogin;
+  final bool isSplash;
 
-  MyApp({Key? key, required this.isLogin}) : super(key: key);
+  MyApp({Key? key, required this.isLogin, required this.isSplash})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +77,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => LoginProvider()),
         ChangeNotifierProvider(create: (context) => SignUpProvider()),
         ChangeNotifierProvider(create: (context) => OtpProvider()),
+        ChangeNotifierProvider(create: (context) => DrawerProvider()),
+        ChangeNotifierProvider(create: (context) => DashboardProvider()),
         //  ListenableProvider(create: (context) => LoginProvider()),
       ],
       child: MaterialApp(
@@ -70,7 +88,11 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Tmween',
         theme: themeNotifier.getTheme(),
-        home: isLogin ? DashboardScreen() : LoginScreen(),
+        home: !isSplash
+            ? SplashScreen()
+            : isLogin
+                ? DrawerScreen()
+                : LoginScreen(),
       ),
     );
   }

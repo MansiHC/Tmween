@@ -17,12 +17,16 @@ abstract class AppColors {
   static const lightGrayColor = Color(0xFFF3F3F3);
   static const primaryColor = Color(0xFF0088CA);
   static const appBarColor = Color(0xFF314156);
+  static const offerGreen = Color(0xFF158D07);
+  static const blueBackground = Color(0xFF3B85FF);
+  static const darkGrayBackground = Color(0xFFF6F6F6);
 }
 
 abstract class AppConstants{
   static const entity_type_id_customer = "4";
   static const customer_token = "FbuaPNITXrR16tRwXBAJGexrgUKtXMsKMp52CfVxnBzn9L2CUMqEOIaYgbBbrf5LrdCg8wzbDLtn14MW";
   static const isLogin = "isLogin";
+  static const isSplash = "isSplash";
   static const success = "Success";
 }
 

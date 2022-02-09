@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tmween/model/drawer_model.dart';
+import 'package:provider/provider.dart';
+import 'package:tmween/provider/drawer_provider.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
@@ -11,190 +12,265 @@ class DrawerScreen extends StatefulWidget {
   }
 }
 
-class _DrawerScreenState extends State<DrawerScreen>
-{
-
- late List<DrawerModel> _drawerModelList;
-
-  @override
-  void didChangeDependencies() {
-    _values();
-    super.didChangeDependencies();
-  }
-
-  Future<void> _values() async {
-    _drawerModelList = <DrawerModel>[];
-
-    _drawerModelList.add(DrawerModel(
-        id: 14,
-        image: Icons.person_outline,
-        name: 'profile'));
-    _drawerModelList.add(DrawerModel(
-        id: 15,
-        image: Icons.settings_outlined,
-        name: 'settings'));
-    _drawerModelList.add(DrawerModel(
-        id: 16,
-        image: Icons.logout,
-        name: 'logOut'));
-
-
-  }
-
+class _DrawerScreenState extends State<DrawerScreen> {
   @override
   Widget build(BuildContext context) {
-    return  ListView.builder(
-        shrinkWrap: true,
-        physics: ScrollPhysics(),
-        itemCount: _drawerModelList.length,
-        itemBuilder: (context, index) => _drawerModelList[index]
-            .hasList
-            ? Padding(
-            padding: EdgeInsets.only(
-                right: MediaQuery.of(context).size.width / 3),
-            child: Theme(
-                data: Theme.of(context).copyWith(
-                    accentColor: Colors.white,
-                    unselectedWidgetColor: Colors.white),
-                child: ListTileTheme(
-                    minLeadingWidth: 0,
-                    dense: true,
-                    child: ExpansionTile(
-                      iconColor: Colors.white,
-                      initiallyExpanded:
-                      index == 0 ? true : false,
-                      backgroundColor: Colors.black12,
-                      tilePadding: EdgeInsets.symmetric(
-                          horizontal: 5, vertical: 0),
-                      title: Text(_drawerModelList[index]
-                          .name!,style: TextStyle(color: Colors.white),),
-                      leading: Icon(
-                        _drawerModelList[index].image,
-                        color: Colors.white,
-                        size: 25 ,
-                      ),
+    return Consumer<DrawerProvider>(builder: (context, drawerProvider, _) {
+      drawerProvider.context = context;
+      return WillPopScope(
+          onWillPop: () => _onWillPop(drawerProvider),
+          child: Scaffold(
+            appBar: AppBar(
+              iconTheme: IconThemeData(color: Colors.white),
+              backgroundColor: AppColors.appBarColor,
+              centerTitle: false,
+              titleSpacing: 0.0,
+              title: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'East delivery in 1 day*',
+                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    ),
+                    Row(
                       children: [
-                        ListView.builder(
-                            shrinkWrap: true,
-                            padding: EdgeInsets.only(left: 25),
-                            itemCount: _drawerModelList[index]
-                                .list!
-                                .length,
-                            itemBuilder: (context, index2) =>
-                                InkWell(
-                                    onTap: () {
-                                      _openPage(index, index2);
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          _drawerModelList[
-                                          index]
-                                              .list![index2]
-                                              .image,
-                                          color: Colors.white,
-                                          size: 20
-                                              ,
-                                        ),
-                                        10.widthBox
-                                            ,
-                                        Text(_drawerModelList[index]
-                                            .list![index2]
-                                            .name!,style: TextStyle(color: Colors.white),)
-                                            ,
-                                      ],
-                                    )))
+                        Icon(
+                          Icons.location_on_rounded,
+                          color: AppColors.primaryColor,
+                        ),
+                        Expanded(
+                            child: Text(
+                          '1999 Bluff Street MOODY Alabama - 35004',
+                          style: TextStyle(color: Colors.white, fontSize: 12),
+                        )),
                       ],
-                    ))))
-            : InkWell(
-            onTap: () {
-              if (_drawerModelList[index].name!.compareTo(
-                  'profile') ==
-                  0) {
-               /* Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => Profile()));*/
-              } else if (_drawerModelList[index].name!.compareTo(
-                  'logOut') ==
-                  0) {
-                _logout(context);
-              }
-            },
-            child: Row(
-              children: [
-                Icon(
-                  _drawerModelList[index].image,
-                  color: Colors.white,
-                  size: 25,
+                    ),
+                  ]),
+              actions: [
+                CircleAvatar(
+                  radius: 20,
+                  child: Icon(
+                    Icons.account_circle,
+                    size: 40,
+                  ),
+                  backgroundColor: CupertinoColors.white,
                 ),
-                10.widthBox ,
-               Text( _drawerModelList[index]
-                    .name!,style: TextStyle(color: Colors.white),)
-                    ,
+                20.widthBox
               ],
-            )));
+              elevation: 0.0,
+            ),
+            drawer: _buildDrawer(drawerProvider),
+            bottomNavigationBar: _buildBottomNavBar(drawerProvider),
+            body: drawerProvider.pages[drawerProvider.pageIndex],
+          ));
+    });
   }
 
- void _logout(BuildContext context) {
-   AlertDialog alertDialog = AlertDialog(
-     contentPadding: EdgeInsets.all(10),
-     title: Container(
-         width: double.maxFinite,
-         height: 250,
-         child: Row(children: [
-           Image.asset(
-             ImageConstanst.logo,
-             height: 100,
-             width: 100,
-           ),
-           Padding(padding: EdgeInsets.only(left: 10)),
-           Text('logOut')
+  _buildBottomNavBar(DrawerProvider drawerProvider) {
+    return Container(
+      color: AppColors.appBarColor,
+      height: 60,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          InkWell(
+              onTap: () {
+                drawerProvider.changePage(0);
+              },
+              child: Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                direction: Axis.vertical,
+                children: [
+                  drawerProvider.pageIndex == 0
+                      ? const Icon(
+                          Icons.home_filled,
+                          color: AppColors.primaryColor,
+                          size: 24,
+                        )
+                      : const Icon(
+                          Icons.home_outlined,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                  5.heightBox,
+                  Text(
+                    'Home',
+                    style: TextStyle(fontSize: 12, color: Colors.white),
+                  )
+                ],
+              )),
+          InkWell(
+              onTap: () {
+                drawerProvider.changePage(1);
+              },
+              child: Wrap(
+                  direction: Axis.vertical,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    drawerProvider.pageIndex == 1
+                        ? const Icon(
+                            CupertinoIcons.circle_grid_3x3_fill,
+                            color: AppColors.primaryColor,
+                            size: 24,
+                          )
+                        : const Icon(
+                            CupertinoIcons.circle_grid_3x3,
+                            color: Colors.white,
+                            size: 24,
+                          ),
+                    5.heightBox,
+                    Text(
+                      'Categories',
+                      style: TextStyle(fontSize: 12, color: Colors.white),
+                    )
+                  ])),
+          InkWell(
+              onTap: () {
+                drawerProvider.changePage(2);
+              },
+              child: Wrap(
+                  direction: Axis.vertical,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    drawerProvider.pageIndex == 2
+                        ? const Icon(
+                            CupertinoIcons.search,
+                            color: AppColors.primaryColor,
+                            size: 24,
+                          )
+                        : const Icon(
+                      CupertinoIcons.search,
+                            color: Colors.white,
+                            size: 24,
+                          ),
+                    5.heightBox,
+                    Text(
+                      'Search',
+                      style: TextStyle(fontSize: 12, color: Colors.white),
+                    )
+                  ])),
+          InkWell(
+              onTap: () {
+                drawerProvider.changePage(3);
+              },
+              child: Wrap(
+                  direction: Axis.vertical,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    drawerProvider.pageIndex == 3
+                        ? const Icon(
+                      CupertinoIcons.square_favorites_fill,
+                            color: AppColors.primaryColor,
+                            size: 24,
+                          )
+                        : const Icon(
+                      CupertinoIcons.square_favorites,
+                            color: Colors.white,
+                            size: 24,
+                          ),
+                    5.heightBox,
+                    Text(
+                      'Wish Lists',
+                      style: TextStyle(fontSize: 12, color: Colors.white),
+                    )
+                  ])),
+          InkWell(
+              onTap: () {
+                drawerProvider.changePage(4);
+              },
+              child: Wrap(
+                  direction: Axis.vertical,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    drawerProvider.pageIndex == 4
+                        ? const Icon(
+                            Icons.shopping_cart,
+                            color: AppColors.primaryColor,
+                            size: 24,
+                          )
+                        : const Icon(
+                            Icons.shopping_cart_outlined,
+                            color: Colors.white,
+                            size: 24,
+                          ),
+                    5.heightBox,
+                    Text(
+                      'Cart',
+                      style: TextStyle(fontSize: 12, color: Colors.white),
+                    )
+                  ])),
+        ],
+      ),
+    );
+  }
 
-         ])),
-     content: Container(
-         width: double.maxFinite,
-         height: 70,
-         child: Column(children: [
-           Text('logOutMessage'),
-           5.heightBox,
-           Row(
-             mainAxisAlignment: MainAxisAlignment.end,
-             children: [
-               TextButton(
-                 child: Text('no')
-                     ,
-                 onPressed: () {
-                   setState(() {
-                     Navigator.of(context).pop();
-                   });
-                 },
-               ),
-               TextButton(
-                 child: Text('yes')
-                     ,
-                 onPressed: () async {
-                    setState(()  {
-                    /* MySharedPreferences.instance
-                         .addBoolToSF(Strings.isLogin, false);
-                     Navigator.of(context).pop();
+  _buildDrawer(DrawerProvider drawerProvider) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: const <Widget>[
+          /*  DrawerHeader(
+            decoration: BoxDecoration(
+              color: AppColors.primaryColor,
+            ),
+            child: Text(
+              'Drawer Header',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+              ),
+            ),
+          ),
+         ListTile(
+            leading: Icon(Icons.message),
+            title: Text('Messages'),
+          ),
+          ListTile(
+            leading: Icon(Icons.account_circle),
+            title: Text('Profile'),
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text('Settings'),
+          ),*/
+        ],
+      ),
+    );
+  }
 
-                     Navigator.of(context).pushAndRemoveUntil(
-                       FadeRoute(
-                         page: Login(),
-                       ),
-                           (route) => false,
-                     );*/
-                   });
-                 },
-               ),
-             ],
-           )
-         ])),
-   );
-   showDialog(context: context, builder: (_) => alertDialog);
- }
-
- void _openPage(int index, int index2) {
-
- }
-
+  Future<bool> _onWillPop(DrawerProvider drawerProvider) async {
+    return await showDialog(
+        context: drawerProvider.context,
+        builder: (_) => AlertDialog(
+              title: Text(
+                'Do you want to exit?',
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              actions: [
+                TextButton(
+                  style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                  child: Text(
+                    'no',
+                    style: TextStyle(fontSize: 16, color: Colors.black54),
+                  ),
+                  onPressed: () {
+                    drawerProvider.pop();
+                  },
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                  child: Text(
+                    'yes',
+                    style: TextStyle(fontSize: 16, color: Colors.black54),
+                  ),
+                  onPressed: () {
+                    drawerProvider.exit();
+                  },
+                ),
+              ],
+            ));
+  }
 }

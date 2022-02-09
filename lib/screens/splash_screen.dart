@@ -6,6 +6,7 @@ import 'package:tmween/generated/locale_keys.g.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_button.dart';
 
+import '../utils/my_shared_preferences.dart';
 import 'authentication/login/login_screen.dart';
 import 'lang_view.dart';
 
@@ -50,6 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     width: 205,
                     text: "Get Started",
                     onPressed: () {
+                      MySharedPreferences.instance.addBoolToSF(AppConstants.isSplash, true);
                       Navigator.push(
                           context,
                           MaterialPageRoute(

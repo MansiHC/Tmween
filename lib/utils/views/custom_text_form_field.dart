@@ -51,6 +51,7 @@ class CustomTextFormField extends StatelessWidget {
             borderSide: BorderSide(color: AppColors.primaryColor),
           ),
           fillColor: Colors.grey,
+          errorMaxLines: 2,
           hintText: hintText,
           hintStyle: TextStyle(
             color: Colors.grey,

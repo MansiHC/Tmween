@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:tmween/screens/authentication/login/login_screen.dart';
 import 'package:tmween/service/api.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/helper.dart';
+
+import '../screens/drawer/drawer_screen.dart';
 
 class OtpProvider extends ChangeNotifier {
   late BuildContext context;
@@ -28,7 +32,8 @@ class OtpProvider extends ChangeNotifier {
         num3Controller.text +
         num4Controller.text;
 
-    await api.verifyOTP(context, 1, phone, otp).then((value) {
+    navigateToLoginScreen();
+   /* await api.verifyOTP(context, 1, phone, otp).then((value) {
       loading = false;
       notifyListeners();
       Helper.showSnackBar(context, value.status_message!);
@@ -37,7 +42,7 @@ class OtpProvider extends ChangeNotifier {
       loading = false;
       notifyListeners();
       print('error....$error');
-    });
+    });*/
   }
 
   resendOTP() async {
@@ -54,6 +59,11 @@ class OtpProvider extends ChangeNotifier {
       notifyListeners();
       print('error....$error');
     });
+  }
+
+  void navigateToLoginScreen() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => LoginScreen()));
   }
 
   void exitScreen() {
