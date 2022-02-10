@@ -21,21 +21,30 @@ class SignUpProvider extends ChangeNotifier {
   final api = Api();
   bool loading = false;
 
-  doRegister() async {
+  doRequest() async {
     loading = true;
     notifyListeners();
     await api
-        .register(context, firstNameController.text, lastNameController.text, "1",
-            passwordController.text, emailController.text,phoneController.text, agreeTo, "en")
+        .request(
+            context,
+            firstNameController.text,
+            lastNameController.text,
+            "1",
+            passwordController.text,
+            emailController.text,
+            phoneController.text,
+            agreeTo,
+            "en")
         .then((value) {
       loading = false;
       notifyListeners();
       print('value....${value.toString()}');
       Helper.showSnackBar(context, value.message!);
-     /* if(value.message==AppConstants.success) {
+      /* if(value.message==AppConstants.success) {
         navigateToOtpScreen();
       }*/
-    }).catchError((error){
+      navigateToOtpScreen();
+    }).catchError((error) {
       loading = false;
       notifyListeners();
       print('error....$error');
@@ -64,7 +73,7 @@ class SignUpProvider extends ChangeNotifier {
   void signUp() {
     if (formKey.currentState!.validate()) {
       if (agree) {
-        //doRegister();
+        //doRequest();
         navigateToOtpScreen();
       } else {
         Helper.showSnackBar(context, "Please Agree to the Terms of Use");
@@ -76,6 +85,14 @@ class SignUpProvider extends ChangeNotifier {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => OtpScreen(phone: phoneController.text)));
+            builder: (context) => OtpScreen(
+                name:
+                    "${firstNameController.text}+ +${lastNameController.text}",
+                deviceType: "1",
+                password: passwordController.text,
+                email: emailController.text,
+                phone: phoneController.text,
+                agreeTerms: agreeTo,
+                langCode: "en")));
   }
 }

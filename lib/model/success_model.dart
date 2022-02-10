@@ -3,7 +3,7 @@ class SuccessModel {
   final String? statusMessage;
   final String? message;
 
-  SuccessModel({this.statusCode,  this.statusMessage,  this.message});
+  SuccessModel({this.statusCode, this.statusMessage, this.message});
 
   factory SuccessModel.fromJson(Map<String, dynamic> json) {
     return SuccessModel(

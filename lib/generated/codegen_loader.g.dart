@@ -19,105 +19,19 @@ class CodegenLoader extends AssetLoader {
     "msg": "السلام عليكم يا {} في عالم {}",
     "msg_named": "{} مكتوبة باللغة {lang}",
     "clickMe": "إضغط هنا",
-    "profile": {
-      "reset_password": {
-        "label": "اعادة تعين كلمة السر",
-        "username": "المستخدم",
-        "password": "كلمة السر"
-      }
-    },
-    "clicked": {
-      "zero": "لم تنقر بعد!",
-      "one": "لقد نقرت مرة واحدة!",
-      "two": "لقد قمت بالنقر مرتين!",
-      "few": " لقد قمت بالنقر {} مرات!",
-      "many": "لقد قمت بالنقر {} مرة!",
-      "other": "{} نقرة!"
-    },
-    "amount": {
-      "zero": "المبلغ : {}",
-      "one": " المبلغ : {}",
-      "two": " المبلغ : {}",
-      "few": " المبلغ : {}",
-      "many": " المبلغ : {}",
-      "other": " المبلغ : {}"
-    },
-    "gender": {
-      "male": " مرحبا يا رجل",
-      "female": " مرحبا بك يا فتاة",
-      "with_arg": {"male": "{} مرحبا يا رجل", "female": "{} مرحبا بك يا فتاة"}
-    },
-    "reset_locale": "إعادة ضبط اللغة"
   };
   static const Map<String, dynamic> ar = {
     "title": "السلام",
     "msg": "السلام عليكم يا {} في عالم {}",
     "msg_named": "{} مكتوبة باللغة {lang}",
     "clickMe": "إضغط هنا",
-    "profile": {
-      "reset_password": {
-        "label": "اعادة تعين كلمة السر",
-        "username": "المستخدم",
-        "password": "كلمة السر"
-      }
-    },
-    "clicked": {
-      "zero": "لم تنقر بعد!",
-      "one": "لقد نقرت مرة واحدة!",
-      "two": "لقد قمت بالنقر مرتين!",
-      "few": " لقد قمت بالنقر {} مرات!",
-      "many": "لقد قمت بالنقر {} مرة!",
-      "other": "{} نقرة!"
-    },
-    "amount": {
-      "zero": "المبلغ : {}",
-      "one": " المبلغ : {}",
-      "two": " المبلغ : {}",
-      "few": " المبلغ : {}",
-      "many": " المبلغ : {}",
-      "other": " المبلغ : {}"
-    },
-    "gender": {
-      "male": " مرحبا يا رجل",
-      "female": " مرحبا بك يا فتاة",
-      "with_arg": {"male": "{} مرحبا يا رجل", "female": "{} مرحبا بك يا فتاة"}
-    },
-    "reset_locale": "إعادة ضبط اللغة"
   };
   static const Map<String, dynamic> de_DE = {
     "title": "Hallo",
     "msg": "Hallo {} in der {} welt ",
     "msg_named": "{} ist in {lang} geschrieben",
     "clickMe": "Click mich",
-    "profile": {
-      "reset_password": {
-        "label": "Password zurücksetzten",
-        "username": "Name",
-        "password": "Password"
-      }
-    },
-    "clicked": {
-      "zero": "Du hast {} mal geklickt",
-      "one": "Du hast {} mal geklickt",
-      "two": "Du hast {} mal geklickt",
-      "few": "Du hast {} mal geklickt",
-      "many": "Du hast {} mal geklickt",
-      "other": "Du hast {} mal geklickt"
-    },
-    "amount": {
-      "zero": "Deine Klicks: {}",
-      "one": "Deine Klicks: {}",
-      "two": "Deine Klicks: {}",
-      "few": "Deine Klicks: {}",
-      "many": "Deine Klicks: {}",
-      "other": "Deine Klicks: {}"
-    },
-    "gender": {
-      "male": "Hi Mann ;) ",
-      "female": "Hallo Frau :)",
-      "with_arg": {"male": "Hi Mann ;) {}", "female": "Hallo Frau :) {}"}
-    },
-    "reset_locale": "Sprache zurücksetzen"
+
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo",

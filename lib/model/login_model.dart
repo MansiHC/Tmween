@@ -1,4 +1,3 @@
-
 class LoginModel {
   int? statusCode;
   String? statusMessage;
@@ -74,23 +73,23 @@ class CustomerData {
 
   CustomerData(
       {this.id,
-        this.firstName,
-        this.lastName,
-        this.email,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.createdFrom,
-        this.dob,
-        this.passwordHash,
-        this.defaultBilling,
-        this.defaultShipping,
-        this.taxvat,
-        this.accountVerificationToken,
-        this.confirmation,
-        this.gender,
-        this.resetPwdToken,
-        this.tokenExpiredAt});
+      this.firstName,
+      this.lastName,
+      this.email,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.createdFrom,
+      this.dob,
+      this.passwordHash,
+      this.defaultBilling,
+      this.defaultShipping,
+      this.taxvat,
+      this.accountVerificationToken,
+      this.confirmation,
+      this.gender,
+      this.resetPwdToken,
+      this.tokenExpiredAt});
 
   CustomerData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -136,4 +135,3 @@ class CustomerData {
     return data;
   }
 }
-

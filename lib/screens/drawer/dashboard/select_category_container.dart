@@ -23,7 +23,7 @@ class SelectCategoryContainer extends StatelessWidget {
                 child: Container(
                     padding: EdgeInsets.all(3),
                     decoration: BoxDecoration(
-                        color:AppColors.offerGreen,
+                        color: AppColors.offerGreen,
                         borderRadius: BorderRadius.all(Radius.circular(4))),
                     child: Column(
                       children: [
@@ -33,8 +33,8 @@ class SelectCategoryContainer extends StatelessWidget {
                                 fontSize: 10,
                                 fontWeight: FontWeight.bold)),
                         Text('OFF',
-                            style: TextStyle(
-                                color: Colors.white, fontSize: 10)),
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 10)),
                       ],
                     ))),
             5.heightBox,

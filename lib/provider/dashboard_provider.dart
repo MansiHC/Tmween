@@ -1,6 +1,10 @@
 import 'package:carousel_slider/carousel_controller.dart';
-import 'package:tmween/model/deals_of_the_day_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:tmween/model/best_seller_model.dart';
+import 'package:tmween/model/deals_of_the_day_model.dart';
+import 'package:tmween/model/recently_viewed_model.dart';
+import 'package:tmween/model/sold_by_tmween_model.dart';
+import 'package:tmween/model/top_selection_model.dart';
 
 import '../model/select_category_model.dart';
 
@@ -29,24 +33,256 @@ class DashboardProvider extends ChangeNotifier {
   ];
 
   List<SelectCategoryModel> categories = const <SelectCategoryModel>[
-    const SelectCategoryModel(title: 'Furniture',offer: '50', image: 'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
-    const SelectCategoryModel(title: 'Watches',offer: '50', image: 'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
-    const SelectCategoryModel(title: 'Sunglasses',offer: '50', image: 'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
-    const SelectCategoryModel(title: 'Electronics',offer: '50', image: 'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
-    const SelectCategoryModel(title: 'Sports, Fitness & Outdoor',offer: '50', image: 'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
-    const SelectCategoryModel(title: 'Computers & Gaming',offer: '50', image: 'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
-    const SelectCategoryModel(title: 'Belts',offer: '50', image: 'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
-    const SelectCategoryModel(title: 'Wallets & Clutches',offer: '50', image: 'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
-    const SelectCategoryModel(title: 'Jewelry',offer: '50', image: 'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
-    const SelectCategoryModel(title: 'Beauty',offer: '50', image: 'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
-    const SelectCategoryModel(title: 'Outdoor',offer: '50',image: 'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
-    const SelectCategoryModel(title: 'Daily Needs',offer: '50',image: 'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const SelectCategoryModel(
+        title: 'Furniture',
+        offer: '50',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const SelectCategoryModel(
+        title: 'Watches',
+        offer: '50',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const SelectCategoryModel(
+        title: 'Sunglasses',
+        offer: '50',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const SelectCategoryModel(
+        title: 'Electronics',
+        offer: '50',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const SelectCategoryModel(
+        title: 'Sports, Fitness & Outdoor',
+        offer: '50',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const SelectCategoryModel(
+        title: 'Computers & Gaming',
+        offer: '50',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const SelectCategoryModel(
+        title: 'Belts',
+        offer: '50',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const SelectCategoryModel(
+        title: 'Wallets & Clutches',
+        offer: '50',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const SelectCategoryModel(
+        title: 'Jewelry',
+        offer: '50',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const SelectCategoryModel(
+        title: 'Beauty',
+        offer: '50',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const SelectCategoryModel(
+        title: 'Outdoor',
+        offer: '50',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const SelectCategoryModel(
+        title: 'Daily Needs',
+        offer: '50',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
   ];
 
   List<DealsOfTheDayModel> deals = const <DealsOfTheDayModel>[
-    const DealsOfTheDayModel(title: 'WOW Raw Apple Cider Vinegar 750 ml',fulfilled:true,offer: '35', rating:'4.1',price:'2450',beforePrice:'7000',image: 'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
-    const DealsOfTheDayModel(title: 'WOW Raw Apple Cider Vinegar 750 ml',fulfilled:false,offer: '35', rating:'4.1',price:'2450',beforePrice:'7000',image: 'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
-    const DealsOfTheDayModel(title: 'WOW Raw Apple Cider Vinegar 750 ml',fulfilled:false,offer: '35',rating:'4.1',price:'2450',beforePrice:'7000', image: 'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
-    const DealsOfTheDayModel(title: 'WOW Raw Apple Cider Vinegar 750 ml',fulfilled:true,offer: '35',rating:'4.1',price:'2450',beforePrice:'7000', image: 'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const DealsOfTheDayModel(
+        title: 'WOW Raw Apple Cider Vinegar 750 ml',
+        fulfilled: true,
+        offer: '35',
+        rating: '4.1',
+        price: '2450',
+        beforePrice: '7000',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const DealsOfTheDayModel(
+        title: 'WOW Raw Apple Cider Vinegar 750 ml',
+        fulfilled: false,
+        offer: '35',
+        rating: '4.1',
+        price: '2450',
+        beforePrice: '7000',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const DealsOfTheDayModel(
+        title: 'WOW Raw Apple Cider Vinegar 750 ml',
+        fulfilled: false,
+        offer: '35',
+        rating: '4.1',
+        price: '2450',
+        beforePrice: '7000',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const DealsOfTheDayModel(
+        title: 'WOW Raw Apple Cider Vinegar 750 ml',
+        fulfilled: true,
+        offer: '35',
+        rating: '4.1',
+        price: '2450',
+        beforePrice: '7000',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+  ];
+  List<BestSellerModel> bestSellers = const <BestSellerModel>[
+    const BestSellerModel(
+        title: 'WOW Raw Apple Cider Vinegar 750 ml',
+        fulfilled: true,
+        offer: '35',
+        rating: '4.1',
+        price: '2450',
+        beforePrice: '7000',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const BestSellerModel(
+        title: 'WOW Raw Apple Cider Vinegar 750 ml',
+        fulfilled: false,
+        offer: '35',
+        rating: '4.1',
+        price: '2450',
+        beforePrice: '7000',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const BestSellerModel(
+        title: 'WOW Raw Apple Cider Vinegar 750 ml',
+        fulfilled: false,
+        offer: '35',
+        rating: '4.1',
+        price: '2450',
+        beforePrice: '7000',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const BestSellerModel(
+        title: 'WOW Raw Apple Cider Vinegar 750 ml',
+        fulfilled: true,
+        offer: '35',
+        rating: '4.1',
+        price: '2450',
+        beforePrice: '7000',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+  ];
+  List<SoldByTmweenModel> soldByTmweens = const <SoldByTmweenModel>[
+    const SoldByTmweenModel(
+        title: 'WOW Raw Apple Cider Vinegar 750 ml',
+        fulfilled: true,
+        offer: '35',
+        rating: '4.1',
+        price: '2450',
+        beforePrice: '7000',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const SoldByTmweenModel(
+        title: 'WOW Raw Apple Cider Vinegar 750 ml',
+        fulfilled: false,
+        offer: '35',
+        rating: '4.1',
+        price: '2450',
+        beforePrice: '7000',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const SoldByTmweenModel(
+        title: 'WOW Raw Apple Cider Vinegar 750 ml',
+        fulfilled: false,
+        offer: '35',
+        rating: '4.1',
+        price: '2450',
+        beforePrice: '7000',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const SoldByTmweenModel(
+        title: 'WOW Raw Apple Cider Vinegar 750 ml',
+        fulfilled: true,
+        offer: '35',
+        rating: '4.1',
+        price: '2450',
+        beforePrice: '7000',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+  ];
+  List<TopSelectionModel> topSelections = const <TopSelectionModel>[
+    const TopSelectionModel(
+        title: 'WOW Raw Apple Cider Vinegar 750 ml',
+        fulfilled: false,
+        offer: '35',
+        rating: '4.1',
+        price: '2450',
+        beforePrice: '7000',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const TopSelectionModel(
+        title: 'WOW Raw Apple Cider Vinegar 750 ml',
+        fulfilled: true,
+        offer: '35',
+        rating: '4.1',
+        price: '2450',
+        beforePrice: '7000',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const TopSelectionModel(
+        title: 'WOW Raw Apple Cider Vinegar 750 ml',
+        fulfilled: false,
+        offer: '35',
+        rating: '4.1',
+        price: '2450',
+        beforePrice: '7000',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const TopSelectionModel(
+        title: 'WOW Raw Apple Cider Vinegar 750 ml',
+        fulfilled: true,
+        offer: '35',
+        rating: '4.1',
+        price: '2450',
+        beforePrice: '7000',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+  ];
+  List<RecentlyViewedModel> recentlVieweds = const <RecentlyViewedModel>[
+    const RecentlyViewedModel(
+        title: 'WOW Raw Apple Cider Vinegar 750 ml',
+        fulfilled: true,
+        offer: '35',
+        rating: '4.1',
+        price: '2450',
+        beforePrice: '7000',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const RecentlyViewedModel(
+        title: 'WOW Raw Apple Cider Vinegar 750 ml',
+        fulfilled: true,
+        offer: '35',
+        rating: '4.1',
+        price: '2450',
+        beforePrice: '7000',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const RecentlyViewedModel(
+        title: 'WOW Raw Apple Cider Vinegar 750 ml',
+        fulfilled: false,
+        offer: '35',
+        rating: '4.1',
+        price: '2450',
+        beforePrice: '7000',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+    const RecentlyViewedModel(
+        title: 'WOW Raw Apple Cider Vinegar 750 ml',
+        fulfilled: false,
+        offer: '35',
+        rating: '4.1',
+        price: '2450',
+        beforePrice: '7000',
+        image:
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
   ];
 }

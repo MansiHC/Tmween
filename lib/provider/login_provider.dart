@@ -2,7 +2,6 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tmween/screens/authentication/signup/signup_screen.dart';
-import 'package:tmween/screens/drawer/dashboard/dashboard_screen.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 import 'package:tmween/service/api.dart';
 import 'package:tmween/utils/global.dart';
@@ -92,25 +91,28 @@ class LoginProvider extends ChangeNotifier {
         .login(context, 1, phoneController.text, uuid, deviceNo, deviceName,
             platform, model, version)
         .then((value) {
-          if(value.message==AppConstants.success) {
-            rememberMe == true
-                ? MySharedPreferences.instance.addBoolToSF(AppConstants.isLogin, true)
-                : MySharedPreferences.instance.addBoolToSF(AppConstants.isLogin, false);
+      if (value.message == AppConstants.success) {
+        rememberMe == true
+            ? MySharedPreferences.instance
+                .addBoolToSF(AppConstants.isLogin, true)
+            : MySharedPreferences.instance
+                .addBoolToSF(AppConstants.isLogin, false);
 
-
-            loading = false;
-            notifyListeners();
-            navigateToDrawerScreen();
-          }else{
-            Helper.showSnackBar(context, value.message!);
-          }
-
+        loading = false;
+        notifyListeners();
+        MySharedPreferences.instance
+            .addIntToSF(AppConstants.loginLogId, value.data!.loginLogId);
+        MySharedPreferences.instance
+            .addIntToSF(AppConstants.userId, value.data!.customerData!.id);
+        navigateToDrawerScreen();
+      } else {
+        Helper.showSnackBar(context, value.message!);
+      }
     }).catchError((error) {
       loading = false;
       notifyListeners();
       print('error....$error');
     });
-
   }
 
   void navigateToSignupScreen() {

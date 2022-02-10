@@ -1,15 +1,32 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tmween/generated/locale_keys.g.dart';
 import 'package:tmween/provider/otp_provider.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/otp_text_filed.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class OtpScreen extends StatefulWidget {
   final String phone;
+  final String? name;
+  final String? email;
+  final String? password;
+  final String? agreeTerms;
+  final String? langCode;
+  final String? deviceType;
 
-  OtpScreen({Key? key, required this.phone}) : super(key: key);
+  OtpScreen(
+      {Key? key,
+      this.name,
+      this.email,
+      this.password,
+      this.agreeTerms,
+      this.langCode,
+      this.deviceType,
+      required this.phone})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -47,7 +64,7 @@ class _OtpScreenState extends State<OtpScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Enter your OTP code here',
+          LocaleKeys.enterOTP.tr(),
           style: TextStyle(fontSize: 16, color: Colors.black),
         ),
         10.heightBox,
@@ -111,7 +128,14 @@ class _OtpScreenState extends State<OtpScreen> {
                 onChanged: (value) {
                   if (value.length == 1) {
                     FocusScope.of(context).nextFocus();
-                    otpProvider.verifyOTP();
+                    otpProvider.verifyOTP(
+                        widget.name!,
+                        widget.email!,
+                        widget.phone,
+                        widget.password!,
+                        widget.deviceType!,
+                        widget.langCode!,
+                        widget.agreeTerms!);
                   }
                   if (value.length == 0) {
                     FocusScope.of(context).previousFocus();
@@ -135,7 +159,7 @@ class _OtpScreenState extends State<OtpScreen> {
         Visibility(visible: otpProvider.loading, child: 5.heightBox),
         30.heightBox,
         Text(
-          "Didn't you received any code?",
+          LocaleKeys.notReceivedOtp.tr(),
           style: TextStyle(fontSize: 16, color: Colors.black),
         ),
         5.heightBox,
@@ -144,7 +168,7 @@ class _OtpScreenState extends State<OtpScreen> {
               otpProvider.resendOTP();
             },
             child: Text(
-              "Resend a new code.",
+              LocaleKeys.resendCode.tr(),
               style: TextStyle(fontSize: 16, color: AppColors.primaryColor),
             )),
       ],

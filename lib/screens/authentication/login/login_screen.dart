@@ -3,11 +3,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:tmween/generated/locale_keys.g.dart';
 import 'package:tmween/provider/login_provider.dart';
 import 'package:tmween/screens/authentication/login/store_owner_login_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
-
+import 'package:easy_localization/easy_localization.dart';
 import 'individual_login_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -24,13 +25,12 @@ class _LoginScreenState extends State<LoginScreen>
 
   @override
   void initState() {
-
     tabList = <Tab>[];
     tabList.add(new Tab(
-      text: 'Individual',
+      text: LocaleKeys.individual.tr(),
     ));
     tabList.add(new Tab(
-      text: 'Store Owner',
+      text: LocaleKeys.storeOwner.tr(),
     ));
     _tabController = new TabController(vsync: this, length: tabList.length);
     super.initState();
@@ -127,14 +127,14 @@ class _LoginScreenState extends State<LoginScreen>
                   alignment: Alignment.topCenter,
                   child: Text.rich(TextSpan(text: ' ', children: <InlineSpan>[
                     TextSpan(
-                      text: 'Login ',
+                      text: '${LocaleKeys.login} '.tr(),
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
                     ),
                     TextSpan(
-                      text: 'Your Account',
+                      text: LocaleKeys.yourAccount.tr(),
                       style: TextStyle(fontSize: 20, color: Colors.white70),
                     )
                   ])),
@@ -143,11 +143,11 @@ class _LoginScreenState extends State<LoginScreen>
                 Align(
                     alignment: Alignment.topCenter,
                     child: Text.rich(TextSpan(
-                        text: 'Login to our website or ',
+                        text: LocaleKeys.loginOurWebsite.tr(),
                         style: TextStyle(fontSize: 14, color: Colors.white70),
                         children: <InlineSpan>[
                           TextSpan(
-                              text: 'REGISTER',
+                              text: LocaleKeys.registerCapital.tr(),
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.white,

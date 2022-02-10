@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tmween/generated/locale_keys.g.dart';
 import 'package:tmween/provider/drawer_provider.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
+import 'package:tmween/utils/my_shared_preferences.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class DrawerScreen extends StatefulWidget {
   @override
@@ -13,6 +16,25 @@ class DrawerScreen extends StatefulWidget {
 }
 
 class _DrawerScreenState extends State<DrawerScreen> {
+
+  late int userId;
+  late int loginLogId;
+
+  @override
+  void initState() {
+    MySharedPreferences.instance
+        .getIntValuesSF(AppConstants.userId)
+        .then((value) async {
+      userId = value!;
+      MySharedPreferences.instance
+          .getIntValuesSF(AppConstants.loginLogId)
+          .then((value) async {
+        loginLogId = value! ;
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<DrawerProvider>(builder: (context, drawerProvider, _) {
@@ -83,19 +105,19 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 direction: Axis.vertical,
                 children: [
                   drawerProvider.pageIndex == 0
-                      ? const Icon(
-                          Icons.home_filled,
-                          color: AppColors.primaryColor,
-                          size: 24,
+                      ? Image.asset(
+                          ImageConstanst.dashboardIcon,
+                          height: 24,
+                          width: 24,
                         )
-                      : const Icon(
-                          Icons.home_outlined,
-                          color: Colors.white,
-                          size: 24,
+                      : Image.asset(
+                          ImageConstanst.dashboardIcon,
+                          height: 24,
+                          width: 24,
                         ),
                   5.heightBox,
                   Text(
-                    'Home',
+                    LocaleKeys.home.tr(),
                     style: TextStyle(fontSize: 12, color: Colors.white),
                   )
                 ],
@@ -121,7 +143,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                           ),
                     5.heightBox,
                     Text(
-                      'Categories',
+                      LocaleKeys.categories.tr(),
                       style: TextStyle(fontSize: 12, color: Colors.white),
                     )
                   ])),
@@ -140,13 +162,13 @@ class _DrawerScreenState extends State<DrawerScreen> {
                             size: 24,
                           )
                         : const Icon(
-                      CupertinoIcons.search,
+                            CupertinoIcons.search,
                             color: Colors.white,
                             size: 24,
                           ),
                     5.heightBox,
                     Text(
-                      'Search',
+                      LocaleKeys.search.tr(),
                       style: TextStyle(fontSize: 12, color: Colors.white),
                     )
                   ])),
@@ -160,18 +182,18 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   children: [
                     drawerProvider.pageIndex == 3
                         ? const Icon(
-                      CupertinoIcons.square_favorites_fill,
+                            CupertinoIcons.square_favorites_fill,
                             color: AppColors.primaryColor,
                             size: 24,
                           )
                         : const Icon(
-                      CupertinoIcons.square_favorites,
+                            CupertinoIcons.square_favorites,
                             color: Colors.white,
                             size: 24,
                           ),
                     5.heightBox,
                     Text(
-                      'Wish Lists',
+                      LocaleKeys.wishLists.tr(),
                       style: TextStyle(fontSize: 12, color: Colors.white),
                     )
                   ])),
@@ -196,7 +218,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                           ),
                     5.heightBox,
                     Text(
-                      'Cart',
+                      LocaleKeys.cart.tr(),
                       style: TextStyle(fontSize: 12, color: Colors.white),
                     )
                   ])),
@@ -209,7 +231,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
-        children: const <Widget>[
+        children: <Widget>[
           /*  DrawerHeader(
             decoration: BoxDecoration(
               color: AppColors.primaryColor,
@@ -231,8 +253,11 @@ class _DrawerScreenState extends State<DrawerScreen> {
             title: Text('Profile'),
           ),
           ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
+            leading: Icon(Icons.logout),
+            title: Text('Logout'),
+            onTap: () {
+              _logout(drawerProvider);
+            },
           ),*/
         ],
       ),
@@ -244,7 +269,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
         context: drawerProvider.context,
         builder: (_) => AlertDialog(
               title: Text(
-                'Do you want to exit?',
+                LocaleKeys.wantExit.tr(),
                 style: TextStyle(
                   fontSize: 16,
                 ),
@@ -253,7 +278,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 TextButton(
                   style: TextButton.styleFrom(padding: EdgeInsets.zero),
                   child: Text(
-                    'no',
+                    LocaleKeys.no.tr(),
                     style: TextStyle(fontSize: 16, color: Colors.black54),
                   ),
                   onPressed: () {
@@ -263,11 +288,46 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 TextButton(
                   style: TextButton.styleFrom(padding: EdgeInsets.zero),
                   child: Text(
-                    'yes',
+                    LocaleKeys.yes.tr(),
                     style: TextStyle(fontSize: 16, color: Colors.black54),
                   ),
                   onPressed: () {
                     drawerProvider.exit();
+                  },
+                ),
+              ],
+            ));
+  }
+
+  void _logout(DrawerProvider drawerProvider) async {
+    await showDialog(
+        context: drawerProvider.context,
+        builder: (_) => AlertDialog(
+              title: Text(
+                LocaleKeys.wantLogout.tr(),
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              actions: [
+                TextButton(
+                  style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                  child: Text(
+                    LocaleKeys.no.tr(),
+                    style: TextStyle(fontSize: 16, color: Colors.black54),
+                  ),
+                  onPressed: () {
+                    drawerProvider.pop();
+                  },
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                  child: Text(
+                   LocaleKeys.yes.tr(),
+                    style: TextStyle(fontSize: 16, color: Colors.black54),
+                  ),
+                  onPressed: () {
+                    drawerProvider.doLogout(userId, loginLogId);
                   },
                 ),
               ],

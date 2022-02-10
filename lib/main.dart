@@ -46,6 +46,7 @@ void main() async {
     supportedLocales: [
       Locale('en', 'US'),
       Locale('ar', 'DZ'),
+      Locale('es', 'ES'),
     ],
     path: 'asset/lang',
     child: ChangeNotifierProvider<ThemeNotifier>(
@@ -88,11 +89,11 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Tmween',
         theme: themeNotifier.getTheme(),
-        home: !isSplash
+        home: SplashScreen()/*!isSplash
             ? SplashScreen()
             : isLogin
                 ? DrawerScreen()
-                : LoginScreen(),
+                : LoginScreen()*/,
       ),
     );
   }

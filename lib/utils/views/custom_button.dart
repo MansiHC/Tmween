@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../global.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
@@ -18,7 +19,7 @@ class CustomButton extends StatelessWidget {
           child: Text(
             text,
             style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
+          ).tr(),
           onPressed: onPressed,
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(AppColors.primaryColor),

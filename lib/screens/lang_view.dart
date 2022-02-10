@@ -1,7 +1,9 @@
 import 'dart:developer';
 
-import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:tmween/utils/global.dart';
+import 'package:tmween/utils/my_shared_preferences.dart';
 
 class LanguageView extends StatelessWidget {
   @override
@@ -38,7 +40,7 @@ class LanguageView extends StatelessWidget {
             ),
             _SwitchListTileMenuItem(
                 title: 'عربي',
-                subtitle: 'عربي',
+                subtitle: 'Arabic',
                 locale:
                     context.supportedLocales[1] //BuildContext extension method
                 ),
@@ -47,6 +49,11 @@ class LanguageView extends StatelessWidget {
                 title: 'English',
                 subtitle: 'English',
                 locale: context.supportedLocales[0]),
+            _Divider(),
+            _SwitchListTileMenuItem(
+                title: 'español',
+                subtitle: 'Spanish',
+                locale: context.supportedLocales[2]),
             _Divider(),
           ],
         ),
@@ -104,8 +111,10 @@ class _SwitchListTileMenuItem extends StatelessWidget {
           ),
           onTap: () async {
             log(locale.toString(), name: toString());
+            MySharedPreferences.instance
+                .addStringToSF(AppConstants.language, locale.toString());
             await context.setLocale(locale); //BuildContext extension method
-            Navigator.pop(context);
+            Navigator.of(context).pop(true);
           }),
     );
   }

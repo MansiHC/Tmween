@@ -11,7 +11,10 @@ class OtpTextFormField extends StatelessWidget {
   final TextEditingController controller;
 
   OtpTextFormField(
-      {required this.clicked, required this.onTap, required this.onChanged,required this.controller});
+      {required this.clicked,
+      required this.onTap,
+      required this.onChanged,
+      required this.controller});
 
   @override
   Widget build(BuildContext context) {

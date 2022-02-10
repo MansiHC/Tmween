@@ -3,7 +3,7 @@ class VerifyOtpModel {
   final String? status_message;
   final String? message;
 
-  VerifyOtpModel({this.status_code,  this.status_message,  this.message});
+  VerifyOtpModel({this.status_code, this.status_message, this.message});
 
   factory VerifyOtpModel.fromJson(Map<String, dynamic> json) {
     return VerifyOtpModel(

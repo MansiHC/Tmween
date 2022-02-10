@@ -5,8 +5,6 @@ import 'package:tmween/service/api.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/helper.dart';
 
-import '../screens/drawer/drawer_screen.dart';
-
 class OtpProvider extends ChangeNotifier {
   late BuildContext context;
 
@@ -23,7 +21,8 @@ class OtpProvider extends ChangeNotifier {
   bool loading = false;
   late String phone, otp;
 
-  verifyOTP() async {
+  verifyOTP(String name, String email, String phone, String password,
+      String deviceType, String langCode, String agreeTerms) async {
     loading = true;
     notifyListeners();
 
@@ -33,16 +32,41 @@ class OtpProvider extends ChangeNotifier {
         num4Controller.text;
 
     navigateToLoginScreen();
-   /* await api.verifyOTP(context, 1, phone, otp).then((value) {
+    /* await api.verifyOTP(context, 1, phone, otp).then((value) {
       loading = false;
       notifyListeners();
       Helper.showSnackBar(context, value.status_message!);
-      if(value.message==AppConstants.success) {}
+      if(value.message==AppConstants.success) {
+      doRegister( name, email, phone, password,deviceType,langCode,agreeTerms);
+      }
     }).catchError((error) {
       loading = false;
       notifyListeners();
       print('error....$error');
     });*/
+  }
+
+  doRegister(String name, String email, String phone, String password,
+      String deviceType, String langCode, String agreeTerms) async {
+    loading = true;
+    notifyListeners();
+    await api
+        .register(context, name, deviceType, password, email, phone, agreeTerms,
+            langCode)
+        .then((value) {
+      loading = false;
+      notifyListeners();
+      print('value....${value.toString()}');
+      Helper.showSnackBar(context, value.message!);
+      /* if(value.message==AppConstants.success) {
+        navigateToOtpScreen();
+      }*/
+      navigateToLoginScreen();
+    }).catchError((error) {
+      loading = false;
+      notifyListeners();
+      print('error....$error');
+    });
   }
 
   resendOTP() async {
@@ -53,7 +77,7 @@ class OtpProvider extends ChangeNotifier {
       loading = false;
       notifyListeners();
       Helper.showSnackBar(context, value.status_message!);
-      if(value.message==AppConstants.success) {}
+      if (value.message == AppConstants.success) {}
     }).catchError((error) {
       loading = false;
       notifyListeners();

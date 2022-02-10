@@ -4,11 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:tmween/generated/locale_keys.g.dart';
 import 'package:tmween/provider/login_provider.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_button.dart';
 import 'package:tmween/utils/views/custom_text_form_field.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class IndividualLoginScreen extends StatefulWidget {
   @override
@@ -18,7 +20,7 @@ class IndividualLoginScreen extends StatefulWidget {
 }
 
 class _IndividualLoginScreenState extends State<IndividualLoginScreen> {
- late LoginProvider loginProvider;
+  late LoginProvider loginProvider;
 
   @override
   void initState() {
@@ -27,13 +29,15 @@ class _IndividualLoginScreenState extends State<IndividualLoginScreen> {
 
     super.initState();
   }
-  Future<void> initPlatformState() async {
 
+  Future<void> initPlatformState() async {
     try {
       if (Platform.isAndroid) {
-        loginProvider.getAndroidBuildData(await loginProvider.deviceInfoPlugin.androidInfo);
+        loginProvider.getAndroidBuildData(
+            await loginProvider.deviceInfoPlugin.androidInfo);
       } else if (Platform.isIOS) {
-        loginProvider.getIosDeviceInfo(await loginProvider.deviceInfoPlugin.iosInfo);
+        loginProvider
+            .getIosDeviceInfo(await loginProvider.deviceInfoPlugin.iosInfo);
       }
     } on PlatformException {
       loginProvider.deviceData = <String, dynamic>{
@@ -42,7 +46,6 @@ class _IndividualLoginScreenState extends State<IndividualLoginScreen> {
     }
 
     if (!mounted) return;
-
   }
 
   @override
@@ -65,7 +68,7 @@ class _IndividualLoginScreenState extends State<IndividualLoginScreen> {
                                 CustomTextFormField(
                                     controller: loginProvider.phoneController,
                                     keyboardType: TextInputType.phone,
-                                    hintText: "Phone Number",
+                                    hintText: LocaleKeys.phoneNumber,
                                     inputFormatters: [
                                       LengthLimitingTextInputFormatter(10),
                                       FilteringTextInputFormatter.digitsOnly
@@ -77,11 +80,11 @@ class _IndividualLoginScreenState extends State<IndividualLoginScreen> {
                                     },
                                     validator: (value) {
                                       if (value!.isEmpty) {
-                                        return 'Please Enter Phone Number';
+                                        return LocaleKeys.emptyPhoneNumber.tr();
                                       } else if (loginProvider.phoneController
                                               .value.text.length <
                                           10) {
-                                        return 'Please Enter Valid Phone Number';
+                                        return LocaleKeys.validPhoneNumber.tr();
                                       }
                                       return null;
                                     }),
@@ -119,14 +122,14 @@ class _IndividualLoginScreenState extends State<IndividualLoginScreen> {
                                                           }))),
                                               10.widthBox,
                                               Text(
-                                                "Keep me signed in",
+                                                LocaleKeys.keepMeSignedIn.tr(),
                                                 style: TextStyle(
                                                     fontSize: 14,
                                                     color: Colors.grey),
                                               )
                                             ])),
                                     Text(
-                                      "forgot password?",
+                                      LocaleKeys.forgotPassword.tr(),
                                       style: TextStyle(
                                           fontSize: 14,
                                           color: AppColors.primaryColor,
@@ -136,18 +139,24 @@ class _IndividualLoginScreenState extends State<IndividualLoginScreen> {
                                 ),
                                 15.heightBox,
                                 CustomButton(
-                                    text: "Login",
+                                    text: LocaleKeys.login,
                                     onPressed: () {
                                       loginProvider.login();
                                     }),
-                                Visibility(visible: loginProvider.loading, child: 5.heightBox),
+                                Visibility(
+                                    visible: loginProvider.loading,
+                                    child: 5.heightBox),
                                 Visibility(
                                   visible: loginProvider.loading,
-                                  child: Align(alignment: Alignment.topCenter,child:CircularProgressIndicator(
-                                    backgroundColor: AppColors.primaryColor,
-                                  )),
+                                  child: Align(
+                                      alignment: Alignment.topCenter,
+                                      child: CircularProgressIndicator(
+                                        backgroundColor: AppColors.primaryColor,
+                                      )),
                                 ),
-                                Visibility(visible: loginProvider.loading, child: 5.heightBox),
+                                Visibility(
+                                    visible: loginProvider.loading,
+                                    child: 5.heightBox),
                                 10.heightBox,
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -162,7 +171,7 @@ class _IndividualLoginScreenState extends State<IndividualLoginScreen> {
                                             ))),
                                     10.widthBox,
                                     Text(
-                                      'or',
+                                      LocaleKeys.or.tr(),
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: Colors.grey,
@@ -185,7 +194,7 @@ class _IndividualLoginScreenState extends State<IndividualLoginScreen> {
                                       loginProvider.navigateToSignupScreen();
                                     },
                                     child: Text(
-                                      "Create your Tmween Account",
+                                      LocaleKeys.createYourTmweenAccount.tr(),
                                       style: TextStyle(
                                           fontSize: 14,
                                           color: AppColors.primaryColor,
@@ -199,7 +208,7 @@ class _IndividualLoginScreenState extends State<IndividualLoginScreen> {
                                             textAlign: TextAlign.center,
                                             text: TextSpan(
                                                 text:
-                                                    "By clicking 'Create Account', you \nagree to our ",
+                                                    LocaleKeys.agreeText.tr(),
                                                 style: TextStyle(
                                                   fontSize: 12,
                                                   color: Colors.black26,
@@ -207,7 +216,7 @@ class _IndividualLoginScreenState extends State<IndividualLoginScreen> {
                                                 ),
                                                 children: <InlineSpan>[
                                                   TextSpan(
-                                                    text: 'Privacy Policy',
+                                                    text: LocaleKeys.privacyPolicy.tr(),
                                                     style: TextStyle(
                                                       fontSize: 12,
                                                       color: AppColors

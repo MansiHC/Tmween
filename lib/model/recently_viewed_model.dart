@@ -1,5 +1,5 @@
-class DealsOfTheDayModel {
-  const DealsOfTheDayModel(
+class RecentlyViewedModel {
+  const RecentlyViewedModel(
       {required this.title,
       required this.image,
       required this.offer,
@@ -15,8 +15,4 @@ class DealsOfTheDayModel {
   final bool fulfilled;
   final String price;
   final String? beforePrice;
-
-  static DealsOfTheDayModel? fromJson(responseJson) {
-    return null;
-  }
 }

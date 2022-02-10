@@ -4,8 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:tmween/provider/dashboard_provider.dart';
+import 'package:tmween/screens/drawer/dashboard/best_seller_container.dart';
 import 'package:tmween/screens/drawer/dashboard/deals_of_the_day_container.dart';
+import 'package:tmween/screens/drawer/dashboard/recently_viewed_container.dart';
 import 'package:tmween/screens/drawer/dashboard/select_category_container.dart';
+import 'package:tmween/screens/drawer/dashboard/sold_by_tmween_container.dart';
+import 'package:tmween/screens/drawer/dashboard/top_selection_container.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_text_form_field.dart';
@@ -46,8 +50,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       return null;
                     }))),
         Expanded(
-            child: ListView(
-          shrinkWrap: true,
+            child: SingleChildScrollView(
+                child: Column(
           children: [
             dashboardProvider.isLoading
                 ? Center(
@@ -55,7 +59,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     backgroundColor: AppColors.primaryColor,
                   ))
                 : _topBanner(dashboardProvider),
-            /*Padding(
+            Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 child: _shopByCategory(dashboardProvider)),
             20.heightBox,
@@ -65,9 +69,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: Image.network(
                   'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80',
                   fit: BoxFit.cover,
-                ))*/
+                )),
+            _bestSeller(dashboardProvider),
+            _soldByTmween(dashboardProvider),
+            SizedBox(
+                height: 200,
+                child: Image.network(
+                  'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
+                  fit: BoxFit.cover,
+                )),
+            _topSelection(dashboardProvider),
+            SizedBox(
+                height: 200,
+                child: Image.network(
+                  'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
+                  fit: BoxFit.cover,
+                )),
+            _recentlyViewed(dashboardProvider),
+            10.heightBox,
+            Text(
+              "That's all folks!",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.grey, fontSize: 14),
+            ),
+            10.heightBox
           ],
-        ))
+        )))
       ]);
     });
   }
@@ -176,7 +203,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   _dealsOfTheDay(DashboardProvider dashboardProvider) {
     return Container(
-        color: AppColors.blueBackground,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage(ImageConstanst.dealOfTheDayBg),
+                fit: BoxFit.fill)),
         padding: EdgeInsets.symmetric(horizontal: 15),
         child: Column(
           children: [
@@ -217,13 +247,238 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 mainAxisSpacing: 10,
                 crossAxisCount: 2,
                 shrinkWrap: true,
-                childAspectRatio: 0.678,
+                childAspectRatio: 0.66,
                 physics: ScrollPhysics(),
                 children:
                     List.generate(dashboardProvider.deals.length, (index) {
                   return DealsOfTheDayContainer(
                       deal: dashboardProvider.deals[index]);
                 })),
+            20.heightBox
+          ],
+        ));
+  }
+
+  _bestSeller(DashboardProvider dashboardProvider) {
+    return Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage(ImageConstanst.dealOfTheDayBg),
+                fit: BoxFit.fill)),
+        padding: EdgeInsets.only(left: 15),
+        child: Column(
+          children: [
+            10.heightBox,
+            Padding(
+                padding: EdgeInsets.only(right: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'TMWEEN BEST SELLER',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                    Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Text(
+                          'View all',
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white70),
+                        ),
+                        Icon(
+                          CupertinoIcons.chevron_forward,
+                          color: Colors.white70,
+                          size: 14,
+                        )
+                      ],
+                    )
+                  ],
+                )),
+            5.heightBox,
+            Container(
+                height: 244,
+                child: ListView.builder(
+                    itemCount: dashboardProvider.bestSellers.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return BestSellerContainer(
+                          bestSeller: dashboardProvider.bestSellers[index]);
+                    })),
+            20.heightBox
+          ],
+        ));
+  }
+
+  _soldByTmween(DashboardProvider dashboardProvider) {
+    return Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage(ImageConstanst.soldByTmweenBg),
+                fit: BoxFit.fill)),
+        padding: EdgeInsets.only(left: 15),
+        child: Column(
+          children: [
+            10.heightBox,
+            Padding(
+                padding: EdgeInsets.only(right: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'SOLD BY TMWEEN',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                    Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Text(
+                          'View all',
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white70),
+                        ),
+                        Icon(
+                          CupertinoIcons.chevron_forward,
+                          color: Colors.white70,
+                          size: 14,
+                        )
+                      ],
+                    )
+                  ],
+                )),
+            5.heightBox,
+            Container(
+                height: 244,
+                child: ListView.builder(
+                    itemCount: dashboardProvider.soldByTmweens.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return SoldByTmweenContainer(
+                          soldByTmween: dashboardProvider.soldByTmweens[index]);
+                    })),
+            20.heightBox
+          ],
+        ));
+  }
+
+  _topSelection(DashboardProvider dashboardProvider) {
+    return Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage(ImageConstanst.topSelectionBg),
+                fit: BoxFit.fill)),
+        padding: EdgeInsets.only(left: 15),
+        child: Column(
+          children: [
+            10.heightBox,
+            Padding(
+                padding: EdgeInsets.only(right: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'TOP SELECTION',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                    Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Text(
+                          'View all',
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87),
+                        ),
+                        Icon(
+                          CupertinoIcons.chevron_forward,
+                          color: Colors.black87,
+                          size: 14,
+                        )
+                      ],
+                    )
+                  ],
+                )),
+            5.heightBox,
+            Container(
+                height: 244,
+                child: ListView.builder(
+                    itemCount: dashboardProvider.topSelections.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return TopSelectionContainer(
+                          topSelection: dashboardProvider.topSelections[index]);
+                    })),
+            20.heightBox
+          ],
+        ));
+  }
+
+  _recentlyViewed(DashboardProvider dashboardProvider) {
+    return Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage(ImageConstanst.recentlyViewedBg),
+                fit: BoxFit.fill)),
+        padding: EdgeInsets.only(left: 15),
+        child: Column(
+          children: [
+            10.heightBox,
+            Padding(
+                padding: EdgeInsets.only(right: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'RECENTLY VIEWED',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                    Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Text(
+                          'View all',
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87),
+                        ),
+                        Icon(
+                          CupertinoIcons.chevron_forward,
+                          color: Colors.black87,
+                          size: 14,
+                        )
+                      ],
+                    )
+                  ],
+                )),
+            5.heightBox,
+            Container(
+                height: 244,
+                child: ListView.builder(
+                    itemCount: dashboardProvider.recentlVieweds.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return RecentlyViewedContainer(
+                          recentlyViewed:
+                              dashboardProvider.recentlVieweds[index]);
+                    })),
             20.heightBox
           ],
         ));

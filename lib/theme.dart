@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tmween/utils/global.dart';
 
 final darkTheme = ThemeData(
   primarySwatch: Colors.grey,
-  primaryColor: Colors.black,
+  primaryColor: AppColors.primaryColor,
   brightness: Brightness.dark,
   backgroundColor: const Color(0xFF212121),
   accentColor: Colors.yellow[700],
@@ -12,7 +13,7 @@ final darkTheme = ThemeData(
 
 final lightTheme = ThemeData(
   primarySwatch: Colors.grey,
-  primaryColor: Colors.white,
+  primaryColor: AppColors.primaryColor,
   brightness: Brightness.light,
   backgroundColor: const Color(0xFFE5E5E5),
   accentColor: Colors.black,

@@ -10,6 +10,8 @@ class WishlistScreen extends StatefulWidget {
 class _WishlistScreenState extends State<WishlistScreen> {
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('Wishlist'),);
+    return Center(
+      child: Text('Wishlist'),
+    );
   }
 }

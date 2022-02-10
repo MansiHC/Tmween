@@ -2,12 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:tmween/generated/locale_keys.g.dart';
 import 'package:tmween/provider/signup_provider.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
-import 'package:tmween/utils/helper.dart';
 import 'package:tmween/utils/views/custom_button.dart';
 import 'package:tmween/utils/views/custom_text_form_field.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class IndividualSignUpScreen extends StatefulWidget {
   @override
@@ -38,10 +39,10 @@ class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
                                   controller:
                                       signUpProvider.firstNameController,
                                   keyboardType: TextInputType.name,
-                                  hintText: "First Name",
+                                  hintText: LocaleKeys.firstName,
                                   validator: (value) {
                                     if (value!.isEmpty) {
-                                      return 'Please Enter First Name';
+                                      return LocaleKeys.emptyFirstName.tr();
                                     }
                                     return null;
                                   },
@@ -50,28 +51,28 @@ class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
                                     controller:
                                         signUpProvider.lastNameController,
                                     keyboardType: TextInputType.name,
-                                    hintText: "Last Name",
+                                    hintText: LocaleKeys.lastName,
                                     validator: (value) {
                                       if (value!.isEmpty) {
-                                        return 'Please Enter Last Name';
+                                        return LocaleKeys.emptyLastName.tr();
                                       }
                                       return null;
                                     }),
                                 CustomTextFormField(
                                     controller: signUpProvider.emailController,
                                     keyboardType: TextInputType.emailAddress,
-                                    hintText: "Your Email",
+                                    hintText: LocaleKeys.yourEmail,
                                     inputFormatters: [
                                       FilteringTextInputFormatter.deny(
                                           RegExp(r'[/\\]')),
                                     ],
                                     validator: (value) {
                                       if (value!.isEmpty) {
-                                        return 'Please Enter Your Email';
+                                        return LocaleKeys.emptyYourEmail.tr();
                                       } else if (!signUpProvider
                                           .emailController.value.text
                                           .validateEmail()) {
-                                        return 'Please Enter Valid Email';
+                                        return LocaleKeys.validYourEmail.tr();
                                       }
                                       return null;
                                     }),
@@ -88,24 +89,23 @@ class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
                                           color: Colors.grey,
                                         ),
                                         onPressed: () {
-                                          signUpProvider
-                                              .visiblePasswordIcon();
+                                          signUpProvider.visiblePasswordIcon();
                                         }),
-                                    hintText: "Your Passowrd",
+                                    hintText: LocaleKeys.yourPassword,
                                     validator: (value) {
                                       if (value!.isEmpty) {
-                                        return 'Please Enter Password';
+                                        return LocaleKeys.emptyPassword.tr();
                                       } else if (signUpProvider
                                               .passwordController
                                               .value
                                               .text
                                               .length <
                                           8) {
-                                        return 'Password Length must be 8';
-                                      }  else if (!signUpProvider
+                                        return LocaleKeys.validPasswordLength.tr();
+                                      } else if (!signUpProvider
                                           .passwordController.value.text
                                           .validatePassword()) {
-                                      return 'Password should Contain at least one UpperCase, one LowerCase, one Digit,one Special Character';
+                                        return LocaleKeys.validPassword.tr();
                                       }
                                       return null;
                                     }),
@@ -113,7 +113,8 @@ class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
                                     controller: signUpProvider
                                         .confirmPasswordController,
                                     keyboardType: TextInputType.visiblePassword,
-                                    obscureText: signUpProvider.visibleConfirmPassword,
+                                    obscureText:
+                                        signUpProvider.visibleConfirmPassword,
                                     suffixIcon: IconButton(
                                         icon: Icon(
                                           signUpProvider.visibleConfirmPassword
@@ -125,10 +126,10 @@ class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
                                           signUpProvider
                                               .visibleConfirmPasswordIcon();
                                         }),
-                                    hintText: "Confirm Password",
+                                    hintText: LocaleKeys.confirmPassword,
                                     validator: (value) {
                                       if (value!.isEmpty) {
-                                        return 'PLease Enter Confirm Password';
+                                        return LocaleKeys.emptyConfirmPassword.tr();
                                       } else if (signUpProvider
                                               .passwordController.value.text
                                               .trim()
@@ -138,14 +139,14 @@ class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
                                                   .text
                                                   .trim()) !=
                                           0) {
-                                        return "Password and Confirm Password doesn't match";
+                                        return LocaleKeys.passwordMatch.tr();
                                       }
                                       return null;
                                     }),
                                 CustomTextFormField(
                                     controller: signUpProvider.phoneController,
                                     keyboardType: TextInputType.phone,
-                                    hintText: "Phone",
+                                    hintText: LocaleKeys.phoneNumber,
                                     inputFormatters: [
                                       LengthLimitingTextInputFormatter(10),
                                       FilteringTextInputFormatter.digitsOnly
@@ -157,11 +158,11 @@ class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
                                     },
                                     validator: (value) {
                                       if (value!.isEmpty) {
-                                        return 'emptyMobileNumber';
+                                        return LocaleKeys.emptyPhoneNumber.tr();
                                       } else if (signUpProvider.phoneController
                                               .value.text.length <
                                           10) {
-                                        return 'validMobileNumber';
+                                        return LocaleKeys.validPhoneNumber.tr();
                                       }
                                       return null;
                                     }),
@@ -195,7 +196,7 @@ class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
                                                       }))),
                                           10.widthBox,
                                           Text(
-                                            "I agree to the terms of use",
+                                            LocaleKeys.agreeTerms.tr(),
                                             style: TextStyle(
                                                 fontSize: 14,
                                                 color: Colors.grey),
@@ -203,18 +204,24 @@ class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
                                         ])),
                                 15.heightBox,
                                 CustomButton(
-                                    text: "Create Account",
+                                    text: LocaleKeys.createAccount,
                                     onPressed: () {
                                       signUpProvider.signUp();
                                     }),
-                                Visibility(visible: signUpProvider.loading, child: 5.heightBox),
+                                Visibility(
+                                    visible: signUpProvider.loading,
+                                    child: 5.heightBox),
                                 Visibility(
                                   visible: signUpProvider.loading,
-                                  child: Align(alignment: Alignment.topCenter,child:CircularProgressIndicator(
-                                    backgroundColor: AppColors.primaryColor,
-                                  )),
+                                  child: Align(
+                                      alignment: Alignment.topCenter,
+                                      child: CircularProgressIndicator(
+                                        backgroundColor: AppColors.primaryColor,
+                                      )),
                                 ),
-                                Visibility(visible: signUpProvider.loading, child: 5.heightBox),
+                                Visibility(
+                                    visible: signUpProvider.loading,
+                                    child: 5.heightBox),
                                 10.heightBox,
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -229,7 +236,7 @@ class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
                                             ))),
                                     10.widthBox,
                                     Text(
-                                      'or',
+                                      LocaleKeys.or.tr(),
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: Colors.grey,
@@ -252,7 +259,7 @@ class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
                                       Navigator.of(context).pop();
                                     },
                                     child: Text(
-                                      "Have an account with us? Login Here",
+                                      LocaleKeys.haveAccount.tr(),
                                       style: TextStyle(
                                           fontSize: 14,
                                           color: AppColors.primaryColor,
@@ -266,7 +273,7 @@ class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
                                             textAlign: TextAlign.center,
                                             text: TextSpan(
                                                 text:
-                                                    "By clicking 'Create Account', you \nagree to our ",
+                                                    LocaleKeys.agreeText.tr(),
                                                 style: TextStyle(
                                                   fontSize: 12,
                                                   color: Colors.black26,
@@ -274,7 +281,7 @@ class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
                                                 ),
                                                 children: <InlineSpan>[
                                                   TextSpan(
-                                                    text: 'Privacy Policy',
+                                                    text: LocaleKeys.privacyPolicy.tr(),
                                                     style: TextStyle(
                                                       fontSize: 12,
                                                       color: AppColors

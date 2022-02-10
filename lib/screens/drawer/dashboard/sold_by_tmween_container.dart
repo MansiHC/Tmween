@@ -1,19 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:tmween/model/sold_by_tmween_model.dart';
 import 'package:tmween/utils/extensions.dart';
 
-import '../../../model/deals_of_the_day_model.dart';
 import '../../../utils/global.dart';
 
-class DealsOfTheDayContainer extends StatelessWidget {
-  const DealsOfTheDayContainer({Key? key, required this.deal})
+class SoldByTmweenContainer extends StatelessWidget {
+  const SoldByTmweenContainer({Key? key, required this.soldByTmween})
       : super(key: key);
-  final DealsOfTheDayModel deal;
+  final SoldByTmweenModel soldByTmween;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 165,
+      margin: EdgeInsets.only(right: 7),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(4))),
@@ -34,7 +36,7 @@ class DealsOfTheDayContainer extends StatelessWidget {
                       child: Wrap(
                         alignment: WrapAlignment.center,
                         children: [
-                          Text(deal.rating,
+                          Text(soldByTmween.rating,
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 10,
@@ -53,7 +55,7 @@ class DealsOfTheDayContainer extends StatelessWidget {
                           borderRadius: BorderRadius.all(Radius.circular(4))),
                       child: Column(
                         children: [
-                          Text('${deal.offer}%',
+                          Text('${soldByTmween.offer}%',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 10,
@@ -69,17 +71,18 @@ class DealsOfTheDayContainer extends StatelessWidget {
             child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),
                 child: Image.network(
-                  deal.image,
+                  soldByTmween.image,
                   fit: BoxFit.cover,
                 ))),
         5.heightBox,
         Padding(
             padding: EdgeInsets.only(left: 5, right: 15),
-            child: Text(deal.title,
+            child: Text(soldByTmween.title,
                 textAlign: TextAlign.start,
+                maxLines: 2,
                 style: TextStyle(color: Colors.black54, fontSize: 13))),
         5.heightBox,
-        if (deal.fulfilled)
+        if (soldByTmween.fulfilled)
           Padding(
               padding: EdgeInsets.only(left: 5, right: 15),
               child: Align(
@@ -112,7 +115,7 @@ class DealsOfTheDayContainer extends StatelessWidget {
                   bottomRight: Radius.circular(4))),
           child: Row(
             children: [
-              Text('SAR ${deal.price}',
+              Text('SAR ${soldByTmween.price}',
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       color: Colors.black54,
@@ -120,7 +123,7 @@ class DealsOfTheDayContainer extends StatelessWidget {
                       fontWeight: FontWeight.bold)),
               2.widthBox,
               Expanded(
-                  child: Text('SAR ${deal.beforePrice!}',
+                  child: Text('SAR ${soldByTmween.beforePrice!}',
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           decoration: TextDecoration.lineThrough,

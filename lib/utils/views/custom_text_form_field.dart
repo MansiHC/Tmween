@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:easy_localization/easy_localization.dart';
 import '../global.dart';
 
 class CustomTextFormField extends StatelessWidget {
@@ -31,7 +31,6 @@ class CustomTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-
       keyboardType: keyboardType,
       controller: controller,
       obscureText: obscureText ?? false,
@@ -52,7 +51,7 @@ class CustomTextFormField extends StatelessWidget {
           ),
           fillColor: Colors.grey,
           errorMaxLines: 2,
-          hintText: hintText,
+          hintText: hintText.tr(),
           hintStyle: TextStyle(
             color: Colors.grey,
             fontSize: 16,
