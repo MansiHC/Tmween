@@ -31,7 +31,6 @@ class CodegenLoader extends AssetLoader {
     "msg": "Hallo {} in der {} welt ",
     "msg_named": "{} ist in {lang} geschrieben",
     "clickMe": "Click mich",
-
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo",

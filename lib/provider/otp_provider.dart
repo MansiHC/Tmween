@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tmween/screens/authentication/login/login_screen.dart';
 import 'package:tmween/service/api.dart';
-import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/helper.dart';
 
 class OtpProvider extends ChangeNotifier {
@@ -23,16 +22,16 @@ class OtpProvider extends ChangeNotifier {
 
   verifyOTP(String name, String email, String phone, String password,
       String deviceType, String langCode, String agreeTerms) async {
-    loading = true;
-    notifyListeners();
-
     otp = num1Controller.text +
         num2Controller.text +
         num3Controller.text +
         num4Controller.text;
 
     navigateToLoginScreen();
-    /* await api.verifyOTP(context, 1, phone, otp).then((value) {
+    /*
+    loading = true;
+    notifyListeners();
+    await api.verifyOTP(context, 1, phone, otp).then((value) {
       loading = false;
       notifyListeners();
       Helper.showSnackBar(context, value.status_message!);
@@ -70,7 +69,7 @@ class OtpProvider extends ChangeNotifier {
   }
 
   resendOTP() async {
-    loading = true;
+    /* loading = true;
     notifyListeners();
 
     await api.resendOTP(context, "1", phone).then((value) {
@@ -82,7 +81,7 @@ class OtpProvider extends ChangeNotifier {
       loading = false;
       notifyListeners();
       print('error....$error');
-    });
+    });*/
   }
 
   void navigateToLoginScreen() {

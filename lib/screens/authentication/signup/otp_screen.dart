@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,7 +7,6 @@ import 'package:tmween/provider/otp_provider.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/otp_text_filed.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class OtpScreen extends StatefulWidget {
   final String phone;
@@ -180,7 +180,7 @@ class _OtpScreenState extends State<OtpScreen> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
-          'OTP will Expire in ',
+          LocaleKeys.otpExpire.tr(),
           style: TextStyle(fontSize: 16, color: Colors.black),
         ),
         /*TweenAnimationBuilder(
@@ -241,7 +241,7 @@ class _OtpScreenState extends State<OtpScreen> {
             Align(
               alignment: Alignment.center,
               child: Text(
-                'Phone Verification',
+                LocaleKeys.phoneVerification.tr(),
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),

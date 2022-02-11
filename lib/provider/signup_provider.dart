@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tmween/generated/locale_keys.g.dart';
 import 'package:tmween/screens/authentication/signup/otp_screen.dart';
 import 'package:tmween/service/api.dart';
 import 'package:tmween/utils/helper.dart';
@@ -76,7 +78,7 @@ class SignUpProvider extends ChangeNotifier {
         //doRequest();
         navigateToOtpScreen();
       } else {
-        Helper.showSnackBar(context, "Please Agree to the Terms of Use");
+        Helper.showSnackBar(context, LocaleKeys.emptyAgreeTerms.tr());
       }
     }
   }

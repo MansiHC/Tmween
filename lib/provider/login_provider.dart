@@ -5,7 +5,6 @@ import 'package:tmween/screens/authentication/signup/signup_screen.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 import 'package:tmween/service/api.dart';
 import 'package:tmween/utils/global.dart';
-import 'package:tmween/utils/helper.dart';
 import 'package:tmween/utils/my_shared_preferences.dart';
 
 class LoginProvider extends ChangeNotifier {
@@ -17,6 +16,7 @@ class LoginProvider extends ChangeNotifier {
 
   bool rememberMe = false;
   TextEditingController phoneController = TextEditingController();
+
 
   void getAndroidBuildData(AndroidDeviceInfo build) {
     uuid = build.androidId;
@@ -85,25 +85,27 @@ class LoginProvider extends ChangeNotifier {
   bool loading = false;
 
   doLogin() async {
-    loading = true;
+    rememberMe == true
+        ? MySharedPreferences.instance
+        .addBoolToSF(SharedPreferencesKeys.isLogin, true)
+        : MySharedPreferences.instance
+        .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+
+    navigateToDrawerScreen();
+    /*loading = true;
     notifyListeners();
-    await api
+   await api
         .login(context, 1, phoneController.text, uuid, deviceNo, deviceName,
             platform, model, version)
         .then((value) {
       if (value.message == AppConstants.success) {
-        rememberMe == true
-            ? MySharedPreferences.instance
-                .addBoolToSF(AppConstants.isLogin, true)
-            : MySharedPreferences.instance
-                .addBoolToSF(AppConstants.isLogin, false);
 
         loading = false;
         notifyListeners();
         MySharedPreferences.instance
-            .addIntToSF(AppConstants.loginLogId, value.data!.loginLogId);
+            .addIntToSF(SharedPreferencesKeys.loginLogId, value.data!.loginLogId);
         MySharedPreferences.instance
-            .addIntToSF(AppConstants.userId, value.data!.customerData!.id);
+            .addIntToSF(SharedPreferencesKeys.userId, value.data!.customerData!.id);
         navigateToDrawerScreen();
       } else {
         Helper.showSnackBar(context, value.message!);
@@ -112,7 +114,7 @@ class LoginProvider extends ChangeNotifier {
       loading = false;
       notifyListeners();
       print('error....$error');
-    });
+    });*/
   }
 
   void navigateToSignupScreen() {

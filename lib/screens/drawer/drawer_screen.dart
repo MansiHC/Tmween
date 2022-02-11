@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -5,8 +6,6 @@ import 'package:tmween/generated/locale_keys.g.dart';
 import 'package:tmween/provider/drawer_provider.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
-import 'package:tmween/utils/my_shared_preferences.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class DrawerScreen extends StatefulWidget {
   @override
@@ -16,22 +15,21 @@ class DrawerScreen extends StatefulWidget {
 }
 
 class _DrawerScreenState extends State<DrawerScreen> {
-
   late int userId;
   late int loginLogId;
 
   @override
   void initState() {
-    MySharedPreferences.instance
-        .getIntValuesSF(AppConstants.userId)
+    /*MySharedPreferences.instance
+        .getIntValuesSF(SharedPreferencesKeys.userId)
         .then((value) async {
       userId = value!;
       MySharedPreferences.instance
-          .getIntValuesSF(AppConstants.loginLogId)
+          .getIntValuesSF(SharedPreferencesKeys.loginLogId)
           .then((value) async {
         loginLogId = value! ;
       });
-    });
+    });*/
     super.initState();
   }
 
@@ -323,7 +321,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 TextButton(
                   style: TextButton.styleFrom(padding: EdgeInsets.zero),
                   child: Text(
-                   LocaleKeys.yes.tr(),
+                    LocaleKeys.yes.tr(),
                     style: TextStyle(fontSize: 16, color: Colors.black54),
                   ),
                   onPressed: () {

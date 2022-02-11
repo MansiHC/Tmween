@@ -23,12 +23,7 @@ abstract class AppConstants {
   static const entity_type_id_customer = "4";
   static const customer_token =
       "FbuaPNITXrR16tRwXBAJGexrgUKtXMsKMp52CfVxnBzn9L2CUMqEOIaYgbBbrf5LrdCg8wzbDLtn14MW";
-  static const isLogin = "isLogin";
-  static const isSplash = "isSplash";
   static const success = "Success";
-  static const userId = "userId";
-  static const loginLogId = "loginLogId";
-  static const language = "language";
 }
 
 abstract class UrlConstants {
@@ -66,13 +61,10 @@ abstract class ImageConstanst {
 abstract class SharedPreferencesKeys {
   static const String isDarkTheme = 'isDarkTheme';
   static const String homeCountryDetails = 'homeCountry';
-}
-
-abstract class LanguageConstant {
-  static String selectedLanguage = 'en';
-  static String sel_Language = 'English';
-  static const String arabian = "Arabian";
-  static const String english = "English";
+  static const isLogin = "isLogin";
+  static const isSplash = "isSplash";
+  static const userId = "userId";
+  static const loginLogId = "loginLogId";
 }
 
 /* Future setHomeCountry(HomeCountry country) async {

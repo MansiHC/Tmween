@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,8 @@ import 'package:tmween/provider/login_provider.dart';
 import 'package:tmween/screens/authentication/login/store_owner_login_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:tmween/utils/my_shared_preferences.dart';
+
 import 'individual_login_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -22,6 +24,8 @@ class _LoginScreenState extends State<LoginScreen>
     with TickerProviderStateMixin {
   late List<Tab> tabList;
   late TabController _tabController;
+  var isSplash;
+  var language;
 
   @override
   void initState() {
@@ -33,6 +37,12 @@ class _LoginScreenState extends State<LoginScreen>
       text: LocaleKeys.storeOwner.tr(),
     ));
     _tabController = new TabController(vsync: this, length: tabList.length);
+    MySharedPreferences.instance
+        .getBoolValuesSF(SharedPreferencesKeys.isSplash)
+        .then((value) async {
+      isSplash = value ?? false;
+    });
+
     super.initState();
   }
 
@@ -44,6 +54,7 @@ class _LoginScreenState extends State<LoginScreen>
 
   @override
   Widget build(BuildContext context) {
+    language = context.locale.toString().split('_')[0];
     return Consumer<LoginProvider>(builder: (context, loginProvider, _) {
       loginProvider.context = context;
       return DefaultTabController(
@@ -58,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen>
                   child: topView(loginProvider)),
               Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
+                  color: Colors.white,
                   border: Border(
                       bottom: BorderSide(
                           color: AppColors.primaryColor, width: 0.8)),
@@ -98,7 +109,9 @@ class _LoginScreenState extends State<LoginScreen>
               children: [
                 20.heightBox,
                 Align(
-                    alignment: Alignment.topLeft,
+                    alignment: language == 'ar'
+                        ? Alignment.topRight
+                        : Alignment.topLeft,
                     child: ClipOval(
                       child: Material(
                         color: Colors.white,
@@ -140,24 +153,30 @@ class _LoginScreenState extends State<LoginScreen>
                   ])),
                 ),
                 10.heightBox,
-                Align(
-                    alignment: Alignment.topCenter,
-                    child: Text.rich(TextSpan(
-                        text: LocaleKeys.loginOurWebsite.tr(),
-                        style: TextStyle(fontSize: 14, color: Colors.white70),
-                        children: <InlineSpan>[
-                          TextSpan(
-                              text: LocaleKeys.registerCapital.tr(),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Align(
+                      alignment: Alignment.topCenter,
+                      child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                              text: "${LocaleKeys.loginOurWebsite.tr()} ",
                               style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  loginProvider.navigateToSignupScreen();
-                                })
-                        ]))),
+                                  fontSize: 14, color: Colors.white70),
+                              children: <InlineSpan>[
+                                TextSpan(
+                                    text: LocaleKeys.registerCapital.tr(),
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        loginProvider.navigateToSignupScreen();
+                                      })
+                              ]))),
+                )
               ],
             )));
   }

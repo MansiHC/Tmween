@@ -8,8 +8,6 @@ import 'package:tmween/screens/drawer/dashboard/dashboard_screen.dart';
 import 'package:tmween/screens/drawer/search_screen.dart';
 import 'package:tmween/screens/drawer/wishlist_screen.dart';
 import 'package:tmween/service/api.dart';
-import 'package:tmween/utils/global.dart';
-import 'package:tmween/utils/helper.dart';
 
 class DrawerProvider extends ChangeNotifier {
   late BuildContext context;
@@ -42,27 +40,29 @@ class DrawerProvider extends ChangeNotifier {
   bool loading = false;
 
   void doLogout(int userId, int loginLogId) async {
-    loading = true;
-   // notifyListeners();
+    navigateToLoginScreen();
+    /*loading = true;
+    notifyListeners();
     await api
         .logout(context, 1, userId, loginLogId )
         .then((value) {
       if (value.message == AppConstants.success) {
         loading = false;
-       // notifyListeners();
+        notifyListeners();
         navigateToLoginScreen();
       } else {
         Helper.showSnackBar(context, value.message!);
       }
     }).catchError((error) {
       loading = false;
-    //  notifyListeners();
+      notifyListeners();
       print('error....$error');
-    });
+    });*/
   }
 
   void navigateToLoginScreen() {
-    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-        LoginScreen()), (Route<dynamic> route) => false);
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+        (Route<dynamic> route) => false);
   }
 }

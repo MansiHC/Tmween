@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,7 +11,6 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_button.dart';
 import 'package:tmween/utils/views/custom_text_form_field.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class IndividualLoginScreen extends StatefulWidget {
   @override
@@ -21,12 +21,12 @@ class IndividualLoginScreen extends StatefulWidget {
 
 class _IndividualLoginScreenState extends State<IndividualLoginScreen> {
   late LoginProvider loginProvider;
+  var language;
 
   @override
   void initState() {
     loginProvider = Provider.of<LoginProvider>(context, listen: false);
     initPlatformState();
-
     super.initState();
   }
 
@@ -50,6 +50,7 @@ class _IndividualLoginScreenState extends State<IndividualLoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    language = context.locale.toString().split('_')[0];
     return Consumer<LoginProvider>(builder: (context, loginProvider, _) {
       loginProvider.context = context;
       return LayoutBuilder(builder: (context, constraint) {
@@ -124,16 +125,20 @@ class _IndividualLoginScreenState extends State<IndividualLoginScreen> {
                                               Text(
                                                 LocaleKeys.keepMeSignedIn.tr(),
                                                 style: TextStyle(
-                                                    fontSize: 14,
+                                                    fontSize: 13,
                                                     color: Colors.grey),
                                               )
                                             ])),
-                                    Text(
-                                      LocaleKeys.forgotPassword.tr(),
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color: AppColors.primaryColor,
-                                          fontWeight: FontWeight.bold),
+                                    Expanded(
+                                      child: Text(
+                                          LocaleKeys.forgotPassword.tr(),
+                                          textAlign: language == 'ar'
+                                              ? TextAlign.left
+                                              : TextAlign.right,
+                                          style: TextStyle(
+                                              fontSize: 13,
+                                              color: AppColors.primaryColor,
+                                              fontWeight: FontWeight.bold)),
                                     )
                                   ],
                                 ),
@@ -208,7 +213,7 @@ class _IndividualLoginScreenState extends State<IndividualLoginScreen> {
                                             textAlign: TextAlign.center,
                                             text: TextSpan(
                                                 text:
-                                                    LocaleKeys.agreeText.tr(),
+                                                    "${LocaleKeys.agreeText.tr()} ",
                                                 style: TextStyle(
                                                   fontSize: 12,
                                                   color: Colors.black26,
@@ -216,7 +221,9 @@ class _IndividualLoginScreenState extends State<IndividualLoginScreen> {
                                                 ),
                                                 children: <InlineSpan>[
                                                   TextSpan(
-                                                    text: LocaleKeys.privacyPolicy.tr(),
+                                                    text: LocaleKeys
+                                                        .privacyPolicy
+                                                        .tr(),
                                                     style: TextStyle(
                                                       fontSize: 12,
                                                       color: AppColors

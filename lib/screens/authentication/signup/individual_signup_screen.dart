@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,7 +9,6 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_button.dart';
 import 'package:tmween/utils/views/custom_text_form_field.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class IndividualSignUpScreen extends StatefulWidget {
   @override
@@ -101,7 +101,8 @@ class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
                                               .text
                                               .length <
                                           8) {
-                                        return LocaleKeys.validPasswordLength.tr();
+                                        return LocaleKeys.validPasswordLength
+                                            .tr();
                                       } else if (!signUpProvider
                                           .passwordController.value.text
                                           .validatePassword()) {
@@ -129,7 +130,8 @@ class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
                                     hintText: LocaleKeys.confirmPassword,
                                     validator: (value) {
                                       if (value!.isEmpty) {
-                                        return LocaleKeys.emptyConfirmPassword.tr();
+                                        return LocaleKeys.emptyConfirmPassword
+                                            .tr();
                                       } else if (signUpProvider
                                               .passwordController.value.text
                                               .trim()
@@ -273,7 +275,7 @@ class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
                                             textAlign: TextAlign.center,
                                             text: TextSpan(
                                                 text:
-                                                    LocaleKeys.agreeText.tr(),
+                                                    "${LocaleKeys.agreeText.tr()} ",
                                                 style: TextStyle(
                                                   fontSize: 12,
                                                   color: Colors.black26,
@@ -281,7 +283,9 @@ class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
                                                 ),
                                                 children: <InlineSpan>[
                                                   TextSpan(
-                                                    text: LocaleKeys.privacyPolicy.tr(),
+                                                    text: LocaleKeys
+                                                        .privacyPolicy
+                                                        .tr(),
                                                     style: TextStyle(
                                                       fontSize: 12,
                                                       color: AppColors

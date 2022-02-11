@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,7 +9,6 @@ import 'package:tmween/screens/authentication/signup/individual_signup_screen.da
 import 'package:tmween/screens/authentication/signup/store_owner_signup_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -21,6 +21,7 @@ class _SignUpScreenState extends State<SignUpScreen>
     with TickerProviderStateMixin {
   late List<Tab> tabList;
   late TabController _tabController;
+  var language;
 
   @override
   void initState() {
@@ -32,6 +33,7 @@ class _SignUpScreenState extends State<SignUpScreen>
       text: LocaleKeys.storeOwner.tr(),
     ));
     _tabController = new TabController(vsync: this, length: tabList.length);
+
     super.initState();
   }
 
@@ -43,6 +45,7 @@ class _SignUpScreenState extends State<SignUpScreen>
 
   @override
   Widget build(BuildContext context) {
+    language = context.locale.toString().split('_')[0];
     return Consumer<SignUpProvider>(builder: (context, signUpProvider, _) {
       signUpProvider.context = context;
       return DefaultTabController(
@@ -53,11 +56,13 @@ class _SignUpScreenState extends State<SignUpScreen>
               ConstrainedBox(
                   constraints: BoxConstraints(
                       minWidth: double.infinity,
-                      maxHeight: MediaQuery.of(context).size.height / 3.5),
+                      maxHeight: language == 'ar'
+                          ? (MediaQuery.of(context).size.height / 3)
+                          : (MediaQuery.of(context).size.height / 3.5)),
                   child: topView(signUpProvider)),
               Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
+                  color: Colors.white,
                   border: Border(
                       bottom: BorderSide(
                           color: AppColors.primaryColor, width: 0.8)),
@@ -143,36 +148,43 @@ class _SignUpScreenState extends State<SignUpScreen>
                         ))),
                 Align(
                   alignment: Alignment.topCenter,
-                  child: Text.rich(TextSpan(text: ' ', children: <InlineSpan>[
-                    TextSpan(
-                      text: '${LocaleKeys.signUp} '.tr(),
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                    TextSpan(
-                      text: LocaleKeys.yourAccount.tr(),
-                      style: TextStyle(fontSize: 20, color: Colors.white70),
-                    )
-                  ])),
+                  child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(text: ' ', children: <InlineSpan>[
+                        TextSpan(
+                          text: '${LocaleKeys.signUp} '.tr(),
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                        TextSpan(
+                          text: LocaleKeys.yourAccount.tr(),
+                          style: TextStyle(fontSize: 20, color: Colors.white70),
+                        )
+                      ])),
                 ),
                 10.heightBox,
-                Align(
-                    alignment: Alignment.topCenter,
-                    child: Text.rich(TextSpan(
-                        text: LocaleKeys.loginOurWebsite.tr(),
-                        style: TextStyle(fontSize: 14, color: Colors.white70),
-                        children: <InlineSpan>[
-                          TextSpan(
-                            text: LocaleKeys.registerCapital.tr(),
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )
-                        ]))),
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Align(
+                        alignment: Alignment.topCenter,
+                        child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                                text: "${LocaleKeys.loginOurWebsite.tr()} ",
+                                style: TextStyle(
+                                    fontSize: 14, color: Colors.white70),
+                                children: <InlineSpan>[
+                                  TextSpan(
+                                    text: LocaleKeys.registerCapital.tr(),
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
+                                ])))),
               ],
             )));
   }

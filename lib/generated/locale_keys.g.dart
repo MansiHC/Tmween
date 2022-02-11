@@ -48,4 +48,21 @@ abstract class LocaleKeys {
   static const yes = 'yes';
   static const no = 'no';
   static const wantLogout = 'wantLogout';
+  static const fulfilledBy = 'fulfilledBy';
+  static const sar = 'sar';
+  static const add = 'add';
+  static const searchProducts = 'searchProducts';
+  static const thatAll = 'thatAll';
+  static const shopByCategory = 'shopByCategory';
+  static const viewAll = 'viewAll';
+  static const dealOfDay = 'dealOfDay';
+  static const tmweenBestSeller = 'tmweenBestSeller';
+  static const soldByTmween = 'soldByTmween';
+  static const topSelection = 'topSelection';
+  static const recentlyViewed = 'recentlyViewed';
+  static const off = 'off';
+  static const noInternet = 'noInternet';
+  static const emptyAgreeTerms = 'emptyAgreeTerms';
+  static const phoneVerification = 'phoneVerification';
+  static const otpExpire = 'otpExpire';
 }

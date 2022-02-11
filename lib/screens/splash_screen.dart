@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -22,11 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    MySharedPreferences.instance
-        .getStringValuesSF(AppConstants.language)
-        .then((value) async {
-      language = value ?? "en-US";
-    });
+    language = context.locale.toString().split('_')[0];
     return Scaffold(
         body: Container(
       decoration: BoxDecoration(
@@ -51,9 +48,10 @@ class _SplashScreenState extends State<SplashScreen> {
                 style: TextStyle(fontSize: 22, color: Colors.white),
               ).tr()),*/
           Padding(
-              padding: EdgeInsets.only(top: 30, right: 15),
+              padding: EdgeInsets.only(top: 30, right: 15, left: 15),
               child: Align(
-                  alignment: Alignment.topRight,
+                  alignment:
+                      language == 'ar' ? Alignment.topLeft : Alignment.topRight,
                   child: TextButton(
                       onPressed: () {
                         Navigator.push(
@@ -71,7 +69,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
                           Text(
-                            language!=null?language:'en-US',
+                            language != null ? language : 'en',
                             style: TextStyle(color: Colors.white, fontSize: 16),
                           ),
                           5.widthBox,
@@ -90,7 +88,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     text: LocaleKeys.getStarted,
                     onPressed: () {
                       MySharedPreferences.instance
-                          .addBoolToSF(AppConstants.isSplash, true);
+                          .addBoolToSF(SharedPreferencesKeys.isSplash, true);
                       Navigator.push(
                           context,
                           MaterialPageRoute(

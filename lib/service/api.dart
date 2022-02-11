@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:http/http.dart' as http;
+import 'package:tmween/generated/locale_keys.g.dart';
 import 'package:tmween/model/banner_model.dart';
 import 'package:tmween/model/deals_of_the_day_model.dart';
 import 'package:tmween/model/login_model.dart';
@@ -46,7 +48,7 @@ class Api {
       print('never reached ${e.toString()}');
     }*/
     on SocketException {
-      Helper.showSnackBar(context, 'No Internet connection');
+      Helper.showSnackBar(context, LocaleKeys.noInternet.tr());
     }
     return result;
   }
@@ -79,7 +81,7 @@ class Api {
       print('never reached ${e.toString()}');
     }*/
     on SocketException {
-      Helper.showSnackBar(context, 'No Internet connection');
+      Helper.showSnackBar(context, LocaleKeys.noInternet.tr());
     }
     return result;
   }
@@ -114,7 +116,7 @@ class Api {
     return result;
   }
 
-Future<SuccessModel> logout(context, deviceType, userId,loginLogId) async {
+  Future<SuccessModel> logout(context, deviceType, userId, loginLogId) async {
     late SuccessModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.logout),
@@ -132,7 +134,7 @@ Future<SuccessModel> logout(context, deviceType, userId,loginLogId) async {
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showSnackBar(context, 'No Internet connection');
+      Helper.showSnackBar(context, LocaleKeys.noInternet.tr());
     }
     return result;
   }
@@ -155,7 +157,7 @@ Future<SuccessModel> logout(context, deviceType, userId,loginLogId) async {
       var responseJson = _returnResponse(response);
       result = VerifyOtpModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showSnackBar(context, 'No Internet connection');
+      Helper.showSnackBar(context, LocaleKeys.noInternet.tr());
     }
     return result;
   }
@@ -176,7 +178,7 @@ Future<SuccessModel> logout(context, deviceType, userId,loginLogId) async {
       var responseJson = _returnResponse(response);
       result = VerifyOtpModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showSnackBar(context, 'No Internet connection');
+      Helper.showSnackBar(context, LocaleKeys.noInternet.tr());
     }
     return result;
   }
@@ -198,7 +200,7 @@ Future<SuccessModel> logout(context, deviceType, userId,loginLogId) async {
       var responseJson = _returnResponse(response);
       result = DealsOfTheDayModel.fromJson(responseJson)!;
     } on SocketException {
-      Helper.showSnackBar(context, 'No Internet connection');
+      Helper.showSnackBar(context, LocaleKeys.noInternet.tr());
     }
     return result;
   }
@@ -220,7 +222,7 @@ Future<SuccessModel> logout(context, deviceType, userId,loginLogId) async {
       var responseJson = _returnResponse(response);
       result = SoldByTmweenModel.fromJson(responseJson)!;
     } on SocketException {
-      Helper.showSnackBar(context, 'No Internet connection');
+      Helper.showSnackBar(context, LocaleKeys.noInternet.tr());
     }
     return result;
   }
@@ -243,7 +245,7 @@ Future<SuccessModel> logout(context, deviceType, userId,loginLogId) async {
       var responseJson = _returnResponse(response);
       result = TopSelectionModel.fromJson(responseJson)!;
     } on SocketException {
-      Helper.showSnackBar(context, 'No Internet connection');
+      Helper.showSnackBar(context, LocaleKeys.noInternet.tr());
     }
     return result;
   }
@@ -266,7 +268,7 @@ Future<SuccessModel> logout(context, deviceType, userId,loginLogId) async {
       var responseJson = _returnResponse(response);
       result = BannerModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showSnackBar(context, 'No Internet connection');
+      Helper.showSnackBar(context, LocaleKeys.noInternet.tr());
     }
     return result;
   }

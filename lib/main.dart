@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tmween/generated/locale_keys.g.dart';
 import 'package:tmween/provider/dashboard_provider.dart';
 import 'package:tmween/provider/drawer_provider.dart';
 import 'package:tmween/provider/login_provider.dart';
@@ -32,11 +33,11 @@ void main() async {
   }
 */
   MySharedPreferences.instance
-      .getBoolValuesSF(AppConstants.isSplash)
+      .getBoolValuesSF(SharedPreferencesKeys.isSplash)
       .then((value) async {
     isSplash = value ?? false;
     MySharedPreferences.instance
-        .getBoolValuesSF(AppConstants.isLogin)
+        .getBoolValuesSF(SharedPreferencesKeys.isLogin)
         .then((value) async {
       isLogin = value ?? false;
     });
@@ -87,13 +88,13 @@ class MyApp extends StatelessWidget {
         supportedLocales: context.supportedLocales,
         locale: context.locale,
         debugShowCheckedModeBanner: false,
-        title: 'Tmween',
+        title: LocaleKeys.appTitle.tr(),
         theme: themeNotifier.getTheme(),
-        home: SplashScreen()/*!isSplash
+        home: !isSplash
             ? SplashScreen()
             : isLogin
                 ? DrawerScreen()
-                : LoginScreen()*/,
+                : LoginScreen(),
       ),
     );
   }
