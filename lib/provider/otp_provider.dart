@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tmween/screens/authentication/login/login_screen.dart';
+import 'package:tmween/screens/drawer/drawer_screen.dart';
 import 'package:tmween/service/api.dart';
 import 'package:tmween/utils/helper.dart';
 
@@ -27,7 +28,7 @@ class OtpProvider extends ChangeNotifier {
         num3Controller.text +
         num4Controller.text;
 
-    navigateToLoginScreen();
+    navigateToDrawerScreen();
     /*
     loading = true;
     notifyListeners();
@@ -45,6 +46,15 @@ class OtpProvider extends ChangeNotifier {
     });*/
   }
 
+  verifyLoginOTP(){
+    otp = num1Controller.text +
+        num2Controller.text +
+        num3Controller.text +
+        num4Controller.text;
+
+    navigateToDrawerScreen();
+  }
+
   doRegister(String name, String email, String phone, String password,
       String deviceType, String langCode, String agreeTerms) async {
     loading = true;
@@ -60,7 +70,7 @@ class OtpProvider extends ChangeNotifier {
       /* if(value.message==AppConstants.success) {
         navigateToOtpScreen();
       }*/
-      navigateToLoginScreen();
+      navigateToDrawerScreen();
     }).catchError((error) {
       loading = false;
       notifyListeners();
@@ -84,9 +94,9 @@ class OtpProvider extends ChangeNotifier {
     });*/
   }
 
-  void navigateToLoginScreen() {
+  void navigateToDrawerScreen() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+        context, MaterialPageRoute(builder: (context) => DrawerScreen()));
   }
 
   void exitScreen() {

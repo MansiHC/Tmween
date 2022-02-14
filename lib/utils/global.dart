@@ -56,6 +56,16 @@ abstract class ImageConstanst {
   static const String recentlyViewedBg = 'asset/image/recently_viewed_bg.jpg';
   static const String soldByTmweenBg = 'asset/image/sold_by_tmween_bg.jpg';
   static const String topSelectionBg = 'asset/image/top_selection_bg.jpg';
+  static const String deliveryOnTmweenIcon = 'asset/image/delivery_on_tmween_icon.svg';
+  static const String sellingOnTmweenIcon = 'asset/image/selling_on_tmween_icon.svg';
+  static const String soldByTmweenIcon = 'asset/image/sold_by_tmween_icon.svg';
+  static const String dealsOfTheDayIcon = 'asset/image/deals_of_the_day_icon.svg';
+  static const String shopByCategoryIcon = 'asset/image/shop_by_category_icon.svg';
+  static const String customerServiceIcon = 'asset/image/customer_service_icon.svg';
+  static const String indiaFlagIcon = 'asset/image/india_flag_icon.svg';
+  static const String sudanFlagIcon = 'asset/image/sudan_flag_icon.svg';
+  static const String usFlagIcon = 'asset/image/us_flag_icon.svg';
+  static const String spainFlagIcon = 'asset/image/spain_flag_icon.svg';
 }
 
 abstract class SharedPreferencesKeys {

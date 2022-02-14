@@ -5,16 +5,23 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:tmween/generated/locale_keys.g.dart';
 import 'package:tmween/provider/dashboard_provider.dart';
+import 'package:tmween/screens/drawer/categories_screen.dart';
 import 'package:tmween/screens/drawer/dashboard/best_seller_container.dart';
 import 'package:tmween/screens/drawer/dashboard/deals_of_the_day_container.dart';
 import 'package:tmween/screens/drawer/dashboard/recently_viewed_container.dart';
 import 'package:tmween/screens/drawer/dashboard/select_category_container.dart';
 import 'package:tmween/screens/drawer/dashboard/sold_by_tmween_container.dart';
 import 'package:tmween/screens/drawer/dashboard/top_selection_container.dart';
+import 'package:tmween/screens/drawer/deal_of_the_day_screen.dart';
+import 'package:tmween/screens/drawer/sold_by_tmween_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_text_form_field.dart';
 import 'package:easy_localization/easy_localization.dart';
+
+import '../best_seller_screen.dart';
+import '../recently_viewed_screen.dart';
+import '../top_selection_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -30,77 +37,54 @@ class _DashboardScreenState extends State<DashboardScreen> {
         builder: (context, dashboardProvider, _) {
       dashboardProvider.context = context;
 
-      return Column(children: [
-        Container(
-            color: AppColors.appBarColor,
-            child: Container(
-                color: Colors.white,
-                margin: EdgeInsets.only(bottom: 10, left: 20, right: 20),
-                child: CustomTextFormField(
-                    controller: dashboardProvider.searchController,
-                    keyboardType: TextInputType.text,
-                    hintText: LocaleKeys.searchProducts.tr(),
-                    textInputAction: TextInputAction.search,
-                    onSubmitted: (term) {
-                      FocusScope.of(context).unfocus();
-                    },
-                    prefixIcon: Icon(
-                      Icons.search,
-                      color: AppColors.primaryColor,
-                    ),
-                    validator: (value) {
-                      return null;
-                    }))),
-        Expanded(
-            child: SingleChildScrollView(
-                child: Column(
-          children: [
-            dashboardProvider.isLoading
-                ? Center(
-                    child: CircularProgressIndicator(
-                    backgroundColor: AppColors.primaryColor,
-                  ))
-                : _topBanner(dashboardProvider),
-            Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                child: _shopByCategory(dashboardProvider)),
-            20.heightBox,
-            _dealsOfTheDay(dashboardProvider),
-            SizedBox(
-                height: 200,
-                width: MediaQuery.of(context).size.width,
-                child: Image.network(
-                  'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80',
-                  fit: BoxFit.fill,
-                )),
-            _bestSeller(dashboardProvider),
-            _soldByTmween(dashboardProvider),
-            SizedBox(
-                height: 200,
-                width: MediaQuery.of(context).size.width,
-                child: Image.network(
-                  'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
-                  fit: BoxFit.fill,
-                )),
-            _topSelection(dashboardProvider),
-            SizedBox(
-                height: 200,
-                width: MediaQuery.of(context).size.width,
-                child: Image.network(
-                  'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
-                  fit: BoxFit.fill,
-                )),
-            _recentlyViewed(dashboardProvider),
-            10.heightBox,
-            Text(
-              LocaleKeys.thatAll.tr(),
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey, fontSize: 14),
-            ),
-            10.heightBox
-          ],
-        )))
-      ]);
+      return SingleChildScrollView(
+          child: Column(
+        children: [
+          dashboardProvider.isLoading
+              ? Center(
+                  child: CircularProgressIndicator(
+                  backgroundColor: AppColors.primaryColor,
+                ))
+              : _topBanner(dashboardProvider),
+          Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: _shopByCategory(dashboardProvider)),
+          20.heightBox,
+          _dealsOfTheDay(dashboardProvider),
+          SizedBox(
+              height: 200,
+              width: MediaQuery.of(context).size.width,
+              child: Image.network(
+                'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80',
+                fit: BoxFit.fill,
+              )),
+          _bestSeller(dashboardProvider),
+          _soldByTmween(dashboardProvider),
+          SizedBox(
+              height: 200,
+              width: MediaQuery.of(context).size.width,
+              child: Image.network(
+                'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
+                fit: BoxFit.fill,
+              )),
+          _topSelection(dashboardProvider),
+          SizedBox(
+              height: 200,
+              width: MediaQuery.of(context).size.width,
+              child: Image.network(
+                'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
+                fit: BoxFit.fill,
+              )),
+          _recentlyViewed(dashboardProvider),
+          10.heightBox,
+          Text(
+            LocaleKeys.thatAll.tr(),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.grey, fontSize: 14),
+          ),
+          10.heightBox
+        ],
+      ));
     });
   }
 
@@ -163,23 +147,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   fontWeight: FontWeight.bold,
                   color: Colors.black),
             ),
-            Wrap(
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                Text(
-                  LocaleKeys.viewAll.tr(),
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87),
-                ),
-                Icon(
-                  CupertinoIcons.chevron_forward,
-                  color: Colors.black87,
-                  size: 14,
-                )
-              ],
-            )
+            InkWell(
+                onTap: () {
+                  dashboardProvider.navigateTo(CategoriesScreen(fromDrawer: true,));
+                },
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    Text(
+                      LocaleKeys.viewAll.tr(),
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87),
+                    ),
+                    Icon(
+                      CupertinoIcons.chevron_forward,
+                      color: Colors.black87,
+                      size: 14,
+                    )
+                  ],
+                ))
           ],
         ),
         5.heightBox,
@@ -226,7 +214,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       fontWeight: FontWeight.bold,
                       color: Colors.white),
                 ),
-                Wrap(
+    InkWell(
+    onTap: () {
+    dashboardProvider.navigateTo(DealsOfTheDayScreen());
+    },
+    child:  Wrap(
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     Text(
@@ -242,7 +234,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       size: 14,
                     )
                   ],
-                )
+                ))
               ],
             ),
             5.heightBox,
@@ -286,7 +278,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
                     ),
-                    Wrap(
+            InkWell(
+              onTap: () {
+                dashboardProvider.navigateTo(BestSellerScreen());
+              },
+              child:  Wrap(
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         Text(
@@ -302,7 +298,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           size: 14,
                         )
                       ],
-                    )
+                    ))
                   ],
                 )),
             5.heightBox,
@@ -342,7 +338,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
                     ),
-                    Wrap(
+            InkWell(
+              onTap: () {
+                dashboardProvider.navigateTo(SoldByTmweenScreen());
+              },
+              child:    Wrap(
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         Text(
@@ -358,7 +358,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           size: 14,
                         )
                       ],
-                    )
+                    ))
                   ],
                 )),
             5.heightBox,
@@ -398,7 +398,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
                     ),
-                    Wrap(
+            InkWell(
+              onTap: () {
+                dashboardProvider.navigateTo(TopSelectionScreen());
+              },
+              child:  Wrap(
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         Text(
@@ -414,7 +418,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           size: 14,
                         )
                       ],
-                    )
+                    ))
                   ],
                 )),
             5.heightBox,
@@ -454,7 +458,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
                     ),
-                    Wrap(
+            InkWell(
+              onTap: () {
+                dashboardProvider.navigateTo(RecentlyViewedScreen());
+              },
+              child:  Wrap(
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         Text(
@@ -470,7 +478,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           size: 14,
                         )
                       ],
-                    )
+                    ))
                   ],
                 )),
             5.heightBox,

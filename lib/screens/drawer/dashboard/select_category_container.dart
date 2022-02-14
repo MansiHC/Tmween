@@ -8,9 +8,10 @@ import '../../../model/select_category_model.dart';
 import '../../../utils/global.dart';
 
 class SelectCategoryContainer extends StatelessWidget {
-  const SelectCategoryContainer({Key? key, required this.category})
+   SelectCategoryContainer({Key? key, required this.category,this.offerVisible=true})
       : super(key: key);
   final SelectCategoryModel category;
+  final bool offerVisible;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class SelectCategoryContainer extends StatelessWidget {
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Align(
+           Visibility(visible:offerVisible,child:  Align(
                 alignment: Alignment.topRight,
                 child: Container(
                     padding: EdgeInsets.all(3),
@@ -38,7 +39,7 @@ class SelectCategoryContainer extends StatelessWidget {
                             style:
                                 TextStyle(color: Colors.white, fontSize: 10)),
                       ],
-                    ))),
+                    )))),
             5.heightBox,
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),

@@ -4,11 +4,14 @@ abstract class LocaleKeys {
   static const appTitle = 'appTitle';
   static const getStarted = 'getStarted';
   static const phoneNumber = 'phoneNumber';
+  static const phoneNumberEmail = 'phoneNumberEmail';
+  static const emptyPhoneNumberEmail = 'emptyPhoneNumberEmail';
   static const emptyPhoneNumber = 'emptyPhoneNumber';
   static const validPhoneNumber = 'validPhoneNumber';
   static const keepMeSignedIn = 'keepMeSignedIn';
   static const forgotPassword = 'forgotPassword';
   static const login = 'login';
+  static const loginWithOTP = 'loginWithOTP';
   static const or = 'or';
   static const createYourTmweenAccount = 'createYourTmweenAccount';
   static const agreeText = 'agreeText';
@@ -34,6 +37,10 @@ abstract class LocaleKeys {
   static const createAccount = 'createAccount';
   static const haveAccount = 'haveAccount';
   static const enterOTP = 'enterOTP';
+  static const change = 'change';
+  static const edit = 'edit';
+  static const sentOTP = 'sentOTP';
+  static const loginWithPassword = 'loginWithPassword';
   static const notReceivedOtp = 'notReceivedOtp';
   static const resendCode = 'resendCode';
   static const individual = 'individual';
@@ -58,6 +65,15 @@ abstract class LocaleKeys {
   static const dealOfDay = 'dealOfDay';
   static const tmweenBestSeller = 'tmweenBestSeller';
   static const soldByTmween = 'soldByTmween';
+  static const soldByTmweenSmall = 'soldByTmweenSmall';
+  static const shopByCategorySmall = 'shopByCategorySmall';
+  static const dealOfDaySmall = 'dealOfDaySmall';
+  static const tmweenBestSellerSmall = 'tmweenBestSellerSmall';
+  static const topSelectionSmall = 'topSelectionSmall';
+  static const recentlyViewedSmall = 'recentlyViewedSmall';
+  static const sellingOnTmween = 'sellingOnTmween';
+  static const deliveryOnTmween = 'deliveryOnTmween';
+  static const customerService = 'customerService';
   static const topSelection = 'topSelection';
   static const recentlyViewed = 'recentlyViewed';
   static const off = 'off';
@@ -65,4 +81,5 @@ abstract class LocaleKeys {
   static const emptyAgreeTerms = 'emptyAgreeTerms';
   static const phoneVerification = 'phoneVerification';
   static const otpExpire = 'otpExpire';
+  static const logout = 'logout';
 }

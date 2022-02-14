@@ -8,40 +8,28 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/otp_text_filed.dart';
 
-class OtpScreen extends StatefulWidget {
-  final String phone;
-  final String? name;
-  final String? email;
-  final String? password;
-  final String? agreeTerms;
-  final String? langCode;
-  final String? deviceType;
+import '../../../utils/views/custom_button.dart';
 
-  OtpScreen(
-      {Key? key,
-      this.name,
-      this.email,
-      this.password,
-      this.agreeTerms,
-      this.langCode,
-      this.deviceType,
-      required this.phone})
-      : super(key: key);
+class LoginOtpScreen extends StatefulWidget {
+  final String phoneEmail;
+
+  LoginOtpScreen({Key? key, required this.phoneEmail}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _OtpScreenState();
+    return _LoginOtpScreenState();
   }
 }
 
-class _OtpScreenState extends State<OtpScreen> {
+class _LoginOtpScreenState extends State<LoginOtpScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<OtpProvider>(builder: (context, otpProvider, _) {
       otpProvider.context = context;
-      otpProvider.phone = widget.phone;
+      otpProvider.phone = widget.phoneEmail;
       return Scaffold(
-          body: Column(
+          body: SingleChildScrollView(
+              child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
@@ -55,7 +43,7 @@ class _OtpScreenState extends State<OtpScreen> {
             child: bottomView(otpProvider),
           )
         ],
-      ));
+      )));
     });
   }
 
@@ -66,7 +54,7 @@ class _OtpScreenState extends State<OtpScreen> {
         Row(
           children: [
             Text(
-              '${LocaleKeys.sentOTP.tr()} ${widget.phone}',
+              '${LocaleKeys.sentOTP.tr()} ${widget.phoneEmail}',
               style: TextStyle(fontSize: 16, color: Colors.black),
             ),
             5.widthBox,
@@ -156,14 +144,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 onChanged: (value) {
                   if (value.length == 1) {
                     FocusScope.of(context).nextFocus();
-                    otpProvider.verifyOTP(
-                        widget.name!,
-                        widget.email!,
-                        widget.phone,
-                        widget.password!,
-                        widget.deviceType!,
-                        widget.langCode!,
-                        widget.agreeTerms!);
+                    otpProvider.verifyLoginOTP();
                   }
                   if (value.length == 0) {
                     FocusScope.of(context).previousFocus();
@@ -199,6 +180,43 @@ class _OtpScreenState extends State<OtpScreen> {
               LocaleKeys.resendCode.tr(),
               style: TextStyle(fontSize: 16, color: AppColors.primaryColor),
             )),
+        10.heightBox,
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            30.widthBox,
+            Expanded(
+                child: Padding(
+                    padding: EdgeInsets.only(top: 5),
+                    child: Divider(
+                      thickness: 1,
+                      color: Colors.black12,
+                    ))),
+            10.widthBox,
+            Text(
+              LocaleKeys.or.tr(),
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey,
+              ),
+            ),
+            10.widthBox,
+            Expanded(
+                child: Padding(
+                    padding: EdgeInsets.only(top: 5),
+                    child: Divider(
+                      thickness: 1,
+                      color: Colors.black12,
+                    ))),
+            30.widthBox
+          ],
+        ),
+        10.heightBox,
+        CustomButton(
+            text: LocaleKeys.loginWithPassword,
+            onPressed: () {
+              otpProvider.exitScreen();
+            })
       ],
     );
   }

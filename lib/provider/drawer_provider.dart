@@ -9,9 +9,13 @@ import 'package:tmween/screens/drawer/search_screen.dart';
 import 'package:tmween/screens/drawer/wishlist_screen.dart';
 import 'package:tmween/service/api.dart';
 
+import '../screens/lang_view.dart';
+
 class DrawerProvider extends ChangeNotifier {
   late BuildContext context;
+  TextEditingController searchController = TextEditingController();
   int pageIndex = 0;
+  String pageTitle='Home';
 
   final pages = [
     DashboardScreen(),
@@ -24,6 +28,28 @@ class DrawerProvider extends ChangeNotifier {
   void changePage(int pageNo) {
     pageIndex = pageNo;
     notifyListeners();
+  }
+
+  void navigateTo(Widget route){
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => route));
+  }
+
+  void openLanguageDialog(){
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (_) => LanguageView(),
+          fullscreenDialog: true),
+    ).then((value) {
+      if (value) {
+       // notifyListeners();
+      }
+    });
+  }
+
+  void closeDrawer(){
+    Navigator.pop(context);
   }
 
   void pop() {

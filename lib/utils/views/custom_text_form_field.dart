@@ -9,6 +9,7 @@ class CustomTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final TextInputType keyboardType;
   final String hintText;
+  final String? errorText;
   final Widget? suffixIcon;
   final Widget? prefixIcon;
   final bool? obscureText;
@@ -21,6 +22,7 @@ class CustomTextFormField extends StatelessWidget {
       {required this.controller,
       required this.keyboardType,
       required this.hintText,
+       this.errorText,
       this.suffixIcon,
       this.obscureText,
       this.inputFormatters,
@@ -37,6 +39,7 @@ class CustomTextFormField extends StatelessWidget {
       obscureText: obscureText ?? false,
       inputFormatters: inputFormatters,
       validator: validator,
+
       onFieldSubmitted: onSubmitted ??
           (term) {
             FocusScope.of(context).nextFocus();

@@ -1,6 +1,8 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tmween/screens/authentication/login/login_otp_screen.dart';
+import 'package:tmween/screens/authentication/signup/otp_screen.dart';
 import 'package:tmween/screens/authentication/signup/signup_screen.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 import 'package:tmween/service/api.dart';
@@ -15,7 +17,16 @@ class LoginProvider extends ChangeNotifier {
   String? uuid, deviceNo, deviceName, platform, model, version;
 
   bool rememberMe = false;
-  TextEditingController phoneController = TextEditingController();
+  bool loginEmail = true;
+  bool isPhoneEmailEmpty = false;
+  bool visiblePassword = false;
+  TextEditingController phoneEmailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  void visiblePasswordIcon() {
+    visiblePassword = !visiblePassword;
+    notifyListeners();
+  }
 
 
   void getAndroidBuildData(AndroidDeviceInfo build) {
@@ -85,13 +96,8 @@ class LoginProvider extends ChangeNotifier {
   bool loading = false;
 
   doLogin() async {
-    rememberMe == true
-        ? MySharedPreferences.instance
-        .addBoolToSF(SharedPreferencesKeys.isLogin, true)
-        : MySharedPreferences.instance
-        .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-
-    navigateToDrawerScreen();
+    loginEmail =false;
+    notifyListeners();
     /*loading = true;
     notifyListeners();
    await api
@@ -117,12 +123,30 @@ class LoginProvider extends ChangeNotifier {
     });*/
   }
 
+  doLoginWithPassword(){
+    if (formKey.currentState!.validate()) {
+      navigateToDrawerScreen();
+    }
+  }
+
   void navigateToSignupScreen() {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => SignUpScreen()));
   }
 
+  void navigateToOTPScreen() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) =>
+        LoginOtpScreen(phoneEmail: phoneEmailController.text.toString())));
+  }
+
   void navigateToDrawerScreen() {
+    rememberMe == true
+        ? MySharedPreferences.instance
+        .addBoolToSF(SharedPreferencesKeys.isLogin, true)
+        : MySharedPreferences.instance
+        .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => DrawerScreen()));
   }
