@@ -12,6 +12,7 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
 import '../../utils/views/custom_text_form_field.dart';
+import 'address_container.dart';
 
 class DrawerScreen extends StatefulWidget {
   @override
@@ -57,21 +58,10 @@ class _DrawerScreenState extends State<DrawerScreen> {
                     ? InkWell(
                         onTap: () {
                           showModalBottomSheet<void>(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return Container(
-                                height: 200,
-                                child: Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      const Text('GeeksforGeeks'),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          );
+                              context: context,
+                              builder: (BuildContext context) {
+                                return _bottomSheetView(drawerProvider);
+                              });
                         },
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -143,6 +133,58 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 Expanded(child: drawerProvider.pages[drawerProvider.pageIndex]),
               ])));
     });
+  }
+
+  _bottomSheetView(DrawerProvider drawerProvider) {
+    return Container(
+        height: 280,
+        padding: EdgeInsets.all(15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            10.heightBox,
+            Text(
+              LocaleKeys.chooseLocation.tr(),
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+            ),
+            10.heightBox,
+            Text(
+              LocaleKeys.chooseLocationText.tr(),
+              style: TextStyle(color: Colors.black87, fontSize: 16),
+            ),
+            20.heightBox,
+            Container(
+                height: 150,
+                child: ListView.builder(
+                    itemCount: drawerProvider.addresses.length + 1,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return (index != drawerProvider.addresses.length)
+                          ? AddressContainer(
+                              address: drawerProvider.addresses[index])
+                          : Container(
+                              width: 150,
+                              padding: EdgeInsets.all(10),
+                              margin: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border:
+                                      Border.all(color: AppColors.lightBlue),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(2))),
+                              child: Center(
+                                  child: Text(LocaleKeys.addAddressText.tr(),
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: AppColors.primaryColor,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold))));
+                    }))
+          ],
+        ));
   }
 
   _buildBottomNavBar(DrawerProvider drawerProvider) {
@@ -429,6 +471,21 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   color: Colors.white,
                 )
               ])),
+          DropdownButton(
+            underline: Container(color: Colors.transparent),
+            value: drawerProvider.languageValue,
+            icon: const Icon(Icons.keyboard_arrow_down),
+            items: drawerProvider.languages.map((String items) {
+              return DropdownMenuItem(
+                value: items,
+                child: Text(items),
+              );
+            }).toList(),
+
+            onChanged: (String? value) {
+              drawerProvider.updateDropdownValue(value);
+            },
+          ),
           ListTile(
             leading: SvgPicture.asset(
               ImageConstanst.customerServiceIcon,

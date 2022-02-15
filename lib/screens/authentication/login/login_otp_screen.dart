@@ -54,8 +54,8 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
         Row(
           children: [
             Text(
-              '${LocaleKeys.sentOTP.tr()} ${widget.phoneEmail}',
-              style: TextStyle(fontSize: 16, color: Colors.black),
+              '${LocaleKeys.inText.tr()} ${widget.phoneEmail}',
+              style: TextStyle(fontSize: 14, color: Colors.black),
             ),
             5.widthBox,
             InkWell(
@@ -65,7 +65,7 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
                 child: Wrap(
                   children: [
                     Text(
-                      LocaleKeys.edit,
+                      LocaleKeys.change,
                       style: TextStyle(
                           fontSize: 16, color: AppColors.primaryColor),
                     ),
@@ -77,6 +77,11 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
                   ],
                 ))
           ],
+        ),
+        10.heightBox,
+        Text(
+          LocaleKeys.sentOTPEmail.tr(),
+          style: TextStyle(fontSize: 14, color: Colors.black),
         ),
         10.heightBox,
         Text(
@@ -215,7 +220,7 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
         CustomButton(
             text: LocaleKeys.loginWithPassword,
             onPressed: () {
-              otpProvider.exitScreen();
+              otpProvider.navigateToPasswordScreen();
             })
       ],
     );

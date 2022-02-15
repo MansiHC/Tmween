@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tmween/screens/authentication/login/login_screen.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 import 'package:tmween/service/api.dart';
 import 'package:tmween/utils/helper.dart';
@@ -46,7 +45,7 @@ class OtpProvider extends ChangeNotifier {
     });*/
   }
 
-  verifyLoginOTP(){
+  verifyLoginOTP() {
     otp = num1Controller.text +
         num2Controller.text +
         num3Controller.text +
@@ -100,7 +99,11 @@ class OtpProvider extends ChangeNotifier {
   }
 
   void exitScreen() {
-    Navigator.of(context).pop();
+    Navigator.of(context).pop(false);
+  }
+
+  void navigateToPasswordScreen() {
+    Navigator.of(context).pop(true);
   }
 
   void notifyClick1(bool click) {

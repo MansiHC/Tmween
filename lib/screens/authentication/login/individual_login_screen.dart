@@ -54,20 +54,21 @@ class _IndividualLoginScreenState extends State<IndividualLoginScreen> {
     return Consumer<LoginProvider>(builder: (context, loginProvider, _) {
       loginProvider.context = context;
       return LayoutBuilder(builder: (context, constraint) {
-        return SingleChildScrollView(
-            child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: constraint.maxHeight),
-                child: IntrinsicHeight(
-                    child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                        child: Form(
-                            key: loginProvider.formKey,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomTextFormField(
-                                    controller: loginProvider.phoneEmailController,
+        return ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraint.maxHeight),
+            child: IntrinsicHeight(
+                child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                    child: Form(
+                        key: loginProvider.formKey,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Visibility(
+                                visible: loginProvider.visiblePhoneEmail,
+                                child: CustomTextFormField(
+                                    controller:
+                                        loginProvider.phoneEmailController,
                                     keyboardType: TextInputType.text,
                                     hintText: LocaleKeys.phoneNumberEmail,
                                     textInputAction: TextInputAction.done,
@@ -77,263 +78,256 @@ class _IndividualLoginScreenState extends State<IndividualLoginScreen> {
                                     },
                                     validator: (value) {
                                       if (value!.isEmpty) {
-                                        return LocaleKeys.emptyPhoneNumberEmail.tr();
+                                        return LocaleKeys.emptyPhoneNumberEmail
+                                            .tr();
                                       }
                                       return null;
-                                    }),
-                                Visibility(visible:loginProvider.loginEmail,child:Expanded(child:  _loginWithEmail())),
-                                Visibility(visible:!loginProvider.loginEmail,child:Expanded(child:   _loginWithPassword()))
+                                    })),
+                            Visibility(
+                                visible: !loginProvider.loginEmail,
+                                child: CustomTextFormField(
+                                    controller:
+                                        loginProvider.passwordController,
+                                    keyboardType: TextInputType.visiblePassword,
+                                    obscureText: loginProvider.visiblePassword,
+                                    suffixIcon: IconButton(
+                                        icon: Icon(
+                                          loginProvider.visiblePassword
+                                              ? Icons.visibility_off
+                                              : Icons.visibility,
+                                          color: Colors.grey,
+                                        ),
+                                        onPressed: () {
+                                          loginProvider.visiblePasswordIcon();
+                                        }),
+                                    hintText: LocaleKeys.yourPassword,
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return LocaleKeys.emptyPassword.tr();
+                                      } else if (loginProvider
+                                              .passwordController
+                                              .value
+                                              .text
+                                              .length <
+                                          8) {
+                                        return LocaleKeys.validPasswordLength
+                                            .tr();
+                                      } else if (!loginProvider
+                                          .passwordController.value.text
+                                          .validatePassword()) {
+                                        return LocaleKeys.validPassword.tr();
+                                      }
+                                      return null;
+                                    })),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                TextButton(
+                                    style: TextButton.styleFrom(
+                                      padding: EdgeInsets.zero,
+                                    ),
+                                    onPressed: () =>
+                                        loginProvider.notifyCheckBox(),
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                              height: 24.0,
+                                              width: 24.0,
+                                              child: Theme(
+                                                  data: Theme.of(context)
+                                                      .copyWith(
+                                                    unselectedWidgetColor:
+                                                        Colors.grey,
+                                                  ),
+                                                  child: Checkbox(
+                                                      activeColor: AppColors
+                                                          .primaryColor,
+                                                      value: loginProvider
+                                                          .rememberMe,
+                                                      onChanged: (value) {
+                                                        loginProvider
+                                                            .notifyCheckBox();
+                                                      }))),
+                                          10.widthBox,
+                                          Text(
+                                            LocaleKeys.keepMeSignedIn.tr(),
+                                            style: TextStyle(
+                                                fontSize: 13,
+                                                color: Colors.grey),
+                                          )
+                                        ])),
+                                Expanded(
+                                  child: Text(LocaleKeys.forgotPassword.tr(),
+                                      textAlign: language == 'ar'
+                                          ? TextAlign.left
+                                          : TextAlign.right,
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          color: AppColors.primaryColor,
+                                          fontWeight: FontWeight.bold)),
+                                )
                               ],
-                            ))))));
+                            ),
+                            Visibility(
+                                visible: loginProvider.loginEmail,
+                                child: Expanded(child: _loginWithEmail())),
+                            Visibility(
+                                visible: !loginProvider.loginEmail,
+                                child: Expanded(child: _loginWithPassword()))
+                          ],
+                        )))));
       });
     });
   }
 
-  _loginWithEmail(){
+  _loginWithEmail() {
     return Column(
       children: [
-      Row(
-        mainAxisAlignment:
-        MainAxisAlignment.spaceBetween,
-        children: [
-          TextButton(
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.zero,
-              ),
-              onPressed: () =>
-                  loginProvider.notifyCheckBox(),
-              child: Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                        height: 24.0,
-                        width: 24.0,
-                        child: Theme(
-                            data: Theme.of(context)
-                                .copyWith(
-                              unselectedWidgetColor:
-                              Colors.grey,
-                            ),
-                            child: Checkbox(
-                                activeColor: AppColors
-                                    .primaryColor,
-                                value: loginProvider
-                                    .rememberMe,
-                                onChanged: (value) {
-                                  loginProvider
-                                      .notifyCheckBox();
-                                }))),
-                    10.widthBox,
-                    Text(
-                      LocaleKeys.keepMeSignedIn.tr(),
-                      style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.grey),
-                    )
-                  ])),
-          Expanded(
-            child: Text(
-                LocaleKeys.forgotPassword.tr(),
-                textAlign: language == 'ar'
-                    ? TextAlign.left
-                    : TextAlign.right,
-                style: TextStyle(
-                    fontSize: 13,
-                    color: AppColors.primaryColor,
-                    fontWeight: FontWeight.bold)),
-          )
-        ],
-      ),
-      15.heightBox,
-      CustomButton(
-          text: LocaleKeys.login,
-          onPressed: () {
-
-            loginProvider.login();
-          }),
-      Visibility(
+        15.heightBox,
+        CustomButton(
+            text: LocaleKeys.login,
+            onPressed: () {
+              loginProvider.login();
+            }),
+        Visibility(visible: loginProvider.loading, child: 5.heightBox),
+        Visibility(
           visible: loginProvider.loading,
-          child: 5.heightBox),
-      Visibility(
-        visible: loginProvider.loading,
-        child: Align(
-            alignment: Alignment.topCenter,
-            child: CircularProgressIndicator(
-              backgroundColor: AppColors.primaryColor,
-            )),
-      ),
-      Visibility(
-          visible: loginProvider.loading,
-          child: 5.heightBox),
-      10.heightBox,
-      Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          30.widthBox,
-          Expanded(
-              child: Padding(
-                  padding: EdgeInsets.only(top: 5),
-                  child: Divider(
-                    thickness: 1,
-                    color: Colors.black12,
-                  ))),
-          10.widthBox,
-          Text(
-            LocaleKeys.or.tr(),
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey,
-            ),
-          ),
-          10.widthBox,
-          Expanded(
-              child: Padding(
-                  padding: EdgeInsets.only(top: 5),
-                  child: Divider(
-                    thickness: 1,
-                    color: Colors.black12,
-                  ))),
-          30.widthBox
-        ],
-      ),
-      10.heightBox,
-      InkWell(
-          onTap: () {
-            loginProvider.navigateToSignupScreen();
-          },
-          child: Text(
-            LocaleKeys.createYourTmweenAccount.tr(),
-            style: TextStyle(
-                fontSize: 14,
-                color: AppColors.primaryColor,
-                fontWeight: FontWeight.bold),
-          )),
-      50.heightBox,
-      Expanded(
           child: Align(
-              alignment: Alignment.bottomCenter,
-              child: RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                      text:
-                      "${LocaleKeys.agreeText.tr()} ",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.black26,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      children: <InlineSpan>[
-                        TextSpan(
-                          text: LocaleKeys
-                              .privacyPolicy
-                              .tr(),
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: AppColors
-                                .primaryColor,
-                            fontWeight:
-                            FontWeight.w600,
-                          ),
-                        )
-                      ]))))
-    ],);
-  }
-
-  _loginWithPassword(){
-    return Column(children: [
-      CustomTextFormField(
-          controller:
-          loginProvider.passwordController,
-          keyboardType: TextInputType.visiblePassword,
-          obscureText: loginProvider.visiblePassword,
-          suffixIcon: IconButton(
-              icon: Icon(
-                loginProvider.visiblePassword
-                    ? Icons.visibility_off
-                    : Icons.visibility,
+              alignment: Alignment.topCenter,
+              child: CircularProgressIndicator(
+                backgroundColor: AppColors.primaryColor,
+              )),
+        ),
+        Visibility(visible: loginProvider.loading, child: 5.heightBox),
+        10.heightBox,
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            30.widthBox,
+            Expanded(
+                child: Padding(
+                    padding: EdgeInsets.only(top: 5),
+                    child: Divider(
+                      thickness: 1,
+                      color: Colors.black12,
+                    ))),
+            10.widthBox,
+            Text(
+              LocaleKeys.or.tr(),
+              style: TextStyle(
+                fontSize: 14,
                 color: Colors.grey,
               ),
-              onPressed: () {
-                loginProvider.visiblePasswordIcon();
-              }),
-          hintText: LocaleKeys.yourPassword,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return LocaleKeys.emptyPassword.tr();
-            } else if (loginProvider
-                .passwordController
-                .value
-                .text
-                .length <
-                8) {
-              return LocaleKeys.validPasswordLength
-                  .tr();
-            } else if (!loginProvider
-                .passwordController.value.text
-                .validatePassword()) {
-              return LocaleKeys.validPassword.tr();
-            }
-            return null;
-          }),
-      15.heightBox,
-      CustomButton(
-          text: LocaleKeys.login,
-          onPressed: () {
-            loginProvider.doLoginWithPassword();
-          }),
-      Visibility(
-          visible: loginProvider.loading,
-          child: 5.heightBox),
-      Visibility(
-        visible: loginProvider.loading,
-        child: Align(
-            alignment: Alignment.topCenter,
-            child: CircularProgressIndicator(
-              backgroundColor: AppColors.primaryColor,
-            )),
-      ),
-      Visibility(
-          visible: loginProvider.loading,
-          child: 5.heightBox),
-      10.heightBox,
-      Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          30.widthBox,
-          Expanded(
-              child: Padding(
-                  padding: EdgeInsets.only(top: 5),
-                  child: Divider(
-                    thickness: 1,
-                    color: Colors.black12,
-                  ))),
-          10.widthBox,
-          Text(
-            LocaleKeys.or.tr(),
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey,
             ),
-          ),
-          10.widthBox,
-          Expanded(
-              child: Padding(
-                  padding: EdgeInsets.only(top: 5),
-                  child: Divider(
-                    thickness: 1,
-                    color: Colors.black12,
-                  ))),
-          30.widthBox
-        ],
-      ),
-      10.heightBox,
-      CustomButton(
-          text: LocaleKeys.loginWithOTP,
-          onPressed: () {
-            loginProvider.navigateToOTPScreen();
-          })
+            10.widthBox,
+            Expanded(
+                child: Padding(
+                    padding: EdgeInsets.only(top: 5),
+                    child: Divider(
+                      thickness: 1,
+                      color: Colors.black12,
+                    ))),
+            30.widthBox
+          ],
+        ),
+        10.heightBox,
+        InkWell(
+            onTap: () {
+              loginProvider.navigateToSignupScreen();
+            },
+            child: Text(
+              LocaleKeys.createYourTmweenAccount.tr(),
+              style: TextStyle(
+                  fontSize: 14,
+                  color: AppColors.primaryColor,
+                  fontWeight: FontWeight.bold),
+            )),
+        50.heightBox,
+        Expanded(
+            child: Align(
+                alignment: Alignment.bottomCenter,
+                child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                        text: "${LocaleKeys.agreeText.tr()} ",
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.black26,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        children: <InlineSpan>[
+                          TextSpan(
+                            text: LocaleKeys.privacyPolicy.tr(),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: AppColors.primaryColor,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          )
+                        ]))))
+      ],
+    );
+  }
 
-    ],);
+  _loginWithPassword() {
+    return Column(
+      children: [
+        15.heightBox,
+        CustomButton(
+            text: LocaleKeys.login,
+            onPressed: () {
+              loginProvider.doLoginWithPassword();
+            }),
+        Visibility(visible: loginProvider.loading, child: 5.heightBox),
+        Visibility(
+          visible: loginProvider.loading,
+          child: Align(
+              alignment: Alignment.topCenter,
+              child: CircularProgressIndicator(
+                backgroundColor: AppColors.primaryColor,
+              )),
+        ),
+        Visibility(visible: loginProvider.loading, child: 5.heightBox),
+        10.heightBox,
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            30.widthBox,
+            Expanded(
+                child: Padding(
+                    padding: EdgeInsets.only(top: 5),
+                    child: Divider(
+                      thickness: 1,
+                      color: Colors.black12,
+                    ))),
+            10.widthBox,
+            Text(
+              LocaleKeys.or.tr(),
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey,
+              ),
+            ),
+            10.widthBox,
+            Expanded(
+                child: Padding(
+                    padding: EdgeInsets.only(top: 5),
+                    child: Divider(
+                      thickness: 1,
+                      color: Colors.black12,
+                    ))),
+            30.widthBox
+          ],
+        ),
+        10.heightBox,
+        CustomButton(
+            text: LocaleKeys.loginWithOTP,
+            onPressed: () {
+              loginProvider.navigateToOTPScreen();
+            })
+      ],
+    );
   }
 }

@@ -13,7 +13,6 @@ import 'package:tmween/provider/recently_viewed_provider.dart';
 import 'package:tmween/provider/signup_provider.dart';
 import 'package:tmween/provider/sold_by_tmween_provider.dart';
 import 'package:tmween/provider/top_selection_provider.dart';
-import 'package:tmween/screens/authentication/login/login_screen.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 import 'package:tmween/screens/splash_screen.dart';
 import 'package:tmween/theme.dart';
@@ -102,11 +101,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: LocaleKeys.appTitle.tr(),
         theme: themeNotifier.getTheme(),
-        home: !isSplash
-            ? SplashScreen()
-            : isLogin
-                ? DrawerScreen()
-                : LoginScreen(),
+        home: isLogin ? DrawerScreen() : SplashScreen(),
       ),
     );
   }

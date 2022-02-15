@@ -8,7 +8,8 @@ import '../../../model/select_category_model.dart';
 import '../../../utils/global.dart';
 
 class SelectCategoryContainer extends StatelessWidget {
-   SelectCategoryContainer({Key? key, required this.category,this.offerVisible=true})
+  SelectCategoryContainer(
+      {Key? key, required this.category, this.offerVisible = true})
       : super(key: key);
   final SelectCategoryModel category;
   final bool offerVisible;
@@ -21,25 +22,27 @@ class SelectCategoryContainer extends StatelessWidget {
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-           Visibility(visible:offerVisible,child:  Align(
-                alignment: Alignment.topRight,
-                child: Container(
-                    padding: EdgeInsets.all(3),
-                    decoration: BoxDecoration(
-                        color: AppColors.offerGreen,
-                        borderRadius: BorderRadius.all(Radius.circular(4))),
-                    child: Column(
-                      children: [
-                        Text('${category.offer}%',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold)),
-                        Text(LocaleKeys.off.tr(),
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 10)),
-                      ],
-                    )))),
+            Visibility(
+                visible: offerVisible,
+                child: Align(
+                    alignment: Alignment.topRight,
+                    child: Container(
+                        padding: EdgeInsets.all(3),
+                        decoration: BoxDecoration(
+                            color: AppColors.offerGreen,
+                            borderRadius: BorderRadius.all(Radius.circular(4))),
+                        child: Column(
+                          children: [
+                            Text('${category.offer}%',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold)),
+                            Text(LocaleKeys.off.tr(),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 10)),
+                          ],
+                        )))),
             5.heightBox,
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),

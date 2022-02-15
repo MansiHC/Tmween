@@ -12,6 +12,10 @@ abstract class LocaleKeys {
   static const forgotPassword = 'forgotPassword';
   static const login = 'login';
   static const loginWithOTP = 'loginWithOTP';
+  static const chooseLocation = 'chooseLocation';
+  static const chooseLocationText = 'chooseLocationText';
+  static const addAddressText = 'addAddressText';
+  static const defaultAddress = 'defaultAddress';
   static const or = 'or';
   static const createYourTmweenAccount = 'createYourTmweenAccount';
   static const agreeText = 'agreeText';
@@ -40,6 +44,8 @@ abstract class LocaleKeys {
   static const change = 'change';
   static const edit = 'edit';
   static const sentOTP = 'sentOTP';
+  static const sentOTPEmail = 'sentOTPEmail';
+  static const inText = 'inText';
   static const loginWithPassword = 'loginWithPassword';
   static const notReceivedOtp = 'notReceivedOtp';
   static const resendCode = 'resendCode';

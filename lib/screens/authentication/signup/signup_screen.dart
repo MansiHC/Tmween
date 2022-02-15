@@ -51,43 +51,48 @@ class _SignUpScreenState extends State<SignUpScreen>
       return DefaultTabController(
           length: 2,
           child: Scaffold(
-              body: Column(
-            children: [
-              ConstrainedBox(
-                  constraints: BoxConstraints(
-                      minWidth: double.infinity,
-                      maxHeight: language == 'ar'
-                          ? (MediaQuery.of(context).size.height / 3)
-                          : (MediaQuery.of(context).size.height / 3.5)),
-                  child: topView(signUpProvider)),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border(
-                      bottom: BorderSide(
-                          color: AppColors.primaryColor, width: 0.8)),
-                ),
-                child: TabBar(
-                    controller: _tabController,
-                    indicatorColor: AppColors.primaryColor,
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    labelStyle:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    labelColor: AppColors.primaryColor,
-                    unselectedLabelColor: Colors.black,
-                    tabs: tabList),
-              ),
-              Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    IndividualSignUpScreen(),
-                    StoreOwnerSignUpScreen()
-                  ],
-                ),
-              )
-            ],
-          )));
+              body: SingleChildScrollView(
+                  child: SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      child: Column(
+                        children: [
+                          ConstrainedBox(
+                              constraints: BoxConstraints(
+                                  minWidth: double.infinity,
+                                  maxHeight: language == 'ar'
+                                      ? (MediaQuery.of(context).size.height / 3)
+                                      : (MediaQuery.of(context).size.height /
+                                          3.5)),
+                              child: topView(signUpProvider)),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border(
+                                  bottom: BorderSide(
+                                      color: AppColors.primaryColor,
+                                      width: 0.8)),
+                            ),
+                            child: TabBar(
+                                controller: _tabController,
+                                indicatorColor: AppColors.primaryColor,
+                                indicatorSize: TabBarIndicatorSize.tab,
+                                labelStyle: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                                labelColor: AppColors.primaryColor,
+                                unselectedLabelColor: Colors.black,
+                                tabs: tabList),
+                          ),
+                          Expanded(
+                            child: TabBarView(
+                              controller: _tabController,
+                              children: [
+                                IndividualSignUpScreen(),
+                                StoreOwnerSignUpScreen()
+                              ],
+                            ),
+                          )
+                        ],
+                      )))));
     });
   }
 

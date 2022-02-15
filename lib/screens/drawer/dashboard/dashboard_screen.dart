@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:tmween/generated/locale_keys.g.dart';
 import 'package:tmween/provider/dashboard_provider.dart';
@@ -16,8 +16,6 @@ import 'package:tmween/screens/drawer/deal_of_the_day_screen.dart';
 import 'package:tmween/screens/drawer/sold_by_tmween_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
-import 'package:tmween/utils/views/custom_text_form_field.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 import '../best_seller_screen.dart';
 import '../recently_viewed_screen.dart';
@@ -149,7 +147,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             InkWell(
                 onTap: () {
-                  dashboardProvider.navigateTo(CategoriesScreen(fromDrawer: true,));
+                  dashboardProvider.navigateTo(CategoriesScreen(
+                    fromDrawer: true,
+                  ));
                 },
                 child: Wrap(
                   crossAxisAlignment: WrapCrossAlignment.center,
@@ -214,27 +214,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       fontWeight: FontWeight.bold,
                       color: Colors.white),
                 ),
-    InkWell(
-    onTap: () {
-    dashboardProvider.navigateTo(DealsOfTheDayScreen());
-    },
-    child:  Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    Text(
-                      LocaleKeys.viewAll.tr(),
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white70),
-                    ),
-                    Icon(
-                      CupertinoIcons.chevron_forward,
-                      color: Colors.white70,
-                      size: 14,
-                    )
-                  ],
-                ))
+                InkWell(
+                    onTap: () {
+                      dashboardProvider.navigateTo(DealsOfTheDayScreen());
+                    },
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Text(
+                          LocaleKeys.viewAll.tr(),
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white70),
+                        ),
+                        Icon(
+                          CupertinoIcons.chevron_forward,
+                          color: Colors.white70,
+                          size: 14,
+                        )
+                      ],
+                    ))
               ],
             ),
             5.heightBox,
@@ -278,27 +278,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
                     ),
-            InkWell(
-              onTap: () {
-                dashboardProvider.navigateTo(BestSellerScreen());
-              },
-              child:  Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        Text(
-                          LocaleKeys.viewAll.tr(),
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white70),
-                        ),
-                        Icon(
-                          CupertinoIcons.chevron_forward,
-                          color: Colors.white70,
-                          size: 14,
-                        )
-                      ],
-                    ))
+                    InkWell(
+                        onTap: () {
+                          dashboardProvider.navigateTo(BestSellerScreen());
+                        },
+                        child: Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            Text(
+                              LocaleKeys.viewAll.tr(),
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white70),
+                            ),
+                            Icon(
+                              CupertinoIcons.chevron_forward,
+                              color: Colors.white70,
+                              size: 14,
+                            )
+                          ],
+                        ))
                   ],
                 )),
             5.heightBox,
@@ -338,27 +338,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
                     ),
-            InkWell(
-              onTap: () {
-                dashboardProvider.navigateTo(SoldByTmweenScreen());
-              },
-              child:    Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        Text(
-                          LocaleKeys.viewAll.tr(),
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white70),
-                        ),
-                        Icon(
-                          CupertinoIcons.chevron_forward,
-                          color: Colors.white70,
-                          size: 14,
-                        )
-                      ],
-                    ))
+                    InkWell(
+                        onTap: () {
+                          dashboardProvider.navigateTo(SoldByTmweenScreen());
+                        },
+                        child: Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            Text(
+                              LocaleKeys.viewAll.tr(),
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white70),
+                            ),
+                            Icon(
+                              CupertinoIcons.chevron_forward,
+                              color: Colors.white70,
+                              size: 14,
+                            )
+                          ],
+                        ))
                   ],
                 )),
             5.heightBox,
@@ -398,27 +398,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
                     ),
-            InkWell(
-              onTap: () {
-                dashboardProvider.navigateTo(TopSelectionScreen());
-              },
-              child:  Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        Text(
-                          LocaleKeys.viewAll.tr(),
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87),
-                        ),
-                        Icon(
-                          CupertinoIcons.chevron_forward,
-                          color: Colors.black87,
-                          size: 14,
-                        )
-                      ],
-                    ))
+                    InkWell(
+                        onTap: () {
+                          dashboardProvider.navigateTo(TopSelectionScreen());
+                        },
+                        child: Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            Text(
+                              LocaleKeys.viewAll.tr(),
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87),
+                            ),
+                            Icon(
+                              CupertinoIcons.chevron_forward,
+                              color: Colors.black87,
+                              size: 14,
+                            )
+                          ],
+                        ))
                   ],
                 )),
             5.heightBox,
@@ -458,27 +458,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
                     ),
-            InkWell(
-              onTap: () {
-                dashboardProvider.navigateTo(RecentlyViewedScreen());
-              },
-              child:  Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        Text(
-                          LocaleKeys.viewAll.tr(),
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87),
-                        ),
-                        Icon(
-                          CupertinoIcons.chevron_forward,
-                          color: Colors.black87,
-                          size: 14,
-                        )
-                      ],
-                    ))
+                    InkWell(
+                        onTap: () {
+                          dashboardProvider.navigateTo(RecentlyViewedScreen());
+                        },
+                        child: Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            Text(
+                              LocaleKeys.viewAll.tr(),
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87),
+                            ),
+                            Icon(
+                              CupertinoIcons.chevron_forward,
+                              color: Colors.black87,
+                              size: 14,
+                            )
+                          ],
+                        ))
                   ],
                 )),
             5.heightBox,

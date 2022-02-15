@@ -17,6 +17,8 @@ abstract class AppColors {
   static const appBarColor = Color(0xFF314156);
   static const offerGreen = Color(0xFF158D07);
   static const darkGrayBackground = Color(0xFFF6F6F6);
+  static const lightBlueBackground = Color(0xFFDCF4FF);
+  static const lightBlue = Color(0xFFABD9E4);
 }
 
 abstract class AppConstants {
@@ -56,12 +58,17 @@ abstract class ImageConstanst {
   static const String recentlyViewedBg = 'asset/image/recently_viewed_bg.jpg';
   static const String soldByTmweenBg = 'asset/image/sold_by_tmween_bg.jpg';
   static const String topSelectionBg = 'asset/image/top_selection_bg.jpg';
-  static const String deliveryOnTmweenIcon = 'asset/image/delivery_on_tmween_icon.svg';
-  static const String sellingOnTmweenIcon = 'asset/image/selling_on_tmween_icon.svg';
+  static const String deliveryOnTmweenIcon =
+      'asset/image/delivery_on_tmween_icon.svg';
+  static const String sellingOnTmweenIcon =
+      'asset/image/selling_on_tmween_icon.svg';
   static const String soldByTmweenIcon = 'asset/image/sold_by_tmween_icon.svg';
-  static const String dealsOfTheDayIcon = 'asset/image/deals_of_the_day_icon.svg';
-  static const String shopByCategoryIcon = 'asset/image/shop_by_category_icon.svg';
-  static const String customerServiceIcon = 'asset/image/customer_service_icon.svg';
+  static const String dealsOfTheDayIcon =
+      'asset/image/deals_of_the_day_icon.svg';
+  static const String shopByCategoryIcon =
+      'asset/image/shop_by_category_icon.svg';
+  static const String customerServiceIcon =
+      'asset/image/customer_service_icon.svg';
   static const String indiaFlagIcon = 'asset/image/india_flag_icon.svg';
   static const String sudanFlagIcon = 'asset/image/sudan_flag_icon.svg';
   static const String usFlagIcon = 'asset/image/us_flag_icon.svg';

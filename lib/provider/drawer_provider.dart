@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tmween/model/address_model.dart';
 import 'package:tmween/screens/authentication/login/login_screen.dart';
 import 'package:tmween/screens/drawer/CartScreen.dart';
 import 'package:tmween/screens/drawer/categories_screen.dart';
@@ -15,7 +16,34 @@ class DrawerProvider extends ChangeNotifier {
   late BuildContext context;
   TextEditingController searchController = TextEditingController();
   int pageIndex = 0;
-  String pageTitle='Home';
+  String pageTitle = 'Home';
+  String languageValue = 'en';
+
+  var languages = [
+    'ar',
+    'en',
+    'es',
+  ];
+  List<AddressModel> addresses = const <AddressModel>[
+    const AddressModel(
+        name: 'Salim Akka',
+        addressLine1: '34 Brooke Place,',
+        addressLine2: '',
+        city: 'Farmington',
+        state: 'nm',
+        country: 'Unites States',
+        pincode: '83401',
+        isDefault: true),
+    const AddressModel(
+      name: 'Salim Akka',
+      addressLine1: '34 Brooke Place,',
+      addressLine2: '',
+      city: 'Farmington',
+      state: 'nm',
+      country: 'Unites States',
+      pincode: '83401',
+    )
+  ];
 
   final pages = [
     DashboardScreen(),
@@ -30,25 +58,27 @@ class DrawerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void navigateTo(Widget route){
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => route));
+  void navigateTo(Widget route) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => route));
   }
 
-  void openLanguageDialog(){
+  void openLanguageDialog() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-          builder: (_) => LanguageView(),
-          fullscreenDialog: true),
+      MaterialPageRoute(builder: (_) => LanguageView(), fullscreenDialog: true),
     ).then((value) {
       if (value) {
-       // notifyListeners();
+        // notifyListeners();
       }
     });
   }
 
-  void closeDrawer(){
+  void updateDropdownValue(String? value){
+    languageValue = value!;
+    notifyListeners();
+  }
+
+  void closeDrawer() {
     Navigator.pop(context);
   }
 

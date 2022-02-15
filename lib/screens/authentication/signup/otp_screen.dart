@@ -66,8 +66,8 @@ class _OtpScreenState extends State<OtpScreen> {
         Row(
           children: [
             Text(
-              '${LocaleKeys.sentOTP.tr()} ${widget.phone}',
-              style: TextStyle(fontSize: 16, color: Colors.black),
+              '${LocaleKeys.inText.tr()} ${widget.phone}',
+              style: TextStyle(fontSize: 14, color: Colors.black),
             ),
             5.widthBox,
             InkWell(
@@ -77,7 +77,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 child: Wrap(
                   children: [
                     Text(
-                      LocaleKeys.edit,
+                      LocaleKeys.change,
                       style: TextStyle(
                           fontSize: 16, color: AppColors.primaryColor),
                     ),
@@ -89,6 +89,11 @@ class _OtpScreenState extends State<OtpScreen> {
                   ],
                 ))
           ],
+        ),
+        10.heightBox,
+        Text(
+          LocaleKeys.sentOTP.tr(),
+          style: TextStyle(fontSize: 14, color: Colors.black),
         ),
         10.heightBox,
         Text(
