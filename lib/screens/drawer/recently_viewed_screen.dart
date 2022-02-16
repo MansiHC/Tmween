@@ -22,7 +22,6 @@ class _RecentlyViewedScreenState extends State<RecentlyViewedScreen> {
     return Consumer<RecentlyViewedProvider>(
         builder: (context, recentlyViewedProvider, _) {
       recentlyViewedProvider.context = context;
-
       return Scaffold(
           appBar: AppBar(
             elevation: 0.0,

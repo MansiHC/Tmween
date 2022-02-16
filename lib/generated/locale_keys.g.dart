@@ -16,6 +16,9 @@ abstract class LocaleKeys {
   static const chooseLocationText = 'chooseLocationText';
   static const addAddressText = 'addAddressText';
   static const defaultAddress = 'defaultAddress';
+  static const english = 'english';
+  static const arabian = 'arabian';
+  static const spanish = 'spanish';
   static const or = 'or';
   static const createYourTmweenAccount = 'createYourTmweenAccount';
   static const agreeText = 'agreeText';
@@ -87,5 +90,18 @@ abstract class LocaleKeys {
   static const emptyAgreeTerms = 'emptyAgreeTerms';
   static const phoneVerification = 'phoneVerification';
   static const otpExpire = 'otpExpire';
+  static const myAccount = 'myAccount';
+  static const yourOrders = 'yourOrders';
+  static const yourWallet = 'yourWallet';
+  static const yourAddresses = 'yourAddresses';
+  static const accountSettings = 'accountSettings';
+  static const notifications = 'notifications';
+  static const updateProfile = 'updateProfile';
+  static const name = 'name';
+  static const mobileNumber = 'mobileNumber';
+  static const email = 'email';
+  static const update = 'update';
+  static const changePassword = 'changePassword';
+  static const deactivateAccount = 'deactivateAccount';
   static const logout = 'logout';
 }

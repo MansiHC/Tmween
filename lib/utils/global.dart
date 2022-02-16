@@ -13,12 +13,14 @@ String mathFunc(Match match) => '${match[1]},';
 
 abstract class AppColors {
   static const lightGrayColor = Color(0xFFF3F3F3);
+  static const lighterGrayColor = Color(0xFFF2F2F2);
   static const primaryColor = Color(0xFF0088CA);
   static const appBarColor = Color(0xFF314156);
   static const offerGreen = Color(0xFF158D07);
   static const darkGrayBackground = Color(0xFFF6F6F6);
   static const lightBlueBackground = Color(0xFFDCF4FF);
   static const lightBlue = Color(0xFFABD9E4);
+  static const blue = Color(0xFF5BABD0);
 }
 
 abstract class AppConstants {
@@ -73,6 +75,13 @@ abstract class ImageConstanst {
   static const String sudanFlagIcon = 'asset/image/sudan_flag_icon.svg';
   static const String usFlagIcon = 'asset/image/us_flag_icon.svg';
   static const String spainFlagIcon = 'asset/image/spain_flag_icon.svg';
+  static const String yourWalletIcon = 'asset/image/your_wallet_icon.svg';
+  static const String yourOrdersIcon = 'asset/image/your_orders_icon.svg';
+  static const String yourAddressesIcon = 'asset/image/your_address_icon.svg';
+  static const String wishlistIcon = 'asset/image/wishlist_icon.svg';
+  static const String logoutIcon = 'asset/image/logout_icon.svg';
+  static const String notificationsIcon = 'asset/image/notifications_icon.svg';
+  static const String accountSettingIcon = 'asset/image/account_setting_icon.svg';
 }
 
 abstract class SharedPreferencesKeys {

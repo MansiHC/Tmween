@@ -8,8 +8,9 @@ class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final double? width;
+  final double? fontSize;
 
-  CustomButton({required this.text, required this.onPressed, this.width});
+  CustomButton({required this.text, required this.onPressed, this.width,this.fontSize});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,8 @@ class CustomButton extends StatelessWidget {
         child: ElevatedButton(
           child: Text(
             text,
-            style: TextStyle(color: Colors.white, fontSize: 20),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white, fontSize:fontSize?? 20),
           ).tr(),
           onPressed: onPressed,
           style: ButtonStyle(

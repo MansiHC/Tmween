@@ -37,7 +37,7 @@ class AddressContainer extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Align(
-                alignment: Alignment.topLeft,
+                alignment: language=='ar'?Alignment.topRight:Alignment.topLeft,
                 child: Text(address.name,
                     textAlign: TextAlign.start,
                     style: TextStyle(
@@ -78,7 +78,7 @@ class AddressContainer extends StatelessWidget {
             Visibility(
                 visible: address.isDefault,
                 child: Align(
-                    alignment: Alignment.bottomLeft,
+                    alignment: language=='ar'?Alignment.bottomRight:Alignment.bottomLeft,
                     child: Text(LocaleKeys.defaultAddress.tr(),
                         textAlign: TextAlign.start,
                         style: TextStyle(

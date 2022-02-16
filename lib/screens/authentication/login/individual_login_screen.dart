@@ -54,7 +54,8 @@ class _IndividualLoginScreenState extends State<IndividualLoginScreen> {
     return Consumer<LoginProvider>(builder: (context, loginProvider, _) {
       loginProvider.context = context;
       return LayoutBuilder(builder: (context, constraint) {
-        return ConstrainedBox(
+        return SingleChildScrollView(
+            child:ConstrainedBox(
             constraints: BoxConstraints(minHeight: constraint.maxHeight),
             child: IntrinsicHeight(
                 child: Padding(
@@ -177,7 +178,7 @@ class _IndividualLoginScreenState extends State<IndividualLoginScreen> {
                                 visible: !loginProvider.loginEmail,
                                 child: Expanded(child: _loginWithPassword()))
                           ],
-                        )))));
+                        ))))));
       });
     });
   }

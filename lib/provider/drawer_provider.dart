@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tmween/model/address_model.dart';
+import 'package:tmween/model/language_model.dart';
 import 'package:tmween/screens/authentication/login/login_screen.dart';
 import 'package:tmween/screens/drawer/CartScreen.dart';
 import 'package:tmween/screens/drawer/categories_screen.dart';
@@ -17,13 +19,8 @@ class DrawerProvider extends ChangeNotifier {
   TextEditingController searchController = TextEditingController();
   int pageIndex = 0;
   String pageTitle = 'Home';
-  String languageValue = 'en';
+  late LanguageModel languageValue= getLanguages()[0];
 
-  var languages = [
-    'ar',
-    'en',
-    'es',
-  ];
   List<AddressModel> addresses = const <AddressModel>[
     const AddressModel(
         name: 'Salim Akka',
@@ -53,6 +50,22 @@ class DrawerProvider extends ChangeNotifier {
     CartScreen()
   ];
 
+
+  List<LanguageModel> getLanguages() {
+    return <LanguageModel>[
+      LanguageModel(name: 'en', locale: context.supportedLocales[0]),
+      LanguageModel(name: 'ar', locale: context.supportedLocales[1]),
+      LanguageModel(name: 'es', locale: context.supportedLocales[2]),
+    ];
+  }
+
+  void updateDropdownValue(LanguageModel? value) async {
+    languageValue = value!;
+    await context.setLocale(value.locale); //BuildContext extension method
+    Navigator.of(context).pop(true);
+    notifyListeners();
+  }
+
   void changePage(int pageNo) {
     pageIndex = pageNo;
     notifyListeners();
@@ -73,10 +86,7 @@ class DrawerProvider extends ChangeNotifier {
     });
   }
 
-  void updateDropdownValue(String? value){
-    languageValue = value!;
-    notifyListeners();
-  }
+
 
   void closeDrawer() {
     Navigator.pop(context);
@@ -95,30 +105,5 @@ class DrawerProvider extends ChangeNotifier {
   final api = Api();
   bool loading = false;
 
-  void doLogout(int userId, int loginLogId) async {
-    navigateToLoginScreen();
-    /*loading = true;
-    notifyListeners();
-    await api
-        .logout(context, 1, userId, loginLogId )
-        .then((value) {
-      if (value.message == AppConstants.success) {
-        loading = false;
-        notifyListeners();
-        navigateToLoginScreen();
-      } else {
-        Helper.showSnackBar(context, value.message!);
-      }
-    }).catchError((error) {
-      loading = false;
-      notifyListeners();
-      print('error....$error');
-    });*/
-  }
 
-  void navigateToLoginScreen() {
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => LoginScreen()),
-        (Route<dynamic> route) => false);
-  }
 }

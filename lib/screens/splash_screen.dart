@@ -7,6 +7,7 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_button.dart';
 
+import '../model/language_model.dart';
 import '../utils/my_shared_preferences.dart';
 import 'authentication/login/login_screen.dart';
 import 'lang_view.dart';
@@ -20,10 +21,39 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   var language;
+  late List<LanguageModel> languages;
+  late LanguageModel languageValue ;
 
+  @override
+  void didChangeDependencies() {
+    languages =<LanguageModel>[
+      LanguageModel(name: LocaleKeys.english.tr(), locale: context.supportedLocales[0]),
+      LanguageModel(name: LocaleKeys.arabian.tr(), locale: context.supportedLocales[1]),
+      LanguageModel(name: LocaleKeys.spanish.tr(), locale: context.supportedLocales[2]),
+    ];
+    languageValue = languages[0];
+
+    super.didChangeDependencies();
+  }
+  String _getFlagIcon() {
+    if (language == 'ar') {
+      return ImageConstanst.sudanFlagIcon;
+    } else if (language == 'es') {
+      return ImageConstanst.spainFlagIcon;
+    } else if (language == 'en') {
+      return ImageConstanst.usFlagIcon;
+    }
+    return ImageConstanst.usFlagIcon;
+  }
   @override
   Widget build(BuildContext context) {
     language = context.locale.toString().split('_')[0];
+    if(language=='ar'){
+      languageValue = languages[1];
+    }else if(language=='es'){
+      languageValue = languages[2];
+    }
+    var flagIcon = _getFlagIcon();
     return Scaffold(
         body: Container(
       decoration: BoxDecoration(
@@ -52,7 +82,7 @@ class _SplashScreenState extends State<SplashScreen> {
               child: Align(
                   alignment:
                       language == 'ar' ? Alignment.topLeft : Alignment.topRight,
-                  child: TextButton(
+                  child: /*TextButton(
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -65,20 +95,35 @@ class _SplashScreenState extends State<SplashScreen> {
                           }
                         });
                       },
-                      child: Wrap(
+                      child:*/ Wrap(
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
-                          Text(
+                          /*Text(
                             language != null ? language : 'en',
                             style: TextStyle(color: Colors.white, fontSize: 16),
+                          )*/
+
+                      SvgPicture.asset(flagIcon, width: 20, height: 20),5.widthBox, DropdownButton<LanguageModel>(
+                            isDense: true,
+                            underline: Container(color: Colors.transparent),
+                            value: languageValue,
+                            dropdownColor: AppColors.primaryColor,
+                            style: TextStyle(color: Colors.white),
+                            icon: const Icon(Icons.keyboard_arrow_down,color: Colors.white,),
+                            items: languages.map((LanguageModel items) {
+                              return DropdownMenuItem(
+                                value: items,
+                                child: Text(items.name),
+                              );
+                            }).toList(),
+                            onChanged: (LanguageModel? value) async {
+                              languageValue = value!;
+                              await context.setLocale(value.locale);
+                            },
                           ),
-                          5.widthBox,
-                          Icon(
-                            Icons.language,
-                            color: Colors.white,
-                          ),
+
                         ],
-                      )))),
+                      ))),
           Padding(
               padding: EdgeInsets.only(bottom: 50),
               child: Align(

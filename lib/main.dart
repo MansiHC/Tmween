@@ -7,7 +7,9 @@ import 'package:tmween/provider/categories_provider.dart';
 import 'package:tmween/provider/dashboard_provider.dart';
 import 'package:tmween/provider/deals_of_the_day_provider.dart';
 import 'package:tmween/provider/drawer_provider.dart';
+import 'package:tmween/provider/edit_profile_provider.dart';
 import 'package:tmween/provider/login_provider.dart';
+import 'package:tmween/provider/my_account_provider.dart';
 import 'package:tmween/provider/otp_provider.dart';
 import 'package:tmween/provider/recently_viewed_provider.dart';
 import 'package:tmween/provider/signup_provider.dart';
@@ -18,6 +20,7 @@ import 'package:tmween/screens/splash_screen.dart';
 import 'package:tmween/theme.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/my_shared_preferences.dart';
+import 'dart:io' show Platform;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,13 +50,30 @@ void main() async {
       isLogin = value ?? false;
     });
   });
-
-  runApp(EasyLocalization(
-    supportedLocales: [
+  String languageCode = Platform.localeName.split('_')[0];
+  print('.....lang.......$languageCode');
+  late List<Locale> localList;
+  if(languageCode=='en'){
+    localList = [
       Locale('en', 'US'),
       Locale('ar', 'DZ'),
       Locale('es', 'ES'),
-    ],
+    ];
+  }else if(languageCode=='ar'){
+    localList = [
+      Locale('ar', 'DZ'),
+      Locale('en', 'US'),
+      Locale('es', 'ES'),
+    ];
+  }else if(languageCode=='es'){
+    localList = [
+      Locale('es', 'ES'),
+      Locale('en', 'US'),
+      Locale('ar', 'DZ'),
+    ];
+  }
+  runApp(EasyLocalization(
+    supportedLocales: localList,
     path: 'asset/lang',
     child: ChangeNotifierProvider<ThemeNotifier>(
       create: (_) => ThemeNotifier(theme),
@@ -92,6 +112,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => BestSellerProvider()),
         ChangeNotifierProvider(create: (context) => TopSelectionProvider()),
         ChangeNotifierProvider(create: (context) => RecentlyViewedProvider()),
+        ChangeNotifierProvider(create: (context) => MyAccountProvider()),
+        ChangeNotifierProvider(create: (context) => EditProfileProvider()),
         //  ListenableProvider(create: (context) => LoginProvider()),
       ],
       child: MaterialApp(

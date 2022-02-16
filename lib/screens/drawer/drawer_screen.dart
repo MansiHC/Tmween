@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:tmween/generated/locale_keys.g.dart';
+import 'package:tmween/model/language_model.dart';
 import 'package:tmween/provider/drawer_provider.dart';
 import 'package:tmween/screens/drawer/categories_screen.dart';
 import 'package:tmween/screens/drawer/deal_of_the_day_screen.dart';
@@ -13,6 +14,7 @@ import 'package:tmween/utils/global.dart';
 
 import '../../utils/views/custom_text_form_field.dart';
 import 'address_container.dart';
+import 'profile/my_account_screen.dart';
 
 class DrawerScreen extends StatefulWidget {
   @override
@@ -25,6 +27,20 @@ class _DrawerScreenState extends State<DrawerScreen> {
   late int userId;
   late int loginLogId;
   late String language;
+  late List<LanguageModel> languages;
+  late LanguageModel languageValue ;
+
+  @override
+  void didChangeDependencies() {
+    languages =<LanguageModel>[
+      LanguageModel(name: LocaleKeys.english.tr(), locale: context.supportedLocales[0]),
+      LanguageModel(name: LocaleKeys.arabian.tr(), locale: context.supportedLocales[1]),
+      LanguageModel(name: LocaleKeys.spanish.tr(), locale: context.supportedLocales[2]),
+    ];
+    languageValue = languages[0];
+
+    super.didChangeDependencies();
+  }
 
   @override
   void initState() {
@@ -93,14 +109,24 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       ),
                 actions: [
                   drawerProvider.pageIndex == 0
-                      ? CircleAvatar(
-                          radius: 20,
-                          child: Icon(
-                            Icons.account_circle,
-                            size: 40,
-                          ),
-                          backgroundColor: CupertinoColors.white,
-                        )
+                      ?InkWell(
+              onTap: (){
+          drawerProvider.navigateTo(MyAccountScreen());
+          },
+              child: Container(
+                width: 45,
+                child: CircleAvatar(
+                  radius: 45,
+                  backgroundImage: NetworkImage('http://i.imgur.com/QSev0hg.jpg'),
+                ),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 3.0,
+                  ),
+                ),
+              ),)
                       : Container(),
                   20.widthBox
                 ],
@@ -137,7 +163,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
 
   _bottomSheetView(DrawerProvider drawerProvider) {
     return Container(
-        height: 280,
+        height: 305,
         padding: EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -342,6 +368,11 @@ class _DrawerScreenState extends State<DrawerScreen> {
 
   _buildDrawer(DrawerProvider drawerProvider) {
     var flagIcon = _getFlagIcon();
+if(language=='ar'){
+  languageValue = languages[1];
+}else if(language=='es'){
+  languageValue = languages[2];
+}
     return Drawer(
       backgroundColor: AppColors.appBarColor,
       child: ListView(
@@ -456,36 +487,30 @@ class _DrawerScreenState extends State<DrawerScreen> {
             color: Colors.white24,
           ),
           16.heightBox,
-          InkWell(
-              onTap: () {
-                drawerProvider.openLanguageDialog();
-              },
-              child: Wrap(children: [
+          Wrap(children: [
                 16.widthBox,
                 SvgPicture.asset(flagIcon, width: 20, height: 20),
                 6.widthBox,
-                Text(language, style: TextStyle(color: Colors.white)),
-                10.widthBox,
-                Icon(
-                  Icons.arrow_drop_down_sharp,
-                  color: Colors.white,
-                )
-              ])),
-          DropdownButton(
-            underline: Container(color: Colors.transparent),
-            value: drawerProvider.languageValue,
-            icon: const Icon(Icons.keyboard_arrow_down),
-            items: drawerProvider.languages.map((String items) {
-              return DropdownMenuItem(
-                value: items,
-                child: Text(items),
-              );
-            }).toList(),
-
-            onChanged: (String? value) {
-              drawerProvider.updateDropdownValue(value);
-            },
-          ),
+                DropdownButton<LanguageModel>(
+                  isDense: true,
+                  underline: Container(color: Colors.transparent),
+                  value: languageValue,
+                  dropdownColor: AppColors.primaryColor,
+                  style: TextStyle(color: Colors.white),
+                  icon: const Icon(Icons.keyboard_arrow_down,color: Colors.white,),
+                  items: languages.map((LanguageModel items) {
+                    return DropdownMenuItem(
+                      value: items,
+                      child: Text(items.name),
+                    );
+                  }).toList(),
+                  onChanged: (LanguageModel? value) async {
+                    languageValue = value!;
+                    await context.setLocale(value.locale);
+                    drawerProvider.closeDrawer();
+                  },
+                ),
+              ]),
           ListTile(
             leading: SvgPicture.asset(
               ImageConstanst.customerServiceIcon,
@@ -497,17 +522,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 style: TextStyle(color: Colors.white)),
             onTap: () {},
           ),
-          ListTile(
-            leading: Icon(
-              Icons.logout,
-              color: CupertinoColors.white,
-            ),
-            title: Text(LocaleKeys.logout.tr(),
-                style: TextStyle(color: Colors.white)),
-            onTap: () {
-              _logout(drawerProvider);
-            },
-          ),
+
         ],
       ),
     );
@@ -548,38 +563,5 @@ class _DrawerScreenState extends State<DrawerScreen> {
             ));
   }
 
-  void _logout(DrawerProvider drawerProvider) async {
-    await showDialog(
-        context: drawerProvider.context,
-        builder: (_) => AlertDialog(
-              title: Text(
-                LocaleKeys.wantLogout.tr(),
-                style: TextStyle(
-                  fontSize: 16,
-                ),
-              ),
-              actions: [
-                TextButton(
-                  style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                  child: Text(
-                    LocaleKeys.no.tr(),
-                    style: TextStyle(fontSize: 16, color: Colors.black54),
-                  ),
-                  onPressed: () {
-                    drawerProvider.pop();
-                  },
-                ),
-                TextButton(
-                  style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                  child: Text(
-                    LocaleKeys.yes.tr(),
-                    style: TextStyle(fontSize: 16, color: Colors.black54),
-                  ),
-                  onPressed: () {
-                    drawerProvider.doLogout(userId, loginLogId);
-                  },
-                ),
-              ],
-            ));
-  }
+
 }

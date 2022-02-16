@@ -22,8 +22,11 @@ class LoginOtpScreen extends StatefulWidget {
 }
 
 class _LoginOtpScreenState extends State<LoginOtpScreen> {
+  late String language;
+
   @override
   Widget build(BuildContext context) {
+    language = context.locale.toString().split('_')[0];
     return Consumer<OtpProvider>(builder: (context, otpProvider, _) {
       otpProvider.context = context;
       otpProvider.phone = widget.phoneEmail;
@@ -35,7 +38,7 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
           Container(
               constraints:
                   BoxConstraints(minWidth: double.infinity, maxHeight: 90),
-              color: Colors.black,
+              color: AppColors.primaryColor,
               padding: EdgeInsets.only(top: 20),
               child: topView(otpProvider)),
           Padding(
@@ -267,10 +270,10 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
   Widget topView(OtpProvider otpProvider) {
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-        child: Row(
+        child: Stack(
           children: [
             Align(
-                alignment: Alignment.centerLeft,
+                alignment:language=='ar'?Alignment.centerRight: Alignment.centerLeft,
                 child: ClipOval(
                   child: Material(
                     color: Colors.white, // Button color
@@ -288,7 +291,6 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
                     ),
                   ),
                 )),
-            50.widthBox,
             Align(
               alignment: Alignment.center,
               child: Text(
