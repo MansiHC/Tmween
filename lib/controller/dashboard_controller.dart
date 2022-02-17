@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/model/best_seller_model.dart';
 import 'package:tmween/model/deals_of_the_day_model.dart';
 import 'package:tmween/model/recently_viewed_model.dart';
@@ -9,7 +10,7 @@ import 'package:tmween/model/top_selection_model.dart';
 
 import '../model/select_category_model.dart';
 
-class DashboardProvider extends ChangeNotifier {
+class DashboardController extends GetxController {
   late BuildContext context;
 
   bool isLoading = false;

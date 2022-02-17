@@ -23,10 +23,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  provider: ^6.0.2
   shared_preferences: ^2.0.5
   flutter_svg: ^0.22.0
-  easy_localization: ^3.0.0
   http: ^0.13.0
   device_info_plus: ^3.2.1
   carousel_slider: ^4.0.0

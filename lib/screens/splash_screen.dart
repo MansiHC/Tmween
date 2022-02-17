@@ -1,8 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tmween/generated/locale_keys.g.dart';
+import 'package:get/get.dart';
+import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_button.dart';
@@ -10,7 +10,6 @@ import 'package:tmween/utils/views/custom_button.dart';
 import '../model/language_model.dart';
 import '../utils/my_shared_preferences.dart';
 import 'authentication/login/login_screen.dart';
-import 'lang_view.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -22,19 +21,20 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   var language;
   late List<LanguageModel> languages;
-  late LanguageModel languageValue ;
+  late LanguageModel languageValue;
 
   @override
   void didChangeDependencies() {
-    languages =<LanguageModel>[
-      LanguageModel(name: LocaleKeys.english.tr(), locale: context.supportedLocales[0]),
-      LanguageModel(name: LocaleKeys.arabian.tr(), locale: context.supportedLocales[1]),
-      LanguageModel(name: LocaleKeys.spanish.tr(), locale: context.supportedLocales[2]),
+    languages = <LanguageModel>[
+      LanguageModel(name: LocaleKeys.english.tr, locale: Locale('en', 'US')),
+      LanguageModel(name: LocaleKeys.arabian.tr, locale: Locale('ar', 'DZ')),
+      LanguageModel(name: LocaleKeys.spanish.tr, locale: Locale('es', 'ES')),
     ];
     languageValue = languages[0];
 
     super.didChangeDependencies();
   }
+
   String _getFlagIcon() {
     if (language == 'ar') {
       return ImageConstanst.sudanFlagIcon;
@@ -45,12 +45,13 @@ class _SplashScreenState extends State<SplashScreen> {
     }
     return ImageConstanst.usFlagIcon;
   }
+
   @override
   Widget build(BuildContext context) {
-    language = context.locale.toString().split('_')[0];
-    if(language=='ar'){
+    language = Get.locale!.languageCode;
+    if (language == 'ar') {
       languageValue = languages[1];
-    }else if(language=='es'){
+    } else if (language == 'es') {
       languageValue = languages[2];
     }
     var flagIcon = _getFlagIcon();
@@ -95,35 +96,44 @@ class _SplashScreenState extends State<SplashScreen> {
                           }
                         });
                       },
-                      child:*/ Wrap(
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          /*Text(
+                      child:*/
+                      Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      /*Text(
                             language != null ? language : 'en',
                             style: TextStyle(color: Colors.white, fontSize: 16),
                           )*/
 
-                      SvgPicture.asset(flagIcon, width: 20, height: 20),5.widthBox, DropdownButton<LanguageModel>(
-                            isDense: true,
-                            underline: Container(color: Colors.transparent),
-                            value: languageValue,
-                            dropdownColor: AppColors.primaryColor,
-                            style: TextStyle(color: Colors.white),
-                            icon: const Icon(Icons.keyboard_arrow_down,color: Colors.white,),
-                            items: languages.map((LanguageModel items) {
-                              return DropdownMenuItem(
-                                value: items,
-                                child: Text(items.name),
-                              );
-                            }).toList(),
-                            onChanged: (LanguageModel? value) async {
-                              languageValue = value!;
-                              await context.setLocale(value.locale);
-                            },
-                          ),
-
-                        ],
-                      ))),
+                      SvgPicture.asset(flagIcon, width: 20, height: 20),
+                      5.widthBox,
+                      DropdownButton<LanguageModel>(
+                        isDense: true,
+                        underline: Container(color: Colors.transparent),
+                        value: languageValue,
+                        dropdownColor: AppColors.primaryColor,
+                        style: TextStyle(color: Colors.white),
+                        icon: const Icon(
+                          Icons.keyboard_arrow_down,
+                          color: Colors.white,
+                        ),
+                        items: languages.map((LanguageModel items) {
+                          return DropdownMenuItem(
+                            value: items,
+                            child: Text(items.name),
+                          );
+                        }).toList(),
+                        onChanged: (LanguageModel? value) async {
+                          languageValue = value!;
+                          // await context.setLocale(value.locale);
+                          MySharedPreferences.instance.addStringToSF(
+                              SharedPreferencesKeys.language,
+                              value.locale.toString());
+                          Get.updateLocale(value.locale);
+                        },
+                      ),
+                    ],
+                  ))),
           Padding(
               padding: EdgeInsets.only(bottom: 50),
               child: Align(

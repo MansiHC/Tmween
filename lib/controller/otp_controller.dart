@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 import 'package:tmween/service/api.dart';
 import 'package:tmween/utils/helper.dart';
 
-class OtpProvider extends ChangeNotifier {
+class OtpController extends GetxController {
   late BuildContext context;
 
   bool click1 = false;
@@ -30,17 +31,17 @@ class OtpProvider extends ChangeNotifier {
     navigateToDrawerScreen();
     /*
     loading = true;
-    notifyListeners();
+    update();
     await api.verifyOTP(context, 1, phone, otp).then((value) {
       loading = false;
-      notifyListeners();
+      update();
       Helper.showSnackBar(context, value.status_message!);
       if(value.message==AppConstants.success) {
       doRegister( name, email, phone, password,deviceType,langCode,agreeTerms);
       }
     }).catchError((error) {
       loading = false;
-      notifyListeners();
+      update();
       print('error....$error');
     });*/
   }
@@ -57,13 +58,13 @@ class OtpProvider extends ChangeNotifier {
   doRegister(String name, String email, String phone, String password,
       String deviceType, String langCode, String agreeTerms) async {
     loading = true;
-    notifyListeners();
+    update();
     await api
         .register(context, name, deviceType, password, email, phone, agreeTerms,
             langCode)
         .then((value) {
       loading = false;
-      notifyListeners();
+      update();
       print('value....${value.toString()}');
       Helper.showSnackBar(context, value.message!);
       /* if(value.message==AppConstants.success) {
@@ -72,23 +73,23 @@ class OtpProvider extends ChangeNotifier {
       navigateToDrawerScreen();
     }).catchError((error) {
       loading = false;
-      notifyListeners();
+      update();
       print('error....$error');
     });
   }
 
   resendOTP() async {
     /* loading = true;
-    notifyListeners();
+    update();
 
     await api.resendOTP(context, "1", phone).then((value) {
       loading = false;
-      notifyListeners();
+      update();
       Helper.showSnackBar(context, value.status_message!);
       if (value.message == AppConstants.success) {}
     }).catchError((error) {
       loading = false;
-      notifyListeners();
+      update();
       print('error....$error');
     });*/
   }
@@ -108,21 +109,21 @@ class OtpProvider extends ChangeNotifier {
 
   void notifyClick1(bool click) {
     click1 = click;
-    notifyListeners();
+    update();
   }
 
   void notifyClick2(bool click) {
     click2 = click;
-    notifyListeners();
+    update();
   }
 
   void notifyClick3(bool click) {
     click3 = click;
-    notifyListeners();
+    update();
   }
 
   void notifyClick4(bool click) {
     click4 = click;
-    notifyListeners();
+    update();
   }
 }

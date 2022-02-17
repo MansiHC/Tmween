@@ -1,7 +1,10 @@
 import 'dart:developer';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../utils/global.dart';
+import '../utils/my_shared_preferences.dart';
 
 class LanguageView extends StatelessWidget {
   @override
@@ -39,19 +42,18 @@ class LanguageView extends StatelessWidget {
             _SwitchListTileMenuItem(
                 title: 'عربي',
                 subtitle: 'Arabic',
-                locale:
-                    context.supportedLocales[1] //BuildContext extension method
+                locale: Locale('ar', 'DZ') //BuildContext extension method
                 ),
             _Divider(),
             _SwitchListTileMenuItem(
                 title: 'English',
                 subtitle: 'English',
-                locale: context.supportedLocales[0]),
+                locale: Locale('en', 'US')),
             _Divider(),
             _SwitchListTileMenuItem(
                 title: 'español',
                 subtitle: 'Spanish',
-                locale: context.supportedLocales[2]),
+                locale: Locale('es', 'ES')),
             _Divider(),
           ],
         ),
@@ -88,7 +90,7 @@ class _SwitchListTileMenuItem extends StatelessWidget {
   final String subtitle;
   final Locale locale;
 
-  bool isSelected(BuildContext context) => locale == context.locale;
+  bool isSelected(BuildContext context) => locale == Get.locale;
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +111,11 @@ class _SwitchListTileMenuItem extends StatelessWidget {
           ),
           onTap: () async {
             log(locale.toString(), name: toString());
-            await context.setLocale(locale); //BuildContext extension method
+
+            ///  await context.setLocale(locale);
+            MySharedPreferences.instance.addStringToSF(
+                SharedPreferencesKeys.language, locale.toString());
+            Get.updateLocale(locale);
             Navigator.of(context).pop(true);
           }),
     );

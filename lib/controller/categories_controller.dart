@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 import '../model/select_category_model.dart';
 
-class CategoriesProvider extends ChangeNotifier {
+class CategoriesController extends GetxController {
   late BuildContext context;
 
   TextEditingController searchController = TextEditingController();

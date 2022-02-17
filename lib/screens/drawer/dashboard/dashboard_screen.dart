@@ -1,10 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tmween/generated/locale_keys.g.dart';
-import 'package:tmween/provider/dashboard_provider.dart';
+import 'package:get/get.dart';
+import 'package:tmween/controller/dashboard_controller.dart';
+import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/drawer/categories_screen.dart';
 import 'package:tmween/screens/drawer/dashboard/best_seller_container.dart';
 import 'package:tmween/screens/drawer/dashboard/deals_of_the_day_container.dart';
@@ -29,69 +28,72 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  final dashboardController = Get.put(DashboardController());
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<DashboardProvider>(
-        builder: (context, dashboardProvider, _) {
-      dashboardProvider.context = context;
+    return GetBuilder<DashboardController>(
+        init: DashboardController(),
+        builder: (contet) {
+          dashboardController.context = context;
 
-      return SingleChildScrollView(
-          child: Column(
-        children: [
-          dashboardProvider.isLoading
-              ? Center(
-                  child: CircularProgressIndicator(
-                  backgroundColor: AppColors.primaryColor,
-                ))
-              : _topBanner(dashboardProvider),
-          Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: _shopByCategory(dashboardProvider)),
-          20.heightBox,
-          _dealsOfTheDay(dashboardProvider),
-          SizedBox(
-              height: 200,
-              width: MediaQuery.of(context).size.width,
-              child: Image.network(
-                'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80',
-                fit: BoxFit.fill,
-              )),
-          _bestSeller(dashboardProvider),
-          _soldByTmween(dashboardProvider),
-          SizedBox(
-              height: 200,
-              width: MediaQuery.of(context).size.width,
-              child: Image.network(
-                'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
-                fit: BoxFit.fill,
-              )),
-          _topSelection(dashboardProvider),
-          SizedBox(
-              height: 200,
-              width: MediaQuery.of(context).size.width,
-              child: Image.network(
-                'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
-                fit: BoxFit.fill,
-              )),
-          _recentlyViewed(dashboardProvider),
-          10.heightBox,
-          Text(
-            LocaleKeys.thatAll.tr(),
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.grey, fontSize: 14),
-          ),
-          10.heightBox
-        ],
-      ));
-    });
+          return SingleChildScrollView(
+              child: Column(
+            children: [
+              dashboardController.isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(
+                      backgroundColor: AppColors.primaryColor,
+                    ))
+                  : _topBanner(dashboardController),
+              Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: _shopByCategory(dashboardController)),
+              20.heightBox,
+              _dealsOfTheDay(dashboardController),
+              SizedBox(
+                  height: 200,
+                  width: MediaQuery.of(context).size.width,
+                  child: Image.network(
+                    'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80',
+                    fit: BoxFit.fill,
+                  )),
+              _bestSeller(dashboardController),
+              _soldByTmween(dashboardController),
+              SizedBox(
+                  height: 200,
+                  width: MediaQuery.of(context).size.width,
+                  child: Image.network(
+                    'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
+                    fit: BoxFit.fill,
+                  )),
+              _topSelection(dashboardController),
+              SizedBox(
+                  height: 200,
+                  width: MediaQuery.of(context).size.width,
+                  child: Image.network(
+                    'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
+                    fit: BoxFit.fill,
+                  )),
+              _recentlyViewed(dashboardController),
+              10.heightBox,
+              Text(
+                LocaleKeys.thatAll.tr,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.grey, fontSize: 14),
+              ),
+              10.heightBox
+            ],
+          ));
+        });
   }
 
-  _topBanner(DashboardProvider dashboardProvider) {
+  _topBanner(DashboardController dashboardController) {
     return Stack(
       children: [
         CarouselSlider(
-          items: dashboardProvider.imageSliders,
-          carouselController: dashboardProvider.controller,
+          items: dashboardController.imageSliders,
+          carouselController: dashboardController.controller,
           options: CarouselOptions(
               autoPlay: true,
               enlargeCenterPage: false,
@@ -99,7 +101,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               aspectRatio: 1.6,
               onPageChanged: (index, reason) {
                 setState(() {
-                  dashboardProvider.current = index;
+                  dashboardController.current = index;
                 });
               }),
         ),
@@ -109,10 +111,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
             right: 0.0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: dashboardProvider.imgList.asMap().entries.map((entry) {
+              children:
+                  dashboardController.imgList.asMap().entries.map((entry) {
                 return GestureDetector(
                   onTap: () =>
-                      dashboardProvider.controller.animateToPage(entry.key),
+                      dashboardController.controller.animateToPage(entry.key),
                   child: Container(
                     width: 8.0,
                     height: 8.0,
@@ -120,7 +123,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: dashboardProvider.current == entry.key
+                        color: dashboardController.current == entry.key
                             ? AppColors.primaryColor
                             : Colors.white),
                   ),
@@ -131,7 +134,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  _shopByCategory(DashboardProvider dashboardProvider) {
+  _shopByCategory(DashboardController dashboardController) {
     return Column(
       children: [
         15.heightBox,
@@ -139,7 +142,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              LocaleKeys.shopByCategory.tr(),
+              LocaleKeys.shopByCategory.tr,
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -147,7 +150,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             InkWell(
                 onTap: () {
-                  dashboardProvider.navigateTo(CategoriesScreen(
+                  dashboardController.navigateTo(CategoriesScreen(
                     fromDrawer: true,
                   ));
                 },
@@ -155,7 +158,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     Text(
-                      LocaleKeys.viewAll.tr(),
+                      LocaleKeys.viewAll.tr,
                       style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
@@ -185,16 +188,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 shrinkWrap: true,
                 childAspectRatio: 0.8,
                 physics: ScrollPhysics(),
-                children:
-                    List.generate(dashboardProvider.categories.length, (index) {
+                children: List.generate(dashboardController.categories.length,
+                    (index) {
                   return SelectCategoryContainer(
-                      category: dashboardProvider.categories[index]);
+                      category: dashboardController.categories[index]);
                 })))
       ],
     );
   }
 
-  _dealsOfTheDay(DashboardProvider dashboardProvider) {
+  _dealsOfTheDay(DashboardController dashboardController) {
     return Container(
         decoration: BoxDecoration(
             image: DecorationImage(
@@ -208,7 +211,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  LocaleKeys.dealOfDay.tr(),
+                  LocaleKeys.dealOfDay.tr,
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -216,13 +219,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 InkWell(
                     onTap: () {
-                      dashboardProvider.navigateTo(DealsOfTheDayScreen());
+                      dashboardController.navigateTo(DealsOfTheDayScreen());
                     },
                     child: Wrap(
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         Text(
-                          LocaleKeys.viewAll.tr(),
+                          LocaleKeys.viewAll.tr,
                           style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
@@ -247,16 +250,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 childAspectRatio: 0.66,
                 physics: ScrollPhysics(),
                 children:
-                    List.generate(dashboardProvider.deals.length, (index) {
+                    List.generate(dashboardController.deals.length, (index) {
                   return DealsOfTheDayContainer(
-                      deal: dashboardProvider.deals[index]);
+                      deal: dashboardController.deals[index]);
                 })),
             20.heightBox
           ],
         ));
   }
 
-  _bestSeller(DashboardProvider dashboardProvider) {
+  _bestSeller(DashboardController dashboardController) {
     return Container(
         decoration: BoxDecoration(
             image: DecorationImage(
@@ -272,7 +275,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      LocaleKeys.tmweenBestSeller.tr(),
+                      LocaleKeys.tmweenBestSeller.tr,
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -280,13 +283,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                     InkWell(
                         onTap: () {
-                          dashboardProvider.navigateTo(BestSellerScreen());
+                          dashboardController.navigateTo(BestSellerScreen());
                         },
                         child: Wrap(
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
                             Text(
-                              LocaleKeys.viewAll.tr(),
+                              LocaleKeys.viewAll.tr,
                               style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
@@ -305,18 +308,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Container(
                 height: 244,
                 child: ListView.builder(
-                    itemCount: dashboardProvider.bestSellers.length,
+                    itemCount: dashboardController.bestSellers.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return BestSellerContainer(
-                          bestSeller: dashboardProvider.bestSellers[index]);
+                          bestSeller: dashboardController.bestSellers[index]);
                     })),
             20.heightBox
           ],
         ));
   }
 
-  _soldByTmween(DashboardProvider dashboardProvider) {
+  _soldByTmween(DashboardController dashboardController) {
     return Container(
         decoration: BoxDecoration(
             image: DecorationImage(
@@ -332,7 +335,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      LocaleKeys.soldByTmween.tr(),
+                      LocaleKeys.soldByTmween.tr,
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -340,13 +343,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                     InkWell(
                         onTap: () {
-                          dashboardProvider.navigateTo(SoldByTmweenScreen());
+                          dashboardController.navigateTo(SoldByTmweenScreen());
                         },
                         child: Wrap(
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
                             Text(
-                              LocaleKeys.viewAll.tr(),
+                              LocaleKeys.viewAll.tr,
                               style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
@@ -365,18 +368,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Container(
                 height: 244,
                 child: ListView.builder(
-                    itemCount: dashboardProvider.soldByTmweens.length,
+                    itemCount: dashboardController.soldByTmweens.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return SoldByTmweenContainer(
-                          soldByTmween: dashboardProvider.soldByTmweens[index]);
+                          soldByTmween:
+                              dashboardController.soldByTmweens[index]);
                     })),
             20.heightBox
           ],
         ));
   }
 
-  _topSelection(DashboardProvider dashboardProvider) {
+  _topSelection(DashboardController dashboardController) {
     return Container(
         decoration: BoxDecoration(
             image: DecorationImage(
@@ -392,7 +396,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      LocaleKeys.topSelection.tr(),
+                      LocaleKeys.topSelection.tr,
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -400,13 +404,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                     InkWell(
                         onTap: () {
-                          dashboardProvider.navigateTo(TopSelectionScreen());
+                          dashboardController.navigateTo(TopSelectionScreen());
                         },
                         child: Wrap(
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
                             Text(
-                              LocaleKeys.viewAll.tr(),
+                              LocaleKeys.viewAll.tr,
                               style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
@@ -425,18 +429,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Container(
                 height: 244,
                 child: ListView.builder(
-                    itemCount: dashboardProvider.topSelections.length,
+                    itemCount: dashboardController.topSelections.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return TopSelectionContainer(
-                          topSelection: dashboardProvider.topSelections[index]);
+                          topSelection:
+                              dashboardController.topSelections[index]);
                     })),
             20.heightBox
           ],
         ));
   }
 
-  _recentlyViewed(DashboardProvider dashboardProvider) {
+  _recentlyViewed(DashboardController dashboardController) {
     return Container(
         decoration: BoxDecoration(
             image: DecorationImage(
@@ -452,7 +457,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      LocaleKeys.recentlyViewed.tr(),
+                      LocaleKeys.recentlyViewed.tr,
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -460,13 +465,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                     InkWell(
                         onTap: () {
-                          dashboardProvider.navigateTo(RecentlyViewedScreen());
+                          dashboardController
+                              .navigateTo(RecentlyViewedScreen());
                         },
                         child: Wrap(
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
                             Text(
-                              LocaleKeys.viewAll.tr(),
+                              LocaleKeys.viewAll.tr,
                               style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
@@ -485,12 +491,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Container(
                 height: 244,
                 child: ListView.builder(
-                    itemCount: dashboardProvider.recentlVieweds.length,
+                    itemCount: dashboardController.recentlVieweds.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return RecentlyViewedContainer(
                           recentlyViewed:
-                              dashboardProvider.recentlVieweds[index]);
+                              dashboardController.recentlVieweds[index]);
                     })),
             20.heightBox
           ],

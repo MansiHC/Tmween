@@ -1,10 +1,10 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/model/address_model.dart';
 import 'package:tmween/model/language_model.dart';
-import 'package:tmween/screens/authentication/login/login_screen.dart';
 import 'package:tmween/screens/drawer/CartScreen.dart';
 import 'package:tmween/screens/drawer/categories_screen.dart';
 import 'package:tmween/screens/drawer/dashboard/dashboard_screen.dart';
@@ -12,14 +12,16 @@ import 'package:tmween/screens/drawer/search_screen.dart';
 import 'package:tmween/screens/drawer/wishlist_screen.dart';
 import 'package:tmween/service/api.dart';
 
+import '../lang/locale_keys.g.dart';
 import '../screens/lang_view.dart';
 
-class DrawerProvider extends ChangeNotifier {
+class DrawerControllers extends GetxController {
   late BuildContext context;
   TextEditingController searchController = TextEditingController();
   int pageIndex = 0;
   String pageTitle = 'Home';
-  late LanguageModel languageValue= getLanguages()[0];
+  late List<LanguageModel> languages;
+  late LanguageModel languageValue;
 
   List<AddressModel> addresses = const <AddressModel>[
     const AddressModel(
@@ -50,25 +52,20 @@ class DrawerProvider extends ChangeNotifier {
     CartScreen()
   ];
 
-
-  List<LanguageModel> getLanguages() {
-    return <LanguageModel>[
-      LanguageModel(name: 'en', locale: context.supportedLocales[0]),
-      LanguageModel(name: 'ar', locale: context.supportedLocales[1]),
-      LanguageModel(name: 'es', locale: context.supportedLocales[2]),
+  @override
+  void onInit() {
+    languages = <LanguageModel>[
+      LanguageModel(name: LocaleKeys.english.tr, locale: Locale('en', 'US')),
+      LanguageModel(name: LocaleKeys.arabian.tr, locale: Locale('ar', 'DZ')),
+      LanguageModel(name: LocaleKeys.spanish.tr, locale: Locale('es', 'ES')),
     ];
-  }
-
-  void updateDropdownValue(LanguageModel? value) async {
-    languageValue = value!;
-    await context.setLocale(value.locale); //BuildContext extension method
-    Navigator.of(context).pop(true);
-    notifyListeners();
+    languageValue = languages[0];
+    super.onInit();
   }
 
   void changePage(int pageNo) {
     pageIndex = pageNo;
-    notifyListeners();
+    update();
   }
 
   void navigateTo(Widget route) {
@@ -81,12 +78,10 @@ class DrawerProvider extends ChangeNotifier {
       MaterialPageRoute(builder: (_) => LanguageView(), fullscreenDialog: true),
     ).then((value) {
       if (value) {
-        // notifyListeners();
+        // update();
       }
     });
   }
-
-
 
   void closeDrawer() {
     Navigator.pop(context);
@@ -94,16 +89,14 @@ class DrawerProvider extends ChangeNotifier {
 
   void pop() {
     Navigator.of(context).pop(false);
-    notifyListeners();
+    update();
   }
 
   void exit() {
     SystemNavigator.pop();
-    notifyListeners();
+    update();
   }
 
   final api = Api();
   bool loading = false;
-
-
 }

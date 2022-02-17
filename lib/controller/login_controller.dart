@@ -1,20 +1,26 @@
+import 'dart:io';
+
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tmween/screens/authentication/login/login_otp_screen.dart';
-import 'package:tmween/screens/authentication/signup/signup_screen.dart';
-import 'package:tmween/screens/drawer/drawer_screen.dart';
-import 'package:tmween/service/api.dart';
-import 'package:tmween/utils/global.dart';
-import 'package:tmween/utils/my_shared_preferences.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
-class LoginProvider extends ChangeNotifier {
-  final formKey = GlobalKey<FormState>();
-  late BuildContext context;
+import '../lang/locale_keys.g.dart';
+import '../screens/authentication/login/login_otp_screen.dart';
+import '../screens/authentication/signup/signup_screen.dart';
+import '../screens/drawer/drawer_screen.dart';
+import '../service/api.dart';
+import '../utils/global.dart';
+import '../utils/my_shared_preferences.dart';
+
+class LoginController extends GetxController {
+  String? uuid, deviceNo, deviceName, platform, model, version;
   final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   late Map<String, dynamic> deviceData;
-  String? uuid, deviceNo, deviceName, platform, model, version;
-
+  var isSplash;
+  final formKey = GlobalKey<FormState>();
+  late BuildContext context;
   bool rememberMe = false;
   bool loginEmail = true;
   bool visiblePhoneEmail = true;
@@ -22,10 +28,38 @@ class LoginProvider extends ChangeNotifier {
   bool visiblePassword = false;
   TextEditingController phoneEmailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  late List<Tab> tabList;
 
-  void visiblePasswordIcon() {
-    visiblePassword = !visiblePassword;
-    notifyListeners();
+  @override
+  void onInit() {
+    tabList = <Tab>[];
+    tabList.add(new Tab(
+      text: LocaleKeys.individual.tr,
+    ));
+    tabList.add(new Tab(
+      text: LocaleKeys.storeOwner.tr,
+    ));
+    MySharedPreferences.instance
+        .getBoolValuesSF(SharedPreferencesKeys.isSplash)
+        .then((value) async {
+      isSplash = value ?? false;
+    });
+    initPlatformState();
+    super.onInit();
+  }
+
+  Future<void> initPlatformState() async {
+    try {
+      if (Platform.isAndroid) {
+        getAndroidBuildData(await deviceInfoPlugin.androidInfo);
+      } else if (Platform.isIOS) {
+        getIosDeviceInfo(await deviceInfoPlugin.iosInfo);
+      }
+    } on PlatformException {
+      deviceData = <String, dynamic>{
+        'Error:': 'Failed to get platform version.'
+      };
+    }
   }
 
   void getAndroidBuildData(AndroidDeviceInfo build) {
@@ -91,12 +125,17 @@ class LoginProvider extends ChangeNotifier {
     };*/
   }
 
+  void visiblePasswordIcon() {
+    visiblePassword = !visiblePassword;
+    update();
+  }
+
   final api = Api();
   bool loading = false;
 
   doLogin() async {
     loginEmail = false;
-    notifyListeners();
+    update();
     /*loading = true;
     notifyListeners();
    await api
@@ -145,7 +184,7 @@ class LoginProvider extends ChangeNotifier {
       } else {
         visiblePhoneEmail = true;
       }
-      notifyListeners();
+      update();
     });
   }
 
@@ -168,7 +207,7 @@ class LoginProvider extends ChangeNotifier {
 
   void notifyCheckBox() {
     rememberMe = !rememberMe;
-    notifyListeners();
+    update();
   }
 
   void login() {

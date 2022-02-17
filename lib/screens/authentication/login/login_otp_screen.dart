@@ -1,9 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tmween/generated/locale_keys.g.dart';
-import 'package:tmween/provider/otp_provider.dart';
+import 'package:get/get.dart';
+import 'package:tmween/controller/otp_controller.dart';
+import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/otp_text_filed.dart';
@@ -23,47 +22,50 @@ class LoginOtpScreen extends StatefulWidget {
 
 class _LoginOtpScreenState extends State<LoginOtpScreen> {
   late String language;
+  final otpController = Get.put(OtpController());
 
   @override
   Widget build(BuildContext context) {
-    language = context.locale.toString().split('_')[0];
-    return Consumer<OtpProvider>(builder: (context, otpProvider, _) {
-      otpProvider.context = context;
-      otpProvider.phone = widget.phoneEmail;
-      return Scaffold(
-          body: SingleChildScrollView(
-              child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-              constraints:
-                  BoxConstraints(minWidth: double.infinity, maxHeight: 90),
-              color: AppColors.primaryColor,
-              padding: EdgeInsets.only(top: 20),
-              child: topView(otpProvider)),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-            child: bottomView(otpProvider),
-          )
-        ],
-      )));
-    });
+    language = Get.locale!.languageCode;
+    return GetBuilder<OtpController>(
+        init: OtpController(),
+        builder: (contet) {
+          otpController.context = context;
+          otpController.phone = widget.phoneEmail;
+          return Scaffold(
+              body: SingleChildScrollView(
+                  child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                  constraints:
+                      BoxConstraints(minWidth: double.infinity, maxHeight: 90),
+                  color: AppColors.primaryColor,
+                  padding: EdgeInsets.only(top: 20),
+                  child: topView(otpController)),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                child: bottomView(otpController),
+              )
+            ],
+          )));
+        });
   }
 
-  Widget bottomView(OtpProvider otpProvider) {
+  Widget bottomView(OtpController otpController) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
             Text(
-              '${LocaleKeys.inText.tr()} ${widget.phoneEmail}',
+              '${LocaleKeys.inText.tr} ${widget.phoneEmail}',
               style: TextStyle(fontSize: 14, color: Colors.black),
             ),
             5.widthBox,
             InkWell(
                 onTap: () {
-                  otpProvider.exitScreen();
+                  otpController.exitScreen();
                 },
                 child: Wrap(
                   children: [
@@ -83,12 +85,12 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
         ),
         10.heightBox,
         Text(
-          LocaleKeys.sentOTPEmail.tr(),
+          LocaleKeys.sentOTPEmail.tr,
           style: TextStyle(fontSize: 14, color: Colors.black),
         ),
         10.heightBox,
         Text(
-          LocaleKeys.enterOTP.tr(),
+          LocaleKeys.enterOTP.tr,
           style: TextStyle(fontSize: 16, color: Colors.black),
         ),
         10.heightBox,
@@ -98,94 +100,94 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             OtpTextFormField(
-                controller: otpProvider.num1Controller,
+                controller: otpController.num1Controller,
                 onChanged: (value) {
                   if (value.length == 1) {
-                    otpProvider.notifyClick1(true);
+                    otpController.notifyClick1(true);
                     FocusScope.of(context).nextFocus();
-                    otpProvider.notifyClick2(true);
+                    otpController.notifyClick2(true);
                   }
                   if (value.length == 0) {
                     FocusScope.of(context).previousFocus();
-                    otpProvider.notifyClick1(false);
+                    otpController.notifyClick1(false);
                   }
                 },
-                clicked: otpProvider.click1,
+                clicked: otpController.click1,
                 onTap: () {
-                  otpProvider.notifyClick1(true);
+                  otpController.notifyClick1(true);
                 }),
             OtpTextFormField(
-                controller: otpProvider.num2Controller,
+                controller: otpController.num2Controller,
                 onChanged: (value) {
                   if (value.length == 1) {
                     FocusScope.of(context).nextFocus();
-                    otpProvider.notifyClick3(true);
+                    otpController.notifyClick3(true);
                   }
                   if (value.length == 0) {
                     FocusScope.of(context).previousFocus();
-                    otpProvider.notifyClick2(false);
+                    otpController.notifyClick2(false);
                   }
                 },
-                clicked: otpProvider.click2,
+                clicked: otpController.click2,
                 onTap: () {
-                  otpProvider.notifyClick2(true);
+                  otpController.notifyClick2(true);
                 }),
             OtpTextFormField(
-                controller: otpProvider.num3Controller,
+                controller: otpController.num3Controller,
                 onChanged: (value) {
                   if (value.length == 1) {
                     FocusScope.of(context).nextFocus();
-                    otpProvider.notifyClick4(true);
+                    otpController.notifyClick4(true);
                   }
                   if (value.length == 0) {
                     FocusScope.of(context).previousFocus();
-                    otpProvider.notifyClick3(false);
+                    otpController.notifyClick3(false);
                   }
                 },
-                clicked: otpProvider.click3,
+                clicked: otpController.click3,
                 onTap: () {
-                  otpProvider.notifyClick3(true);
+                  otpController.notifyClick3(true);
                 }),
             OtpTextFormField(
-                controller: otpProvider.num4Controller,
-                clicked: otpProvider.click4,
+                controller: otpController.num4Controller,
+                clicked: otpController.click4,
                 onChanged: (value) {
                   if (value.length == 1) {
                     FocusScope.of(context).nextFocus();
-                    otpProvider.verifyLoginOTP();
+                    otpController.verifyLoginOTP();
                   }
                   if (value.length == 0) {
                     FocusScope.of(context).previousFocus();
-                    otpProvider.notifyClick4(false);
+                    otpController.notifyClick4(false);
                   }
                 },
                 onTap: () {
-                  otpProvider.notifyClick4(true);
+                  otpController.notifyClick4(true);
                 }),
           ],
         ),
-        Visibility(visible: otpProvider.loading, child: 5.heightBox),
+        Visibility(visible: otpController.loading, child: 5.heightBox),
         Visibility(
-          visible: otpProvider.loading,
+          visible: otpController.loading,
           child: Align(
               alignment: Alignment.topCenter,
               child: CircularProgressIndicator(
                 backgroundColor: AppColors.primaryColor,
               )),
         ),
-        Visibility(visible: otpProvider.loading, child: 5.heightBox),
+        Visibility(visible: otpController.loading, child: 5.heightBox),
         30.heightBox,
         Text(
-          LocaleKeys.notReceivedOtp.tr(),
+          LocaleKeys.notReceivedOtp.tr,
           style: TextStyle(fontSize: 16, color: Colors.black),
         ),
         5.heightBox,
         InkWell(
             onTap: () {
-              otpProvider.resendOTP();
+              otpController.resendOTP();
             },
             child: Text(
-              LocaleKeys.resendCode.tr(),
+              LocaleKeys.resendCode.tr,
               style: TextStyle(fontSize: 16, color: AppColors.primaryColor),
             )),
         10.heightBox,
@@ -202,7 +204,7 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
                     ))),
             10.widthBox,
             Text(
-              LocaleKeys.or.tr(),
+              LocaleKeys.or.tr,
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey,
@@ -223,7 +225,7 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
         CustomButton(
             text: LocaleKeys.loginWithPassword,
             onPressed: () {
-              otpProvider.navigateToPasswordScreen();
+              otpController.navigateToPasswordScreen();
             })
       ],
     );
@@ -234,7 +236,7 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
-          LocaleKeys.otpExpire.tr(),
+          LocaleKeys.otpExpire.tr,
           style: TextStyle(fontSize: 16, color: Colors.black),
         ),
         /*TweenAnimationBuilder(
@@ -267,19 +269,21 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
     );
   }
 
-  Widget topView(OtpProvider otpProvider) {
+  Widget topView(OtpController otpController) {
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
         child: Stack(
           children: [
             Align(
-                alignment:language=='ar'?Alignment.centerRight: Alignment.centerLeft,
+                alignment: language == 'ar'
+                    ? Alignment.centerRight
+                    : Alignment.centerLeft,
                 child: ClipOval(
                   child: Material(
                     color: Colors.white, // Button color
                     child: InkWell(
                       onTap: () {
-                        otpProvider.exitScreen();
+                        otpController.exitScreen();
                       },
                       child: SizedBox(
                           width: 24,
@@ -294,7 +298,7 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
             Align(
               alignment: Alignment.center,
               child: Text(
-                LocaleKeys.phoneVerification.tr(),
+                LocaleKeys.phoneVerification.tr,
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),

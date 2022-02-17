@@ -1,7 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:tmween/utils/extensions.dart';
 
 class CustomListTile extends StatelessWidget {
@@ -31,19 +31,21 @@ class CustomListTile extends StatelessWidget {
     );*/
     return InkWell(
         onTap: onTap,
-        child: Padding(padding:EdgeInsets.symmetric(horizontal: 15,vertical: 5),child:Row(
-          children: [
-            SvgPicture.asset(
-              leadingIcon,
-              height: 24,
-              width: 24,
-            ),
-            20.widthBox,
-            Text(
-              title.tr(),
-              style: TextStyle(fontSize: 15),
-            )
-          ],
-        )));
+        child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+            child: Row(
+              children: [
+                SvgPicture.asset(
+                  leadingIcon,
+                  height: 24,
+                  width: 24,
+                ),
+                20.widthBox,
+                Text(
+                  title.tr,
+                  style: TextStyle(fontSize: 15),
+                )
+              ],
+            )));
   }
 }

@@ -1,10 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
-import 'package:tmween/generated/locale_keys.g.dart';
-import 'package:tmween/provider/signup_provider.dart';
+import 'package:get/get.dart';
+import 'package:tmween/controller/signup_controller.dart';
+import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/authentication/signup/individual_signup_screen.dart';
 import 'package:tmween/screens/authentication/signup/store_owner_signup_screen.dart';
 import 'package:tmween/utils/extensions.dart';
@@ -19,21 +18,14 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen>
     with TickerProviderStateMixin {
-  late List<Tab> tabList;
+  final signUpController = Get.put(SignUpController());
   late TabController _tabController;
   var language;
 
   @override
   void initState() {
-    tabList = <Tab>[];
-    tabList.add(new Tab(
-      text: LocaleKeys.individual.tr(),
-    ));
-    tabList.add(new Tab(
-      text: LocaleKeys.storeOwner.tr(),
-    ));
-    _tabController = new TabController(vsync: this, length: tabList.length);
-
+    _tabController =
+        new TabController(vsync: this, length: signUpController.tabList.length);
     super.initState();
   }
 
@@ -45,58 +37,66 @@ class _SignUpScreenState extends State<SignUpScreen>
 
   @override
   Widget build(BuildContext context) {
-    language = context.locale.toString().split('_')[0];
-    return Consumer<SignUpProvider>(builder: (context, signUpProvider, _) {
-      signUpProvider.context = context;
-      return DefaultTabController(
-          length: 2,
-          child: Scaffold(
-              body: SingleChildScrollView(
-                  child: SizedBox(
-                      height: MediaQuery.of(context).size.height,
-                      child: Column(
-                        children: [
-                          ConstrainedBox(
-                              constraints: BoxConstraints(
-                                  minWidth: double.infinity,
-                                  maxHeight: language == 'ar'
-                                      ? (MediaQuery.of(context).size.height / 3)
-                                      : (MediaQuery.of(context).size.height /
-                                          3.5)),
-                              child: topView(signUpProvider)),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border(
-                                  bottom: BorderSide(
-                                      color: AppColors.primaryColor,
-                                      width: 0.8)),
-                            ),
-                            child: TabBar(
-                                controller: _tabController,
-                                indicatorColor: AppColors.primaryColor,
-                                indicatorSize: TabBarIndicatorSize.tab,
-                                labelStyle: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                                labelColor: AppColors.primaryColor,
-                                unselectedLabelColor: Colors.black,
-                                tabs: tabList),
-                          ),
-                          Expanded(
-                            child: TabBarView(
-                              controller: _tabController,
-                              children: [
-                                IndividualSignUpScreen(),
-                                StoreOwnerSignUpScreen()
-                              ],
-                            ),
-                          )
-                        ],
-                      )))));
-    });
+    language = Get.locale!.languageCode;
+    return GetBuilder<SignUpController>(
+        init: SignUpController(),
+        builder: (contet) {
+          signUpController.context = context;
+          return DefaultTabController(
+              length: 2,
+              child: Scaffold(
+                  body: SingleChildScrollView(
+                      child: SizedBox(
+                          height: MediaQuery.of(context).size.height,
+                          child: Column(
+                            children: [
+                              ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                      minWidth: double.infinity,
+                                      maxHeight: language == 'ar'
+                                          ? (MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              3)
+                                          : (MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              3.5)),
+                                  child: topView(signUpController)),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border(
+                                      bottom: BorderSide(
+                                          color: AppColors.primaryColor,
+                                          width: 0.8)),
+                                ),
+                                child: TabBar(
+                                    controller: _tabController,
+                                    indicatorColor: AppColors.primaryColor,
+                                    indicatorSize: TabBarIndicatorSize.tab,
+                                    labelStyle: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                    labelColor: AppColors.primaryColor,
+                                    unselectedLabelColor: Colors.black,
+                                    tabs: signUpController.tabList),
+                              ),
+                              Expanded(
+                                child: TabBarView(
+                                  controller: _tabController,
+                                  children: [
+                                    IndividualSignUpScreen(),
+                                    StoreOwnerSignUpScreen()
+                                  ],
+                                ),
+                              )
+                            ],
+                          )))));
+        });
   }
 
-  Widget topView(SignUpProvider signUpProvider) {
+  Widget topView(SignUpController signUpController) {
     return Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -121,7 +121,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                                 color: Colors.white,
                                 child: InkWell(
                                   onTap: () {
-                                    signUpProvider.exitScreen();
+                                    signUpController.exitScreen();
                                   },
                                   child: SizedBox(
                                       width: 24,
@@ -157,14 +157,14 @@ class _SignUpScreenState extends State<SignUpScreen>
                       textAlign: TextAlign.center,
                       text: TextSpan(text: ' ', children: <InlineSpan>[
                         TextSpan(
-                          text: '${LocaleKeys.signUp} '.tr(),
+                          text: '${LocaleKeys.signUp} '.tr,
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: Colors.white),
                         ),
                         TextSpan(
-                          text: LocaleKeys.yourAccount.tr(),
+                          text: LocaleKeys.yourAccount.tr,
                           style: TextStyle(fontSize: 20, color: Colors.white70),
                         )
                       ])),
@@ -177,12 +177,12 @@ class _SignUpScreenState extends State<SignUpScreen>
                         child: RichText(
                             textAlign: TextAlign.center,
                             text: TextSpan(
-                                text: "${LocaleKeys.loginOurWebsite.tr()} ",
+                                text: "${LocaleKeys.loginOurWebsite.tr} ",
                                 style: TextStyle(
                                     fontSize: 14, color: Colors.white70),
                                 children: <InlineSpan>[
                                   TextSpan(
-                                    text: LocaleKeys.registerCapital.tr(),
+                                    text: LocaleKeys.registerCapital.tr,
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.white,

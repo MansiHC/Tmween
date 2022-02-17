@@ -1,6 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../global.dart';
 
@@ -10,7 +10,8 @@ class CustomButton extends StatelessWidget {
   final double? width;
   final double? fontSize;
 
-  CustomButton({required this.text, required this.onPressed, this.width,this.fontSize});
+  CustomButton(
+      {required this.text, required this.onPressed, this.width, this.fontSize});
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +19,10 @@ class CustomButton extends StatelessWidget {
         width: width ?? double.infinity,
         child: ElevatedButton(
           child: Text(
-            text,
+            text.tr,
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontSize:fontSize?? 20),
-          ).tr(),
+            style: TextStyle(color: Colors.white, fontSize: fontSize ?? 20),
+          ),
           onPressed: onPressed,
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(AppColors.primaryColor),

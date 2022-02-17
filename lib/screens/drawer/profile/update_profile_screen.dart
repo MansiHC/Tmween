@@ -1,14 +1,13 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tmween/generated/locale_keys.g.dart';
-import 'package:tmween/provider/my_account_provider.dart';
+import 'package:get/get.dart';
+import 'package:tmween/controller/edit_profile_contoller.dart';
+import 'package:tmween/lang/locale_keys.g.dart';
+import 'package:tmween/screens/drawer/profile/deactivate_account_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_button.dart';
 
-import '../../../provider/edit_profile_provider.dart';
 import '../../../utils/views/custom_text_form_field.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
@@ -22,6 +21,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   late int userId;
   late int loginLogId;
   late String language;
+
+  final editAccountController = Get.put(EditProfileController());
 
   @override
   void initState() {
@@ -38,34 +39,33 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     super.initState();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    language = context.locale.toString().split('_')[0];
-    return Consumer<EditProfileProvider>(
-        builder: (context, myAccountProvider, _) {
-      myAccountProvider.context = context;
-      myAccountProvider.getProfileDetails();
-      return Scaffold(
-          body: Container(
-              color: Colors.white,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                      constraints: BoxConstraints(
-                          minWidth: double.infinity, maxHeight: 90),
-                      color: AppColors.appBarColor,
-                      padding: EdgeInsets.only(top: 20),
-                      child: topView(myAccountProvider)),
-                  _middleView(myAccountProvider),
-                ],
-              )));
-    });
+    language = Get.locale!.languageCode;
+    return GetBuilder<EditProfileController>(
+        init: EditProfileController(),
+        builder: (contet) {
+          editAccountController.context = context;
+          editAccountController.getProfileDetails();
+          return Scaffold(
+              body: Container(
+                  color: Colors.white,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                          constraints: BoxConstraints(
+                              minWidth: double.infinity, maxHeight: 90),
+                          color: AppColors.appBarColor,
+                          padding: EdgeInsets.only(top: 20),
+                          child: topView(editAccountController)),
+                      _middleView(editAccountController),
+                    ],
+                  )));
+        });
   }
 
-  Widget _middleView(EditProfileProvider myAccountProvider) {
+  Widget _middleView(EditProfileController editAccountController) {
     return Expanded(
         child: SingleChildScrollView(
             child: Column(
@@ -95,125 +95,138 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         15.heightBox,
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 15),
-          child: _bottomView(myAccountProvider),
+          child: _bottomView(editAccountController),
         ),
       ],
     )));
   }
 
-  Widget _bottomView(EditProfileProvider myAccountProvider) {
+  Widget _bottomView(EditProfileController editAccountController) {
     return Form(
-        key: myAccountProvider.formKey,
-        child:Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          LocaleKeys.name.tr(),
-          style: TextStyle(
-              color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
-        ),
-        10.heightBox,
-        CustomBoxTextFormField(
-            controller: myAccountProvider.nameController,
-            keyboardType: TextInputType.name,
-            hintText: LocaleKeys.name,
-            textInputAction: TextInputAction.done,
-            validator: (value) {}),
-        10.heightBox,
-        Text(
-          LocaleKeys.lastName.tr(),
-          style: TextStyle(
-              color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
-        ),
-        10.heightBox,
-        CustomBoxTextFormField(
-            controller: myAccountProvider.lastNameController,
-            keyboardType: TextInputType.name,
-            hintText: LocaleKeys.lastName,
-            textInputAction: TextInputAction.done,
-            validator: (value) {}),
-        15.heightBox,
-        CustomButton(text: LocaleKeys.update, fontSize: 14, onPressed: () {}),
-        20.heightBox,
-        Text(
-          LocaleKeys.mobileNumber.tr(),
-          style: TextStyle(
-              color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
-        ),
-        10.heightBox,
-        CustomBoxTextFormField(
-            readOnly: myAccountProvider.enablePhone,
-            controller: myAccountProvider.mobileNumberController,
-            keyboardType: TextInputType.phone,
-            hintText: LocaleKeys.mobileNumber,
-            textInputAction: TextInputAction.done,
-            suffixIcon: InkWell(
-                onTap: () {
-                  myAccountProvider.enableMobileNumber();
-                },
-                child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                    child: Text(
-                      LocaleKeys.update.tr(),
-                      style: TextStyle(
-                          color: AppColors.blue,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold),
-                    ))),
-            validator: (value) {}),
-        10.heightBox,
-        Text(
-          LocaleKeys.email.tr(),
-          style: TextStyle(
-              color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
-        ),
-        10.heightBox,
-        CustomBoxTextFormField(
-            readOnly: myAccountProvider.enableEmail,
-            controller: myAccountProvider.emailController,
-            keyboardType: TextInputType.emailAddress,
-            hintText: LocaleKeys.email,
-            textInputAction: TextInputAction.done,
-            suffixIcon: InkWell(
-                onTap: () {
-                  myAccountProvider.enableEmailAddress();
-                },
-                child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                    child: Text(
-                      LocaleKeys.update.tr(),
-                      style: TextStyle(
-                          color: AppColors.blue,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold),
-                    ))),
-            validator: (value) {}),
-        30.heightBox,
-        Divider(
-          thickness: 1,
-          color: Colors.grey[300]!,
-        ),
-        5.heightBox,
-        Text(
-          LocaleKeys.changePassword.tr(),
-          style: TextStyle(color: Colors.black54, fontSize: 15),
-        ),
-        5.heightBox,
-        Divider(
-          thickness: 1,
-          color: Colors.grey[300]!,
-        ),
-        5.heightBox,
-        Text(
-          LocaleKeys.deactivateAccount.tr(),
-          style: TextStyle(color: Colors.black54, fontSize: 15),
-        ),
-        50.heightBox,
-      ],
-    ));
+        key: editAccountController.formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              LocaleKeys.name.tr,
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold),
+            ),
+            10.heightBox,
+            CustomBoxTextFormField(
+                controller: editAccountController.nameController,
+                keyboardType: TextInputType.name,
+                hintText: LocaleKeys.name,
+                textInputAction: TextInputAction.done,
+                validator: (value) {}),
+            10.heightBox,
+            Text(
+              LocaleKeys.lastName.tr,
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold),
+            ),
+            10.heightBox,
+            CustomBoxTextFormField(
+                controller: editAccountController.lastNameController,
+                keyboardType: TextInputType.name,
+                hintText: LocaleKeys.lastName,
+                textInputAction: TextInputAction.done,
+                validator: (value) {}),
+            15.heightBox,
+            CustomButton(
+                text: LocaleKeys.update, fontSize: 14, onPressed: () {}),
+            20.heightBox,
+            Text(
+              LocaleKeys.mobileNumber.tr,
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold),
+            ),
+            10.heightBox,
+            CustomBoxTextFormField(
+                readOnly: editAccountController.enablePhone,
+                controller: editAccountController.mobileNumberController,
+                keyboardType: TextInputType.phone,
+                hintText: LocaleKeys.mobileNumber,
+                textInputAction: TextInputAction.done,
+                suffixIcon: InkWell(
+                    onTap: () {
+                      editAccountController.enableMobileNumber();
+                    },
+                    child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                        child: Text(
+                          LocaleKeys.update.tr,
+                          style: TextStyle(
+                              color: AppColors.blue,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold),
+                        ))),
+                validator: (value) {}),
+            10.heightBox,
+            Text(
+              LocaleKeys.email.tr,
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold),
+            ),
+            10.heightBox,
+            CustomBoxTextFormField(
+                readOnly: editAccountController.enableEmail,
+                controller: editAccountController.emailController,
+                keyboardType: TextInputType.emailAddress,
+                hintText: LocaleKeys.email,
+                textInputAction: TextInputAction.done,
+                suffixIcon: InkWell(
+                    onTap: () {
+                      editAccountController.enableEmailAddress();
+                    },
+                    child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                        child: Text(
+                          LocaleKeys.update.tr,
+                          style: TextStyle(
+                              color: AppColors.blue,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold),
+                        ))),
+                validator: (value) {}),
+            30.heightBox,
+            Divider(
+              thickness: 1,
+              color: Colors.grey[300]!,
+            ),
+            5.heightBox,
+            Text(
+              LocaleKeys.changePassword.tr,
+              style: TextStyle(color: Colors.black54, fontSize: 15),
+            ),
+            5.heightBox,
+            Divider(
+              thickness: 1,
+              color: Colors.grey[300]!,
+            ),
+            5.heightBox,
+            InkWell(onTap:(){
+              editAccountController.navigateTo(DeactivateAccountScreen());
+            },child:Text(
+              LocaleKeys.deactivateAccount.tr,
+              style: TextStyle(color: Colors.black54, fontSize: 15),
+            )),
+            50.heightBox,
+          ],
+        ));
   }
 
-  Widget topView(EditProfileProvider myAccountProvider) {
+  Widget topView(EditProfileController editAccountController) {
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         child: Stack(
@@ -227,7 +240,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     color: Colors.white, // Button color
                     child: InkWell(
                       onTap: () {
-                        myAccountProvider.exitScreen();
+                        editAccountController.exitScreen();
                       },
                       child: SizedBox(
                           width: 24,
@@ -242,7 +255,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
             Align(
               alignment: Alignment.center,
               child: Text(
-                LocaleKeys.updateProfile.tr(),
+                LocaleKeys.updateProfile.tr,
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),

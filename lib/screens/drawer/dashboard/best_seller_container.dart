@@ -1,8 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:tmween/generated/locale_keys.g.dart';
+import 'package:get/get.dart';
+import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/best_seller_model.dart';
 import 'package:tmween/utils/extensions.dart';
 
@@ -15,7 +15,7 @@ class BestSellerContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    language = context.locale.toString().split('_')[0];
+    language = Get.locale!.languageCode;
     return Container(
       width: 165,
       margin: EdgeInsets.only(right: 7),
@@ -63,7 +63,7 @@ class BestSellerContainer extends StatelessWidget {
                                   color: Colors.white,
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold)),
-                          Text(LocaleKeys.off.tr(),
+                          Text(LocaleKeys.off.tr,
                               style:
                                   TextStyle(color: Colors.white, fontSize: 10)),
                         ],
@@ -95,12 +95,12 @@ class BestSellerContainer extends StatelessWidget {
                   child: RichText(
                       textAlign: TextAlign.start,
                       text: TextSpan(
-                          text: LocaleKeys.fulfilledBy.tr(),
+                          text: LocaleKeys.fulfilledBy.tr,
                           style: TextStyle(
                               fontSize: 11, color: AppColors.primaryColor),
                           children: <InlineSpan>[
                             TextSpan(
-                              text: LocaleKeys.appTitle.tr(),
+                              text: LocaleKeys.appTitle.tr,
                               style: TextStyle(
                                 fontSize: 11,
                                 color: AppColors.primaryColor,
@@ -142,7 +142,7 @@ class BestSellerContainer extends StatelessWidget {
                       color: AppColors.primaryColor,
                       borderRadius: BorderRadius.all(Radius.circular(4))),
                   child: Text(
-                    LocaleKeys.add.tr(),
+                    LocaleKeys.add.tr,
                     style: TextStyle(color: Colors.white, fontSize: 14),
                   ),
                 ),

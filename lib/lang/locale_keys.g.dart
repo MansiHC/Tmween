@@ -34,6 +34,7 @@ abstract class LocaleKeys {
   static const emptyYourEmail = 'emptyYourEmail';
   static const validYourEmail = 'validYourEmail';
   static const yourPassword = 'yourPassword';
+  static const password = 'password';
   static const emptyPassword = 'emptyPassword';
   static const validPasswordLength = 'validPasswordLength';
   static const validPassword = 'validPassword';
@@ -104,4 +105,15 @@ abstract class LocaleKeys {
   static const changePassword = 'changePassword';
   static const deactivateAccount = 'deactivateAccount';
   static const logout = 'logout';
+  static const confirmDeactivate = 'confirmDeactivate';
+  static const whenDeactivate = 'whenDeactivate';
+  static const whenDeactivateText1 = 'whenDeactivateText1';
+  static const whenDeactivateText2 = 'whenDeactivateText2';
+  static const whenDeactivateText3 = 'whenDeactivateText3';
+  static const whenDeactivateText4 = 'whenDeactivateText4';
+  static const whenDeactivateText5 = 'whenDeactivateText5';
+  static const howReactivate = 'howReactivate';
+  static const howReactivateText1 = 'howReactivateText1';
+  static const howReactivateText2 = 'howReactivateText2';
+  static const howReactivateText3 = 'howReactivateText3';
 }

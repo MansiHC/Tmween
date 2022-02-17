@@ -1,12 +1,12 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tmween/generated/locale_keys.g.dart';
+import 'package:get/get.dart';
+import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/authentication/signup/otp_screen.dart';
 import 'package:tmween/service/api.dart';
 import 'package:tmween/utils/helper.dart';
 
-class SignUpProvider extends ChangeNotifier {
+class SignUpController extends GetxController {
   bool agree = false;
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -25,7 +25,7 @@ class SignUpProvider extends ChangeNotifier {
 
   doRequest() async {
     loading = true;
-    notifyListeners();
+    update();
     await api
         .request(
             context,
@@ -39,7 +39,7 @@ class SignUpProvider extends ChangeNotifier {
             "en")
         .then((value) {
       loading = false;
-      notifyListeners();
+      update();
       print('value....${value.toString()}');
       Helper.showSnackBar(context, value.message!);
       /* if(value.message==AppConstants.success) {
@@ -48,9 +48,23 @@ class SignUpProvider extends ChangeNotifier {
       navigateToOtpScreen();
     }).catchError((error) {
       loading = false;
-      notifyListeners();
+      update();
       print('error....$error');
     });
+  }
+
+  late List<Tab> tabList;
+
+  @override
+  void onInit() {
+    tabList = <Tab>[];
+    tabList.add(new Tab(
+      text: LocaleKeys.individual.tr,
+    ));
+    tabList.add(new Tab(
+      text: LocaleKeys.storeOwner.tr,
+    ));
+    super.onInit();
   }
 
   void exitScreen() {
@@ -59,17 +73,17 @@ class SignUpProvider extends ChangeNotifier {
 
   void notifyCheckBox() {
     agree = !agree;
-    notifyListeners();
+    update();
   }
 
   void visiblePasswordIcon() {
     visiblePassword = !visiblePassword;
-    notifyListeners();
+    update();
   }
 
   void visibleConfirmPasswordIcon() {
     visibleConfirmPassword = !visibleConfirmPassword;
-    notifyListeners();
+    update();
   }
 
   void signUp() {
@@ -78,7 +92,7 @@ class SignUpProvider extends ChangeNotifier {
         //doRequest();
         navigateToOtpScreen();
       } else {
-        Helper.showSnackBar(context, LocaleKeys.emptyAgreeTerms.tr());
+        Helper.showSnackBar(context, LocaleKeys.emptyAgreeTerms.tr);
       }
     }
   }

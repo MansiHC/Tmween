@@ -1,17 +1,17 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
-import 'package:tmween/generated/locale_keys.g.dart';
+import 'package:get/get.dart';
+import 'package:tmween/controller/drawer_controller.dart';
+import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/language_model.dart';
-import 'package:tmween/provider/drawer_provider.dart';
 import 'package:tmween/screens/drawer/categories_screen.dart';
 import 'package:tmween/screens/drawer/deal_of_the_day_screen.dart';
 import 'package:tmween/screens/drawer/sold_by_tmween_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
+import '../../utils/my_shared_preferences.dart';
 import '../../utils/views/custom_text_form_field.dart';
 import 'address_container.dart';
 import 'profile/my_account_screen.dart';
@@ -24,144 +24,125 @@ class DrawerScreen extends StatefulWidget {
 }
 
 class _DrawerScreenState extends State<DrawerScreen> {
-  late int userId;
-  late int loginLogId;
-  late String language;
-  late List<LanguageModel> languages;
-  late LanguageModel languageValue ;
+  final drawerController = Get.put(DrawerControllers());
+  late var language;
 
   @override
   void didChangeDependencies() {
-    languages =<LanguageModel>[
-      LanguageModel(name: LocaleKeys.english.tr(), locale: context.supportedLocales[0]),
-      LanguageModel(name: LocaleKeys.arabian.tr(), locale: context.supportedLocales[1]),
-      LanguageModel(name: LocaleKeys.spanish.tr(), locale: context.supportedLocales[2]),
-    ];
-    languageValue = languages[0];
-
     super.didChangeDependencies();
   }
 
   @override
-  void initState() {
-    /*MySharedPreferences.instance
-        .getIntValuesSF(SharedPreferencesKeys.userId)
-        .then((value) async {
-      userId = value!;
-      MySharedPreferences.instance
-          .getIntValuesSF(SharedPreferencesKeys.loginLogId)
-          .then((value) async {
-        loginLogId = value! ;
-      });
-    });*/
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    language = context.locale.toString().split('_')[0];
-    return Consumer<DrawerProvider>(builder: (context, drawerProvider, _) {
-      drawerProvider.context = context;
-      return WillPopScope(
-          onWillPop: () => _onWillPop(drawerProvider),
-          child: Scaffold(
-              appBar: AppBar(
-                iconTheme: IconThemeData(color: Colors.white),
-                backgroundColor: AppColors.appBarColor,
-                centerTitle: false,
-                titleSpacing: 0.0,
-                title: drawerProvider.pageIndex == 0
-                    ? InkWell(
-                        onTap: () {
-                          showModalBottomSheet<void>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return _bottomSheetView(drawerProvider);
-                              });
-                        },
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'East delivery in 1 day*',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 12),
-                              ),
-                              Row(
+    language = Get.locale!.languageCode;
+    return GetBuilder<DrawerControllers>(
+        init: DrawerControllers(),
+        builder: (contet) {
+          drawerController.context = context;
+          return WillPopScope(
+              onWillPop: () => _onWillPop(drawerController),
+              child: Scaffold(
+                  appBar: AppBar(
+                    iconTheme: IconThemeData(color: Colors.white),
+                    backgroundColor: AppColors.appBarColor,
+                    centerTitle: false,
+                    titleSpacing: 0.0,
+                    title: drawerController.pageIndex == 0
+                        ? InkWell(
+                            onTap: () {
+                              showModalBottomSheet<void>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return _bottomSheetView(drawerController);
+                                  });
+                            },
+                            child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Icon(
-                                    Icons.location_on_rounded,
-                                    color: AppColors.primaryColor,
-                                  ),
-                                  Expanded(
-                                      child: Text(
-                                    '1999 Bluff Street MOODY Alabama - 35004',
+                                  Text(
+                                    'East delivery in 1 day*',
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 12),
-                                  )),
-                                ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.location_on_rounded,
+                                        color: AppColors.primaryColor,
+                                      ),
+                                      Expanded(
+                                          child: Text(
+                                        '1999 Bluff Street MOODY Alabama - 35004',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 12),
+                                      )),
+                                    ],
+                                  ),
+                                ]))
+                        : Text(
+                            drawerController.pageTitle,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                    actions: [
+                      drawerController.pageIndex == 0
+                          ? InkWell(
+                              onTap: () {
+                                drawerController.navigateTo(MyAccountScreen());
+                              },
+                              child: Container(
+                                width: 45,
+                                child: CircleAvatar(
+                                  radius: 45,
+                                  backgroundImage: NetworkImage(
+                                      'http://i.imgur.com/QSev0hg.jpg'),
+                                ),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.white,
+                                    width: 3.0,
+                                  ),
+                                ),
                               ),
-                            ]))
-                    : Text(
-                        drawerProvider.pageTitle,
-                        style: TextStyle(color: Colors.white),
-                      ),
-                actions: [
-                  drawerProvider.pageIndex == 0
-                      ?InkWell(
-              onTap: (){
-          drawerProvider.navigateTo(MyAccountScreen());
-          },
-              child: Container(
-                width: 45,
-                child: CircleAvatar(
-                  radius: 45,
-                  backgroundImage: NetworkImage('http://i.imgur.com/QSev0hg.jpg'),
-                ),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Colors.white,
-                    width: 3.0,
+                            )
+                          : Container(),
+                      20.widthBox
+                    ],
+                    elevation: 0.0,
                   ),
-                ),
-              ),)
-                      : Container(),
-                  20.widthBox
-                ],
-                elevation: 0.0,
-              ),
-              drawer: _buildDrawer(drawerProvider),
-              bottomNavigationBar: _buildBottomNavBar(drawerProvider),
-              body: Column(children: [
-                Container(
-                    color: AppColors.appBarColor,
-                    child: Container(
-                        color: Colors.white,
-                        margin:
-                            EdgeInsets.only(bottom: 10, left: 20, right: 20),
-                        child: CustomTextFormField(
-                            controller: drawerProvider.searchController,
-                            keyboardType: TextInputType.text,
-                            hintText: LocaleKeys.searchProducts.tr(),
-                            textInputAction: TextInputAction.search,
-                            onSubmitted: (term) {
-                              FocusScope.of(context).unfocus();
-                            },
-                            prefixIcon: Icon(
-                              Icons.search,
-                              color: AppColors.primaryColor,
-                            ),
-                            validator: (value) {
-                              return null;
-                            }))),
-                Expanded(child: drawerProvider.pages[drawerProvider.pageIndex]),
-              ])));
-    });
+                  drawer: _buildDrawer(drawerController),
+                  bottomNavigationBar: _buildBottomNavBar(drawerController),
+                  body: Column(children: [
+                    Container(
+                        color: AppColors.appBarColor,
+                        child: Container(
+                            color: Colors.white,
+                            margin: EdgeInsets.only(
+                                bottom: 10, left: 20, right: 20),
+                            child: CustomTextFormField(
+                                controller: drawerController.searchController,
+                                keyboardType: TextInputType.text,
+                                hintText: LocaleKeys.searchProducts.tr,
+                                textInputAction: TextInputAction.search,
+                                onSubmitted: (term) {
+                                  FocusScope.of(context).unfocus();
+                                },
+                                prefixIcon: Icon(
+                                  Icons.search,
+                                  color: AppColors.primaryColor,
+                                ),
+                                validator: (value) {
+                                  return null;
+                                }))),
+                    Expanded(
+                        child:
+                            drawerController.pages[drawerController.pageIndex]),
+                  ])));
+        });
   }
 
-  _bottomSheetView(DrawerProvider drawerProvider) {
+  _bottomSheetView(DrawerControllers drawerController) {
     return Container(
         height: 305,
         padding: EdgeInsets.all(15),
@@ -170,7 +151,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
           children: [
             10.heightBox,
             Text(
-              LocaleKeys.chooseLocation.tr(),
+              LocaleKeys.chooseLocation.tr,
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 18,
@@ -178,19 +159,19 @@ class _DrawerScreenState extends State<DrawerScreen> {
             ),
             10.heightBox,
             Text(
-              LocaleKeys.chooseLocationText.tr(),
+              LocaleKeys.chooseLocationText.tr,
               style: TextStyle(color: Colors.black87, fontSize: 16),
             ),
             20.heightBox,
             Container(
                 height: 150,
                 child: ListView.builder(
-                    itemCount: drawerProvider.addresses.length + 1,
+                    itemCount: drawerController.addresses.length + 1,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      return (index != drawerProvider.addresses.length)
+                      return (index != drawerController.addresses.length)
                           ? AddressContainer(
-                              address: drawerProvider.addresses[index])
+                              address: drawerController.addresses[index])
                           : Container(
                               width: 150,
                               padding: EdgeInsets.all(10),
@@ -202,7 +183,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(2))),
                               child: Center(
-                                  child: Text(LocaleKeys.addAddressText.tr(),
+                                  child: Text(LocaleKeys.addAddressText.tr,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           color: AppColors.primaryColor,
@@ -213,7 +194,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
         ));
   }
 
-  _buildBottomNavBar(DrawerProvider drawerProvider) {
+  _buildBottomNavBar(DrawerControllers drawerController) {
     return Container(
       color: AppColors.appBarColor,
       height: 60,
@@ -222,13 +203,13 @@ class _DrawerScreenState extends State<DrawerScreen> {
         children: [
           InkWell(
               onTap: () {
-                drawerProvider.changePage(0);
+                drawerController.changePage(0);
               },
               child: Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
                 direction: Axis.vertical,
                 children: [
-                  drawerProvider.pageIndex == 0
+                  drawerController.pageIndex == 0
                       ? Image.asset(
                           ImageConstanst.dashboardIcon,
                           height: 24,
@@ -241,21 +222,21 @@ class _DrawerScreenState extends State<DrawerScreen> {
                         ),
                   5.heightBox,
                   Text(
-                    LocaleKeys.home.tr(),
+                    LocaleKeys.home.tr,
                     style: TextStyle(fontSize: 12, color: Colors.white),
                   )
                 ],
               )),
           InkWell(
               onTap: () {
-                drawerProvider.pageTitle = LocaleKeys.categories.tr();
-                drawerProvider.changePage(1);
+                drawerController.pageTitle = LocaleKeys.categories.tr;
+                drawerController.changePage(1);
               },
               child: Wrap(
                   direction: Axis.vertical,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    drawerProvider.pageIndex == 1
+                    drawerController.pageIndex == 1
                         ? const Icon(
                             CupertinoIcons.circle_grid_3x3_fill,
                             color: AppColors.primaryColor,
@@ -268,20 +249,20 @@ class _DrawerScreenState extends State<DrawerScreen> {
                           ),
                     5.heightBox,
                     Text(
-                      LocaleKeys.categories.tr(),
+                      LocaleKeys.categories.tr,
                       style: TextStyle(fontSize: 12, color: Colors.white),
                     )
                   ])),
           InkWell(
               onTap: () {
-                drawerProvider.changePage(2);
-                drawerProvider.pageTitle = LocaleKeys.search.tr();
+                drawerController.changePage(2);
+                drawerController.pageTitle = LocaleKeys.search.tr;
               },
               child: Wrap(
                   direction: Axis.vertical,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    drawerProvider.pageIndex == 2
+                    drawerController.pageIndex == 2
                         ? const Icon(
                             CupertinoIcons.search,
                             color: AppColors.primaryColor,
@@ -294,20 +275,20 @@ class _DrawerScreenState extends State<DrawerScreen> {
                           ),
                     5.heightBox,
                     Text(
-                      LocaleKeys.search.tr(),
+                      LocaleKeys.search.tr,
                       style: TextStyle(fontSize: 12, color: Colors.white),
                     )
                   ])),
           InkWell(
               onTap: () {
-                drawerProvider.changePage(3);
-                drawerProvider.pageTitle = LocaleKeys.wishLists.tr();
+                drawerController.changePage(3);
+                drawerController.pageTitle = LocaleKeys.wishLists.tr;
               },
               child: Wrap(
                   direction: Axis.vertical,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    drawerProvider.pageIndex == 3
+                    drawerController.pageIndex == 3
                         ? const Icon(
                             CupertinoIcons.square_favorites_fill,
                             color: AppColors.primaryColor,
@@ -320,20 +301,20 @@ class _DrawerScreenState extends State<DrawerScreen> {
                           ),
                     5.heightBox,
                     Text(
-                      LocaleKeys.wishLists.tr(),
+                      LocaleKeys.wishLists.tr,
                       style: TextStyle(fontSize: 12, color: Colors.white),
                     )
                   ])),
           InkWell(
               onTap: () {
-                drawerProvider.changePage(4);
-                drawerProvider.pageTitle = LocaleKeys.cart.tr();
+                drawerController.changePage(4);
+                drawerController.pageTitle = LocaleKeys.cart.tr;
               },
               child: Wrap(
                   direction: Axis.vertical,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    drawerProvider.pageIndex == 4
+                    drawerController.pageIndex == 4
                         ? const Icon(
                             Icons.shopping_cart,
                             color: AppColors.primaryColor,
@@ -346,7 +327,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                           ),
                     5.heightBox,
                     Text(
-                      LocaleKeys.cart.tr(),
+                      LocaleKeys.cart.tr,
                       style: TextStyle(fontSize: 12, color: Colors.white),
                     )
                   ])),
@@ -366,13 +347,13 @@ class _DrawerScreenState extends State<DrawerScreen> {
     return ImageConstanst.usFlagIcon;
   }
 
-  _buildDrawer(DrawerProvider drawerProvider) {
+  _buildDrawer(DrawerControllers drawerController) {
     var flagIcon = _getFlagIcon();
-if(language=='ar'){
-  languageValue = languages[1];
-}else if(language=='es'){
-  languageValue = languages[2];
-}
+    if (language == 'ar') {
+      drawerController.languageValue = drawerController.languages[1];
+    } else if (language == 'es') {
+      drawerController.languageValue = drawerController.languages[2];
+    }
     return Drawer(
       backgroundColor: AppColors.appBarColor,
       child: ListView(
@@ -386,12 +367,12 @@ if(language=='ar'){
               width: 24,
             ),
             title: Text(
-              LocaleKeys.home.tr(),
+              LocaleKeys.home.tr,
               style: TextStyle(color: Colors.white),
             ),
             onTap: () {
-              drawerProvider.closeDrawer();
-              drawerProvider.changePage(0);
+              drawerController.closeDrawer();
+              drawerController.changePage(0);
             },
           ),
           20.heightBox,
@@ -403,13 +384,13 @@ if(language=='ar'){
               color: Colors.white,
             ),
             title: Text(
-              LocaleKeys.shopByCategorySmall.tr(),
+              LocaleKeys.shopByCategorySmall.tr,
               style: TextStyle(color: Colors.white),
             ),
             onTap: () {
-              drawerProvider.closeDrawer();
-              drawerProvider.pageTitle = LocaleKeys.shopByCategorySmall.tr();
-              drawerProvider.navigateTo(CategoriesScreen(
+              drawerController.closeDrawer();
+              drawerController.pageTitle = LocaleKeys.shopByCategorySmall.tr;
+              drawerController.navigateTo(CategoriesScreen(
                 fromDrawer: true,
               ));
             },
@@ -421,12 +402,12 @@ if(language=='ar'){
               height: 24,
               color: Colors.white,
             ),
-            title: Text(LocaleKeys.dealOfDaySmall.tr(),
+            title: Text(LocaleKeys.dealOfDaySmall.tr,
                 style: TextStyle(color: Colors.white)),
             onTap: () {
-              drawerProvider.closeDrawer();
-              drawerProvider.pageTitle = LocaleKeys.dealOfDaySmall.tr();
-              drawerProvider.navigateTo(DealsOfTheDayScreen());
+              drawerController.closeDrawer();
+              drawerController.pageTitle = LocaleKeys.dealOfDaySmall.tr;
+              drawerController.navigateTo(DealsOfTheDayScreen());
             },
           ),
           ListTile(
@@ -436,12 +417,12 @@ if(language=='ar'){
               height: 24,
               color: Colors.white,
             ),
-            title: Text(LocaleKeys.soldByTmweenSmall.tr(),
+            title: Text(LocaleKeys.soldByTmweenSmall.tr,
                 style: TextStyle(color: Colors.white)),
             onTap: () {
-              drawerProvider.closeDrawer();
-              drawerProvider.pageTitle = LocaleKeys.soldByTmweenSmall.tr();
-              drawerProvider.navigateTo(SoldByTmweenScreen());
+              drawerController.closeDrawer();
+              drawerController.pageTitle = LocaleKeys.soldByTmweenSmall.tr;
+              drawerController.navigateTo(SoldByTmweenScreen());
             },
           ),
           Divider(
@@ -455,12 +436,12 @@ if(language=='ar'){
               height: 24,
               color: Colors.white,
             ),
-            title: Text(LocaleKeys.sellingOnTmween.tr(),
+            title: Text(LocaleKeys.sellingOnTmween.tr,
                 style: TextStyle(color: Colors.white)),
             onTap: () {
-              drawerProvider.closeDrawer();
-              drawerProvider.pageTitle = LocaleKeys.sellingOnTmween.tr();
-              drawerProvider.changePage(1);
+              drawerController.closeDrawer();
+              drawerController.pageTitle = LocaleKeys.sellingOnTmween.tr;
+              drawerController.changePage(1);
             },
           ),
           Divider(
@@ -474,12 +455,12 @@ if(language=='ar'){
               height: 24,
               color: Colors.white,
             ),
-            title: Text(LocaleKeys.deliveryOnTmween.tr(),
+            title: Text(LocaleKeys.deliveryOnTmween.tr,
                 style: TextStyle(color: Colors.white)),
             onTap: () {
-              drawerProvider.closeDrawer();
-              drawerProvider.pageTitle = LocaleKeys.deliveryOnTmween.tr();
-              drawerProvider.changePage(1);
+              drawerController.closeDrawer();
+              drawerController.pageTitle = LocaleKeys.deliveryOnTmween.tr;
+              drawerController.changePage(1);
             },
           ),
           Divider(
@@ -488,29 +469,35 @@ if(language=='ar'){
           ),
           16.heightBox,
           Wrap(children: [
-                16.widthBox,
-                SvgPicture.asset(flagIcon, width: 20, height: 20),
-                6.widthBox,
-                DropdownButton<LanguageModel>(
-                  isDense: true,
-                  underline: Container(color: Colors.transparent),
-                  value: languageValue,
-                  dropdownColor: AppColors.primaryColor,
-                  style: TextStyle(color: Colors.white),
-                  icon: const Icon(Icons.keyboard_arrow_down,color: Colors.white,),
-                  items: languages.map((LanguageModel items) {
-                    return DropdownMenuItem(
-                      value: items,
-                      child: Text(items.name),
-                    );
-                  }).toList(),
-                  onChanged: (LanguageModel? value) async {
-                    languageValue = value!;
-                    await context.setLocale(value.locale);
-                    drawerProvider.closeDrawer();
-                  },
-                ),
-              ]),
+            16.widthBox,
+            SvgPicture.asset(flagIcon, width: 20, height: 20),
+            6.widthBox,
+            DropdownButton<LanguageModel>(
+              isDense: true,
+              underline: Container(color: Colors.transparent),
+              value: drawerController.languageValue,
+              dropdownColor: AppColors.primaryColor,
+              style: TextStyle(color: Colors.white),
+              icon: const Icon(
+                Icons.keyboard_arrow_down,
+                color: Colors.white,
+              ),
+              items: drawerController.languages.map((LanguageModel items) {
+                return DropdownMenuItem(
+                  value: items,
+                  child: Text(items.name),
+                );
+              }).toList(),
+              onChanged: (LanguageModel? value) async {
+                drawerController.languageValue = value!;
+                //  await context.setLocale(value.locale);
+                MySharedPreferences.instance.addStringToSF(
+                    SharedPreferencesKeys.language, value.locale.toString());
+                Get.updateLocale(value.locale);
+                // drawerController.closeDrawer();
+              },
+            ),
+          ]),
           ListTile(
             leading: SvgPicture.asset(
               ImageConstanst.customerServiceIcon,
@@ -518,22 +505,21 @@ if(language=='ar'){
               height: 24,
               color: Colors.white,
             ),
-            title: Text(LocaleKeys.customerService.tr(),
+            title: Text(LocaleKeys.customerService.tr,
                 style: TextStyle(color: Colors.white)),
             onTap: () {},
           ),
-
         ],
       ),
     );
   }
 
-  Future<bool> _onWillPop(DrawerProvider drawerProvider) async {
+  Future<bool> _onWillPop(DrawerControllers drawerController) async {
     return await showDialog(
-        context: drawerProvider.context,
+        context: drawerController.context,
         builder: (_) => AlertDialog(
               title: Text(
-                LocaleKeys.wantExit.tr(),
+                LocaleKeys.wantExit.tr,
                 style: TextStyle(
                   fontSize: 16,
                 ),
@@ -542,26 +528,24 @@ if(language=='ar'){
                 TextButton(
                   style: TextButton.styleFrom(padding: EdgeInsets.zero),
                   child: Text(
-                    LocaleKeys.no.tr(),
+                    LocaleKeys.no.tr,
                     style: TextStyle(fontSize: 16, color: Colors.black54),
                   ),
                   onPressed: () {
-                    drawerProvider.pop();
+                    drawerController.pop();
                   },
                 ),
                 TextButton(
                   style: TextButton.styleFrom(padding: EdgeInsets.zero),
                   child: Text(
-                    LocaleKeys.yes.tr(),
+                    LocaleKeys.yes.tr,
                     style: TextStyle(fontSize: 16, color: Colors.black54),
                   ),
                   onPressed: () {
-                    drawerProvider.exit();
+                    drawerController.exit();
                   },
                 ),
               ],
             ));
   }
-
-
 }

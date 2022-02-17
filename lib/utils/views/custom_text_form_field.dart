@@ -1,7 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 import '../global.dart';
 
@@ -50,11 +50,11 @@ class CustomTextFormField extends StatelessWidget {
       ),
       decoration: InputDecoration(
           focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: AppColors.primaryColor),
+            borderSide: BorderSide(color: AppColors.darkblue),
           ),
           fillColor: Colors.grey,
           errorMaxLines: 2,
-          hintText: hintText.tr(),
+          hintText: hintText.tr,
           hintStyle: TextStyle(
             color: Colors.grey,
             fontSize: 16,
@@ -85,29 +85,29 @@ class CustomBoxTextFormField extends StatelessWidget {
 
   CustomBoxTextFormField(
       {required this.controller,
-        required this.keyboardType,
-        required this.hintText,
-        this.errorText,
-        this.suffixIcon,
-        this.obscureText,
-        this.readOnly,
-        this.inputFormatters,
-        required this.validator,
-        this.textInputAction,
-        this.prefixIcon,
-        this.onSubmitted});
+      required this.keyboardType,
+      required this.hintText,
+      this.errorText,
+      this.suffixIcon,
+      this.obscureText,
+      this.readOnly,
+      this.inputFormatters,
+      required this.validator,
+      this.textInputAction,
+      this.prefixIcon,
+      this.onSubmitted});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      readOnly: readOnly??false,
+      readOnly: readOnly ?? false,
       keyboardType: keyboardType,
       controller: controller,
       obscureText: obscureText ?? false,
       inputFormatters: inputFormatters,
       validator: validator,
       onFieldSubmitted: onSubmitted ??
-              (term) {
+          (term) {
             FocusScope.of(context).nextFocus();
           },
       textInputAction: textInputAction ?? TextInputAction.next,
@@ -116,21 +116,20 @@ class CustomBoxTextFormField extends StatelessWidget {
         color: Colors.black,
       ),
       decoration: InputDecoration(
-        isDense: true,
+          isDense: true,
           contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        border:OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.lightGrayColor),
-        ) ,
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: AppColors.lightGrayColor),
+          ),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.blueGrey[100]!),
-          ) ,
+          ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: AppColors.primaryColor),
           ),
-
           fillColor: Colors.grey,
           errorMaxLines: 2,
-          hintText: hintText.tr(),
+          hintText: hintText.tr,
           hintStyle: TextStyle(
             color: Colors.grey,
             fontSize: 16,

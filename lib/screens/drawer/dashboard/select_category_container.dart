@@ -1,7 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tmween/generated/locale_keys.g.dart';
+import 'package:get/get.dart';
+import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/utils/extensions.dart';
 
 import '../../../model/select_category_model.dart';
@@ -38,7 +38,7 @@ class SelectCategoryContainer extends StatelessWidget {
                                     color: Colors.white,
                                     fontSize: 10,
                                     fontWeight: FontWeight.bold)),
-                            Text(LocaleKeys.off.tr(),
+                            Text(LocaleKeys.off.tr,
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 10)),
                           ],

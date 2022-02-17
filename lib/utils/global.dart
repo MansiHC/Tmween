@@ -14,13 +14,15 @@ String mathFunc(Match match) => '${match[1]},';
 abstract class AppColors {
   static const lightGrayColor = Color(0xFFF3F3F3);
   static const lighterGrayColor = Color(0xFFF2F2F2);
+  static const back = Color(0xFFF2F2F2);
   static const primaryColor = Color(0xFF0088CA);
   static const appBarColor = Color(0xFF314156);
   static const offerGreen = Color(0xFF158D07);
-  static const darkGrayBackground = Color(0xFFF6F6F6);
+  static const darkGrayBackground = Color(0xFFF7F7F7);
   static const lightBlueBackground = Color(0xFFDCF4FF);
   static const lightBlue = Color(0xFFABD9E4);
   static const blue = Color(0xFF5BABD0);
+  static const darkblue = Color(0xFF369ED2);
 }
 
 abstract class AppConstants {
@@ -81,7 +83,8 @@ abstract class ImageConstanst {
   static const String wishlistIcon = 'asset/image/wishlist_icon.svg';
   static const String logoutIcon = 'asset/image/logout_icon.svg';
   static const String notificationsIcon = 'asset/image/notifications_icon.svg';
-  static const String accountSettingIcon = 'asset/image/account_setting_icon.svg';
+  static const String accountSettingIcon =
+      'asset/image/account_setting_icon.svg';
 }
 
 abstract class SharedPreferencesKeys {
@@ -91,6 +94,7 @@ abstract class SharedPreferencesKeys {
   static const isSplash = "isSplash";
   static const userId = "userId";
   static const loginLogId = "loginLogId";
+  static const language = "language";
 }
 
 /* Future setHomeCountry(HomeCountry country) async {

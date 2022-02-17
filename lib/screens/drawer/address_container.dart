@@ -1,8 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:tmween/generated/locale_keys.g.dart';
+import 'package:get/get.dart';
+import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/address_model.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
@@ -14,7 +14,7 @@ class AddressContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    language = context.locale.toString().split('_')[0];
+    language = Get.locale!.languageCode;
     return Container(
       width: 150,
       padding: EdgeInsets.all(10),
@@ -37,7 +37,8 @@ class AddressContainer extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Align(
-                alignment: language=='ar'?Alignment.topRight:Alignment.topLeft,
+                alignment:
+                    language == 'ar' ? Alignment.topRight : Alignment.topLeft,
                 child: Text(address.name,
                     textAlign: TextAlign.start,
                     style: TextStyle(
@@ -78,8 +79,10 @@ class AddressContainer extends StatelessWidget {
             Visibility(
                 visible: address.isDefault,
                 child: Align(
-                    alignment: language=='ar'?Alignment.bottomRight:Alignment.bottomLeft,
-                    child: Text(LocaleKeys.defaultAddress.tr(),
+                    alignment: language == 'ar'
+                        ? Alignment.bottomRight
+                        : Alignment.bottomLeft,
+                    child: Text(LocaleKeys.defaultAddress.tr,
                         textAlign: TextAlign.start,
                         style: TextStyle(
                             color: Colors.black,

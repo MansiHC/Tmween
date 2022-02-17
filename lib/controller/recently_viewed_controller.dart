@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 import '../model/recently_viewed_model.dart';
 
-class RecentlyViewedProvider extends ChangeNotifier {
+class RecentlyViewedController extends GetxController {
   late BuildContext context;
 
   TextEditingController searchController = TextEditingController();
