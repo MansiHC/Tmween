@@ -20,14 +20,7 @@ import '../best_seller_screen.dart';
 import '../recently_viewed_screen.dart';
 import '../top_selection_screen.dart';
 
-class DashboardScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _DashboardScreenState();
-  }
-}
-
-class _DashboardScreenState extends State<DashboardScreen> {
+class DashboardScreen extends StatelessWidget {
   final dashboardController = Get.put(DashboardController());
 
   @override
@@ -80,7 +73,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Text(
                 LocaleKeys.thatAll.tr,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.grey, fontSize: 14),
+                style: TextStyle(color: Color(0xFF575757), fontSize: 14),
               ),
               10.heightBox
             ],
@@ -100,9 +93,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               viewportFraction: 1,
               aspectRatio: 1.6,
               onPageChanged: (index, reason) {
-                setState(() {
-                  dashboardController.current = index;
-                });
+                dashboardController.changPage(index);
               }),
         ),
         Positioned(
@@ -137,7 +128,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   _shopByCategory(DashboardController dashboardController) {
     return Column(
       children: [
-        15.heightBox,
+        20.heightBox,
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -162,11 +153,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black87),
+                          color: Color(0xFF575757)),
                     ),
                     Icon(
                       CupertinoIcons.chevron_forward,
-                      color: Colors.black87,
+                      color: Color(0xFF575757),
                       size: 14,
                     )
                   ],
@@ -186,7 +177,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 mainAxisSpacing: 1.5,
                 crossAxisCount: 3,
                 shrinkWrap: true,
-                childAspectRatio: 0.8,
+                childAspectRatio: 0.73,
                 physics: ScrollPhysics(),
                 children: List.generate(dashboardController.categories.length,
                     (index) {
@@ -206,7 +197,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         padding: EdgeInsets.symmetric(horizontal: 15),
         child: Column(
           children: [
-            10.heightBox,
+            15.heightBox,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -229,11 +220,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white70),
+                              color: Color(0xFFFAFBFF)),
                         ),
                         Icon(
                           CupertinoIcons.chevron_forward,
-                          color: Colors.white70,
+                          color: Color(0xFFFAFBFF),
                           size: 14,
                         )
                       ],
@@ -244,7 +235,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             GridView.count(
                 padding: EdgeInsets.zero,
                 crossAxisSpacing: 15,
-                mainAxisSpacing: 10,
+                mainAxisSpacing: 12,
                 crossAxisCount: 2,
                 shrinkWrap: true,
                 childAspectRatio: 0.66,
@@ -268,7 +259,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         padding: EdgeInsets.only(left: 15),
         child: Column(
           children: [
-            10.heightBox,
+            15.heightBox,
             Padding(
                 padding: EdgeInsets.only(right: 15),
                 child: Row(
@@ -293,11 +284,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white70),
+                                  color: Color(0xFFFAFBFF)),
                             ),
                             Icon(
                               CupertinoIcons.chevron_forward,
-                              color: Colors.white70,
+                              color: Color(0xFFFAFBFF),
                               size: 14,
                             )
                           ],
@@ -328,7 +319,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         padding: EdgeInsets.only(left: 15),
         child: Column(
           children: [
-            10.heightBox,
+            15.heightBox,
             Padding(
                 padding: EdgeInsets.only(right: 15),
                 child: Row(
@@ -353,11 +344,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white70),
+                                  color: Color(0xFFFAFBFF)),
                             ),
                             Icon(
                               CupertinoIcons.chevron_forward,
-                              color: Colors.white70,
+                              color: Color(0xFFFAFBFF),
                               size: 14,
                             )
                           ],
@@ -389,7 +380,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         padding: EdgeInsets.only(left: 15),
         child: Column(
           children: [
-            10.heightBox,
+            15.heightBox,
             Padding(
                 padding: EdgeInsets.only(right: 15),
                 child: Row(
@@ -414,11 +405,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black87),
+                                  color: Color(0xFF6E7C77)),
                             ),
                             Icon(
                               CupertinoIcons.chevron_forward,
-                              color: Colors.black87,
+                              color:  Color(0xFF6E7C77),
                               size: 14,
                             )
                           ],
@@ -450,7 +441,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         padding: EdgeInsets.only(left: 15),
         child: Column(
           children: [
-            10.heightBox,
+            15.heightBox,
             Padding(
                 padding: EdgeInsets.only(right: 15),
                 child: Row(
@@ -476,11 +467,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black87),
+                                  color: Color(0xFF6E7C77)),
                             ),
                             Icon(
                               CupertinoIcons.chevron_forward,
-                              color: Colors.black87,
+                              color: Color(0xFF6E7C77),
                               size: 14,
                             )
                           ],

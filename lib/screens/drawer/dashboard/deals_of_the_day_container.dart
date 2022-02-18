@@ -40,7 +40,7 @@ class DealsOfTheDayContainer extends StatelessWidget {
                           Text(deal.rating,
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 10,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.bold)),
                           Icon(
                             Icons.star,
@@ -59,11 +59,11 @@ class DealsOfTheDayContainer extends StatelessWidget {
                           Text('${deal.offer}%',
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 10,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.bold)),
                           Text(LocaleKeys.off.tr,
                               style:
-                                  TextStyle(color: Colors.white, fontSize: 10)),
+                                  TextStyle(color: Colors.white, fontSize: 12)),
                         ],
                       )),
                 ])),
@@ -80,7 +80,7 @@ class DealsOfTheDayContainer extends StatelessWidget {
             padding: EdgeInsets.only(left: 5, right: 15),
             child: Text(deal.title,
                 textAlign: TextAlign.start,
-                style: TextStyle(color: Colors.black54, fontSize: 13))),
+                style: TextStyle(color: Color(0xFF333333), fontSize: 13))),
         5.heightBox,
         if (deal.fulfilled)
           Padding(
@@ -120,7 +120,7 @@ class DealsOfTheDayContainer extends StatelessWidget {
               Text('SAR ${deal.price}',
                   textAlign: TextAlign.start,
                   style: TextStyle(
-                      color: Colors.black54,
+                      color: Color(0xFF000000),
                       fontSize: 12,
                       fontWeight: FontWeight.bold)),
               2.widthBox,
@@ -129,7 +129,7 @@ class DealsOfTheDayContainer extends StatelessWidget {
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           decoration: TextDecoration.lineThrough,
-                          color: Colors.black54,
+                          color: Color(0xFF7B7B7B),
                           fontSize: 10))),
               Align(
                 alignment: Alignment.topRight,

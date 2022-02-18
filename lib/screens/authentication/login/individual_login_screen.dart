@@ -9,44 +9,10 @@ import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_button.dart';
 import 'package:tmween/utils/views/custom_text_form_field.dart';
 
-class IndividualLoginScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _IndividualLoginScreenState();
-  }
-}
+class IndividualLoginScreen extends StatelessWidget {
 
-class _IndividualLoginScreenState extends State<IndividualLoginScreen> {
-  // late loginController loginController;
   var language;
   final loginController = Get.put(LoginController());
-
-/*
-  @override
-  void initState() {
-    loginController = Provider.of<loginController>(context, listen: false);
-    initPlatformState();
-    super.initState();
-  }
-
-  Future<void> initPlatformState() async {
-    try {
-      if (Platform.isAndroid) {
-        loginController.getAndroidBuildData(
-            await loginController.deviceInfoPlugin.androidInfo);
-      } else if (Platform.isIOS) {
-        loginController
-            .getIosDeviceInfo(await loginController.deviceInfoPlugin.iosInfo);
-      }
-    } on PlatformException {
-      loginController.deviceData = <String, dynamic>{
-        'Error:': 'Failed to get platform version.'
-      };
-    }
-
-    if (!mounted) return;
-  }
-*/
 
   @override
   Widget build(BuildContext context) {

@@ -13,7 +13,6 @@ import 'package:tmween/screens/drawer/wishlist_screen.dart';
 import 'package:tmween/service/api.dart';
 
 import '../lang/locale_keys.g.dart';
-import '../screens/lang_view.dart';
 
 class DrawerControllers extends GetxController {
   late BuildContext context;
@@ -70,17 +69,6 @@ class DrawerControllers extends GetxController {
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
-  }
-
-  void openLanguageDialog() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => LanguageView(), fullscreenDialog: true),
-    ).then((value) {
-      if (value) {
-        // update();
-      }
-    });
   }
 
   void closeDrawer() {

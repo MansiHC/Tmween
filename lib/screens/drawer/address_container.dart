@@ -42,39 +42,39 @@ class AddressContainer extends StatelessWidget {
                 child: Text(address.name,
                     textAlign: TextAlign.start,
                     style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 13,
+                        color: Color(0xFF33383C),
+                        fontSize: 15,
                         fontWeight: FontWeight.bold))),
             5.heightBox,
             Text(address.addressLine1,
                 textAlign: TextAlign.start,
-                style: TextStyle(color: Colors.black, fontSize: 13)),
+                style: TextStyle(color: Color(0xFF626E7A), fontSize: 15)),
             if (address.addressLine2.isNotEmpty)
               Text(address.addressLine2,
                   textAlign: TextAlign.start,
-                  style: TextStyle(color: Colors.black, fontSize: 13)),
+                  style: TextStyle(color: Color(0xFF626E7A), fontSize: 15)),
             Row(
               children: [
                 Text('${address.city},',
                     textAlign: TextAlign.start,
                     maxLines: 2,
-                    style: TextStyle(color: Colors.black, fontSize: 13)),
+                    style: TextStyle(color: Color(0xFF626E7A), fontSize: 15)),
                 5.widthBox,
                 Text('${address.state},',
                     textAlign: TextAlign.start,
                     maxLines: 2,
-                    style: TextStyle(color: Colors.black, fontSize: 13))
+                    style: TextStyle(color: Color(0xFF626E7A), fontSize: 15))
               ],
             ),
             Text(address.country,
                 textAlign: TextAlign.start,
                 maxLines: 2,
-                style: TextStyle(color: Colors.black, fontSize: 13)),
+                style: TextStyle(color: Color(0xFF626E7A), fontSize: 15)),
             Expanded(
                 child: Text(address.pincode,
                     textAlign: TextAlign.start,
                     maxLines: 2,
-                    style: TextStyle(color: Colors.black, fontSize: 13))),
+                    style: TextStyle(color: Color(0xFF626E7A), fontSize: 13))),
             10.heightBox,
             Visibility(
                 visible: address.isDefault,
@@ -85,8 +85,8 @@ class AddressContainer extends StatelessWidget {
                     child: Text(LocaleKeys.defaultAddress.tr,
                         textAlign: TextAlign.start,
                         style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 13,
+                            color: Color(0xFF2F302F),
+                            fontSize: 15,
                             fontWeight: FontWeight.bold))))
           ]),
     );

@@ -8,14 +8,7 @@ import '../../utils/global.dart';
 import '../../utils/views/custom_text_form_field.dart';
 import 'dashboard/best_seller_container.dart';
 
-class BestSellerScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _BestSellerScreenState();
-  }
-}
-
-class _BestSellerScreenState extends State<BestSellerScreen> {
+class BestSellerScreen extends StatelessWidget {
   final bestSellerController = Get.put(BestSellerController());
 
   @override
@@ -43,12 +36,13 @@ class _BestSellerScreenState extends State<BestSellerScreen> {
                     Container(
                         color: AppColors.appBarColor,
                         child: Container(
-                            color: Colors.white,
+                            decoration: BoxDecoration(color:Colors.white,borderRadius: BorderRadius.circular(2)),
+                            height: 40,
                             margin: EdgeInsets.only(
-                                bottom: 10, left: 20, right: 20),
+                                bottom: 10, left: 15, right: 15),
                             child: CustomTextFormField(
-                                controller:
-                                    bestSellerController.searchController,
+                                isDense:true,
+                                controller: bestSellerController.searchController,
                                 keyboardType: TextInputType.text,
                                 hintText: LocaleKeys.searchProducts.tr,
                                 textInputAction: TextInputAction.search,
@@ -58,6 +52,7 @@ class _BestSellerScreenState extends State<BestSellerScreen> {
                                 prefixIcon: Icon(
                                   Icons.search,
                                   color: AppColors.primaryColor,
+                                  size: 32,
                                 ),
                                 validator: (value) {
                                   return null;

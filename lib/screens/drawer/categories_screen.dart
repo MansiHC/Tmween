@@ -8,18 +8,12 @@ import '../../utils/global.dart';
 import '../../utils/views/custom_text_form_field.dart';
 import 'dashboard/select_category_container.dart';
 
-class CategoriesScreen extends StatefulWidget {
+class CategoriesScreen extends StatelessWidget {
   final bool fromDrawer;
 
   CategoriesScreen({Key? key, this.fromDrawer = false}) : super(key: key);
 
-  @override
-  State<StatefulWidget> createState() {
-    return _CategoriesScreenState();
-  }
-}
-
-class _CategoriesScreenState extends State<CategoriesScreen> {
+  
   final categoriesController = Get.put(CategoriesController());
 
   @override
@@ -30,7 +24,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           categoriesController.context = context;
 
           return Scaffold(
-              appBar: widget.fromDrawer
+              appBar: fromDrawer
                   ? AppBar(
                       elevation: 0.0,
                       iconTheme: IconThemeData(color: Colors.white),
@@ -47,16 +41,17 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 child: Column(
                   children: [
                     Visibility(
-                        visible: widget.fromDrawer,
+                        visible: fromDrawer,
                         child: Container(
                             color: AppColors.appBarColor,
                             child: Container(
-                                color: Colors.white,
+                                decoration: BoxDecoration(color:Colors.white,borderRadius: BorderRadius.circular(2)),
+                                height: 40,
                                 margin: EdgeInsets.only(
-                                    bottom: 10, left: 20, right: 20),
+                                    bottom: 10, left: 15, right: 15),
                                 child: CustomTextFormField(
-                                    controller:
-                                        categoriesController.searchController,
+                                    isDense:true,
+                                    controller: categoriesController.searchController,
                                     keyboardType: TextInputType.text,
                                     hintText: LocaleKeys.searchProducts.tr,
                                     textInputAction: TextInputAction.search,
@@ -66,6 +61,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                     prefixIcon: Icon(
                                       Icons.search,
                                       color: AppColors.primaryColor,
+                                      size: 32,
                                     ),
                                     validator: (value) {
                                       return null;

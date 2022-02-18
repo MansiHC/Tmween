@@ -9,7 +9,9 @@ import '../utils/my_shared_preferences.dart';
 
 class ChangePasswordController extends GetxController {
   late BuildContext context;
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController newPasswordController = TextEditingController();
+  TextEditingController retypePasswordController = TextEditingController();
+  TextEditingController otpController = TextEditingController();
 
 
   void exitScreen() {

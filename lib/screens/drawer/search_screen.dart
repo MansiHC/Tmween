@@ -1,13 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-class SearchScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _SearchScreenState();
-  }
-}
-
-class _SearchScreenState extends State<SearchScreen> {
+class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(

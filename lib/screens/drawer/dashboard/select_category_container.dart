@@ -36,27 +36,28 @@ class SelectCategoryContainer extends StatelessWidget {
                             Text('${category.offer}%',
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 10,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.bold)),
                             Text(LocaleKeys.off.tr,
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 10)),
+                                    color: Colors.white, fontSize: 12)),
                           ],
                         )))),
             5.heightBox,
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),
-                child: Text(category.title,
+                child: Container(
+                    height: 30,
+                    child:Text(category.title,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.black54, fontSize: 13))),
+                    style: TextStyle(color: Color(0xFF585858), fontSize: 13)))),
             5.heightBox,
-            Expanded(
-                child: Padding(
+             Padding(
                     padding: EdgeInsets.symmetric(horizontal: 5),
                     child: Image.network(
                       category.image,
                       fit: BoxFit.cover,
-                    ))),
+                    )),
             5.heightBox
           ]),
     );

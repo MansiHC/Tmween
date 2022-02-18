@@ -9,9 +9,10 @@ class CustomButton extends StatelessWidget {
   final VoidCallback onPressed;
   final double? width;
   final double? fontSize;
+  final Color? backgroundColor;
 
   CustomButton(
-      {required this.text, required this.onPressed, this.width, this.fontSize});
+      {required this.text, required this.onPressed, this.width, this.fontSize,this.backgroundColor});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class CustomButton extends StatelessWidget {
           ),
           onPressed: onPressed,
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(AppColors.primaryColor),
+            backgroundColor: MaterialStateProperty.all(backgroundColor??AppColors.primaryColor),
             padding: MaterialStateProperty.all(
                 EdgeInsets.symmetric(horizontal: 50, vertical: 10)),
           ),

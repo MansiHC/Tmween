@@ -8,14 +8,7 @@ import 'package:tmween/screens/drawer/dashboard/top_selection_container.dart';
 import '../../utils/global.dart';
 import '../../utils/views/custom_text_form_field.dart';
 
-class TopSelectionScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _TopSelectionScreenState();
-  }
-}
-
-class _TopSelectionScreenState extends State<TopSelectionScreen> {
+class TopSelectionScreen extends StatelessWidget {
   final topSelectionController = Get.put(TopSelectionController());
 
   @override
@@ -42,10 +35,12 @@ class _TopSelectionScreenState extends State<TopSelectionScreen> {
                 Container(
                     color: AppColors.appBarColor,
                     child: Container(
-                        color: Colors.white,
-                        margin:
-                            EdgeInsets.only(bottom: 10, left: 20, right: 20),
+                        decoration: BoxDecoration(color:Colors.white,borderRadius: BorderRadius.circular(2)),
+                        height: 40,
+                        margin: EdgeInsets.only(
+                            bottom: 10, left: 15, right: 15),
                         child: CustomTextFormField(
+                            isDense:true,
                             controller: topSelectionController.searchController,
                             keyboardType: TextInputType.text,
                             hintText: LocaleKeys.searchProducts.tr,
@@ -56,6 +51,7 @@ class _TopSelectionScreenState extends State<TopSelectionScreen> {
                             prefixIcon: Icon(
                               Icons.search,
                               color: AppColors.primaryColor,
+                              size: 32,
                             ),
                             validator: (value) {
                               return null;

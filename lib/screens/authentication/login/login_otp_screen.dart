@@ -9,18 +9,11 @@ import 'package:tmween/utils/views/otp_text_filed.dart';
 
 import '../../../utils/views/custom_button.dart';
 
-class LoginOtpScreen extends StatefulWidget {
+class LoginOtpScreen extends StatelessWidget {
   final String phoneEmail;
 
   LoginOtpScreen({Key? key, required this.phoneEmail}) : super(key: key);
 
-  @override
-  State<StatefulWidget> createState() {
-    return _LoginOtpScreenState();
-  }
-}
-
-class _LoginOtpScreenState extends State<LoginOtpScreen> {
   late String language;
   final otpController = Get.put(OtpController());
 
@@ -31,7 +24,7 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
         init: OtpController(),
         builder: (contet) {
           otpController.context = context;
-          otpController.phone = widget.phoneEmail;
+          otpController.phone = phoneEmail;
           return Scaffold(
               body: SingleChildScrollView(
                   child: Column(
@@ -59,7 +52,7 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
         Row(
           children: [
             Text(
-              '${LocaleKeys.inText.tr} ${widget.phoneEmail}',
+              '${LocaleKeys.inText.tr} ${phoneEmail}',
               style: TextStyle(fontSize: 14, color: Colors.black),
             ),
             5.widthBox,
@@ -104,11 +97,11 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
                 onChanged: (value) {
                   if (value.length == 1) {
                     otpController.notifyClick1(true);
-                    FocusScope.of(context).nextFocus();
+                    FocusScope.of(otpController.context).nextFocus();
                     otpController.notifyClick2(true);
                   }
                   if (value.length == 0) {
-                    FocusScope.of(context).previousFocus();
+                    FocusScope.of(otpController.context).previousFocus();
                     otpController.notifyClick1(false);
                   }
                 },
@@ -120,11 +113,11 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
                 controller: otpController.num2Controller,
                 onChanged: (value) {
                   if (value.length == 1) {
-                    FocusScope.of(context).nextFocus();
+                    FocusScope.of(otpController.context).nextFocus();
                     otpController.notifyClick3(true);
                   }
                   if (value.length == 0) {
-                    FocusScope.of(context).previousFocus();
+                    FocusScope.of(otpController.context).previousFocus();
                     otpController.notifyClick2(false);
                   }
                 },
@@ -136,11 +129,11 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
                 controller: otpController.num3Controller,
                 onChanged: (value) {
                   if (value.length == 1) {
-                    FocusScope.of(context).nextFocus();
+                    FocusScope.of(otpController.context).nextFocus();
                     otpController.notifyClick4(true);
                   }
                   if (value.length == 0) {
-                    FocusScope.of(context).previousFocus();
+                    FocusScope.of(otpController.context).previousFocus();
                     otpController.notifyClick3(false);
                   }
                 },
@@ -153,11 +146,11 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
                 clicked: otpController.click4,
                 onChanged: (value) {
                   if (value.length == 1) {
-                    FocusScope.of(context).nextFocus();
+                    FocusScope.of(otpController.context).nextFocus();
                     otpController.verifyLoginOTP();
                   }
                   if (value.length == 0) {
-                    FocusScope.of(context).previousFocus();
+                    FocusScope.of(otpController.context).previousFocus();
                     otpController.notifyClick4(false);
                   }
                 },

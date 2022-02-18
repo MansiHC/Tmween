@@ -7,7 +7,7 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/otp_text_filed.dart';
 
-class OtpScreen extends StatefulWidget {
+class OtpScreen extends StatelessWidget {
   final String phone;
   final String? name;
   final String? email;
@@ -27,13 +27,6 @@ class OtpScreen extends StatefulWidget {
       required this.phone})
       : super(key: key);
 
-  @override
-  State<StatefulWidget> createState() {
-    return _OtpScreenState();
-  }
-}
-
-class _OtpScreenState extends State<OtpScreen> {
   late String language;
   final otpController = Get.put(OtpController());
 
@@ -44,7 +37,7 @@ class _OtpScreenState extends State<OtpScreen> {
         builder: (contet) {
           otpController.context = context;
           language = Get.locale!.languageCode;
-          otpController.phone = widget.phone;
+          otpController.phone = phone;
           return Scaffold(
               body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,7 +64,7 @@ class _OtpScreenState extends State<OtpScreen> {
         Row(
           children: [
             Text(
-              '${LocaleKeys.inText.tr} ${widget.phone}',
+              '${LocaleKeys.inText.tr} ${phone}',
               style: TextStyle(fontSize: 14, color: Colors.black),
             ),
             5.widthBox,
@@ -116,11 +109,11 @@ class _OtpScreenState extends State<OtpScreen> {
                 onChanged: (value) {
                   if (value.length == 1) {
                     otpController.notifyClick1(true);
-                    FocusScope.of(context).nextFocus();
+                    FocusScope.of(otpController.context).nextFocus();
                     otpController.notifyClick2(true);
                   }
                   if (value.length == 0) {
-                    FocusScope.of(context).previousFocus();
+                    FocusScope.of(otpController.context).previousFocus();
                     otpController.notifyClick1(false);
                   }
                 },
@@ -132,11 +125,11 @@ class _OtpScreenState extends State<OtpScreen> {
                 controller: otpController.num2Controller,
                 onChanged: (value) {
                   if (value.length == 1) {
-                    FocusScope.of(context).nextFocus();
+                    FocusScope.of(otpController.context).nextFocus();
                     otpController.notifyClick3(true);
                   }
                   if (value.length == 0) {
-                    FocusScope.of(context).previousFocus();
+                    FocusScope.of(otpController.context).previousFocus();
                     otpController.notifyClick2(false);
                   }
                 },
@@ -148,11 +141,11 @@ class _OtpScreenState extends State<OtpScreen> {
                 controller: otpController.num3Controller,
                 onChanged: (value) {
                   if (value.length == 1) {
-                    FocusScope.of(context).nextFocus();
+                    FocusScope.of(otpController.context).nextFocus();
                     otpController.notifyClick4(true);
                   }
                   if (value.length == 0) {
-                    FocusScope.of(context).previousFocus();
+                    FocusScope.of(otpController.context).previousFocus();
                     otpController.notifyClick3(false);
                   }
                 },
@@ -165,18 +158,18 @@ class _OtpScreenState extends State<OtpScreen> {
                 clicked: otpController.click4,
                 onChanged: (value) {
                   if (value.length == 1) {
-                    FocusScope.of(context).nextFocus();
+                    FocusScope.of(otpController.context).nextFocus();
                     otpController.verifyOTP(
-                        widget.name!,
-                        widget.email!,
-                        widget.phone,
-                        widget.password!,
-                        widget.deviceType!,
-                        widget.langCode!,
-                        widget.agreeTerms!);
+                        name!,
+                        email!,
+                        phone,
+                        password!,
+                        deviceType!,
+                        langCode!,
+                        agreeTerms!);
                   }
                   if (value.length == 0) {
-                    FocusScope.of(context).previousFocus();
+                    FocusScope.of(otpController.context).previousFocus();
                     otpController.notifyClick4(false);
                   }
                 },

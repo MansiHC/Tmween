@@ -9,6 +9,7 @@ class EditProfileController extends GetxController {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController mobileNumberController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  TextEditingController otpController = TextEditingController();
   bool enablePhone = true;
   bool enableEmail = true;
   final formKey = GlobalKey<FormState>();

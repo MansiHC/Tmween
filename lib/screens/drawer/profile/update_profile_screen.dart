@@ -3,41 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/edit_profile_contoller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
+import 'package:tmween/screens/drawer/profile/change_password_screen.dart';
 import 'package:tmween/screens/drawer/profile/deactivate_account_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_button.dart';
 
+import '../../../utils/helper.dart';
 import '../../../utils/views/custom_text_form_field.dart';
 
-class UpdateProfileScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _UpdateProfileScreenState();
-  }
-}
-
-class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
-  late int userId;
-  late int loginLogId;
+class UpdateProfileScreen extends StatelessWidget {
   late String language;
 
   final editAccountController = Get.put(EditProfileController());
 
-  @override
-  void initState() {
-    /*MySharedPreferences.instance
-        .getIntValuesSF(SharedPreferencesKeys.userId)
-        .then((value) async {
-      userId = value!;
-      MySharedPreferences.instance
-          .getIntValuesSF(SharedPreferencesKeys.loginLogId)
-          .then((value) async {
-        loginLogId = value! ;
-      });
-    });*/
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +89,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
             Text(
               LocaleKeys.name.tr,
               style: TextStyle(
-                  color: Colors.black,
+                  color: Color(0xFF333333),
                   fontSize: 14,
                   fontWeight: FontWeight.bold),
             ),
@@ -125,7 +104,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
             Text(
               LocaleKeys.lastName.tr,
               style: TextStyle(
-                  color: Colors.black,
+                  color: Color(0xFF333333),
                   fontSize: 14,
                   fontWeight: FontWeight.bold),
             ),
@@ -138,25 +117,25 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 validator: (value) {}),
             15.heightBox,
             CustomButton(
+              backgroundColor: Color(0xFF0188C8),
                 text: LocaleKeys.update, fontSize: 14, onPressed: () {}),
             20.heightBox,
             Text(
               LocaleKeys.mobileNumber.tr,
               style: TextStyle(
-                  color: Colors.black,
+                  color: Color(0xFF333333),
                   fontSize: 14,
                   fontWeight: FontWeight.bold),
             ),
             10.heightBox,
             CustomBoxTextFormField(
-                readOnly: editAccountController.enablePhone,
                 controller: editAccountController.mobileNumberController,
                 keyboardType: TextInputType.phone,
                 hintText: LocaleKeys.mobileNumber,
                 textInputAction: TextInputAction.done,
                 suffixIcon: InkWell(
                     onTap: () {
-                      editAccountController.enableMobileNumber();
+                      _showOtpVerificationDialog(editAccountController,'+249 9822114455',language=='ar'?210:200);
                     },
                     child: Padding(
                         padding:
@@ -165,7 +144,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           LocaleKeys.update.tr,
                           style: TextStyle(
                               color: AppColors.blue,
-                              fontSize: 12,
+                              fontSize: 13,
                               fontWeight: FontWeight.bold),
                         ))),
                 validator: (value) {}),
@@ -173,20 +152,19 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
             Text(
               LocaleKeys.email.tr,
               style: TextStyle(
-                  color: Colors.black,
+                  color:  Color(0xFF333333),
                   fontSize: 14,
                   fontWeight: FontWeight.bold),
             ),
             10.heightBox,
             CustomBoxTextFormField(
-                readOnly: editAccountController.enableEmail,
                 controller: editAccountController.emailController,
                 keyboardType: TextInputType.emailAddress,
                 hintText: LocaleKeys.email,
                 textInputAction: TextInputAction.done,
                 suffixIcon: InkWell(
                     onTap: () {
-                      editAccountController.enableEmailAddress();
+                      _showOtpVerificationDialog(editAccountController,'sali.akka@tmween.com',language=='ar'?220:205);
                     },
                     child: Padding(
                         padding:
@@ -202,24 +180,27 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
             30.heightBox,
             Divider(
               thickness: 1,
-              color: Colors.grey[300]!,
+              color: AppColors.lightGrayColor,
             ),
             5.heightBox,
-            Text(
+            InkWell(onTap:(){
+              Helper.showToast(LocaleKeys.otpSentSuccessfully.tr);
+              editAccountController.navigateTo(ChangePasswordScreen());
+            },child:Text(
               LocaleKeys.changePassword.tr,
-              style: TextStyle(color: Colors.black54, fontSize: 15),
-            ),
+              style: TextStyle(color: Color(0xFF888888), fontSize: 16,fontWeight: FontWeight.bold),
+            )),
             5.heightBox,
             Divider(
               thickness: 1,
-              color: Colors.grey[300]!,
+              color: AppColors.lightGrayColor,
             ),
             5.heightBox,
             InkWell(onTap:(){
               editAccountController.navigateTo(DeactivateAccountScreen());
             },child:Text(
               LocaleKeys.deactivateAccount.tr,
-              style: TextStyle(color: Colors.black54, fontSize: 15),
+              style: TextStyle(color: Color(0xFF888888), fontSize: 16,fontWeight: FontWeight.bold),
             )),
             50.heightBox,
           ],
@@ -260,6 +241,88 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
               ),
             ),
           ],
+        ));
+  }
+
+  void _showOtpVerificationDialog(EditProfileController editProfileController,String text,double height) async {
+    await showDialog(
+        context: editProfileController.context,
+        builder: (_) => AlertDialog(
+
+          contentPadding: EdgeInsets.symmetric(horizontal: 15),
+          buttonPadding: EdgeInsets.zero,
+          actions: [],
+          content: Container(
+            height: height,
+            child:Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                15.heightBox,
+                Text(
+                  LocaleKeys.otpVerification.tr,
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF7C7C7C)
+                  ),
+                ),
+            15.heightBox,
+            Text(
+              '${LocaleKeys.enterOtpSentTo.tr} $text',
+              style: TextStyle(
+                  fontSize: 13,
+                  color: Color(0xFF9B9B9B),
+                  fontWeight: FontWeight.bold),
+            ),
+            10.heightBox,
+            CustomTextFormField(
+                controller: editProfileController.otpController,
+                keyboardType: TextInputType.number,
+                hintText: LocaleKeys.otp,
+                textInputAction: TextInputAction.done,
+                suffixIcon: InkWell(
+                    onTap: () {},
+                    child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 15),
+                        child: Text(
+                          LocaleKeys.resend.tr,
+                          style: TextStyle(
+                              color: AppColors.blue,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold),
+                        ))),
+                validator: (value) {}),
+            18.heightBox,
+            Row(
+              children: [
+                Expanded(child: TextButton(
+                  style: TextButton.styleFrom(padding: EdgeInsets.zero),onPressed: () {
+                  editProfileController.pop();
+                },
+                  child: Text(
+                    LocaleKeys.cancel.tr,
+                    style: TextStyle(
+                        color: Colors.grey[400],
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  ) ,
+                )),
+                Expanded(child:TextButton(
+                  style: TextButton.styleFrom(padding: EdgeInsets.zero),onPressed: () {  },
+                  child: Text(
+                    LocaleKeys.save.tr,
+                    style: TextStyle(
+                        color: AppColors.darkblue,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ))
+              ],
+            ),
+          ],),)
+
         ));
   }
 }

@@ -8,14 +8,7 @@ import 'package:tmween/screens/drawer/dashboard/sold_by_tmween_container.dart';
 import '../../utils/global.dart';
 import '../../utils/views/custom_text_form_field.dart';
 
-class SoldByTmweenScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _SoldByTmweenScreenState();
-  }
-}
-
-class _SoldByTmweenScreenState extends State<SoldByTmweenScreen> {
+class SoldByTmweenScreen extends StatelessWidget {
   final soldByTmweenController = Get.put(SoldByTmweenController());
 
   @override
@@ -43,12 +36,13 @@ class _SoldByTmweenScreenState extends State<SoldByTmweenScreen> {
                     Container(
                         color: AppColors.appBarColor,
                         child: Container(
-                            color: Colors.white,
+                            decoration: BoxDecoration(color:Colors.white,borderRadius: BorderRadius.circular(2)),
+                            height: 40,
                             margin: EdgeInsets.only(
-                                bottom: 10, left: 20, right: 20),
+                                bottom: 10, left: 15, right: 15),
                             child: CustomTextFormField(
-                                controller:
-                                    soldByTmweenController.searchController,
+                                isDense:true,
+                                controller: soldByTmweenController.searchController,
                                 keyboardType: TextInputType.text,
                                 hintText: LocaleKeys.searchProducts.tr,
                                 textInputAction: TextInputAction.search,
@@ -58,6 +52,7 @@ class _SoldByTmweenScreenState extends State<SoldByTmweenScreen> {
                                 prefixIcon: Icon(
                                   Icons.search,
                                   color: AppColors.primaryColor,
+                                  size: 32,
                                 ),
                                 validator: (value) {
                                   return null;

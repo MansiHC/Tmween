@@ -8,14 +8,7 @@ import 'package:tmween/screens/drawer/dashboard/recently_viewed_container.dart';
 import '../../utils/global.dart';
 import '../../utils/views/custom_text_form_field.dart';
 
-class RecentlyViewedScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _RecentlyViewedScreenState();
-  }
-}
-
-class _RecentlyViewedScreenState extends State<RecentlyViewedScreen> {
+class RecentlyViewedScreen extends StatelessWidget {
   final recentlyProviderController = Get.put(RecentlyViewedController());
 
   @override
@@ -42,12 +35,13 @@ class _RecentlyViewedScreenState extends State<RecentlyViewedScreen> {
                     Container(
                         color: AppColors.appBarColor,
                         child: Container(
-                            color: Colors.white,
+                            decoration: BoxDecoration(color:Colors.white,borderRadius: BorderRadius.circular(2)),
+                            height: 40,
                             margin: EdgeInsets.only(
-                                bottom: 10, left: 20, right: 20),
+                                bottom: 10, left: 15, right: 15),
                             child: CustomTextFormField(
-                                controller:
-                                    recentlyProviderController.searchController,
+                                isDense:true,
+                                controller: recentlyProviderController.searchController,
                                 keyboardType: TextInputType.text,
                                 hintText: LocaleKeys.searchProducts.tr,
                                 textInputAction: TextInputAction.search,
@@ -57,6 +51,7 @@ class _RecentlyViewedScreenState extends State<RecentlyViewedScreen> {
                                 prefixIcon: Icon(
                                   Icons.search,
                                   color: AppColors.primaryColor,
+                                  size: 32,
                                 ),
                                 validator: (value) {
                                   return null;

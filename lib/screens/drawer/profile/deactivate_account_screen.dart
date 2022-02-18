@@ -8,14 +8,7 @@ import 'package:tmween/utils/global.dart';
 
 import '../../../utils/views/custom_text_form_field.dart';
 
-class DeactivateAccountScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _DeactivateAccountScreenState();
-  }
-}
-
-class _DeactivateAccountScreenState extends State<DeactivateAccountScreen> {
+class DeactivateAccountScreen extends StatelessWidget {
   late String language;
   final deactivateAccountController = Get.put(DeactivateAccountController());
 
@@ -93,7 +86,7 @@ class _DeactivateAccountScreenState extends State<DeactivateAccountScreen> {
                         controller:
                             deactivateAccountController.passwordController,
                         keyboardType: TextInputType.visiblePassword,
-                        obscureText: false,
+                        obscureText: true,
                         hintText: LocaleKeys.password,
                         validator: (value) {
                           return null;

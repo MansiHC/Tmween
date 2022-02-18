@@ -9,14 +9,7 @@ import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_button.dart';
 import 'package:tmween/utils/views/custom_text_form_field.dart';
 
-class IndividualSignUpScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _IndividualSignUpScreenState();
-  }
-}
-
-class _IndividualSignUpScreenState extends State<IndividualSignUpScreen> {
+class IndividualSignUpScreen extends StatelessWidget {
   final signUpController = Get.put(SignUpController());
 
   @override

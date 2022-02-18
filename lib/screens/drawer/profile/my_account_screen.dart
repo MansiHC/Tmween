@@ -7,14 +7,7 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_list_tile.dart';
 
-class MyAccountScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _MyAccountScreenState();
-  }
-}
-
-class _MyAccountScreenState extends State<MyAccountScreen> {
+class MyAccountScreen extends StatelessWidget {
   late String language;
   final myAccountController = Get.put(MyAccountController());
 

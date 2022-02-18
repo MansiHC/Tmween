@@ -16,21 +16,9 @@ import '../../utils/views/custom_text_form_field.dart';
 import 'address_container.dart';
 import 'profile/my_account_screen.dart';
 
-class DrawerScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _DrawerScreenState();
-  }
-}
-
-class _DrawerScreenState extends State<DrawerScreen> {
+class DrawerScreen extends StatelessWidget {
   final drawerController = Get.put(DrawerControllers());
   late var language;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +31,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               onWillPop: () => _onWillPop(drawerController),
               child: Scaffold(
                   appBar: AppBar(
-                    iconTheme: IconThemeData(color: Colors.white),
+                    iconTheme: IconThemeData(color: Colors.white,size:38),
                     backgroundColor: AppColors.appBarColor,
                     centerTitle: false,
                     titleSpacing: 0.0,
@@ -65,18 +53,27 @@ class _DrawerScreenState extends State<DrawerScreen> {
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 12),
                                   ),
+                                  3.heightBox,
                                   Row(
                                     children: [
-                                      Icon(
-                                        Icons.location_on_rounded,
+                                      SvgPicture.asset(
+                                        ImageConstanst.locationPinIcon,
                                         color: AppColors.primaryColor,
+                                        height: 16,
+                                        width: 16,
                                       ),
+                                      3.widthBox,
                                       Expanded(
                                           child: Text(
                                         '1999 Bluff Street MOODY Alabama - 35004',
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 12),
                                       )),
+                                      Icon(
+                                        Icons.arrow_drop_down_sharp,
+                                        size: 16,
+                                      ),
+                                      5.widthBox
                                     ],
                                   ),
                                 ]))
@@ -107,7 +104,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                               ),
                             )
                           : Container(),
-                      20.widthBox
+                      15.widthBox
                     ],
                     elevation: 0.0,
                   ),
@@ -116,11 +113,14 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   body: Column(children: [
                     Container(
                         color: AppColors.appBarColor,
+                        padding: EdgeInsets.only(top: 5),
                         child: Container(
-                            color: Colors.white,
+                            decoration: BoxDecoration(color:Colors.white,borderRadius: BorderRadius.circular(2)),
+                            height: 40,
                             margin: EdgeInsets.only(
-                                bottom: 10, left: 20, right: 20),
+                                bottom: 10, left: 15, right: 15),
                             child: CustomTextFormField(
+                              isDense:true,
                                 controller: drawerController.searchController,
                                 keyboardType: TextInputType.text,
                                 hintText: LocaleKeys.searchProducts.tr,
@@ -131,6 +131,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                                 prefixIcon: Icon(
                                   Icons.search,
                                   color: AppColors.primaryColor,
+                                  size: 32,
                                 ),
                                 validator: (value) {
                                   return null;
@@ -144,7 +145,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
 
   _bottomSheetView(DrawerControllers drawerController) {
     return Container(
-        height: 305,
+        height: 310,
         padding: EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,11 +161,11 @@ class _DrawerScreenState extends State<DrawerScreen> {
             10.heightBox,
             Text(
               LocaleKeys.chooseLocationText.tr,
-              style: TextStyle(color: Colors.black87, fontSize: 16),
+              style: TextStyle(color: Color(0xFF666666), fontSize: 16),
             ),
             20.heightBox,
             Container(
-                height: 150,
+                height: 160,
                 child: ListView.builder(
                     itemCount: drawerController.addresses.length + 1,
                     scrollDirection: Axis.horizontal,
@@ -288,17 +289,13 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   direction: Axis.vertical,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    drawerController.pageIndex == 3
-                        ? const Icon(
-                            CupertinoIcons.square_favorites_fill,
-                            color: AppColors.primaryColor,
-                            size: 24,
-                          )
-                        : const Icon(
-                            CupertinoIcons.square_favorites,
-                            color: Colors.white,
-                            size: 24,
-                          ),
+                    SvgPicture.asset(
+                      ImageConstanst.wishListssIcon,
+                      color: drawerController.pageIndex == 3?AppColors.primaryColor:Colors.white,
+                      height: 24,
+                      width: 24,
+                    )
+                        ,
                     5.heightBox,
                     Text(
                       LocaleKeys.wishLists.tr,
@@ -314,17 +311,12 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   direction: Axis.vertical,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    drawerController.pageIndex == 4
-                        ? const Icon(
-                            Icons.shopping_cart,
-                            color: AppColors.primaryColor,
-                            size: 24,
-                          )
-                        : const Icon(
-                            Icons.shopping_cart_outlined,
-                            color: Colors.white,
-                            size: 24,
-                          ),
+                    SvgPicture.asset(
+                      ImageConstanst.shoppingCartIcon,
+                      color: drawerController.pageIndex == 4?AppColors.primaryColor:Colors.white,
+                      height: 24,
+                      width: 24,
+                    ),
                     5.heightBox,
                     Text(
                       LocaleKeys.cart.tr,
@@ -467,7 +459,18 @@ class _DrawerScreenState extends State<DrawerScreen> {
             thickness: 1,
             color: Colors.white24,
           ),
-          16.heightBox,
+          ListTile(
+            leading: SvgPicture.asset(
+              ImageConstanst.customerServiceIcon,
+              width: 24,
+              height: 24,
+              color: Colors.white,
+            ),
+            title: Text(LocaleKeys.customerService.tr,
+                style: TextStyle(color: Colors.white)),
+            onTap: () {},
+          ),
+          10.heightBox,
           Wrap(children: [
             16.widthBox,
             SvgPicture.asset(flagIcon, width: 20, height: 20),
@@ -485,7 +488,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               items: drawerController.languages.map((LanguageModel items) {
                 return DropdownMenuItem(
                   value: items,
-                  child: Text(items.name),
+                  child: Text(items.name.tr),
                 );
               }).toList(),
               onChanged: (LanguageModel? value) async {
@@ -498,17 +501,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               },
             ),
           ]),
-          ListTile(
-            leading: SvgPicture.asset(
-              ImageConstanst.customerServiceIcon,
-              width: 24,
-              height: 24,
-              color: Colors.white,
-            ),
-            title: Text(LocaleKeys.customerService.tr,
-                style: TextStyle(color: Colors.white)),
-            onTap: () {},
-          ),
+
         ],
       ),
     );

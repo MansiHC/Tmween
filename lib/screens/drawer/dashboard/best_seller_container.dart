@@ -42,7 +42,7 @@ class BestSellerContainer extends StatelessWidget {
                           Text(bestSeller.rating,
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 10,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.bold)),
                           Icon(
                             Icons.star,
@@ -61,11 +61,11 @@ class BestSellerContainer extends StatelessWidget {
                           Text('${bestSeller.offer}%',
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 10,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.bold)),
                           Text(LocaleKeys.off.tr,
                               style:
-                                  TextStyle(color: Colors.white, fontSize: 10)),
+                                  TextStyle(color: Colors.white, fontSize: 12)),
                         ],
                       )),
                 ])),
@@ -83,7 +83,7 @@ class BestSellerContainer extends StatelessWidget {
             child: Text(bestSeller.title,
                 textAlign: TextAlign.start,
                 maxLines: 2,
-                style: TextStyle(color: Colors.black54, fontSize: 13))),
+                style: TextStyle(color: Color(0xFF333333), fontSize: 13))),
         5.heightBox,
         if (bestSeller.fulfilled)
           Padding(
@@ -123,7 +123,7 @@ class BestSellerContainer extends StatelessWidget {
               Text('SAR ${bestSeller.price}',
                   textAlign: TextAlign.start,
                   style: TextStyle(
-                      color: Colors.black54,
+                      color: Color(0xFF000000),
                       fontSize: 12,
                       fontWeight: FontWeight.bold)),
               2.widthBox,
@@ -132,7 +132,7 @@ class BestSellerContainer extends StatelessWidget {
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           decoration: TextDecoration.lineThrough,
-                          color: Colors.black54,
+                          color: Color(0xFF7B7B7B),
                           fontSize: 10))),
               Align(
                 alignment: Alignment.topRight,

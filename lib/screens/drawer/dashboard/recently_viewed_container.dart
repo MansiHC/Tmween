@@ -43,7 +43,7 @@ class RecentlyViewedContainer extends StatelessWidget {
                           Text(recentlyViewed.rating,
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 10,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.bold)),
                           Icon(
                             Icons.star,
@@ -62,11 +62,11 @@ class RecentlyViewedContainer extends StatelessWidget {
                           Text('${recentlyViewed.offer}%',
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 10,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.bold)),
                           Text(LocaleKeys.off.tr,
                               style:
-                                  TextStyle(color: Colors.white, fontSize: 10)),
+                                  TextStyle(color: Colors.white, fontSize: 12)),
                         ],
                       )),
                 ])),
@@ -84,7 +84,7 @@ class RecentlyViewedContainer extends StatelessWidget {
             child: Text(recentlyViewed.title,
                 textAlign: TextAlign.start,
                 maxLines: 2,
-                style: TextStyle(color: Colors.black54, fontSize: 13))),
+                style: TextStyle(color: Color(0xFF333333), fontSize: 13))),
         5.heightBox,
         if (recentlyViewed.fulfilled)
           Padding(
@@ -124,7 +124,7 @@ class RecentlyViewedContainer extends StatelessWidget {
               Text('SAR ${recentlyViewed.price}',
                   textAlign: TextAlign.start,
                   style: TextStyle(
-                      color: Colors.black54,
+                      color: Color(0xFF000000),
                       fontSize: 12,
                       fontWeight: FontWeight.bold)),
               2.widthBox,
@@ -133,7 +133,7 @@ class RecentlyViewedContainer extends StatelessWidget {
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           decoration: TextDecoration.lineThrough,
-                          color: Colors.black54,
+                          color: Color(0xFF7B7B7B),
                           fontSize: 10))),
               Align(
                 alignment: Alignment.topRight,

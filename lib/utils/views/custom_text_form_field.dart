@@ -13,6 +13,7 @@ class CustomTextFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final Widget? prefixIcon;
   final bool? obscureText;
+  final bool? isDense;
   final List<TextInputFormatter>? inputFormatters;
   final FormFieldValidator<String> validator;
   final TextInputAction? textInputAction;
@@ -25,6 +26,7 @@ class CustomTextFormField extends StatelessWidget {
       this.errorText,
       this.suffixIcon,
       this.obscureText,
+      this.isDense,
       this.inputFormatters,
       required this.validator,
       this.textInputAction,
@@ -49,6 +51,7 @@ class CustomTextFormField extends StatelessWidget {
         color: Colors.black,
       ),
       decoration: InputDecoration(
+        isDense: isDense??false,
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: AppColors.darkblue),
           ),
@@ -122,7 +125,7 @@ class CustomBoxTextFormField extends StatelessWidget {
             borderSide: BorderSide(color: AppColors.lightGrayColor),
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.blueGrey[100]!),
+            borderSide: BorderSide(color: AppColors.lightGrayColor),
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: AppColors.primaryColor),

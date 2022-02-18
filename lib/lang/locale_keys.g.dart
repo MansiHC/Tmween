@@ -36,6 +36,9 @@ abstract class LocaleKeys {
   static const yourPassword = 'yourPassword';
   static const password = 'password';
   static const emptyPassword = 'emptyPassword';
+  static const emptyNewPassword = 'emptyNewPassword';
+  static const emptyRetypePassword = 'emptyRetypePassword';
+  static const newPasswordMatch = 'newPasswordMatch';
   static const validPasswordLength = 'validPasswordLength';
   static const validPassword = 'validPassword';
   static const confirmPassword = 'confirmPassword';
@@ -116,4 +119,14 @@ abstract class LocaleKeys {
   static const howReactivateText1 = 'howReactivateText1';
   static const howReactivateText2 = 'howReactivateText2';
   static const howReactivateText3 = 'howReactivateText3';
+  static const newPassword = 'newPassword';
+  static const retypePassword = 'retypePassword';
+  static const enterOtpSentTo = 'enterOtpSentTo';
+  static const otp = 'otp';
+  static const resend = 'resend';
+  static const cancel = 'cancel';
+  static const save = 'save';
+  static const otpSentSuccessfully = 'otpSentSuccessfully';
+  static const otpVerification = 'otpVerification';
+  static const otpSuccessfullySentTO = 'otpSuccessfullySentTO';
 }

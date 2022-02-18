@@ -82,7 +82,10 @@ abstract class ImageConstanst {
   static const String yourAddressesIcon = 'asset/image/your_address_icon.svg';
   static const String wishlistIcon = 'asset/image/wishlist_icon.svg';
   static const String logoutIcon = 'asset/image/logout_icon.svg';
+  static const String locationPinIcon = 'asset/image/location_pin_icon.svg';
   static const String notificationsIcon = 'asset/image/notifications_icon.svg';
+  static const String wishListssIcon = 'asset/image/wish_lists_icon.svg';
+  static const String shoppingCartIcon = 'asset/image/shopping_cart_icon.svg';
   static const String accountSettingIcon =
       'asset/image/account_setting_icon.svg';
 }

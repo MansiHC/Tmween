@@ -8,14 +8,7 @@ import 'package:tmween/screens/drawer/dashboard/deals_of_the_day_container.dart'
 import '../../utils/global.dart';
 import '../../utils/views/custom_text_form_field.dart';
 
-class DealsOfTheDayScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _DealsOfTheDayScreenState();
-  }
-}
-
-class _DealsOfTheDayScreenState extends State<DealsOfTheDayScreen> {
+class DealsOfTheDayScreen extends StatelessWidget {
   final dealOfTheDayController = Get.put(DealsOfTheDayController());
 
   @override
@@ -43,12 +36,13 @@ class _DealsOfTheDayScreenState extends State<DealsOfTheDayScreen> {
                     Container(
                         color: AppColors.appBarColor,
                         child: Container(
-                            color: Colors.white,
+                            decoration: BoxDecoration(color:Colors.white,borderRadius: BorderRadius.circular(2)),
+                            height: 40,
                             margin: EdgeInsets.only(
-                                bottom: 10, left: 20, right: 20),
+                                bottom: 10, left: 15, right: 15),
                             child: CustomTextFormField(
-                                controller:
-                                    dealOfTheDayController.searchController,
+                                isDense:true,
+                                controller: dealOfTheDayController.searchController,
                                 keyboardType: TextInputType.text,
                                 hintText: LocaleKeys.searchProducts.tr,
                                 textInputAction: TextInputAction.search,
@@ -58,6 +52,7 @@ class _DealsOfTheDayScreenState extends State<DealsOfTheDayScreen> {
                                 prefixIcon: Icon(
                                   Icons.search,
                                   color: AppColors.primaryColor,
+                                  size: 32,
                                 ),
                                 validator: (value) {
                                   return null;

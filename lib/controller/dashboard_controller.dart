@@ -18,6 +18,12 @@ class DashboardController extends GetxController {
   int current = 0;
   final CarouselController controller = CarouselController();
 
+  void changPage(int index){
+    current = index;
+    update();
+
+}
+
   late final List<Widget> imageSliders = imgList
       .map((item) => Container(
             child:
