@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/my_account_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
+import 'package:tmween/screens/drawer/profile/update_profile_screen.dart';
+import 'package:tmween/screens/drawer/profile/your_addresses_screen.dart';
+import 'package:tmween/screens/drawer/profile/your_order_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_list_tile.dart';
@@ -106,7 +109,7 @@ class MyAccountScreen extends StatelessWidget {
                             ),
                             onPressed: () {
                               myAccountController
-                                  .navigateToUpdateProfileScreen();
+                                  .navigateTo(UpdateProfileScreen());
                             },
                           ))
                       : Positioned(
@@ -120,7 +123,7 @@ class MyAccountScreen extends StatelessWidget {
                             ),
                             onPressed: () {
                               myAccountController
-                                  .navigateToUpdateProfileScreen();
+                                  .navigateTo(UpdateProfileScreen());
                             },
                           ))
                 ]),
@@ -169,7 +172,10 @@ class MyAccountScreen extends StatelessWidget {
         10.heightBox,
         CustomListTile(
             title: LocaleKeys.yourOrders,
-            onTap: () {},
+            onTap: () {
+              myAccountController
+                  .navigateTo(YourOrderScreen());
+            },
             leadingIcon: ImageConstanst.yourOrdersIcon),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 15),
@@ -191,7 +197,9 @@ class MyAccountScreen extends StatelessWidget {
         ),
         CustomListTile(
             title: LocaleKeys.yourAddresses,
-            onTap: () {},
+            onTap: () {
+              myAccountController.navigateTo(YourAddressesScreen());
+            },
             leadingIcon: ImageConstanst.yourAddressesIcon),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 15),

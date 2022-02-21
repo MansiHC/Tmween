@@ -85,7 +85,18 @@ class DrawerScreen extends StatelessWidget {
                       drawerController.pageIndex == 0
                           ? InkWell(
                               onTap: () {
-                                drawerController.navigateTo(MyAccountScreen());
+                                MySharedPreferences.instance
+                                    .getBoolValuesSF(SharedPreferencesKeys.isLogin)
+                                    .then((value) async {
+                                      bool isLogin = value!;
+                                  if(!isLogin){
+                                    _loginFirstDialog(drawerController);
+                                  }else {
+                                    drawerController.navigateTo(
+                                        MyAccountScreen());
+                                  }
+                                });
+
                               },
                               child: Container(
                                 width: 45,
@@ -337,6 +348,41 @@ class DrawerScreen extends StatelessWidget {
       return ImageConstanst.usFlagIcon;
     }
     return ImageConstanst.usFlagIcon;
+  }
+
+  void _loginFirstDialog(DrawerControllers drawerController) async {
+    await showDialog(
+        context: drawerController.context,
+        builder: (_) => AlertDialog(
+          title: Text(
+            'Please Login First',
+            style: TextStyle(
+              fontSize: 16,
+            ),
+          ),
+          actions: [
+            TextButton(
+              style: TextButton.styleFrom(padding: EdgeInsets.zero),
+              child: Text(
+                LocaleKeys.no.tr,
+                style: TextStyle(fontSize: 16, color: Colors.black54),
+              ),
+              onPressed: () {
+                drawerController.pop();
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(padding: EdgeInsets.zero),
+              child: Text(
+                LocaleKeys.yes.tr,
+                style: TextStyle(fontSize: 16, color: Colors.black54),
+              ),
+              onPressed: () {
+                drawerController.navigateToLoginScreen();
+              },
+            ),
+          ],
+        ));
   }
 
   _buildDrawer(DrawerControllers drawerController) {

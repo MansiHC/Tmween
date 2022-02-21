@@ -129,4 +129,26 @@ abstract class LocaleKeys {
   static const otpSentSuccessfully = 'otpSentSuccessfully';
   static const otpVerification = 'otpVerification';
   static const otpSuccessfullySentTO = 'otpSuccessfullySentTO';
+  static const waitingToDeliver = 'waitingToDeliver';
+  static const shopProductsFrom = 'shopProductsFrom';
+  static const startShopping = 'startShopping';
+  static const addNewAddress = 'addNewAddress';
+  static const personalAddress = 'personalAddress';
+  static const defaultText = 'defaultText';
+  static const officeAddress = 'officeAddress';
+  static const remove = 'remove';
+  static const selectCountry = 'selectCountry';
+  static const fullName = 'fullName';
+  static const pincode = 'pincode';
+  static const houseNo = 'houseNo';
+  static const areaStreet = 'areaStreet';
+  static const landmark = 'landmark';
+  static const townCity = 'townCity';
+  static const state = 'state';
+  static const chooseState = 'chooseState';
+  static const makeDefault = 'makeDefault';
+  static const deliveryInstruction = 'deliveryInstruction';
+  static const deliveryInstructionText = 'deliveryInstructionText';
+  static const addressType = 'addressType';
+  static const selectAddressType = 'selectAddressType';
 }

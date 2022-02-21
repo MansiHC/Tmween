@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/model/address_model.dart';
 import 'package:tmween/model/language_model.dart';
-import 'package:tmween/screens/drawer/CartScreen.dart';
+import 'package:tmween/screens/authentication/login/login_screen.dart';
 import 'package:tmween/screens/drawer/categories_screen.dart';
 import 'package:tmween/screens/drawer/dashboard/dashboard_screen.dart';
 import 'package:tmween/screens/drawer/search_screen.dart';
@@ -13,6 +13,9 @@ import 'package:tmween/screens/drawer/wishlist_screen.dart';
 import 'package:tmween/service/api.dart';
 
 import '../lang/locale_keys.g.dart';
+import '../screens/drawer/cart_screen.dart';
+import '../utils/global.dart';
+import '../utils/my_shared_preferences.dart';
 
 class DrawerControllers extends GetxController {
   late BuildContext context;
@@ -21,6 +24,7 @@ class DrawerControllers extends GetxController {
   String pageTitle = 'Home';
   late List<LanguageModel> languages;
   late LanguageModel languageValue;
+   bool isLogin= true;
 
   List<AddressModel> addresses = const <AddressModel>[
     const AddressModel(
@@ -53,6 +57,12 @@ class DrawerControllers extends GetxController {
 
   @override
   void onInit() {
+    MySharedPreferences.instance
+        .getBoolValuesSF(SharedPreferencesKeys.isLogin)
+        .then((value) async {
+      isLogin = value!;
+      print('sddsds....$isLogin');
+    });
     languages = <LanguageModel>[
       LanguageModel(name: LocaleKeys.english.tr, locale: Locale('en', 'US')),
       LanguageModel(name: LocaleKeys.arabian.tr, locale: Locale('ar', 'DZ')),
@@ -69,6 +79,12 @@ class DrawerControllers extends GetxController {
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
+  }
+
+  void navigateToLoginScreen() {
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+            (Route<dynamic> route) => false);
   }
 
   void closeDrawer() {

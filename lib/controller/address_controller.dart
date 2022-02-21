@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:tmween/model/country_model.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 import 'package:tmween/screens/drawer/profile/update_profile_screen.dart';
 
@@ -8,17 +9,31 @@ import '../screens/authentication/login/login_screen.dart';
 import '../utils/global.dart';
 import '../utils/my_shared_preferences.dart';
 
-class MyAccountController extends GetxController {
+class AddressController extends GetxController {
   late BuildContext context;
-TextEditingController passwordController = TextEditingController();
 
   int userId = 0;
   int loginLogId = 0;
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController mobileNumberController = TextEditingController();
+  TextEditingController pincodeController = TextEditingController();
+  TextEditingController houseNoController = TextEditingController();
+  TextEditingController areaStreetController = TextEditingController();
+  TextEditingController landmarkController = TextEditingController();
+  TextEditingController townCityController = TextEditingController();
 
+  final formKey = GlobalKey<FormState>();
 
+  late List<CountryModel> countries;
+  late CountryModel countryValue;
 
   @override
   void onInit() {
+    countries = <CountryModel>[
+      CountryModel(name: 'India',),
+      CountryModel(name: 'Sudan',),
+    ];
+    countryValue = countries[0];
     MySharedPreferences.instance
         .getIntValuesSF(SharedPreferencesKeys.userId)
         .then((value) async {
@@ -32,28 +47,10 @@ TextEditingController passwordController = TextEditingController();
     super.onInit();
   }
 
-  void doLogout() async {
-    MySharedPreferences.instance
-        .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-    navigateToDashBoardScreen();
-    /*loading = true;
-    update();
-    await api
-        .logout(context, 1, userId, loginLogId )
-        .then((value) {
-      if (value.message == AppConstants.success) {
-        loading = false;
-        update();
-        navigateToLoginScreen();
-      } else {
-        Helper.showSnackBar(context, value.message!);
-      }
-    }).catchError((error) {
-      loading = false;
-      update();
-      print('error....$error');
-    });*/
-  }
+void updateCountry(CountryModel? value){
+  countryValue = value!;
+  update();
+}
 
   void exitScreen() {
     Navigator.of(context).pop();
@@ -64,7 +61,7 @@ TextEditingController passwordController = TextEditingController();
     update();
   }
 
-  void navigateToDashBoardScreen() {
+  void navigateToDashboardScreen() {
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => DrawerScreen()),
         (Route<dynamic> route) => false);
