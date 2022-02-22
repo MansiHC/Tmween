@@ -317,7 +317,7 @@ class AddAddressScreen extends StatelessWidget {
                               fontSize: 14),
                         ),
                         5.heightBox,
-                      /*  DropdownButtonHideUnderline(
+                        DropdownButtonHideUnderline(
                           child: DropdownButton2(
                             buttonDecoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(2),
@@ -328,7 +328,7 @@ class AddAddressScreen extends StatelessWidget {
                             ),
                             isExpanded: true,
                             hint: Text(
-                                LocaleKeys.selectAddressType.tr,
+                              LocaleKeys.selectAddressType.tr,
                               style: TextStyle(fontSize: 14),
                             ),
                             items: addressController.addressTypes
@@ -336,7 +336,7 @@ class AddAddressScreen extends StatelessWidget {
                                 DropdownMenuItem<AddressTypeModel>(
                                   value: item,
                                   child: Text(
-                                    item.name,
+                                    item.name.tr,
                                     style: const TextStyle(
                                       fontSize: 14,
                                       color: Colors.black,
@@ -345,12 +345,21 @@ class AddAddressScreen extends StatelessWidget {
                                   ),
                                 ))
                                 .toList(),
-                            value: addressController.addressTypes,
+                            onTap: (){
+                              addressController.isAddressOpened = !addressController.isAddressOpened;
+                              addressController.update();
+                            },
+                            value: addressController.addressTypeValue,
                             onChanged: (value) {
                               var val = value as AddressTypeModel;
                               addressController.updateAddressType(val);
                             },
-                            icon: const Icon(
+                            icon: addressController.isAddressOpened?
+                            Icon(
+                              Icons.keyboard_arrow_up_sharp,
+                              color: Colors.black45,
+                            )
+                                : Icon(
                               Icons.keyboard_arrow_down_sharp,
                               color: Colors.black45,
                             ),
@@ -362,7 +371,7 @@ class AddAddressScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(2),
                             ),
                             offset: const Offset(0, 0),
-                          ),),*/
+                          ),),
                         30.heightBox,
                         CustomButton(text: LocaleKeys.addNewAddress.tr,fontSize: 16, onPressed: (){
                           addressController.exitScreen();

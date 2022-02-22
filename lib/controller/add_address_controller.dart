@@ -37,6 +37,7 @@ class AddAddressController extends GetxController {
   AddressTypeModel? addressTypeValue;
 
   bool isDefault = false;
+  bool isAddressOpened = false;
 
   @override
   void onInit() {
@@ -49,8 +50,8 @@ class AddAddressController extends GetxController {
       StateModel(name: 'Ahmedabad',),
     ];
     addressTypes = <AddressTypeModel>[
-      AddressTypeModel(name: 'LocaleKeys.personalAddress',),
-      AddressTypeModel(name: 'LocaleKeys.officeAddress',),
+      AddressTypeModel(name: LocaleKeys.personalAddress,),
+      AddressTypeModel(name: LocaleKeys.officeAddress,),
     ];
     MySharedPreferences.instance
         .getIntValuesSF(SharedPreferencesKeys.userId)

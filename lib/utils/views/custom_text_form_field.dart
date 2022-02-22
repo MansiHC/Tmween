@@ -14,19 +14,25 @@ class CustomTextFormField extends StatelessWidget {
   final Widget? prefixIcon;
   final bool? obscureText;
   final bool? isDense;
+  final bool? autoFocus;
   final List<TextInputFormatter>? inputFormatters;
   final FormFieldValidator<String> validator;
   final TextInputAction? textInputAction;
   final ValueChanged<String>? onSubmitted;
+  final ValueChanged<String>? onChanged;
+  final GestureTapCallback? onTap;
 
   CustomTextFormField(
       {required this.controller,
       required this.keyboardType,
       required this.hintText,
       this.errorText,
+        this.onChanged,
       this.suffixIcon,
+      this.autoFocus,
       this.obscureText,
       this.isDense,
+        this.onTap,
       this.inputFormatters,
       required this.validator,
       this.textInputAction,
@@ -41,6 +47,9 @@ class CustomTextFormField extends StatelessWidget {
       obscureText: obscureText ?? false,
       inputFormatters: inputFormatters,
       validator: validator,
+      autofocus: autoFocus??false,
+      onTap: onTap??(){},
+      onChanged: onChanged??(text){},
       onFieldSubmitted: onSubmitted ??
           (term) {
             FocusScope.of(context).nextFocus();

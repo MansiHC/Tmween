@@ -86,6 +86,11 @@ abstract class ImageConstanst {
   static const String notificationsIcon = 'asset/image/notifications_icon.svg';
   static const String wishListssIcon = 'asset/image/wish_lists_icon.svg';
   static const String shoppingCartIcon = 'asset/image/shopping_cart_icon.svg';
+  static const String filterIcon = 'asset/image/filter_icon.svg';
+  static const String bestMatchIcon = 'asset/image/best_match_icon.svg';
+  static const String minusIcon = 'asset/image/minus.svg';
+  static const String plusIcon = 'asset/image/plus.svg';
+  static const String checkIcon = 'asset/image/check.svg';
   static const String accountSettingIcon =
       'asset/image/account_setting_icon.svg';
 }

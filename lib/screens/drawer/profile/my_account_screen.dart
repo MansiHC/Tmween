@@ -6,6 +6,7 @@ import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/drawer/profile/update_profile_screen.dart';
 import 'package:tmween/screens/drawer/profile/your_addresses_screen.dart';
 import 'package:tmween/screens/drawer/profile/your_order_screen.dart';
+import 'package:tmween/screens/drawer/wishlist_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_list_tile.dart';
@@ -210,7 +211,9 @@ class MyAccountScreen extends StatelessWidget {
         ),
         CustomListTile(
             title: LocaleKeys.wishLists,
-            onTap: () {},
+            onTap: () {
+              myAccountController.navigateTo(WishlistScreen(fromProfile: true,));
+            },
             leadingIcon: ImageConstanst.wishlistIcon),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 15),

@@ -33,7 +33,7 @@ class DrawerScreen extends StatelessWidget {
                   appBar: AppBar(
                     iconTheme: IconThemeData(color: Colors.white,size:38),
                     backgroundColor: AppColors.appBarColor,
-                    centerTitle: false,
+                    centerTitle:drawerController.pageIndex==2? true:false,
                     titleSpacing: 0.0,
                     title: drawerController.pageIndex == 0
                         ? InkWell(
@@ -77,7 +77,9 @@ class DrawerScreen extends StatelessWidget {
                                     ],
                                   ),
                                 ]))
-                        : Text(
+                        : drawerController.pageIndex==2?
+                        SvgPicture.asset(ImageConstanst.logo,height: 40,)
+                        :Text(
                             drawerController.pageTitle,
                             style: TextStyle(color: Colors.white),
                           ),
@@ -122,7 +124,7 @@ class DrawerScreen extends StatelessWidget {
                   drawer: _buildDrawer(drawerController),
                   bottomNavigationBar: _buildBottomNavBar(drawerController),
                   body: Column(children: [
-                    Container(
+                    drawerController.pageIndex==2?Container():Container(
                         color: AppColors.appBarColor,
                         padding: EdgeInsets.only(top: 5),
                         child: Container(
@@ -132,6 +134,10 @@ class DrawerScreen extends StatelessWidget {
                                 bottom: 10, left: 15, right: 15),
                             child: CustomTextFormField(
                               isDense:true,
+
+                                onTap: (){
+                                drawerController.changePage(2);
+                                },
                                 controller: drawerController.searchController,
                                 keyboardType: TextInputType.text,
                                 hintText: LocaleKeys.searchProducts.tr,
