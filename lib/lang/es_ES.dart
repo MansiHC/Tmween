@@ -21,6 +21,7 @@ const Map<String, String> es_ES = {
   "previous": "Previo",
   "next": "Próximo",
   "filterResults": "Filtrar Resultados",
+  "readMore": "Leer más",
   "apply": "APLICAR",
   "showOnly": "MOSTRAR SOLO",
   "categoriesCap": "CATEGORIAS",

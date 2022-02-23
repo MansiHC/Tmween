@@ -7,6 +7,7 @@ import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/drawer/categories_screen.dart';
 import 'package:tmween/screens/drawer/dashboard/best_seller_container.dart';
 import 'package:tmween/screens/drawer/dashboard/deals_of_the_day_container.dart';
+import 'package:tmween/screens/drawer/dashboard/product_detail_screen.dart';
 import 'package:tmween/screens/drawer/dashboard/recently_viewed_container.dart';
 import 'package:tmween/screens/drawer/dashboard/select_category_container.dart';
 import 'package:tmween/screens/drawer/dashboard/sold_by_tmween_container.dart';
@@ -242,8 +243,10 @@ class DashboardScreen extends StatelessWidget {
                 physics: ScrollPhysics(),
                 children:
                     List.generate(dashboardController.deals.length, (index) {
-                  return DealsOfTheDayContainer(
-                      deal: dashboardController.deals[index]);
+                  return InkWell(onTap:(){
+                    dashboardController.navigateTo(ProductDetailScreen());
+                  },child:DealsOfTheDayContainer(
+                      deal: dashboardController.deals[index]));
                 })),
             20.heightBox
           ],

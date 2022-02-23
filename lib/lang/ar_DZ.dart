@@ -41,6 +41,7 @@ const Map<String, String> ar_DZ = {
   "fromSar": "من (ريـال)",
   "toSar": "إلى (ريال سعودي)",
   "deal": "صفقة",
+  "readMore": "اقرأ أكثر",
   "ofTheDay": "اليوم",
   "bestMatch": "افضل مباراة",
   "sentOTP":

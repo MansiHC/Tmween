@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/my_account_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
+import 'package:tmween/screens/drawer/profile/notification_screen.dart';
 import 'package:tmween/screens/drawer/profile/update_profile_screen.dart';
 import 'package:tmween/screens/drawer/profile/your_addresses_screen.dart';
 import 'package:tmween/screens/drawer/profile/your_order_screen.dart';
@@ -235,7 +236,9 @@ class MyAccountScreen extends StatelessWidget {
         ),
         CustomListTile(
             title: LocaleKeys.notifications,
-            onTap: () {},
+            onTap: () {
+              myAccountController.navigateTo(NotificationScreen());
+            },
             leadingIcon: ImageConstanst.notificationsIcon),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 15),

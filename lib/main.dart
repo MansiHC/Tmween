@@ -25,7 +25,6 @@ void main() async {
       .getStringValuesSF(SharedPreferencesKeys.language)
       .then((value) async {
     language = value ?? 'en_US';
-    print('shsa......$value');
     MySharedPreferences.instance
         .getBoolValuesSF(SharedPreferencesKeys.isSplash)
         .then((value) async {

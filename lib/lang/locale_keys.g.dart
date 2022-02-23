@@ -100,6 +100,7 @@ abstract class LocaleKeys {
   static const yourAddresses = 'yourAddresses';
   static const accountSettings = 'accountSettings';
   static const notifications = 'notifications';
+  static const readMore = 'readMore';
   static const updateProfile = 'updateProfile';
   static const name = 'name';
   static const mobileNumber = 'mobileNumber';

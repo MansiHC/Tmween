@@ -72,6 +72,7 @@ const Map<String, String> en_US = {
   "brandCap": "BRAND",
   "searchByPriceCap": "SEARCH BY PRICE",
   "searchByCollectionCap": "SEARCH BY COLLECTION",
+  "readMore": "Read More",
   "sellerCap": "SELLER",
   "fromSar": "From (SAR)",
   "toSar": "To (SAR)",

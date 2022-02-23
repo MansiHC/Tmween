@@ -15,6 +15,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool? obscureText;
   final bool? isDense;
   final bool? autoFocus;
+  final bool? enabled;
   final List<TextInputFormatter>? inputFormatters;
   final FormFieldValidator<String> validator;
   final TextInputAction? textInputAction;
@@ -27,6 +28,7 @@ class CustomTextFormField extends StatelessWidget {
       required this.keyboardType,
       required this.hintText,
       this.errorText,
+        this.enabled,
         this.onChanged,
       this.suffixIcon,
       this.autoFocus,
@@ -48,6 +50,7 @@ class CustomTextFormField extends StatelessWidget {
       inputFormatters: inputFormatters,
       validator: validator,
       autofocus: autoFocus??false,
+      enabled: enabled??true,
       onTap: onTap??(){},
       onChanged: onChanged??(text){},
       onFieldSubmitted: onSubmitted ??

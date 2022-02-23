@@ -132,12 +132,12 @@ class DrawerScreen extends StatelessWidget {
                             height: 40,
                             margin: EdgeInsets.only(
                                 bottom: 10, left: 15, right: 15),
-                            child: CustomTextFormField(
+                            child:InkWell(onTap: (){
+                              drawerController.changePage(2);
+                            },child: CustomTextFormField(
                               isDense:true,
+enabled:  false,
 
-                                onTap: (){
-                                drawerController.changePage(2);
-                                },
                                 controller: drawerController.searchController,
                                 keyboardType: TextInputType.text,
                                 hintText: LocaleKeys.searchProducts.tr,
@@ -152,7 +152,7 @@ class DrawerScreen extends StatelessWidget {
                                 ),
                                 validator: (value) {
                                   return null;
-                                }))),
+                                })))),
                     Expanded(
                         child:
                             drawerController.pages[drawerController.pageIndex]),
