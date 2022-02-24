@@ -4,53 +4,109 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:tmween/model/address_model.dart';
-import 'package:tmween/model/language_model.dart';
+import 'package:tmween/model/seller_on_tmween_model.dart';
 import 'package:tmween/screens/authentication/login/login_screen.dart';
-import 'package:tmween/screens/drawer/categories_screen.dart';
-import 'package:tmween/screens/drawer/dashboard/dashboard_screen.dart';
-import 'package:tmween/screens/drawer/search_screen.dart';
-import 'package:tmween/screens/drawer/wishlist_screen.dart';
-import 'package:tmween/service/api.dart';
 
-import '../lang/locale_keys.g.dart';
 import '../model/recently_viewed_model.dart';
-import '../screens/drawer/cart_screen.dart';
-import '../utils/global.dart';
-import '../utils/my_shared_preferences.dart';
 
 class ProductDetailController extends GetxController {
   late BuildContext context;
   TextEditingController searchController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  late bool visibleList= false;
+  late bool visibleList = false;
+  late bool isLiked = false;
 
   int current = 0;
   final CarouselController controller = CarouselController();
+  final List<Map> colors = [
+    {
+      'name': 'Grey',
+      'color': 0xFFBCBCBC,
+    },
+    {
+      'name': 'Black',
+      'color': 0xFF000000,
+    },
+    {
+      'name': 'BlueGrey',
+      'color': 0xFFCCD6D4,
+    },
+    {
+      'name': 'LightPink',
+      'color': 0xFFE6DBC8,
+    }
+  ];
+  late Map selectedColor;
 
-  void changPage(int index){
+  @override
+  void onInit() {
+    selectedColor = colors[1];
+
+    super.onInit();
+  }
+
+  void changPage(int index) {
     current = index;
     update();
-
   }
-  final List<String> items = [
-    'Sofa',
-    'Bed'
+
+  final List<String> items = ['Sofa', 'Bed'];
+
+  List<SellerOnTmweenModel> sellerOnTmweens = const <SellerOnTmweenModel>[
+    const SellerOnTmweenModel(
+      amount: '26,500.00',
+      charge: '95.00',
+      brand: 'LIFESTYLES',
+    ),
+    const SellerOnTmweenModel(
+      amount: '26,500.00',
+      charge: '95.00',
+      brand: 'LIFESTYLES',
+    ),
   ];
 
-  bool isQuantityDiscounExpanded= true;
+  int val = 1;
 
-  void updateQuantityDiscountExpanded(){
-    isQuantityDiscounExpanded = !isQuantityDiscounExpanded;
+  bool isQuantityDiscountExpanded = true;
+
+  void updateQuantityDiscountExpanded() {
+    isQuantityDiscountExpanded = !isQuantityDiscountExpanded;
+    update();
+  }
+
+  bool isProductInfoExpanded = true;
+
+  void updateProductInfoExpanded() {
+    isProductInfoExpanded = !isProductInfoExpanded;
+    update();
+  }
+
+  bool isSpecificationExpanded = false;
+
+  void updateSpecificationExpanded() {
+    isSpecificationExpanded = !isSpecificationExpanded;
+    update();
+  }
+
+  bool isSizeSpecificationExpanded = false;
+
+  void updateSizeSpecificationExpanded() {
+    isSizeSpecificationExpanded = !isSizeSpecificationExpanded;
+    update();
+  }
+
+  bool isDeliveryReturnExpanded = false;
+
+  void updateDeliveryReturnExpanded() {
+    isDeliveryReturnExpanded = !isDeliveryReturnExpanded;
     update();
   }
 
   late final List<Widget> imageSliders = imgList
       .map((item) => Container(
-    child:
-    Image.network(item, fit: BoxFit.cover),
-  ))
+            child: Image.network(item, fit: BoxFit.cover),
+          ))
       .toList();
 
   final List<String> imgList = [
@@ -62,15 +118,7 @@ class ProductDetailController extends GetxController {
     'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
   ];
 
-  final List<Map> colors = [
-    {'name': 'Grey', 'color': 0xFFBCBCBC,},
-    {'name': 'Black', 'color': 0xFF000000,},
-    {'name': 'BlueGrey', 'color': 0xFFCCD6D4,},
-    {'name': 'LightPink', 'color': 0xFFE6DBC8,}
-  ];
-Map selectedColor = {'name': 'Black', 'color': 0xFF000000,};
-
-int quntity=1;
+  int quntity = 1;
 
   List<RecentlyViewedModel> recentlVieweds = const <RecentlyViewedModel>[
     const RecentlyViewedModel(
@@ -81,7 +129,7 @@ int quntity=1;
         price: '2450',
         beforePrice: '7000',
         image:
-        'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
     const RecentlyViewedModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: true,
@@ -90,7 +138,7 @@ int quntity=1;
         price: '2450',
         beforePrice: '7000',
         image:
-        'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
     const RecentlyViewedModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: false,
@@ -99,7 +147,7 @@ int quntity=1;
         price: '2450',
         beforePrice: '7000',
         image:
-        'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
     const RecentlyViewedModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: false,
@@ -108,18 +156,17 @@ int quntity=1;
         price: '2450',
         beforePrice: '7000',
         image:
-        'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
   ];
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
   }
 
-
   void navigateToLoginScreen() {
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => LoginScreen()),
-            (Route<dynamic> route) => false);
+        (Route<dynamic> route) => false);
   }
 
   void closeDrawer() {
@@ -139,5 +186,4 @@ int quntity=1;
     SystemNavigator.pop();
     update();
   }
-
 }

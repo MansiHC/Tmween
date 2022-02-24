@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:tmween/screens/drawer/dashboard/full_image_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
+import 'package:tmween/utils/views/custom_button.dart';
 
 import '../../../controller/product_detail_controller.dart';
 import '../../../lang/locale_keys.g.dart';
@@ -41,7 +42,7 @@ class ProductDetailScreen extends StatelessWidget {
                             children: [
                               SvgPicture.asset(
                                 ImageConstanst.locationPinIcon,
-                                color: Color(0xFF838383),
+                                color: Color(0xFF454545),
                                 height: 16,
                                 width: 16,
                               ),
@@ -49,7 +50,7 @@ class ProductDetailScreen extends StatelessWidget {
                               Text(
                                 '1999 Bluff Street MOODY Alabama - 35004',
                                 style: TextStyle(
-                                    color: Color(0xFF838383), fontSize: 12),
+                                    color: Color(0xFF454545), fontSize: 12,fontWeight: FontWeight.bold),
                               ),
                             ],
                           )),
@@ -78,7 +79,7 @@ class ProductDetailScreen extends StatelessWidget {
                                 top: 0,
                                 left: 0,
                                 child: Container(
-                                  color: Colors.green,
+                                  color: Color(0xFF158D07),
                                   padding: EdgeInsets.all(5),
                                   child: Text(
                                     'NEW',
@@ -99,14 +100,18 @@ class ProductDetailScreen extends StatelessWidget {
                                     child: Column(
                                       children: [
                                         InkWell(
-                                            onTap: () {},
-                                            child: Icon(CupertinoIcons.heart,
-                                                color: Color(0xFF757575))),
+                                            onTap: () {
+                                              productDetailController.isLiked = !productDetailController.isLiked;
+                                              productDetailController.update();
+                                            },
+                                            child: SvgPicture.asset(productDetailController.isLiked?
+                                            ImageConstanst.likeFill:ImageConstanst.like,
+                                                color: Color(0xFF666666),height: 20,width: 20,)),
+                                        5.heightBox,
                                         InkWell(
                                             onTap: () {},
-                                            child: Icon(
-                                              Icons.share,
-                                              color: Color(0xFF757575),
+                                            child: SvgPicture.asset(ImageConstanst.share,
+                                              color: Color(0xFF666666),height: 20,width: 20,
                                             )),
                                       ],
                                     ))),
@@ -168,18 +173,18 @@ class ProductDetailScreen extends StatelessWidget {
                                                               entry.key),
                                                   child: Container(
                                                     width: 8.0,
-                                                    height: 8.0,
+                                                    height: 1.0,
                                                     margin:
                                                         EdgeInsets.symmetric(
                                                             vertical: 8.0,
                                                             horizontal: 4.0),
                                                     decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
+                                                        shape: BoxShape.rectangle,
                                                         color: productDetailController
                                                                     .current ==
                                                                 entry.key
                                                             ? AppColors
-                                                                .primaryColor
+                                                                .darkblue
                                                             : Colors.white),
                                                   ),
                                                 );
@@ -212,7 +217,7 @@ class ProductDetailScreen extends StatelessWidget {
                                               color: productDetailController
                                                           .current ==
                                                       index
-                                                  ? AppColors.primaryColor
+                                                  ? Color(0xFF1992CE)
                                                   : Colors.white)),
                                       padding: EdgeInsets.all(5),
                                       margin: EdgeInsets.only(right: 5),
@@ -225,28 +230,28 @@ class ProductDetailScreen extends StatelessWidget {
                     Text(
                       'Canon EOS 1300D 18MP Digital SLR Camera (Black) with 18-55mm ISII Lens, 16GB Card and',
                       style: TextStyle(
-                          color: Color(0xFF48505C),
+                          color: Color(0xFF2E3846),
                           fontSize: 16,
                           fontWeight: FontWeight.bold),
                     ),
                     5.heightBox,
-                    Row(
-                      children: [
-                        Text(
-                          'by',
-                          style:
+                    Align(
+                        alignment: Alignment.centerLeft,
+                        child: RichText(
+                            textAlign: TextAlign.start,
+                            text: TextSpan(
+                                text:  'by ',
+                              style:
                               TextStyle(color: Color(0xFF48505C), fontSize: 16),
-                        ),
-                        5.widthBox,
-                        Text(
-                          'Canon',
-                          style: TextStyle(
-                              color: AppColors.blue,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
+                                children: <InlineSpan>[
+                                  TextSpan(
+                                   text: 'Canon',
+                                    style: TextStyle(
+                                        color: Color(0xFF1992CE),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ]))),
                     8.heightBox,
                     Row(
                       children: [
@@ -264,6 +269,7 @@ class ProductDetailScreen extends StatelessWidget {
                                         color: Colors.white,
                                         fontSize: 12,
                                         fontWeight: FontWeight.bold)),
+                                5.widthBox,
                                 Icon(
                                   Icons.star,
                                   color: Colors.white,
@@ -275,7 +281,7 @@ class ProductDetailScreen extends StatelessWidget {
                         Text('(15 Reviews)',
                             style: TextStyle(
                               color: Color(0xFF828282),
-                              fontSize: 12,
+                              fontSize: 13,
                             )),
                       ],
                     ),
@@ -293,13 +299,13 @@ class ProductDetailScreen extends StatelessWidget {
                             text: TextSpan(
                                 text: 'Price: ',
                                 style: TextStyle(
-                                    color: Color(0xFF636363), fontSize: 15),
+                                    color: Color(0xFF636363), fontSize: 14),
                                 children: <InlineSpan>[
                                   TextSpan(
                                     text: 'SAR ',
                                     style: TextStyle(
                                         color: Color(0xFFF4500F),
-                                        fontSize: 15,
+                                        fontSize: 14,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   TextSpan(
@@ -318,17 +324,17 @@ class ProductDetailScreen extends StatelessWidget {
                             text: TextSpan(
                                 text: 'M.R.P: ',
                                 style: TextStyle(
-                                    color: Color(0xFF727272), fontSize: 15),
+                                    color: Color(0xFF727272), fontSize: 14),
                                 children: <InlineSpan>[
                                   TextSpan(
                                     text: 'SAR ',
                                     style: TextStyle(
-                                        color: Color(0xFF727272), fontSize: 15),
+                                        color: Color(0xFF727272), fontSize: 14),
                                   ),
                                   TextSpan(
                                     text: '31,955',
                                     style: TextStyle(
-                                        color: Color(0xFF727272), fontSize: 15),
+                                        color: Color(0xFF727272), fontSize: 14),
                                   ),
                                 ]))),
                     5.heightBox,
@@ -339,12 +345,12 @@ class ProductDetailScreen extends StatelessWidget {
                             text: TextSpan(
                                 text: 'You Save: ',
                                 style: TextStyle(
-                                    color: Color(0xFF636363), fontSize: 15),
+                                    color: Color(0xFF636363), fontSize: 14),
                                 children: <InlineSpan>[
                                   TextSpan(
                                     text: 'SAR 6,996.00 (22%)',
                                     style: TextStyle(
-                                        color: Color(0xFFF4500F), fontSize: 15),
+                                        color: Color(0xFFF4500F), fontSize: 14),
                                   ),
                                 ]))),
                     5.heightBox,
@@ -354,28 +360,28 @@ class ProductDetailScreen extends StatelessWidget {
                             text: TextSpan(
                                 text: '${LocaleKeys.fulfilledBy.tr} ',
                                 style: TextStyle(
-                                    color: AppColors.primaryColor,
-                                    fontSize: 15),
+                                    color: Color(0xFF1992CE),
+                                    fontSize: 14),
                                 children: <InlineSpan>[
                               TextSpan(
                                 text: '${LocaleKeys.appTitle.tr} ',
                                 style: TextStyle(
-                                    color: AppColors.primaryColor,
-                                    fontSize: 15,
+                                    color: Color(0xFF1992CE),
+                                    fontSize: 14,
                                     fontWeight: FontWeight.bold),
                               ),
                               TextSpan(
                                 text: 'FREE Delivery.',
                                 style: TextStyle(
                                     color: Color(0xFF414141),
-                                    fontSize: 15,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.bold),
                               ),
                               TextSpan(
                                 text: 'Details',
                                 style: TextStyle(
-                                    color: AppColors.primaryColor,
-                                    fontSize: 15),
+                                    color: Color(0xFF1992CE),
+                                    fontSize: 14),
                               ),
                             ]))),
                     15.heightBox,
@@ -392,25 +398,25 @@ class ProductDetailScreen extends StatelessWidget {
                             text: TextSpan(
                                 text: 'Eligible for ',
                                 style: TextStyle(
-                                    color: Color(0xFF636363), fontSize: 15),
+                                    color: Color(0xFF636363), fontSize: 14),
                                 children: <InlineSpan>[
                                   TextSpan(
                                     text: 'FREE Shipping ',
                                     style: TextStyle(
                                         color: Color(0xFF414141),
-                                        fontSize: 15,
+                                        fontSize: 14,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   TextSpan(
                                     text: 'on order over SAR 200.00 ',
                                     style: TextStyle(
-                                        color: Color(0xFF636363), fontSize: 15),
+                                        color: Color(0xFF636363), fontSize: 14),
                                   ),
                                   TextSpan(
                                     text: 'Details',
                                     style: TextStyle(
-                                        color: AppColors.primaryColor,
-                                        fontSize: 15),
+                                        color: Color(0xFF1992CE),
+                                        fontSize: 14),
                                   ),
                                 ]))),
                     10.heightBox,
@@ -427,13 +433,13 @@ class ProductDetailScreen extends StatelessWidget {
                             text: TextSpan(
                                 text: 'Style name: ',
                                 style: TextStyle(
-                                    color: Color(0xFF636363), fontSize: 15),
+                                    color: Color(0xFF636363), fontSize: 14),
                                 children: <InlineSpan>[
                                   TextSpan(
                                     text: 'Body + 18-55mm Lens',
                                     style: TextStyle(
                                         color: Color(0xFF414141),
-                                        fontSize: 15,
+                                        fontSize: 14,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ]))),
@@ -444,7 +450,7 @@ class ProductDetailScreen extends StatelessWidget {
                       'Standard ISO: 100 to 6400, expandable to 12800\n'
                       'Wi-Fi and NFC supported, Lens Mount: Canon EF mount',
                       style: TextStyle(
-                          height: 1.3, color: Color(0xFF636363), fontSize: 15),
+                          height: 1.3, color: Color(0xFF636363), fontSize: 14),
                     ),
                     10.heightBox,
                     Align(
@@ -455,15 +461,15 @@ class ProductDetailScreen extends StatelessWidget {
                                 text: 'Color : ',
                                 style: TextStyle(
                                     color: Color(0xFF293341),
-                                    fontSize: 15,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.bold),
                                 children: <InlineSpan>[
                                   TextSpan(
                                     text: productDetailController
                                         .selectedColor['name'],
                                     style: TextStyle(
-                                        color: AppColors.primaryColor,
-                                        fontSize: 15,
+                                        color: Color(0xFF1992CE),
+                                        fontSize: 14,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ]))),
@@ -515,15 +521,15 @@ class ProductDetailScreen extends StatelessWidget {
                                 child: Container(
                                   color: Colors.white,
                                   height: 35,
-                                  width: 35,
+                                  width: 30,
                                   child: Icon(
                                     Icons.keyboard_arrow_left_sharp,
-                                    color: Colors.black,
+                                    color: Color(0xFF48525E),
                                   ),
                                 )),
                             2.widthBox,
                             Container(
-                              width: 50,
+                              width: 40,
                               color: Colors.white,
                               padding: EdgeInsets.all(10),
                               child: Text(
@@ -542,11 +548,11 @@ class ProductDetailScreen extends StatelessWidget {
                                 child: Container(
                                   color: Colors.white,
                                   height: 35,
-                                  width: 35,
+                                  width: 30,
                                   child: Center(
                                       child: Icon(
                                     Icons.keyboard_arrow_right_sharp,
-                                    color: Colors.black,
+                                    color:Color(0xFF48525E),
                                   )),
                                 )),
                             5.widthBox,
@@ -555,121 +561,817 @@ class ProductDetailScreen extends StatelessWidget {
                               '*Minimum order Quantity 1 Piece.',
                               style: TextStyle(
                                   color: Color(0xFF000000),
-                                  fontSize: 13,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.bold),
                             ))
                           ],
                         )),
                     15.heightBox,
                     _quantityDiscount(productDetailController),
+                    15.heightBox,
+                    _guranteeSection(productDetailController),
+                    15.heightBox,
+                    _sellerSection(productDetailController),
+                    15.heightBox,
+                    _productInformation(productDetailController),
+                    0.1.heightBox,
+                    _specification(productDetailController),
+                    0.1.heightBox,
+                    _sizeSpecification(productDetailController),
+                    0.1.heightBox,
+                    _deliveryReturns(productDetailController),
                   ],
                 ))));
   }
 
-  Widget _quantityDiscount(ProductDetailController productDetailController) {
-    return ExpansionTile(
-        trailing: productDetailController.isQuantityDiscounExpanded
-            ? Icon(Icons.keyboard_arrow_up, size: 24, color: Colors.white)
-            : Icon(Icons.keyboard_arrow_down, size: 24, color: Colors.white),
-        onExpansionChanged: (isExapanded) {
-          productDetailController.updateQuantityDiscountExpanded();
-        },
-        backgroundColor: Colors.black,
-        collapsedBackgroundColor: Colors.black,
-        initiallyExpanded: true,
-        key: PageStorageKey<String>('Bulk quantity Discounts!!'),
-        title: Text('Bulk quantity Discounts!!',
-            style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.white)),
+  Widget _sellerSection(ProductDetailController productDetailController) {
+    return Container(
+      color: Colors.white,
+      padding: EdgeInsets.all(20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          RichText(
+              textAlign: TextAlign.start,
+              text: TextSpan(
+                  text: 'Ship to ',
+                  style: TextStyle(
+                    color: Color(0xFF484848),
+                    fontSize: 14,
+                  ),
+                  children: <InlineSpan>[
+                    TextSpan(
+                      text: 'Riyadh ',
+                      style: TextStyle(
+                          color: Color(0xFF000000),
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(
+                      text: '(Change city)',
+                      style: TextStyle(
+                        color: Color(0xFF1992CE),
+                        fontSize: 14,
+                      ),
+                    ),
+                  ])),
+          RichText(
+              textAlign: TextAlign.start,
+              text: TextSpan(
+                  text: 'Delivered by ',
+                  style: TextStyle(
+                    color: Color(0xFF484848),
+                    fontSize: 14,
+                  ),
+                  children: <InlineSpan>[
+                    TextSpan(
+                      text: 'Monday, Apr 22 - Wednesday, Apr 24 to Riyadh',
+                      style: TextStyle(
+                          color: Color(0xFF1992CE),
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ])),
+          5.heightBox,
+          Divider(
+            thickness: 1,
+            height: 5,
+            color: Color(0xFFF7F7F7),
+          ),
+          5.heightBox,
+          Row(
+            children: [
+              Expanded(child:Text('Condition: ',
+                  style: TextStyle(
+                      color: Color(0xFF535353),
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold))),
+              Expanded(child:Text('New',
+                  style: TextStyle(
+                    color: Color(0xFF1992CE),
+                    fontSize: 14,
+                  ))),
+            ],
+          ),
+          3.heightBox,
+      Row(
+            children: [
+             Expanded(child: Text('Sold by: ',
+                  style: TextStyle(
+                      color: Color(0xFF535353),
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold))),
+              Expanded(child: Text('Tmween-shop',
+                  style: TextStyle(
+                      color: Color(0xFF1992CE),
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold))),
+            ],
+      ),
+          5.heightBox,
+          Divider(
+            thickness: 1,
+            height: 5,
+            color: Color(0xFFF7F7F7),
+          ),
+          5.heightBox,
+          Text('Only 6 left in stock!',
+              style: TextStyle(
+                  color: Color(0xFFF77443),
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold)),
+          RichText(
+              textAlign: TextAlign.start,
+              text: TextSpan(
+                  text: '9 offers ',
+                  style: TextStyle(
+                    color: Color(0xFF1992CE),
+                    fontSize: 14,
+                  ),
+                  children: <InlineSpan>[
+                    TextSpan(
+                      text: 'from ',
+                      style: TextStyle(
+                          color: Color(0xFF333333),
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(
+                      text: 'SAR 24,999.00',
+                      style: TextStyle(
+                        color: Color(0xFFF77443),
+                        fontSize: 14,
+                      ),
+                    ),
+                  ])),
+          15.heightBox,
           Container(
-            color: Colors.white,
-            padding: EdgeInsets.all(10.0),
-            child: Table(
-              border: TableBorder.all(color: Color(0xFFF0F0F0)),
-              children: [
-                TableRow(children: [
-                  Container(width: 20,height: 40, child: Checkbox(onChanged: (bool? value) {  }, value: true,)),
-                  Container(
-                      height: 40,
+            color: Color(0xFF314156),
+            padding: EdgeInsets.all(15),
+            width: double.maxFinite,
+            child: Text(
+              'Other Seller on Tmween',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          Container(
+              decoration:
+                  BoxDecoration(border: Border.all(color: Color(0xFFEEEEEE))),
+              padding: EdgeInsets.all(10),
+              child: ListView.builder(
+padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                  physics: ScrollPhysics(),
+                  itemCount: productDetailController.sellerOnTmweens.length+1,
+                  itemBuilder: (context, index) {
+                    return (index != productDetailController.sellerOnTmweens.length)
+                        ? Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                       Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  if(index!=0)
+                                  5.heightBox,
+                                  Text(
+                                      'SAR ${productDetailController.sellerOnTmweens[index].amount}',
+                                      style: TextStyle(
+                                          color: Color(0xFFF77443),
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold)),
+                                  3.heightBox,
+                                  Text(
+                                      '+ ${productDetailController.sellerOnTmweens[index].charge} Delivery charge',
+                                      style: TextStyle(
+                                        color: Color(0xFF7D838B),
+                                        fontSize: 14,
+                                      )),
+                                  3.heightBox,
+                                  RichText(
+                                      textAlign: TextAlign.start,
+                                      text: TextSpan(
+                                          text: 'Sold by: ',
+                                          style: TextStyle(
+                                            color: Color(0xFF7D838B),
+                                            fontSize: 14,
+                                          ),
+                                          children: <InlineSpan>[
+                                            TextSpan(
+                                              text: productDetailController
+                                                  .sellerOnTmweens[index].brand,
+                                              style: TextStyle(
+                                                  color: Color(0xFF4D5560),
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ])),
+                                  5.heightBox,
+                                ],
+                              ),
 
-                      child: Center(
-                          child: Text(
-                        'Quanity',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Color(0xFF000000),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15),
-                      ))),
-                  Container(
-                      height: 40,
-                      child: Center(
-                          child: Text(
-                        'Discount',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Color(0xFF000000),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15),
-                      ))),
-                  Container(
-                      height: 40,
-                      child: Center(
-                        child: Text(
-                          'Price per Piece',
+                              CustomButton(horizontalPadding:0,width:105,
+                    fontSize:14,text: 'ADD TO CART', onPressed: (){
+                              })
+                            ],
+                          ),
+                          Divider(
+                            thickness: 1,
+                            height: 5,
+                            color: Color(0xFFF7F7F7),
+                          ),
+                        ],
+                    )
+                        : Padding(padding:EdgeInsets.only(top: 10),child:RichText(
+                        textAlign: TextAlign.start,
+                        text: TextSpan(
+                            text: '(4) more offers  ',
+                            style: TextStyle(
+                              color: Color(0xFF1992CE),
+                              fontSize: 14,fontWeight: FontWeight.bold
+                            ),
+                            children: <InlineSpan>[
+                              TextSpan(
+                                text: 'starting from  ',
+                                style: TextStyle(
+                                    color: Color(0xFF232F3E),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              TextSpan(
+                                text: 'SAR 24,999.00',
+                                style: TextStyle(
+                                  color: Color(0xFFF77443),
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ])))
+                    ;
+                  }))
+        ],
+      ),
+    );
+  }
+
+  Widget _guranteeSection(ProductDetailController productDetailController) {
+    return Column(
+      children: [
+        Container(
+            padding: EdgeInsets.all(10),
+            color: Color(0xFF314156),
+            width: double.maxFinite,
+            child: Row(
+              children: [
+                10.widthBox,
+                SvgPicture.asset(
+                  ImageConstanst.logo,
+                  height: 30,
+                  width: 30,
+                ),
+                10.heightBox,
+                Expanded(
+                    child: Text(
+                  'Guarantee 100% Purchase Protection',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white, fontSize: 14),
+                ))
+              ],
+            )),
+        Container(
+            padding: EdgeInsets.all(10),
+            color: Colors.white,
+            child: /*Table(
+                columnWidths: {
+                  0: FlexColumnWidth(5),
+                  1: FlexColumnWidth(0.1),
+                  2: FlexColumnWidth(5),
+                  3: FlexColumnWidth(0.1),
+                  4: FlexColumnWidth(4),
+                  5: FlexColumnWidth(0.1),
+                  6: FlexColumnWidth(5),
+                },
+                children: [
+                  TableRow(children: [
+                    SvgPicture.asset(
+                      ImageConstanst.sudanFlagIcon,
+                      height: 35,
+                      width: 35,
+                    ),
+                    Container(color: Color(0xFFEEEEEE), height: 35, width: 1,),
+                    SvgPicture.asset(
+                      ImageConstanst.sudanFlagIcon,
+                      height: 35,
+                      width: 35,
+                    ),
+                    Container(color: Color(0xFFEEEEEE), height: 35, width: 1,),
+                    SvgPicture.asset(
+                      ImageConstanst.sudanFlagIcon,
+                      height: 35,
+                      width: 35,
+                    ),
+                    Container(color: Color(0xFFEEEEEE), height: 35, width: 1,),
+                    SvgPicture.asset(
+                      ImageConstanst.sudanFlagIcon,
+                      height: 35,
+                      width: 35,
+                    ),
+                  ]),
+                  TableRow(children: [
+                    5.heightBox,
+                    Container(color: Color(0xFFEEEEEE), height: 5, width: 1,),
+                    5.heightBox,
+                    Container(color: Color(0xFFEEEEEE), height: 5, width: 1,),
+                    5.heightBox,
+                    Container(color: Color(0xFFEEEEEE), height: 5, width: 1,),
+                    5.heightBox,
+                  ]),
+                  TableRow(children: [
+                    Text(
+                      'WARRANTY',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Color(0xFF333333),
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Container(color: Color(0xFFEEEEEE), height: 30, width: 1,),
+                    Text(
+                      '100% ORIGINAL',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Color(0xFF333333),
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Container(color: Color(0xFFEEEEEE), height: 30, width: 1,),
+                    Text(
+                      'SECURE',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Color(0xFF333333),
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Container(color: Color(0xFFEEEEEE), height: 30, width: 1,),
+                    Text(
+                      '100% BUYER',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Color(0xFF333333),
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ]),
+                  TableRow(children: [
+                    Text(
+                      "As per Weswox's",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Color(0xFF5C5C5C), fontSize: 12.5),
+                    ), Container(color:Color(0xFFEEEEEE),  height: 30, width: 1,),
+                    Text(
+                      "Products",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Color(0xFF5C5C5C), fontSize: 12.5),
+                    ),Container(color:Color(0xFFEEEEEE), height: 30, width: 1,),
+                    Text(
+                      "PAYMENTS",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Color(0xFF5C5C5C), fontSize: 12.5),
+                    ),Container(color:Color(0xFFEEEEEE), height: 30, width: 1,),
+                    Text(
+                      "PROTECTION",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Color(0xFF5C5C5C), fontSize: 12.5),
+                    ),
+                  ])
+                ])*/
+                Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                    flex: 2,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          ImageConstanst.warranty,
+                          height: 35,
+                          width: 35,
+                        ),
+                        5.heightBox,
+                        Text(
+                          'WARRANTY',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              color: Color(0xFF000000),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15),
+                              height: 2,
+                              color: Color(0xFF333333),
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold),
                         ),
-                      ))
-                ]),
-                TableRow(children: [
-                  Container(width: 20,height: 40, child: Checkbox(onChanged: (bool? value) {  }, value: true,)),
-                  Container(
-                      height: 40,
+                        Text(
+                          "As per Weswox's",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Color(0xFF5C5C5C), fontSize: 12.5),
+                        ),
+                      ],
+                    )),
+                Container(
+                  color: Color(0xFFEEEEEE),
+                  height: 70,
+                  width: 1,
+                ),
+                Expanded(
+                    flex: 2,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          ImageConstanst.original,
+                          height: 35,
+                          width: 35,
+                        ),
+                        5.heightBox,
+                        Text(
+                          '100% ORIGINAL',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Color(0xFF333333),
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "Products",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Color(0xFF5C5C5C), fontSize: 12.5),
+                        ),
+                      ],
+                    )),
+                Container(
+                  color: Color(0xFFEEEEEE),
+                  height: 70,
+                  width: 1,
+                ),
+                Expanded(
+                    flex: 2,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          ImageConstanst.secure,
+                          height: 35,
+                          width: 35,
+                        ),
+                        5.heightBox,
+                        Text(
+                          'SECURE',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              height: 2,
+                              color: Color(0xFF333333),
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "PAYMENTS",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Color(0xFF5C5C5C), fontSize: 12.5),
+                        ),
+                      ],
+                    )),
+                Container(
+                  color: Color(0xFFEEEEEE),
+                  height: 70,
+                  width: 1,
+                ),
+                Expanded(
+                    flex: 2,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          ImageConstanst.protected,
+                          height: 35,
+                          width: 35,
+                        ),
+                        5.heightBox,
+                        Text(
+                          '100% BUYER',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              height: 2,
+                              color: Color(0xFF333333),
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "PROTECTION",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Color(0xFF5C5C5C), fontSize: 12.5),
+                        ),
+                      ],
+                    )),
+              ],
+            ))
+      ],
+    );
+  }
 
-                      child: Center(
-                          child: Text(
-                            'Quanity',
+  Widget _quantityDiscount(ProductDetailController productDetailController) {
+    return Theme(
+        data: ThemeData(
+          dividerColor: Colors.white,
+        ),
+        child: ExpansionTile(
+            trailing: productDetailController.isQuantityDiscountExpanded
+                ? Icon(Icons.keyboard_arrow_up, size: 24, color: Colors.white)
+                : Icon(Icons.keyboard_arrow_down,
+                    size: 24, color: Colors.white),
+            onExpansionChanged: (isExapanded) {
+              productDetailController.updateQuantityDiscountExpanded();
+            },
+            backgroundColor: Color(0xFF314156),
+            collapsedBackgroundColor: Color(0xFF314156),
+            initiallyExpanded: true,
+            key: PageStorageKey<String>('Bulk quantity Discounts!!'),
+            title: Text('Bulk quantity Discounts!!',
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white)),
+            children: [
+              Container(
+                color: Colors.white,
+                child: Table(
+                  columnWidths: {
+                    0: FlexColumnWidth(2),
+                    1: FlexColumnWidth(4),
+                    2: FlexColumnWidth(4),
+                    3: FlexColumnWidth(6),
+                  },
+                  border: TableBorder.all(color: Color(0xFFF0F0F0)),
+                  children: [
+                    TableRow(children: [
+                      Container(width: 20, height: 40),
+                      Container(
+                          height: 40,
+                          child: Center(
+                              child: Text(
+                            'Quantity',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Color(0xFF000000),
                                 fontWeight: FontWeight.bold,
-                                fontSize: 15),
+                                fontSize: 14),
                           ))),
-                  Container(
-                      height: 40,
-                      child: Center(
-                          child: Text(
+                      Container(
+                          height: 40,
+                          child: Center(
+                              child: Text(
                             'Discount',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Color(0xFF000000),
                                 fontWeight: FontWeight.bold,
-                                fontSize: 15),
+                                fontSize: 14),
                           ))),
-                  Container(
-                      height: 40,
-                      child: Center(
-                        child: Text(
-                          'Price per Piece',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Color(0xFF000000),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15),
+                      Container(
+                          height: 40,
+                          child: Center(
+                            child: Text(
+                              'Price per Piece',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color(0xFF000000),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14),
+                            ),
+                          ))
+                    ]),
+                    TableRow(children: [
+                      Container(
+                        height: 40,
+                        child: Radio(
+                          value: 1,
+                          groupValue: productDetailController.val,
+                          activeColor: Color(0xFF1992CE),
+                          onChanged: (int? value) {
+                            productDetailController.val = value!;
+                            productDetailController.update();
+                          },
                         ),
-                      ))
-                ])
-              ],
-            ),
-          )
-        ]);
+                      ),
+                      Container(
+                          height: 40,
+                          child: Center(
+                              child: Text(
+                            '5-9',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Color(0xFF3A3A3A), fontSize: 14),
+                          ))),
+                      Container(
+                          height: 40,
+                          child: Center(
+                              child: Text(
+                            '2.86%',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Color(0xFF3A3A3A), fontSize: 14),
+                          ))),
+                      Container(
+                          height: 40,
+                          child: Center(
+                            child: Text(
+                              'SAR 11,464',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color(0xFF3A3A3A), fontSize: 14),
+                            ),
+                          ))
+                    ]),
+                    TableRow(children: [
+                      Container(
+                        height: 40,
+                        child: Radio(
+                          value: 2,
+                          groupValue: productDetailController.val,
+                          activeColor: Color(0xFF1992CE),
+                          onChanged: (int? value) {
+                            productDetailController.val = value!;
+                            productDetailController.update();
+                          },
+                        ),
+                      ),
+                      Container(
+                          height: 40,
+                          child: Center(
+                              child: Text(
+                            '10+',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Color(0xFF3A3A3A), fontSize: 14),
+                          ))),
+                      Container(
+                          height: 40,
+                          child: Center(
+                              child: Text(
+                            '3.43%',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Color(0xFF3A3A3A), fontSize: 14),
+                          ))),
+                      Container(
+                          height: 40,
+                          child: Center(
+                            child: Text(
+                              'SAR 22,396',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color(0xFF3A3A3A), fontSize: 14),
+                            ),
+                          ))
+                    ]),
+                  ],
+                ),
+              ),
+            ]));
+  }
+
+  Widget _productInformation(ProductDetailController productDetailController) {
+    return Theme(
+        data: ThemeData(
+          dividerColor: Colors.white,
+        ),
+        child: ExpansionTile(
+            trailing: productDetailController.isProductInfoExpanded
+                ? Icon(Icons.keyboard_arrow_up, size: 24, color: Colors.white)
+                : Icon(Icons.keyboard_arrow_down,
+                    size: 24, color: Colors.white),
+            onExpansionChanged: (isExapanded) {
+              productDetailController.updateProductInfoExpanded();
+            },
+            backgroundColor: Color(0xFF314156),
+            collapsedBackgroundColor: Color(0xFF314156),
+            initiallyExpanded: true,
+            key: PageStorageKey<String>('Product Information'),
+            title: Text('Product Information',
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white)),
+            children: [
+              Container(
+                color: Colors.white,
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                  Text('Descriptions:',style: TextStyle(color: Color(0xFF333333),fontSize: 14,fontWeight: FontWeight.bold),),
+                  5.heightBox,
+                  Text('Style: Body + 18-55mm Lens',style: TextStyle(color: Color(0xFF4A4A4A),fontSize: 14,),),
+                  5.heightBox,
+                  Text('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',style: TextStyle(color: Color(0xFF4A4A4A),fontSize: 14,),),
+                  5.heightBox,
+                  Text('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',style: TextStyle(color: Color(0xFF4A4A4A),fontSize: 14,),),
+                ],)
+              ),
+            ]));
+  }
+
+  Widget _specification(ProductDetailController productDetailController) {
+    return Theme(
+        data: ThemeData(
+          dividerColor: Colors.white,
+        ),
+        child: ExpansionTile(
+            trailing: productDetailController.isSpecificationExpanded
+                ? Icon(Icons.keyboard_arrow_up, size: 24, color: Colors.white)
+                : Icon(Icons.keyboard_arrow_down,
+                    size: 24, color: Colors.white),
+            onExpansionChanged: (isExapanded) {
+              productDetailController.updateSpecificationExpanded();
+            },
+            backgroundColor: Color(0xFF314156),
+            collapsedBackgroundColor: Color(0xFF314156),
+            initiallyExpanded: false,
+            key: PageStorageKey<String>('Specification'),
+            title: Text('Specification',
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white)),
+            children: [
+
+            ]));
+  }
+
+  Widget _sizeSpecification(ProductDetailController productDetailController) {
+    return Theme(
+        data: ThemeData(
+          dividerColor: Colors.white,
+        ),
+        child: ExpansionTile(
+            trailing: productDetailController.isSizeSpecificationExpanded
+                ? Icon(Icons.keyboard_arrow_up, size: 24, color: Colors.white)
+                : Icon(Icons.keyboard_arrow_down,
+                    size: 24, color: Colors.white),
+            onExpansionChanged: (isExapanded) {
+              productDetailController.updateSizeSpecificationExpanded();
+            },
+            backgroundColor: Color(0xFF314156),
+            collapsedBackgroundColor:Color(0xFF314156),
+            initiallyExpanded: false,
+            key: PageStorageKey<String>('Size & Specification'),
+            title: Text('Size & Specification',
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white)),
+            children: [
+
+            ]));
+  }
+
+  Widget _deliveryReturns(ProductDetailController productDetailController) {
+    return Theme(
+        data: ThemeData(
+          dividerColor: Colors.white,
+        ),
+        child: ExpansionTile(
+            trailing: productDetailController.isDeliveryReturnExpanded
+                ? Icon(Icons.keyboard_arrow_up, size: 24, color: Colors.white)
+                : Icon(Icons.keyboard_arrow_down,
+                    size: 24, color: Colors.white),
+            onExpansionChanged: (isExapanded) {
+              productDetailController.updateDeliveryReturnExpanded();
+            },
+            backgroundColor: Color(0xFF314156),
+            collapsedBackgroundColor:Color(0xFF314156),
+            initiallyExpanded: false,
+            key: PageStorageKey<String>('Delivery & Returns'),
+            title: Text('Delivery & Returns',
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white)),
+            children: [
+
+            ]));
   }
 
   Widget topView(ProductDetailController productDetailController) {

@@ -75,6 +75,13 @@ abstract class ImageConstanst {
       'asset/image/customer_service_icon.svg';
   static const String indiaFlagIcon = 'asset/image/india_flag_icon.svg';
   static const String sudanFlagIcon = 'asset/image/sudan_flag_icon.svg';
+  static const String warranty = 'asset/image/warranty.svg';
+  static const String original = 'asset/image/original.svg';
+  static const String like = 'asset/image/like.svg';
+  static const String likeFill = 'asset/image/like_fill.svg';
+  static const String share = 'asset/image/share.svg';
+  static const String secure = 'asset/image/secure.svg';
+  static const String protected = 'asset/image/protected.svg';
   static const String usFlagIcon = 'asset/image/us_flag_icon.svg';
   static const String spainFlagIcon = 'asset/image/spain_flag_icon.svg';
   static const String yourWalletIcon = 'asset/image/your_wallet_icon.svg';
