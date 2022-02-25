@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/dashboard_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
+import 'package:tmween/model/select_category_model.dart';
 import 'package:tmween/screens/drawer/categories_screen.dart';
 import 'package:tmween/screens/drawer/dashboard/best_seller_container.dart';
 import 'package:tmween/screens/drawer/dashboard/deals_of_the_day_container.dart';
@@ -127,7 +128,9 @@ class DashboardScreen extends StatelessWidget {
   }
 
   _shopByCategory(DashboardController dashboardController) {
-    return Column(
+
+
+      return Column(
       children: [
         20.heightBox,
         Row(
@@ -166,27 +169,53 @@ class DashboardScreen extends StatelessWidget {
           ],
         ),
         5.heightBox,
-        Container(
+          Container(
             decoration: BoxDecoration(
               color: AppColors.lightGrayColor,
               borderRadius: BorderRadius.all(Radius.circular(4)),
             ),
             padding: EdgeInsets.all(1.5),
-            child: GridView.count(
-                padding: EdgeInsets.zero,
-                crossAxisSpacing: 1.5,
-                mainAxisSpacing: 1.5,
-                crossAxisCount: 3,
+            child: GridView.builder(
                 shrinkWrap: true,
-                childAspectRatio: 0.73,
                 physics: ScrollPhysics(),
-                children: List.generate(dashboardController.categories.length,
-                    (index) {
-                  return SelectCategoryContainer(
-                      category: dashboardController.categories[index]);
-                })))
+                itemCount: dashboardController.categories.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,crossAxisSpacing: 1.5,
+                    mainAxisSpacing: 1.5, childAspectRatio: 0.7),
+                itemBuilder: (context, index) {
+    return SelectCategoryContainer(
+    category: dashboardController.categories[index]);
+    }))
+      /*  Container(
+            decoration: BoxDecoration(
+              color: AppColors.lightGrayColor,
+              borderRadius: BorderRadius.all(Radius.circular(4)),
+            ),
+            padding: EdgeInsets.all(1.5),
+            child: Table(
+                columnWidths: {
+                  0: FlexColumnWidth(4),
+                  1: FlexColumnWidth(4),
+                  2: FlexColumnWidth(4),
+                },
+                border: TableBorder.all(color: Color(0xFFF0F0F0)),
+                children: dynamicRow()))*/
       ],
     );
+  }
+
+  List<TableRow> dynamicRow() {
+    List<TableRow> rows = [];
+    Iterable<List<SelectCategoryModel>> lst = dashboardController.categories.chunked(3);
+    lst.forEach((element) {
+      List<Widget> columns = [];
+      for (int j = 0 ; j <element.length; j++) {
+        columns.add(SelectCategoryContainer(
+            category: element[j]));
+      }
+       rows.add(TableRow(children: columns));
+    });
+    return rows;
   }
 
   _dealsOfTheDay(DashboardController dashboardController) {
@@ -243,10 +272,12 @@ class DashboardScreen extends StatelessWidget {
                 physics: ScrollPhysics(),
                 children:
                     List.generate(dashboardController.deals.length, (index) {
-                  return InkWell(onTap:(){
-                    dashboardController.navigateTo(ProductDetailScreen());
-                  },child:DealsOfTheDayContainer(
-                      deal: dashboardController.deals[index]));
+                  return InkWell(
+                      onTap: () {
+                        dashboardController.navigateTo(ProductDetailScreen());
+                      },
+                      child: DealsOfTheDayContainer(
+                          deal: dashboardController.deals[index]));
                 })),
             20.heightBox
           ],
@@ -412,7 +443,7 @@ class DashboardScreen extends StatelessWidget {
                             ),
                             Icon(
                               CupertinoIcons.chevron_forward,
-                              color:  Color(0xFF6E7C77),
+                              color: Color(0xFF6E7C77),
                               size: 14,
                             )
                           ],

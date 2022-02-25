@@ -30,3 +30,20 @@ extension StringExtension on String {
       RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
           .hasMatch(this);
 }
+
+
+extension IterableExtensions<E> on Iterable<E> {
+  Iterable<List<E>> chunked(int chunkSize) sync* {
+    if (length <= 0) {
+      yield [];
+      return;
+    }
+    int skip = 0;
+    while (skip < length) {
+      final chunk = this.skip(skip).take(chunkSize);
+      yield chunk.toList(growable: false);
+      skip += chunkSize;
+      if (chunk.length < chunkSize) return;
+    }
+  }
+}

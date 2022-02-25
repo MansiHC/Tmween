@@ -30,6 +30,7 @@ abstract class AppConstants {
   static const customer_token =
       "FbuaPNITXrR16tRwXBAJGexrgUKtXMsKMp52CfVxnBzn9L2CUMqEOIaYgbBbrf5LrdCg8wzbDLtn14MW";
   static const success = "Success";
+  static String fontFamily = 'OpenSans';
 }
 
 abstract class UrlConstants {
@@ -76,6 +77,7 @@ abstract class ImageConstanst {
   static const String indiaFlagIcon = 'asset/image/india_flag_icon.svg';
   static const String sudanFlagIcon = 'asset/image/sudan_flag_icon.svg';
   static const String warranty = 'asset/image/warranty.svg';
+  static const String user = 'asset/image/user.svg';
   static const String original = 'asset/image/original.svg';
   static const String like = 'asset/image/like.svg';
   static const String likeFill = 'asset/image/like_fill.svg';

@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:tmween/controller/review_model.dart';
 import 'package:tmween/model/seller_on_tmween_model.dart';
 import 'package:tmween/screens/authentication/login/login_screen.dart';
 
+import '../model/address_model.dart';
 import '../model/recently_viewed_model.dart';
 
 class ProductDetailController extends GetxController {
@@ -16,6 +18,7 @@ class ProductDetailController extends GetxController {
 
   late bool visibleList = false;
   late bool isLiked = false;
+  bool descTextShowFlag = false;
 
   int current = 0;
   final CarouselController controller = CarouselController();
@@ -46,6 +49,27 @@ class ProductDetailController extends GetxController {
     super.onInit();
   }
 
+  List<AddressModel> addresses = const <AddressModel>[
+    const AddressModel(
+        name: 'Salim Akka',
+        addressLine1: '34 Brooke Place,',
+        addressLine2: '',
+        city: 'Farmington',
+        state: 'nm',
+        country: 'Unites States',
+        pincode: '83401',
+        isDefault: true),
+    const AddressModel(
+      name: 'Salim Akka',
+      addressLine1: '34 Brooke Place,',
+      addressLine2: '',
+      city: 'Farmington',
+      state: 'nm',
+      country: 'Unites States',
+      pincode: '83401',
+    )
+  ];
+
   void changPage(int index) {
     current = index;
     update();
@@ -64,6 +88,21 @@ class ProductDetailController extends GetxController {
       charge: '95.00',
       brand: 'LIFESTYLES',
     ),
+  ];
+
+  List<ReviewModel> reviews = const <ReviewModel>[
+    const ReviewModel(rating:'4.1',name:'Alberto Brando',date:'21 January 2019',desc:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
+        'incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation '
+        'ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,'
+        ' sunt in culpa qui officia deserunt mollit anim id est laborum.'),
+
+ const ReviewModel(rating:'4.1',name:'Alberto Brando',date:'21 January 2019',desc:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
+        'incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation '
+        'ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,'
+        ' sunt in culpa qui officia deserunt mollit anim id est laborum.')
+
   ];
 
   int val = 1;

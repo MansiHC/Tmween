@@ -90,6 +90,7 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.black,
         accentIconTheme: IconThemeData(color: Colors.white),
         dividerColor: Colors.white54,
+        fontFamily: AppConstants.fontFamily
       ),
       home: isLogin ? DrawerScreen() : SplashScreen(),
     );
