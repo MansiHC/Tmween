@@ -29,7 +29,7 @@ class CustomButton extends StatelessWidget {
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(backgroundColor??AppColors.primaryColor),
             padding: MaterialStateProperty.all(
-                EdgeInsets.symmetric(horizontal: horizontalPadding??50, vertical: 10)),
+                EdgeInsets.symmetric(horizontal: horizontalPadding??40, vertical: 10)),
           ),
         ));
   }

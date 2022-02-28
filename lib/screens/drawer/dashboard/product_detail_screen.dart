@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/screens/drawer/dashboard/full_image_screen.dart';
+import 'package:tmween/screens/drawer/dashboard/review_product_screen.dart';
 import 'package:tmween/screens/drawer/dashboard/similar_products_container.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
@@ -13,6 +14,7 @@ import '../../../controller/product_detail_controller.dart';
 import '../../../lang/locale_keys.g.dart';
 import '../../../utils/views/expandable_text.dart';
 import '../address_container.dart';
+import '../profile/add_address_screen.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   late String language;
@@ -695,7 +697,9 @@ class ProductDetailScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF000000)),
               ),
-              Container(
+              InkWell(onTap:(){
+                productDetailController.navigateTo(ReviewProductScreen());
+              },child:Container(
                 height: 35,
                 color: AppColors.primaryColor,
                 width: 120,
@@ -705,7 +709,7 @@ class ProductDetailScreen extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 13, color: Colors.white),
                 )),
-              )
+              ))
             ],
           ),
           5.heightBox,
@@ -1781,7 +1785,9 @@ class ProductDetailScreen extends StatelessWidget {
                       return (index != productDetailController.addresses.length)
                           ? AddressContainer(
                           address: productDetailController.addresses[index])
-                          : Container(
+                          : InkWell(onTap:(){
+                        productDetailController.navigateTo(AddAddressScreen());
+                      },child:Container(
                           width: 150,
                           padding: EdgeInsets.all(10),
                           margin: EdgeInsets.all(5),
@@ -1797,7 +1803,7 @@ class ProductDetailScreen extends StatelessWidget {
                                   style: TextStyle(
                                       color: AppColors.primaryColor,
                                       fontSize: 15,
-                                      fontWeight: FontWeight.bold))));
+                                      fontWeight: FontWeight.bold)))));
                     }))
           ],
         ));

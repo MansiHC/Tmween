@@ -88,13 +88,19 @@ class FilterScreen extends StatelessWidget {
                               height: 24.0,
                               width: 24.0,
                               child: Theme(
-                                  data: Theme.of(filterController.context)
-                                      .copyWith(
+                                  data: Theme.of(filterController.context).copyWith(
                                     unselectedWidgetColor: Colors.grey,
                                   ),
                                   child: Checkbox(
-                                      value: map["isChecked"],
-                                      activeColor: Colors.black,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(4)),
+                                      checkColor:Colors.black,
+                                      value:  map["isChecked"],
+                                      activeColor: Colors.white,
+                                      side: MaterialStateBorderSide.resolveWith(
+                                            (states) =>
+                                            BorderSide(width: 1.5, color: Colors.black),
+                                      ),
                                       onChanged: (value) {
                                         map["isChecked"] = value;
                                         filterController.update();

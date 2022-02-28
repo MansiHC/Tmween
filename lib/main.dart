@@ -19,6 +19,7 @@ void main() async {
   ThemeData theme = lightTheme;
   var isLogin = false;
   var isSplash = false;
+  var isDrawer = false;
   var language = 'en_US';
 
   MySharedPreferences.instance
@@ -33,13 +34,20 @@ void main() async {
           .getBoolValuesSF(SharedPreferencesKeys.isLogin)
           .then((value) async {
         isLogin = value ?? false;
+        MySharedPreferences.instance
+          .getBoolValuesSF(SharedPreferencesKeys.isDrawer)
+          .then((value) async {
+        isDrawer = value ?? false;
+
         runApp(
           MyApp(
             isLogin: isLogin,
             isSplash: isSplash,
+            isDrawer: isDrawer,
             language: language,
           ),
         );
+      });
       });
     });
   });
@@ -48,12 +56,14 @@ void main() async {
 class MyApp extends StatelessWidget {
   final bool isLogin;
   final bool isSplash;
+  final bool isDrawer;
   final String language;
 
   MyApp(
       {Key? key,
       required this.isLogin,
       required this.isSplash,
+      required this.isDrawer,
       required this.language})
       : super(key: key);
 
@@ -92,7 +102,7 @@ class MyApp extends StatelessWidget {
         dividerColor: Colors.white54,
         fontFamily: AppConstants.fontFamily
       ),
-      home: isLogin ? DrawerScreen() : SplashScreen(),
+      home:isDrawer?DrawerScreen(): isLogin ? DrawerScreen() : SplashScreen(),
     );
   }
 }

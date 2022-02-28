@@ -93,6 +93,10 @@ class CustomBoxTextFormField extends StatelessWidget {
   final Widget? prefixIcon;
   final bool? obscureText;
   final bool? readOnly;
+  final bool? filled;
+  final int? maxLines;
+  final Color? borderColor;
+  final Color? fillColor;
   final List<TextInputFormatter>? inputFormatters;
   final FormFieldValidator<String> validator;
   final TextInputAction? textInputAction;
@@ -103,6 +107,10 @@ class CustomBoxTextFormField extends StatelessWidget {
       required this.keyboardType,
       required this.hintText,
       this.errorText,
+        this.fillColor,
+        this.filled,
+        this.borderColor,
+        this.maxLines,
       this.suffixIcon,
       this.obscureText,
       this.readOnly,
@@ -121,6 +129,7 @@ class CustomBoxTextFormField extends StatelessWidget {
       obscureText: obscureText ?? false,
       inputFormatters: inputFormatters,
       validator: validator,
+      maxLines: maxLines??1,
       onFieldSubmitted: onSubmitted ??
           (term) {
             FocusScope.of(context).nextFocus();
@@ -134,15 +143,16 @@ class CustomBoxTextFormField extends StatelessWidget {
           isDense: true,
           contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           border: OutlineInputBorder(
-            borderSide: BorderSide(color: AppColors.lightGrayColor),
+            borderSide: BorderSide(color: borderColor??AppColors.lightGrayColor),
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: AppColors.lightGrayColor),
+            borderSide: BorderSide(color: borderColor??AppColors.lightGrayColor),
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: AppColors.primaryColor),
           ),
-          fillColor: Colors.grey,
+          filled: filled??false,
+          fillColor:fillColor?? Colors.grey,
           errorMaxLines: 2,
           hintText: hintText.tr,
           hintStyle: TextStyle(

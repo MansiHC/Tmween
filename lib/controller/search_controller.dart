@@ -24,10 +24,43 @@ class SearchController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   late bool visibleList= false;
+  int val = 1;
 
   final List<String> items = [
     'Sofa',
     'Bed'
+  ];
+
+
+  List<AddressModel> addresses = const <AddressModel>[
+    const AddressModel(
+        name: 'Salim Akka',
+        addressLine1: '34 Brooke Place,',
+        addressLine2: '',
+        city: 'Farmington',
+        state: 'nm',
+        country: 'Unites States',
+        pincode: '83401',
+        isDefault: true),
+    const AddressModel(
+      name: 'Salim Akka',
+      addressLine1: '34 Brooke Place,',
+      addressLine2: '',
+      city: 'Farmington',
+      state: 'nm',
+      country: 'Unites States',
+      pincode: '83401',
+    )
+  ];
+
+  final List<String> historyList = [
+    'Watches',
+    'Sunglasses',
+    'Furniture',
+    'Outdoor',
+    'Sport,Fitness and Outdoor',
+    'Jewelry',
+    'COmputer and Gaming',
   ];
 
 

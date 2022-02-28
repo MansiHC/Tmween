@@ -15,6 +15,7 @@ void main() {
     await tester.pumpWidget(MyApp(
       isLogin: true,
       isSplash: true,
+      isDrawer: true,
       language: 'en_US',
     ));
 

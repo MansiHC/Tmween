@@ -7,21 +7,30 @@ import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/language_model.dart';
 import 'package:tmween/screens/drawer/categories_screen.dart';
 import 'package:tmween/screens/drawer/deal_of_the_day_screen.dart';
+import 'package:tmween/screens/drawer/profile/add_address_screen.dart';
 import 'package:tmween/screens/drawer/sold_by_tmween_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
+import '../../controller/search_controller.dart';
 import '../../utils/my_shared_preferences.dart';
 import '../../utils/views/custom_text_form_field.dart';
+import '../authentication/login/login_screen.dart';
 import 'address_container.dart';
 import 'profile/my_account_screen.dart';
 
 class DrawerScreen extends StatelessWidget {
+
   final drawerController = Get.put(DrawerControllers());
+  final searchController = Get.put(SearchController());
+
+
   late var language;
+
 
   @override
   Widget build(BuildContext context) {
+
     language = Get.locale!.languageCode;
     return GetBuilder<DrawerControllers>(
         init: DrawerControllers(),
@@ -78,7 +87,15 @@ class DrawerScreen extends StatelessWidget {
                                   ),
                                 ]))
                         : drawerController.pageIndex==2?
-                        SvgPicture.asset(ImageConstanst.logo,height: 40,)
+          GetBuilder<SearchController>(
+          init: SearchController(),
+          builder: (contet) {
+        return searchController.visibleList? SvgPicture.asset(ImageConstanst.logo,height: 40,):
+        Text(
+          'Search Products',
+          style: TextStyle(color: Colors.white),
+        )
+        ;})
                         :Text(
                             drawerController.pageTitle,
                             style: TextStyle(color: Colors.white),
@@ -98,15 +115,14 @@ class DrawerScreen extends StatelessWidget {
                                         MyAccountScreen());
                                   }
                                 });
-
                               },
                               child: Container(
                                 width: 45,
-                                child: CircleAvatar(
+                                child: drawerController.isLogin?CircleAvatar(
                                   radius: 45,
                                   backgroundImage: NetworkImage(
                                       'http://i.imgur.com/QSev0hg.jpg'),
-                                ),
+                                ):SvgPicture.asset(ImageConstanst.user,height: 42,width: 42,),
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
@@ -190,7 +206,9 @@ enabled:  false,
                       return (index != drawerController.addresses.length)
                           ? AddressContainer(
                               address: drawerController.addresses[index])
-                          : Container(
+                          : InkWell(onTap:(){
+                            drawerController.navigateTo(AddAddressScreen());
+                      },child:Container(
                               width: 150,
                               padding: EdgeInsets.all(10),
                               margin: EdgeInsets.all(5),
@@ -206,7 +224,7 @@ enabled:  false,
                                       style: TextStyle(
                                           color: AppColors.primaryColor,
                                           fontSize: 15,
-                                          fontWeight: FontWeight.bold))));
+                                          fontWeight: FontWeight.bold)))));
                     }))
           ],
         ));
@@ -384,7 +402,8 @@ enabled:  false,
                 style: TextStyle(fontSize: 16, color: Colors.black54),
               ),
               onPressed: () {
-                drawerController.navigateToLoginScreen();
+                Get.off(LoginScreen());
+              //  drawerController.navigateToLoginScreen();
               },
             ),
           ],

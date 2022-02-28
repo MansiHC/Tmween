@@ -99,6 +99,11 @@ abstract class ImageConstanst {
   static const String bestMatchIcon = 'asset/image/best_match_icon.svg';
   static const String minusIcon = 'asset/image/minus.svg';
   static const String plusIcon = 'asset/image/plus.svg';
+  static const String star1MoodIcon = 'asset/image/1_star_mood.svg';
+  static const String star2MoodIcon = 'asset/image/2_star_mood.svg';
+  static const String star3MoodIcon = 'asset/image/3_star_mood.svg';
+  static const String star4MoodIcon = 'asset/image/4_star_mood.svg';
+  static const String star5MoodIcon = 'asset/image/5_star_mood.svg';
   static const String checkIcon = 'asset/image/check.svg';
   static const String accountSettingIcon =
       'asset/image/account_setting_icon.svg';
@@ -108,6 +113,7 @@ abstract class SharedPreferencesKeys {
   static const String isDarkTheme = 'isDarkTheme';
   static const String homeCountryDetails = 'homeCountry';
   static const isLogin = "isLogin";
+  static const isDrawer = "isDrawer";
   static const isSplash = "isSplash";
   static const userId = "userId";
   static const loginLogId = "loginLogId";

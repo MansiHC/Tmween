@@ -150,7 +150,7 @@ class YourAddressesScreen extends StatelessWidget {
                     fontSize: 16,
                     text: LocaleKeys.edit,
                     onPressed: () {
-                      addressController.navigateToDashboardScreen();
+                      addressController.navigateTo(AddAddressScreen());
                     }),
                 CustomButton(
                     horizontalPadding: 20,
@@ -158,7 +158,6 @@ class YourAddressesScreen extends StatelessWidget {
                     fontSize: 16,
                     text: LocaleKeys.remove,
                     onPressed: () {
-                      addressController.navigateToDashboardScreen();
                     }),
               ],
             ),

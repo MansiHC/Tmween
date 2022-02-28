@@ -44,8 +44,8 @@ class YourOrderScreen extends StatelessWidget {
                 horizontal: 20,
                 vertical:
                    language=='ar'? MediaQuery.of(yourOrderController.context).size.height /
-                        3.7:MediaQuery.of(yourOrderController.context).size.height /
-                       3.5),
+                        3.8:MediaQuery.of(yourOrderController.context).size.height /
+                       3.6),
 
             child: Container(
                 padding: EdgeInsets.all(15),

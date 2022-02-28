@@ -57,7 +57,7 @@ class SplashScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                    padding: EdgeInsets.only(top: 30, right: 15, left: 15),
+                    padding: EdgeInsets.only(top: 80, right: 15, left: 15),
                     child: Align(
                         alignment: language == 'ar'
                             ? Alignment.topLeft
@@ -99,7 +99,7 @@ class SplashScreen extends StatelessWidget {
                     child: Align(
                         alignment: Alignment.bottomCenter,
                         child: CustomButton(
-                          width: 205,
+                          width: 210,
                           text: LocaleKeys.getStarted,
                           onPressed: () {
                             splashController.navigateToLogin();

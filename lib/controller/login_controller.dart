@@ -194,7 +194,8 @@ class LoginController extends GetxController {
             .addBoolToSF(SharedPreferencesKeys.isLogin, true)
         : MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-
+    MySharedPreferences.instance
+        .addBoolToSF(SharedPreferencesKeys.isLogin, true);
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => DrawerScreen()));
   }
