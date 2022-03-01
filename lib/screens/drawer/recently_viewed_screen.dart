@@ -7,6 +7,7 @@ import 'package:tmween/screens/drawer/dashboard/recently_viewed_container.dart';
 
 import '../../utils/global.dart';
 import '../../utils/views/custom_text_form_field.dart';
+import 'dashboard/product_detail_screen.dart';
 
 class RecentlyViewedScreen extends StatelessWidget {
   final recentlyProviderController = Get.put(RecentlyViewedController());
@@ -74,10 +75,14 @@ class RecentlyViewedScreen extends StatelessWidget {
                             children: List.generate(
                                 recentlyProviderController
                                     .recentlVieweds.length, (index) {
-                              return RecentlyViewedContainer(
+                              return InkWell(
+                                  onTap: () {
+                                recentlyProviderController.navigateTo(ProductDetailScreen());
+                              },
+                              child: RecentlyViewedContainer(
                                 recentlyViewed: recentlyProviderController
                                     .recentlVieweds[index],
-                              );
+                              ));
                             })))
                   ],
                 ),

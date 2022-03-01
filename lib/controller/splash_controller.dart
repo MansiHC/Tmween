@@ -28,7 +28,10 @@ class SplashController extends GetxController {
   void navigateToLogin() {
     MySharedPreferences.instance
         .addBoolToSF(SharedPreferencesKeys.isSplash, true);
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => LoginScreen(from: SharedPreferencesKeys.isSplash,)),
+            (Route<dynamic> route) => false);
+
   }
+
 }

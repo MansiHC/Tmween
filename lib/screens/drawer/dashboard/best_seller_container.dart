@@ -120,7 +120,7 @@ class BestSellerContainer extends StatelessWidget {
                   bottomRight: Radius.circular(4))),
           child: Row(
             children: [
-              Text('SAR ${bestSeller.price}',
+              Text('${LocaleKeys.sar.tr} ${bestSeller.price}',
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       color: Color(0xFF000000),
@@ -128,7 +128,7 @@ class BestSellerContainer extends StatelessWidget {
                       fontWeight: FontWeight.bold)),
               2.widthBox,
               Expanded(
-                  child: Text('SAR ${bestSeller.beforePrice!}',
+                  child: Text('${LocaleKeys.sar.tr} ${bestSeller.beforePrice!}',
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           decoration: TextDecoration.lineThrough,

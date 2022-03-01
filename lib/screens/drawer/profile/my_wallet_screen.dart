@@ -107,7 +107,7 @@ class MyWalletScreen extends StatelessWidget {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                  Text('Wallet ctivity for',style: TextStyle(color: Color(0xFF555555),fontSize: 15,
+                  Text('Wallet activity for',style: TextStyle(color: Color(0xFF555555),fontSize: 15,
                       ),),
                   5.heightBox,
                   Padding(padding: EdgeInsets.only(left: 10),child:MediaQuery.removePadding(

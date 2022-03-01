@@ -124,7 +124,7 @@ class SimilarProductsContainer extends StatelessWidget {
                   bottomRight: Radius.circular(4))),
           child: Row(
             children: [
-              Text('SAR ${products.price}',
+              Text('${LocaleKeys.sar.tr} ${products.price}',
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       color: Color(0xFF000000),
@@ -132,7 +132,7 @@ class SimilarProductsContainer extends StatelessWidget {
                       fontWeight: FontWeight.bold)),
               2.widthBox,
               Expanded(
-                  child: Text('SAR ${products.beforePrice!}',
+                  child: Text('${LocaleKeys.sar.tr} ${products.beforePrice!}',
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           decoration: TextDecoration.lineThrough,

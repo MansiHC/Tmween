@@ -34,6 +34,7 @@ class OtpTextFormField extends StatelessWidget {
         onTap: onTap,
         maxLength: 1,
         decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: 10),
           counter: Offstage(),
           fillColor:
               clicked ? AppColors.primaryColor : AppColors.lightGrayColor,

@@ -117,7 +117,7 @@ class DealsOfTheDayContainer extends StatelessWidget {
                   bottomRight: Radius.circular(4))),
           child: Row(
             children: [
-              Text('SAR ${deal.price}',
+              Text('${LocaleKeys.sar.tr} ${deal.price}',
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       color: Color(0xFF000000),
@@ -125,7 +125,7 @@ class DealsOfTheDayContainer extends StatelessWidget {
                       fontWeight: FontWeight.bold)),
               2.widthBox,
               Expanded(
-                  child: Text('SAR ${deal.beforePrice!}',
+                  child: Text('${LocaleKeys.sar.tr} ${deal.beforePrice!}',
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           decoration: TextDecoration.lineThrough,

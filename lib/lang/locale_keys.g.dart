@@ -219,4 +219,29 @@ abstract class LocaleKeys {
   static const all = 'all';
   static const similarProducts = 'similarProducts';
   static const buyNow = 'buyNow';
+  static const relevance = 'relevance';
+  static const popularity = 'popularity';
+  static const lowToHigh = 'lowToHigh';
+  static const highToLow = 'highToLow';
+  static const items = 'items';
+  static const searchHistory = 'searchHistory';
+  static const clear = 'clear';
+  static const popularSearch = 'popularSearch';
+  static const chooseOption = 'chooseOption';
+  static const camera = 'camera';
+  static const gallery = 'gallery';
+  static const crop = 'crop';
+  static const saveForLater = 'saveForLater';
+  static const inStock = 'inStock';
+  static const orderNowOnly = 'orderNowOnly';
+
+  static const fundWallet = 'fundWallet';
+  static const fundWalletCap = 'fundWalletCap';
+  static const creditDebitNet = 'creditDebitNet';
+  static const amount = 'amount';
+  static const walletSummary = 'walletSummary';
+  static const currentBalance = 'currentBalance';
+  static const rs = 'Rs';
+  static const walletActivityFor = 'walletActivityFor';
+  static const myWallet = 'walletActivityFor';
 }

@@ -7,6 +7,7 @@ import 'package:tmween/screens/drawer/dashboard/deals_of_the_day_container.dart'
 
 import '../../utils/global.dart';
 import '../../utils/views/custom_text_form_field.dart';
+import 'dashboard/product_detail_screen.dart';
 
 class DealsOfTheDayScreen extends StatelessWidget {
   final dealOfTheDayController = Get.put(DealsOfTheDayController());
@@ -74,9 +75,13 @@ class DealsOfTheDayScreen extends StatelessWidget {
                             physics: ScrollPhysics(),
                             children: List.generate(
                                 dealOfTheDayController.deals.length, (index) {
-                              return DealsOfTheDayContainer(
+                              return InkWell(
+                                  onTap: () {
+                                dealOfTheDayController.navigateTo(ProductDetailScreen());
+                              },
+                              child: DealsOfTheDayContainer(
                                 deal: dealOfTheDayController.deals[index],
-                              );
+                              ));
                             })))
                   ],
                 ),

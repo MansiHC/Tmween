@@ -45,7 +45,7 @@ class OtpScreen extends StatelessWidget {
               Container(
                   constraints:
                       BoxConstraints(minWidth: double.infinity, maxHeight: 90),
-                  color: AppColors.primaryColor,
+                  color: AppColors.appBarColor,
                   padding: EdgeInsets.only(top: 20),
                   child: topView(otpController)),
               Padding(
@@ -73,6 +73,7 @@ class OtpScreen extends StatelessWidget {
                   otpController.exitScreen();
                 },
                 child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     Text(
                       LocaleKeys.change,

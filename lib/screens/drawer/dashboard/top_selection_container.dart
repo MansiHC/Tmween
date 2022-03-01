@@ -121,7 +121,7 @@ class TopSelectionContainer extends StatelessWidget {
                   bottomRight: Radius.circular(4))),
           child: Row(
             children: [
-              Text('SAR ${topSelection.price}',
+              Text('${LocaleKeys.sar.tr} ${topSelection.price}',
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       color: Color(0xFF000000),
@@ -129,7 +129,7 @@ class TopSelectionContainer extends StatelessWidget {
                       fontWeight: FontWeight.bold)),
               2.widthBox,
               Expanded(
-                  child: Text('SAR ${topSelection.beforePrice!}',
+                  child: Text('${LocaleKeys.sar.tr} ${topSelection.beforePrice!}',
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           decoration: TextDecoration.lineThrough,

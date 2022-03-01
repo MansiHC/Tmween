@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 import '../model/sold_by_tmween_model.dart';
@@ -49,5 +50,9 @@ class WishlistController extends GetxController {
 
   void exitScreen() {
     Navigator.of(context).pop();
+  }
+
+  void navigateTo(Widget route) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => route));
   }
 }

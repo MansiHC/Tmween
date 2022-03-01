@@ -7,6 +7,7 @@ import 'package:tmween/screens/drawer/dashboard/sold_by_tmween_container.dart';
 
 import '../../utils/global.dart';
 import '../../utils/views/custom_text_form_field.dart';
+import 'dashboard/product_detail_screen.dart';
 
 class SoldByTmweenScreen extends StatelessWidget {
   final soldByTmweenController = Get.put(SoldByTmweenController());
@@ -75,10 +76,14 @@ class SoldByTmweenScreen extends StatelessWidget {
                             children: List.generate(
                                 soldByTmweenController.soldByTmweens.length,
                                 (index) {
-                              return SoldByTmweenContainer(
+                              return InkWell(
+                                  onTap: () {
+                                soldByTmweenController.navigateTo(ProductDetailScreen());
+                              },
+                                  child: SoldByTmweenContainer(
                                 soldByTmween:
                                     soldByTmweenController.soldByTmweens[index],
-                              );
+                              ));
                             })))
                   ],
                 ),

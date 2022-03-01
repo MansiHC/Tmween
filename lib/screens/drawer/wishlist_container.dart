@@ -111,7 +111,7 @@ class WishlistContainer extends StatelessWidget {
                   bottomRight: Radius.circular(4))),
           child: Row(
             children: [
-              Text('SAR ${soldByTmween.price}',
+              Text('${LocaleKeys.sar.tr} ${soldByTmween.price}',
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       color: Color(0xFF000000),
@@ -119,7 +119,7 @@ class WishlistContainer extends StatelessWidget {
                       fontWeight: FontWeight.bold)),
               2.widthBox,
               Expanded(
-                  child: Text('SAR ${soldByTmween.beforePrice!}',
+                  child: Text('${LocaleKeys.sar.tr} ${soldByTmween.beforePrice!}',
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           decoration: TextDecoration.lineThrough,

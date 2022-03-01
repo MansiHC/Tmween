@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:tmween/controller/otp_controller.dart';
+import 'package:tmween/screens/splash_screen.dart';
 
 import '../lang/locale_keys.g.dart';
 import '../screens/authentication/login/login_otp_screen.dart';
@@ -23,6 +25,7 @@ class LoginController extends GetxController {
   late BuildContext context;
   bool rememberMe = false;
   bool loginEmail = true;
+  bool changeEmail = false;
   bool visiblePhoneEmail = true;
   bool isPhoneEmailEmpty = false;
   bool visiblePassword = false;
@@ -173,6 +176,8 @@ class LoginController extends GetxController {
   }
 
   void navigateToOTPScreen() {
+    Get.delete<OtpController>();
+
     Navigator.push(
             context,
             MaterialPageRoute(
@@ -180,8 +185,10 @@ class LoginController extends GetxController {
                     phoneEmail: phoneEmailController.text.toString())))
         .then((value) {
       if (value) {
+        changeEmail = false;
         visiblePhoneEmail = false;
       } else {
+        changeEmail = true;
         visiblePhoneEmail = true;
       }
       update();
@@ -189,6 +196,7 @@ class LoginController extends GetxController {
   }
 
   void navigateToDrawerScreen() {
+
     rememberMe == true
         ? MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, true)
@@ -196,14 +204,23 @@ class LoginController extends GetxController {
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
     MySharedPreferences.instance
         .addBoolToSF(SharedPreferencesKeys.isLogin, true);
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => DrawerScreen()));
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => DrawerScreen()),
+            (Route<dynamic> route) => false);
   }
 
-  void exitScreen() {
+  void exitScreen(String from) {
     loginEmail = true;
     visiblePhoneEmail = true;
-    Navigator.of(context).pop();
+
+    if(from==SharedPreferencesKeys.isDrawer) {
+      Navigator.of(context).pop();
+    }else{
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => SplashScreen()),
+              (Route<dynamic> route) => false);
+
+    }
   }
 
   void notifyCheckBox() {

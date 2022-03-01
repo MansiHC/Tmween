@@ -105,6 +105,10 @@ abstract class ImageConstanst {
   static const String star4MoodIcon = 'asset/image/4_star_mood.svg';
   static const String star5MoodIcon = 'asset/image/5_star_mood.svg';
   static const String checkIcon = 'asset/image/check.svg';
+  static const String save = 'asset/image/save.svg';
+  static const String delete = 'asset/image/delete.svg';
+  static const String freeDelivery = 'asset/image/free_delivery.svg';
+  static const String info = 'asset/image/info.svg';
   static const String accountSettingIcon =
       'asset/image/account_setting_icon.svg';
 }

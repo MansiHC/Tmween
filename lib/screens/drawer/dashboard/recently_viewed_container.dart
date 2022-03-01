@@ -121,7 +121,7 @@ class RecentlyViewedContainer extends StatelessWidget {
                   bottomRight: Radius.circular(4))),
           child: Row(
             children: [
-              Text('SAR ${recentlyViewed.price}',
+              Text('${LocaleKeys.sar.tr} ${recentlyViewed.price}',
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       color: Color(0xFF000000),
@@ -129,7 +129,7 @@ class RecentlyViewedContainer extends StatelessWidget {
                       fontWeight: FontWeight.bold)),
               2.widthBox,
               Expanded(
-                  child: Text('SAR ${recentlyViewed.beforePrice!}',
+                  child: Text('${LocaleKeys.sar.tr} ${recentlyViewed.beforePrice!}',
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           decoration: TextDecoration.lineThrough,

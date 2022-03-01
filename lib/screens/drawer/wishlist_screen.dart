@@ -7,6 +7,7 @@ import 'package:tmween/screens/drawer/wishlist_container.dart';
 import '../../lang/locale_keys.g.dart';
 import '../../utils/global.dart';
 import '../../utils/views/custom_text_form_field.dart';
+import 'dashboard/product_detail_screen.dart';
 import 'dashboard/sold_by_tmween_container.dart';
 
 class WishlistScreen extends  StatelessWidget {
@@ -39,32 +40,6 @@ Widget build(BuildContext context) {
                         padding: EdgeInsets.only(top: 20),
                         child: topView(wishlistController))),
 
-                  Visibility(
-                      visible: fromProfile,
-                      child: Container(
-                          color: AppColors.appBarColor,
-                          child: Container(
-                              decoration: BoxDecoration(color:Colors.white,borderRadius: BorderRadius.circular(2)),
-                              height: 40,
-                              margin: EdgeInsets.only(
-                                  bottom: 10, left: 15, right: 15),
-                              child: CustomTextFormField(
-                                  isDense:true,
-                                  controller: wishlistController.searchController,
-                                  keyboardType: TextInputType.text,
-                                  hintText: LocaleKeys.searchProducts.tr,
-                                  textInputAction: TextInputAction.search,
-                                  onSubmitted: (term) {
-                                    FocusScope.of(context).unfocus();
-                                  },
-                                  prefixIcon: Icon(
-                                    Icons.search,
-                                    color: AppColors.primaryColor,
-                                    size: 32,
-                                  ),
-                                  validator: (value) {
-                                    return null;
-                                  })))),
                   Expanded(child:Container(
                 color: Colors.white,child: Container(
                       margin: EdgeInsets.only(top:20,bottom: 10,right: 10,left: 10),
@@ -84,10 +59,14 @@ Widget build(BuildContext context) {
                           children: List.generate(
                               wishlistController.soldByTmweens.length,
                                   (index) {
-                                return WishlistContainer(
+                                return InkWell(
+                                    onTap: () {
+                                  wishlistController.navigateTo(ProductDetailScreen());
+                                },
+                                    child: WishlistContainer(
                                   soldByTmween:
                                   wishlistController.soldByTmweens[index],
-                                );
+                                ));
                               })))
                   ))],
         ),

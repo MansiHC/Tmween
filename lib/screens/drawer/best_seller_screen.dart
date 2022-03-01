@@ -7,6 +7,7 @@ import 'package:tmween/lang/locale_keys.g.dart';
 import '../../utils/global.dart';
 import '../../utils/views/custom_text_form_field.dart';
 import 'dashboard/best_seller_container.dart';
+import 'dashboard/product_detail_screen.dart';
 
 class BestSellerScreen extends StatelessWidget {
   final bestSellerController = Get.put(BestSellerController());
@@ -75,10 +76,14 @@ class BestSellerScreen extends StatelessWidget {
                             children: List.generate(
                                 bestSellerController.bestSellers.length,
                                 (index) {
-                              return BestSellerContainer(
+                              return InkWell(
+                                  onTap: () {
+                                bestSellerController.navigateTo(ProductDetailScreen());
+                              },
+                                  child: BestSellerContainer(
                                 bestSeller:
                                     bestSellerController.bestSellers[index],
-                              );
+                              ));
                             })))
                   ],
                 ),

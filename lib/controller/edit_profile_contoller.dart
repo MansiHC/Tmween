@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:image_crop/image_crop.dart';
+import 'package:image_picker/image_picker.dart';
 
 class EditProfileController extends GetxController {
   late BuildContext context;
@@ -13,6 +17,13 @@ class EditProfileController extends GetxController {
   bool enablePhone = true;
   bool enableEmail = true;
   final formKey = GlobalKey<FormState>();
+  final picker = ImagePicker();
+   File? image;
+   File? sample;
+   File? lastCropped;
+   File? finalImage;
+  final cropKey = GlobalKey<CropState>();
+  String imageString = "";
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));

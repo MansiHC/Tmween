@@ -7,6 +7,7 @@ import 'package:tmween/screens/drawer/dashboard/top_selection_container.dart';
 
 import '../../utils/global.dart';
 import '../../utils/views/custom_text_form_field.dart';
+import 'dashboard/product_detail_screen.dart';
 
 class TopSelectionScreen extends StatelessWidget {
   final topSelectionController = Get.put(TopSelectionController());
@@ -74,10 +75,14 @@ class TopSelectionScreen extends StatelessWidget {
                         children: List.generate(
                             topSelectionController.topSelections.length,
                             (index) {
-                          return TopSelectionContainer(
+                          return InkWell(
+                              onTap: () {
+                            topSelectionController.navigateTo(ProductDetailScreen());
+                          },
+                              child: TopSelectionContainer(
                             topSelection:
                                 topSelectionController.topSelections[index],
-                          );
+                          ));
                         })))
               ],
             ),

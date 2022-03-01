@@ -1,6 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_crop/image_crop.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:tmween/controller/edit_profile_contoller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/drawer/profile/change_password_screen.dart';
@@ -8,7 +15,7 @@ import 'package:tmween/screens/drawer/profile/deactivate_account_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_button.dart';
-
+import 'package:path/path.dart';
 import '../../../utils/helper.dart';
 import '../../../utils/views/custom_text_form_field.dart';
 
@@ -26,7 +33,25 @@ class UpdateProfileScreen extends StatelessWidget {
         builder: (contet) {
           editAccountController.context = context;
           editAccountController.getProfileDetails();
-          return Scaffold(
+          return editAccountController.sample == null
+              ?Scaffold(
+              body: Container(
+                  color: Colors.white,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                          constraints: BoxConstraints(
+                              minWidth: double.infinity, maxHeight: 90),
+                          color: AppColors.appBarColor,
+                          padding: EdgeInsets.only(top: 20),
+                          child: topView(editAccountController)),
+                      _middleView(editAccountController),
+                    ],
+                  ))):
+          editAccountController.lastCropped == null
+              ? _buildCroppingImage(editAccountController)
+              : Scaffold(
               body: Container(
                   color: Colors.white,
                   child: Column(
@@ -44,12 +69,82 @@ class UpdateProfileScreen extends StatelessWidget {
         });
   }
 
+  Widget _buildCroppingImage(EditProfileController editAccountController) {
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: Crop.file(editAccountController.sample!, key: editAccountController.cropKey),
+        ),
+        Container(
+          padding: const EdgeInsets.only(top: 20.0),
+          alignment: AlignmentDirectional.center,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              TextButton(
+                child: Text(LocaleKeys.crop.tr),
+                onPressed: () => _cropImage(editAccountController),
+              ),
+              TextButton(
+                child:Text(LocaleKeys.cancel.tr),
+                onPressed: () {
+
+                    editAccountController.sample = null;
+                    editAccountController.lastCropped = null;
+                  editAccountController.update();
+                },
+              )
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  Future<void> _cropImage(EditProfileController editAccountController) async {
+    final scale = editAccountController.cropKey.currentState!.scale;
+    final area = editAccountController.cropKey.currentState!.area;
+    if (area == null) {
+      return;
+    }
+
+    final sample = await ImageCrop.sampleImage(
+      file: editAccountController.image!,
+      preferredSize: (2000 / scale).round(),
+    );
+
+    final file = await ImageCrop.cropImage(
+      file: sample,
+      area: area,
+    );
+
+    sample.delete();
+
+    editAccountController.lastCropped?.delete();
+    editAccountController.lastCropped = file;
+
+    editAccountController.finalImage = editAccountController.lastCropped;
+    var response =
+    await ImageGallerySaver.saveImage(editAccountController.finalImage!.readAsBytesSync());
+
+      editAccountController.imageString = response['filePath'];
+      editAccountController.lastCropped = null;
+      editAccountController.sample = null;
+      editAccountController.update();
+  }
+
   Widget _middleView(EditProfileController editAccountController) {
     return Expanded(
         child: SingleChildScrollView(
             child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        InkWell(
+            onTap: (){
+              FocusScope.of(editAccountController.context).requestFocus(new FocusNode());
+              _requestPermission(editAccountController);
+            },
+            child:
         Container(
             height: 110,
             color: AppColors.appBarColor,
@@ -58,10 +153,17 @@ class UpdateProfileScreen extends StatelessWidget {
                 alignment: Alignment.topCenter,
                 child: Container(
                   width: 80,
-                  child: CircleAvatar(
-                    radius: 30,
+                  child: editAccountController.finalImage == null?
+                  CircleAvatar(
+                    radius: 40,
                     backgroundImage:
-                        NetworkImage('http://i.imgur.com/QSev0hg.jpg'),
+                         NetworkImage('http://i.imgur.com/QSev0hg.jpg')
+
+                  ):CircleAvatar(
+                    radius: 40,
+                    backgroundImage:
+                         FileImage(editAccountController.finalImage!),
+
                   ),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
@@ -70,7 +172,7 @@ class UpdateProfileScreen extends StatelessWidget {
                       width: 3.0,
                     ),
                   ),
-                ))),
+                )))),
         15.heightBox,
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 15),
@@ -324,5 +426,117 @@ class UpdateProfileScreen extends StatelessWidget {
           ],),)
 
         ));
+  }
+
+  void _shopImagePickerDialog(EditProfileController editProfileController) async{
+    await showDialog(
+        context: editProfileController.context,
+        builder: (_) => AlertDialog(
+
+        contentPadding: EdgeInsets.symmetric(horizontal: 15),
+        buttonPadding: EdgeInsets.zero,
+        actions: [],
+        content: Container(
+          height: 205,
+          child:Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              15.heightBox,
+              Text(
+                LocaleKeys.chooseOption.tr,
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF7C7C7C)
+                ),
+              ),
+              15.heightBox,
+              ListTile(
+                dense: true,
+                leading: Icon(Icons.camera),
+                title: Text(
+                  LocaleKeys.camera.tr,
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF7C7C7C)
+                  ),
+                ),
+                onTap: () {
+                  editProfileController.pop();
+                  _getImage(ImageSource.camera, editProfileController);
+                },
+              ),
+              ListTile(
+                dense: true,
+                leading: Icon(Icons.image),
+                title: Text(
+                  LocaleKeys.gallery.tr,
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF7C7C7C)
+                  ),
+                ),
+                onTap: () {
+                  editProfileController.pop();
+                  _getImage(ImageSource.gallery,editProfileController);
+                },
+              ),
+                  Align(alignment:Alignment.center,child: TextButton(
+                    style: TextButton.styleFrom(padding: EdgeInsets.zero),onPressed: () {
+                    editProfileController.pop();
+                  },
+                    child: Text(
+                      LocaleKeys.cancel.tr,
+                      style: TextStyle(
+                          color: Colors.grey[400],
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
+                    ) ,
+                  )),
+            ],),)
+
+    ));
+  }
+
+  _requestPermission(EditProfileController editAccountController) async {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.storage,
+    ].request();
+
+    PermissionStatus? info = statuses[Permission.storage];
+    print('info....$info');
+    switch (info) {
+      case PermissionStatus.denied:
+        break;
+      case PermissionStatus.granted:
+        _shopImagePickerDialog(editAccountController);
+        break;
+      default:
+        return Colors.grey;
+    }
+  }
+
+  void _getImage(ImageSource imageSource, EditProfileController editProfileController) async {
+    try {
+      PickedFile? imageFile = await editProfileController.picker.getImage(source: imageSource);
+      if (imageFile == null) return;
+      File tmpFile = File(imageFile.path);
+      final appDir = await getApplicationDocumentsDirectory();
+      final fileName = basename(imageFile.path);
+      tmpFile = await tmpFile.copy('${appDir.path}/$fileName');
+      final sample = await ImageCrop.sampleImage(
+        file: tmpFile,
+        preferredSize: editProfileController.context.size!.longestSide.ceil(),
+      );
+
+        editProfileController.image = tmpFile;
+      editProfileController.sample = sample;
+editProfileController.update();
+    } catch (e) {
+      debugPrint('image-picker-error ${e.toString()}');
+    }
   }
 }

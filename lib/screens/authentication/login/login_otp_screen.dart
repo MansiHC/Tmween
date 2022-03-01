@@ -33,7 +33,7 @@ class LoginOtpScreen extends StatelessWidget {
               Container(
                   constraints:
                       BoxConstraints(minWidth: double.infinity, maxHeight: 90),
-                  color: AppColors.primaryColor,
+                  color: AppColors.appBarColor,
                   padding: EdgeInsets.only(top: 20),
                   child: topView(otpController)),
               Padding(
@@ -50,6 +50,7 @@ class LoginOtpScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
+
           children: [
             Text(
               '${LocaleKeys.inText.tr} ${phoneEmail}',
@@ -61,6 +62,7 @@ class LoginOtpScreen extends StatelessWidget {
                   otpController.exitScreen();
                 },
                 child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     Text(
                       LocaleKeys.change,

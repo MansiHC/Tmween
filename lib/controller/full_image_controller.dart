@@ -99,11 +99,6 @@ class FullImageController extends GetxController {
   }
 
 
-  void navigateToLoginScreen() {
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => LoginScreen()),
-            (Route<dynamic> route) => false);
-  }
 
   void closeDrawer() {
     Navigator.pop(context);

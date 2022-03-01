@@ -336,8 +336,12 @@ class DashboardScreen extends StatelessWidget {
                     itemCount: dashboardController.bestSellers.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      return BestSellerContainer(
-                          bestSeller: dashboardController.bestSellers[index]);
+                      return InkWell(
+                          onTap: () {
+                        dashboardController.navigateTo(ProductDetailScreen());
+                      },
+                      child: BestSellerContainer(
+                          bestSeller: dashboardController.bestSellers[index]));
                     })),
             20.heightBox
           ],
@@ -396,9 +400,13 @@ class DashboardScreen extends StatelessWidget {
                     itemCount: dashboardController.soldByTmweens.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      return SoldByTmweenContainer(
+                      return InkWell(
+                          onTap: () {
+                        dashboardController.navigateTo(ProductDetailScreen());
+                      },
+                      child: SoldByTmweenContainer(
                           soldByTmween:
-                              dashboardController.soldByTmweens[index]);
+                              dashboardController.soldByTmweens[index]));
                     })),
             20.heightBox
           ],
@@ -457,9 +465,13 @@ class DashboardScreen extends StatelessWidget {
                     itemCount: dashboardController.topSelections.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      return TopSelectionContainer(
+                      return InkWell(
+                          onTap: () {
+                        dashboardController.navigateTo(ProductDetailScreen());
+                      },
+                      child: TopSelectionContainer(
                           topSelection:
-                              dashboardController.topSelections[index]);
+                              dashboardController.topSelections[index]));
                     })),
             20.heightBox
           ],
@@ -519,9 +531,13 @@ class DashboardScreen extends StatelessWidget {
                     itemCount: dashboardController.recentlVieweds.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      return RecentlyViewedContainer(
+                      return InkWell(
+                          onTap: () {
+                        dashboardController.navigateTo(ProductDetailScreen());
+                      },
+                      child: RecentlyViewedContainer(
                           recentlyViewed:
-                              dashboardController.recentlVieweds[index]);
+                              dashboardController.recentlVieweds[index]));
                     })),
             20.heightBox
           ],

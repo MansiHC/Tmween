@@ -17,6 +17,7 @@ class IndividualLoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
+    print('${loginController.loginEmail} ${loginController.visiblePhoneEmail}');
     return GetBuilder<LoginController>(
         init: LoginController(),
         builder: (contet) {
@@ -59,7 +60,7 @@ class IndividualLoginScreen extends StatelessWidget {
                                               return null;
                                             })),
                                     Visibility(
-                                        visible: !loginController.loginEmail,
+                                        visible: !loginController.loginEmail&& !loginController.changeEmail,
                                         child: CustomTextFormField(
                                             controller: loginController
                                                 .passwordController,
@@ -82,7 +83,7 @@ class IndividualLoginScreen extends StatelessWidget {
                                             hintText: LocaleKeys.yourPassword,
                                             validator: (value) {
                                               if (value!.isEmpty) {
-                                                return 'hello'.tr;
+                                                return LocaleKeys.emptyPassword.tr;
                                               } else if (loginController
                                                       .passwordController
                                                       .value

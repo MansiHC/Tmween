@@ -12,6 +12,10 @@ import '../../../controller/login_controller.dart';
 import 'individual_login_screen.dart';
 
 class LoginScreen extends StatefulWidget {
+  final String from;
+
+  LoginScreen({Key? key, required this.from}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return _LoginScreenState();
@@ -115,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen>
                         color: Colors.white,
                         child: InkWell(
                           onTap: () {
-                            loginController.exitScreen();
+                            loginController.exitScreen(widget.from);
                           },
                           child: SizedBox(
                               width: 24,

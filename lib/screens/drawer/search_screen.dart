@@ -12,6 +12,7 @@ import '../../controller/search_controller.dart';
 import '../../lang/locale_keys.g.dart';
 import '../../utils/global.dart';
 import 'address_container.dart';
+import 'dashboard/product_detail_screen.dart';
 
 class SearchScreen extends StatelessWidget {
   final searchController = Get.put(SearchController());
@@ -165,7 +166,7 @@ class SearchScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      '(8 items)',
+                      '(8 ${LocaleKeys.items.tr})',
                       style: TextStyle(color: Color(0xFF838383), fontSize: 14),
                     ),
                   ],
@@ -235,9 +236,13 @@ class SearchScreen extends StatelessWidget {
                 crossAxisSpacing: 5,
                 childAspectRatio: 0.66),
             itemBuilder: (ctx, i) {
-              return SearchContainer(
+              return InkWell(
+                  onTap: () {
+                searchController.navigateTo(ProductDetailScreen());
+              },
+              child: SearchContainer(
                 recentlyViewed: searchController.recentlVieweds[i],
-              );
+              ));
             },
           ),
         ),
@@ -292,14 +297,14 @@ class SearchScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Search History',
+                          LocaleKeys.searchHistory.tr,
                           style: TextStyle(
                               fontSize: 19,
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF585858)),
                         ),
                         Text(
-                          'Clear',
+                          LocaleKeys.clear.tr,
                           style: TextStyle(
                               fontSize: 12.5,
                               decoration: TextDecoration.underline,
@@ -311,15 +316,13 @@ class SearchScreen extends StatelessWidget {
                     10.heightBox,
                     Wrap(
                       spacing: 10,
-                      children: <Widget>[
-                        for (var item in searchController.historyList)
-    InkWell(
-    onTap: (){
-    searchController.searchController.text = item;
-    searchController.visibleList = true;
-    searchController.update();
-    },
-    child:Container(
+                      children: List.generate(searchController.historyList.length, (index) =>  InkWell(
+                          onTap: (){
+                            searchController.searchController.text = searchController.historyList[index];
+                            searchController.visibleList = true;
+                            searchController.update();
+                          },
+                          child:Container(
                             padding: EdgeInsets.all(5),
                             margin: EdgeInsets.symmetric(
                                 horizontal: 2, vertical: 6),
@@ -333,16 +336,15 @@ class SearchScreen extends StatelessWidget {
                                       spreadRadius: 3)
                                 ]),
                             child: Text(
-                              item,
+                              searchController.historyList[index],
                               style: TextStyle(
                                   fontSize: 12.5, color: Color(0xFF5B5B5B)),
                             ),
-                          )),
-                      ],
+                          )))
                     ),
                     30.heightBox,
                     Text(
-                      'Popular Search',
+                      LocaleKeys.popularSearch.tr,
                       style: TextStyle(
                           fontSize: 19,
                           fontWeight: FontWeight.bold,
@@ -450,7 +452,7 @@ class SearchScreen extends StatelessWidget {
                 children: [
                   10.heightBox,
                   Text(
-                    'Best Match',
+                    LocaleKeys.bestMatch.tr,
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 18,
@@ -468,7 +470,7 @@ class SearchScreen extends StatelessWidget {
                       searchController.update();
                     },
                     title: Text(
-                      "Relevance",
+                      LocaleKeys.relevance.tr,
                       style: TextStyle(color: Colors.black87, fontSize: 14),
                     ),
                   ),
@@ -483,7 +485,7 @@ class SearchScreen extends StatelessWidget {
                       searchController.update();
                     },
                     title: Text(
-                      "Popularity",
+                      LocaleKeys.popularity.tr,
                       style: TextStyle(color: Colors.black87, fontSize: 14),
                     ),
                   ),
@@ -498,7 +500,7 @@ class SearchScreen extends StatelessWidget {
                       searchController.update();
                     },
                     title: Text(
-                      "Price -- Low To High",
+                      LocaleKeys.lowToHigh.tr,
                       style: TextStyle(color: Colors.black87, fontSize: 14),
                     ),
                   ),
@@ -513,7 +515,7 @@ class SearchScreen extends StatelessWidget {
                       searchController.update();
                     },
                     title: Text(
-                      "Price -- High To Low",
+                      LocaleKeys.highToLow.tr,
                       style: TextStyle(color: Colors.black87, fontSize: 14),
                     ),
                   ),

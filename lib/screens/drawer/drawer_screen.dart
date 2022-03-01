@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/drawer_controller.dart';
+import 'package:tmween/controller/login_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/language_model.dart';
+import 'package:tmween/screens/drawer/cart_screen.dart';
 import 'package:tmween/screens/drawer/categories_screen.dart';
 import 'package:tmween/screens/drawer/deal_of_the_day_screen.dart';
 import 'package:tmween/screens/drawer/profile/add_address_screen.dart';
@@ -140,7 +142,8 @@ class DrawerScreen extends StatelessWidget {
                   drawer: _buildDrawer(drawerController),
                   bottomNavigationBar: _buildBottomNavBar(drawerController),
                   body: Column(children: [
-                    drawerController.pageIndex==2?Container():Container(
+                    drawerController.pageIndex==2 || drawerController.pageIndex==3?Container():
+                    Container(
                         color: AppColors.appBarColor,
                         padding: EdgeInsets.only(top: 5),
                         child: Container(
@@ -339,8 +342,9 @@ enabled:  false,
                   ])),
           InkWell(
               onTap: () {
-                drawerController.changePage(4);
-                drawerController.pageTitle = LocaleKeys.cart.tr;
+                /*drawerController.changePage(4);
+                drawerController.pageTitle = LocaleKeys.cart.tr;*/
+                drawerController.navigateTo(CartScreen());
               },
               child: Wrap(
                   direction: Axis.vertical,
@@ -402,7 +406,9 @@ enabled:  false,
                 style: TextStyle(fontSize: 16, color: Colors.black54),
               ),
               onPressed: () {
-                Get.off(LoginScreen());
+                Get.delete<LoginController>();
+                Get.delete<DrawerControllers>();
+                Get.off(LoginScreen(from:SharedPreferencesKeys.isDrawer));
               //  drawerController.navigateToLoginScreen();
               },
             ),

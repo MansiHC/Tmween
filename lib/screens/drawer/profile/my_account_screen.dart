@@ -157,7 +157,9 @@ class MyAccountScreen extends StatelessWidget {
                         '1999 Bluff Street MOODY Alabama - 35004',
                         style: TextStyle(color: Colors.black54, fontSize: 12),
                       )),
-                      Container(
+                      InkWell(onTap:(){
+                        myAccountController.navigateTo(YourAddressesScreen());
+                      },child:Container(
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(2)),
                             border: Border.all(color: AppColors.primaryColor)),
@@ -167,7 +169,7 @@ class MyAccountScreen extends StatelessWidget {
                           style: TextStyle(
                               color: AppColors.primaryColor, fontSize: 12),
                         ),
-                      )
+                      ))
                     ],
                   ),
                 ),
@@ -230,7 +232,9 @@ class MyAccountScreen extends StatelessWidget {
         ),
         CustomListTile(
             title: LocaleKeys.accountSettings,
-            onTap: () {},
+            onTap: () {
+              myAccountController.navigateTo(UpdateProfileScreen());
+            },
             leadingIcon: ImageConstanst.accountSettingIcon),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 15),

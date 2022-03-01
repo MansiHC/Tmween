@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 import 'package:tmween/service/api.dart';
 import 'package:tmween/utils/helper.dart';
+
+import '../utils/global.dart';
+import '../utils/my_shared_preferences.dart';
 
 class OtpController extends GetxController {
   late BuildContext context;
@@ -95,8 +99,12 @@ class OtpController extends GetxController {
   }
 
   void navigateToDrawerScreen() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => DrawerScreen()));
+
+    MySharedPreferences.instance
+        .addBoolToSF(SharedPreferencesKeys.isLogin, true);
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => DrawerScreen()),
+            (Route<dynamic> route) => false);
   }
 
   void exitScreen() {
