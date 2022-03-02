@@ -145,11 +145,7 @@ class IndividualLoginScreen extends StatelessWidget {
                                                   )
                                                 ])),
                                         Expanded(
-                                          child: InkWell(
-                                              onTap: (){
-                                                loginController.navigateToForgotPasswordScreen();
-                                              },
-                                              child:Text(
+                                          child: Text(
                                               LocaleKeys.forgotPassword.tr,
                                               textAlign: language == 'ar'
                                                   ? TextAlign.left
@@ -157,7 +153,7 @@ class IndividualLoginScreen extends StatelessWidget {
                                               style: TextStyle(
                                                   fontSize: 13,
                                                   color: AppColors.primaryColor,
-                                                  fontWeight: FontWeight.bold))),
+                                                  fontWeight: FontWeight.bold)),
                                         )
                                       ],
                                     ),

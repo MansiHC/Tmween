@@ -342,9 +342,9 @@ enabled:  false,
                   ])),
           InkWell(
               onTap: () {
-                /*drawerController.changePage(4);
-                drawerController.pageTitle = LocaleKeys.cart.tr;*/
-                drawerController.navigateTo(CartScreen());
+                drawerController.changePage(4);
+                drawerController.pageTitle = LocaleKeys.cart.tr;
+                //drawerController.navigateTo(CartScreen());
               },
               child: Wrap(
                   direction: Axis.vertical,

@@ -46,6 +46,7 @@ class CartProductContainer extends StatelessWidget {
                             borderRadius: BorderRadius.all(Radius.circular(4))),
                         child: Wrap(
                           alignment: WrapAlignment.center,
+                          crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
                             Text(cartProductModel.rating,
                                 style: TextStyle(

@@ -104,7 +104,7 @@ const Map<String, String> en_US = {
   "soldByTmweenSmall": "Sold by Tmween",
   "tmweenBestSellerSmall": "Tmween Best Seller",
   "topSelectionSmall": "Top Selection",
-  "recentlyViewedSmall": "Recently VIEWED",
+  "recentlyViewedSmall": "Recently Viewed",
   "sellingOnTmween": "Selling on Tmween",
   "deliveryOnTmween": "Delivery on Tmween",
   "customerService": "Customer Service",

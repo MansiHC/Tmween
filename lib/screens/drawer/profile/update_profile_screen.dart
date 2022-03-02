@@ -139,12 +139,7 @@ class UpdateProfileScreen extends StatelessWidget {
             child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        InkWell(
-            onTap: (){
-              FocusScope.of(editAccountController.context).requestFocus(new FocusNode());
-              _requestPermission(editAccountController);
-            },
-            child:
+
         Container(
             height: 110,
             color: AppColors.appBarColor,
@@ -153,7 +148,7 @@ class UpdateProfileScreen extends StatelessWidget {
                 alignment: Alignment.topCenter,
                 child: Container(
                   width: 80,
-                  child: editAccountController.finalImage == null?
+                  child:Stack(children: [ editAccountController.finalImage == null?
                   CircleAvatar(
                     radius: 40,
                     backgroundImage:
@@ -165,14 +160,30 @@ class UpdateProfileScreen extends StatelessWidget {
                          FileImage(editAccountController.finalImage!),
 
                   ),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Colors.white,
-                      width: 3.0,
+
+                  Positioned(bottom: 0,right: 0,child:InkWell(
+                      onTap: (){
+                        FocusScope.of(editAccountController.context).requestFocus(new FocusNode());
+                        _requestPermission(editAccountController);
+                      },
+                      child:Container(
+                    width: 30,
+                    padding: EdgeInsets.all(5),
+                    child: Icon(Icons.edit,size: 13,),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                     color: Colors.white
                     ),
+                  )))
+
+                ],),decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 3.0,
                   ),
-                )))),
+                ),
+                ),)),
         15.heightBox,
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 15),

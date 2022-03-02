@@ -218,7 +218,7 @@ class LoginOtpScreen extends StatelessWidget {
         ),
         10.heightBox,
         CustomButton(
-            text: LocaleKeys.loginWithPassword,
+            text: LocaleKeys.loginWithPassword.tr,
             onPressed: () {
               otpController.navigateToPasswordScreen();
             })

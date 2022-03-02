@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/model/cart_product_model.dart';
+import 'package:tmween/model/cart_recent_viewed_product_model.dart';
 import 'package:tmween/model/country_model.dart';
+import 'package:tmween/model/recommended_product_model.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 import 'package:tmween/screens/drawer/profile/update_profile_screen.dart';
 
@@ -31,7 +33,8 @@ class CartController extends GetxController {
         image:
         'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
 
-  ),const CartProductModel(
+  ),
+    const CartProductModel(
         title: 'Canon EOS 1300D 18MP Digital SLR Camera (Black) with 18-55mm ISII Lens, 16GB Card and Carry Case',
         rating: '4.1',
         price: '1340',
@@ -43,6 +46,81 @@ class CartController extends GetxController {
         count: '5', image:
     'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
     ),
+  ];
+
+  List<CartRecentViewedProductModel> cartRecentViewedProducts = const <CartRecentViewedProductModel>[
+    const CartRecentViewedProductModel(
+        title: 'Canon EOS 1300D 18MP Digital SLR Camera (Black) with 18-55mm ISII Lens, 16GB Card and Carry Case',
+        rating: '4.1',
+      offerPrice: '120',
+      price: '1340',
+      isFulFilled: true,
+      isYouSave: true,
+      saveOffer: '39',
+      savePrice: '4,000',
+      image:
+      'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
+    ),
+    const CartRecentViewedProductModel(
+        title: 'Canon EOS 1300D 18MP Digital SLR Camera (Black) with 18-55mm ISII Lens, 16GB Card and Carry Case',
+        rating: '4.1',
+      offerPrice: '120',
+      price: '1340',
+      isFulFilled: true,
+      isYouSave: true,
+      saveOffer: '39',
+      savePrice: '4,000',
+      image:
+      'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
+    ),const CartRecentViewedProductModel(
+        title: 'Canon EOS 1300D 18MP Digital SLR Camera (Black) with 18-55mm ISII Lens, 16GB Card and Carry Case',
+        rating: '4.1',
+      offerPrice: '120',
+      price: '1340',
+      isFulFilled: true,
+      isYouSave: true,
+      saveOffer: '39',
+      savePrice: '4,000',
+      image:
+      'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
+    ),
+  ];
+
+  List<RecommendedProductModel> recommendedProducts = const <RecommendedProductModel>[
+    const RecommendedProductModel(
+        title: 'Canon EOS 1300D 18MP Digital SLR Camera (Black) with 18-55mm ISII Lens, 16GB Card and Carry Case',
+        offerPrice: '120',
+        price: '1340',
+        isFulFilled: true,
+        isYouSave: true,
+        saveOffer: '39',
+        savePrice: '4,000',
+        image:
+        'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
+  ),
+    const RecommendedProductModel(
+        title: 'Canon EOS 1300D 18MP Digital SLR Camera (Black) with 18-55mm ISII Lens, 16GB Card and Carry Case',
+        offerPrice: '120',
+        price: '1340',
+        isFulFilled: true,
+        isYouSave: true,
+        saveOffer: '39',
+        savePrice: '4,000',
+        image:
+        'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
+  ),
+    const RecommendedProductModel(
+        title: 'Canon EOS 1300D 18MP Digital SLR Camera (Black) with 18-55mm ISII Lens, 16GB Card and Carry Case',
+        offerPrice: '120',
+        price: '1340',
+        isFulFilled: true,
+        isYouSave: true,
+        saveOffer: '39',
+        savePrice: '4,000',
+        image:
+        'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
+  ),
+
   ];
 
   @override

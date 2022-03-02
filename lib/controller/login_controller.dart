@@ -9,6 +9,7 @@ import 'package:tmween/controller/otp_controller.dart';
 import 'package:tmween/screens/splash_screen.dart';
 
 import '../lang/locale_keys.g.dart';
+import '../screens/authentication/login/forgot_password_screen.dart';
 import '../screens/authentication/login/login_otp_screen.dart';
 import '../screens/authentication/signup/signup_screen.dart';
 import '../screens/drawer/drawer_screen.dart';
@@ -173,6 +174,10 @@ class LoginController extends GetxController {
   void navigateToSignupScreen() {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => SignUpScreen()));
+  }
+void navigateToForgotPasswordScreen() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ForgotPasswordScreen()));
   }
 
   void navigateToOTPScreen() {
