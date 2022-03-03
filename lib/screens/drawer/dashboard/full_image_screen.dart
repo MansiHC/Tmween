@@ -1,17 +1,14 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
 import '../../../controller/full_image_controller.dart';
-import '../../../controller/product_detail_controller.dart';
 
 class FullImageScreen extends StatelessWidget {
   late String language;
   final fullImageController = Get.put(FullImageController());
+
   FullImageScreen({Key? key, required this.image}) : super(key: key);
   final String image;
 
@@ -40,17 +37,20 @@ class FullImageScreen extends StatelessWidget {
         });
   }
 
-
   Widget _bottomView(FullImageController fullImageController) {
-    return  Expanded(child: Container(
-      height: double.maxFinite,
-      width: double.maxFinite,
-        padding: EdgeInsets.all(15),
-        child:InteractiveViewer(
-        panEnabled: true,
-    minScale: 0.1,
-    maxScale: 4,
-    child:Image.network(image,fit: BoxFit.contain,))));
+    return Expanded(
+        child: Container(
+            height: double.maxFinite,
+            width: double.maxFinite,
+            padding: EdgeInsets.all(15),
+            child: InteractiveViewer(
+                panEnabled: true,
+                minScale: 0.1,
+                maxScale: 4,
+                child: Image.asset(
+                  image,
+                  fit: BoxFit.contain,
+                ))));
   }
 
   Widget topView(FullImageController fullImageController) {

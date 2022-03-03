@@ -47,18 +47,23 @@ class SelectCategoryContainer extends StatelessWidget {
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),
                 child: Container(
-                  height: 32,
-                    child:Text(category.title,
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.black87, fontSize: 12.5,)))),
+                    height: 32,
+                    child: Text(category.title,
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 12.5,
+                        )))),
             5.heightBox,
-             Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 5),
-                    child: Image.network(
-                      category.image,
-                      fit: BoxFit.cover,
-                    )),
+            Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                child: Image.asset(
+                  category.image,
+                  fit: BoxFit.contain,
+                  height: 55,
+                  width: 80,
+                )),
             5.heightBox
           ]),
     );

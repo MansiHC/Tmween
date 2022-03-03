@@ -1,16 +1,16 @@
 class CartProductModel {
-  const CartProductModel(
-      {required this.title,
-      required this.rating,
-      required this.price,
-      required this.isFulFilled,
-      required this.specifications,
-      required this.inStock,
-      required this.isFree,
-      required this.image,
-       this.stockCount,
-      required this.count,
-});
+  const CartProductModel({
+    required this.title,
+    required this.rating,
+    required this.price,
+    required this.isFulFilled,
+    required this.specifications,
+    required this.inStock,
+    required this.isFree,
+    required this.image,
+    this.stockCount,
+    required this.count,
+  });
 
   final String title;
   final String rating;

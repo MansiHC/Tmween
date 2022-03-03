@@ -24,7 +24,8 @@ const Map<String, String> ar_DZ = {
   "chooseState": "اختر ولاية",
   "makeDefault": "اجعل هذا عنواني الافتراضي",
   "deliveryInstruction": "أضف تعليمات التسليم",
-  "deliveryInstructionText": "يتم استخدام التفضيلات لتخطيط التسليم الخاص بك. ومع ذلك ، يمكن أن تصل الشحنات في بعض الأحيان مبكرًا أو متأخرًا عما هو مخطط له.",
+  "deliveryInstructionText":
+      "يتم استخدام التفضيلات لتخطيط التسليم الخاص بك. ومع ذلك ، يمكن أن تصل الشحنات في بعض الأحيان مبكرًا أو متأخرًا عما هو مخطط له.",
   "addressType": "نوع العنوان",
   "selectAddressType": "حدد نوع العنوان",
   "filter": "منقي",
@@ -148,7 +149,8 @@ const Map<String, String> ar_DZ = {
   "off": "إيقاف",
   "emptyNewPassword": "الرجاء إدخال كلمة مرور جديدة",
   "emptyRetypePassword": "الرجاء إدخال إعادة كتابة كلمة المرور",
-  "newPasswordMatch": "كلمة المرور الجديدة وإعادة كتابة كلمة المرور غير متطابقتين",
+  "newPasswordMatch":
+      "كلمة المرور الجديدة وإعادة كتابة كلمة المرور غير متطابقتين",
   "password": "كلمة المرور",
   "newPassword": "كلمة مرور جديدة",
   "retypePassword": "اعد ادخال كلمة المرور",
@@ -161,16 +163,20 @@ const Map<String, String> ar_DZ = {
   "confirmDeactivate": "تأكيد التعطيل",
   "whenDeactivate": "عندما تقوم بتعطيل الحساب",
   "whenDeactivateText1": "سنفتقدك.",
-  "whenDeactivateText2": "تريد أن تكون قادرًا على الوصول إلى قائمة الرغبات الخاصة بك.",
+  "whenDeactivateText2":
+      "تريد أن تكون قادرًا على الوصول إلى قائمة الرغبات الخاصة بك.",
   "whenDeactivateText3": "لن تحصل على تحديثات حول أحدث العروض والخصومات.",
-  "whenDeactivateText4": "سيتعين عليك ملء التفاصيل الخاصة بك أثناء تسجيل المغادرة مرارًا وتكرارًا.",
+  "whenDeactivateText4":
+      "سيتعين عليك ملء التفاصيل الخاصة بك أثناء تسجيل المغادرة مرارًا وتكرارًا.",
   "whenDeactivateText5": "لن تتمكن من التحقق من طلباتك السابقة.",
   "howReactivate": "كيف يمكنني إعادة تفعيل حسابي في تموين؟",
   "howReactivateText1": "العودة سهلة.",
-  "howReactivateText2": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-  "howReactivateText3": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  "howReactivateText2":
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+  "howReactivateText3":
+      "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
   "noInternet": "لا يوجد اتصال بالإنترنت",
-    "relevance": "ملاءمة",
+  "relevance": "ملاءمة",
   "saveForLater": "احفظ لوقت لاحق",
   "inStock": "في الأوراق المالية",
   "orderNowOnly": "اطلب الآن فقط",

@@ -7,8 +7,7 @@ class RecommendedProductModel {
       required this.isYouSave,
       required this.image,
       required this.savePrice,
-      required this.saveOffer
-});
+      required this.saveOffer});
 
   final String title;
   final String offerPrice;

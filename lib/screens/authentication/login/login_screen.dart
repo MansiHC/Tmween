@@ -9,6 +9,7 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
 import '../../../controller/login_controller.dart';
+import 'individual_login_password_screen.dart';
 import 'individual_login_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -24,21 +25,24 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen>
     with TickerProviderStateMixin {
-  late TabController _tabController;
 
+  /*late AnimationController controller;
+  late Animation<Offset> offset;
+*/
   var language;
   final loginController = Get.put(LoginController());
 
   @override
   void initState() {
-    _tabController =
+    loginController.tabController =
         new TabController(vsync: this, length: loginController.tabList.length);
+
     super.initState();
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
+    loginController.tabController.dispose();
     super.dispose();
   }
 
@@ -73,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen>
                                           width: 0.8)),
                                 ),
                                 child: TabBar(
-                                    controller: _tabController,
+                                    controller: loginController.tabController,
                                     indicatorColor: AppColors.primaryColor,
                                     indicatorSize: TabBarIndicatorSize.tab,
                                     labelStyle: TextStyle(
@@ -85,9 +89,12 @@ class _LoginScreenState extends State<LoginScreen>
                               ),
                               Expanded(
                                 child: TabBarView(
-                                  controller: _tabController,
+                                  controller: loginController.tabController,
                                   children: [
-                                    IndividualLoginScreen(),
+                                    loginController.isPasswordScreen?
+                                    IndividualLoginPasswordScreen()
+                                        :
+                                IndividualLoginScreen(),
                                     StoreOwnerLoginScreen()
                                   ],
                                 ),

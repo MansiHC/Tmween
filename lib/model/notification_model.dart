@@ -1,10 +1,10 @@
 class NotificationModel {
-  const NotificationModel(
-      {required this.title,
-      required this.desc,
-      required this.date,
-      required this.time,
-});
+  const NotificationModel({
+    required this.title,
+    required this.desc,
+    required this.date,
+    required this.time,
+  });
 
   final String title;
   final String desc;

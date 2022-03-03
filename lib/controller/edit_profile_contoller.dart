@@ -18,10 +18,10 @@ class EditProfileController extends GetxController {
   bool enableEmail = true;
   final formKey = GlobalKey<FormState>();
   final picker = ImagePicker();
-   File? image;
-   File? sample;
-   File? lastCropped;
-   File? finalImage;
+  File? image;
+  File? sample;
+  File? lastCropped;
+  File? finalImage;
   final cropKey = GlobalKey<CropState>();
   String imageString = "";
 

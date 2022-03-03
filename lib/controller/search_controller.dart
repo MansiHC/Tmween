@@ -4,33 +4,18 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/model/address_model.dart';
-import 'package:tmween/model/language_model.dart';
-import 'package:tmween/screens/authentication/login/login_screen.dart';
-import 'package:tmween/screens/drawer/categories_screen.dart';
-import 'package:tmween/screens/drawer/dashboard/dashboard_screen.dart';
-import 'package:tmween/screens/drawer/search_screen.dart';
-import 'package:tmween/screens/drawer/wishlist_screen.dart';
-import 'package:tmween/service/api.dart';
 
-import '../lang/locale_keys.g.dart';
 import '../model/recently_viewed_model.dart';
-import '../screens/drawer/cart_screen.dart';
-import '../utils/global.dart';
-import '../utils/my_shared_preferences.dart';
 
 class SearchController extends GetxController {
   late BuildContext context;
   TextEditingController searchController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  late bool visibleList= false;
+  late bool visibleList = false;
   int val = 1;
 
-  final List<String> items = [
-    'Sofa',
-    'Bed'
-  ];
-
+  final List<String> items = ['Sofa', 'Bed'];
 
   List<AddressModel> addresses = const <AddressModel>[
     const AddressModel(
@@ -63,7 +48,6 @@ class SearchController extends GetxController {
     'COmputer and Gaming',
   ];
 
-
   List<RecentlyViewedModel> recentlVieweds = const <RecentlyViewedModel>[
     const RecentlyViewedModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
@@ -73,8 +57,7 @@ class SearchController extends GetxController {
         price: '2450',
         beforePrice: '7000',
         image:
-        'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
-    const RecentlyViewedModel(
+        'asset/image/category_home_page_images/category_img_1.jpg'),  const RecentlyViewedModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: true,
         offer: '35',
@@ -82,8 +65,7 @@ class SearchController extends GetxController {
         price: '2450',
         beforePrice: '7000',
         image:
-        'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
-    const RecentlyViewedModel(
+        'asset/image/category_home_page_images/category_img_1.jpg'),  const RecentlyViewedModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: false,
         offer: '35',
@@ -91,8 +73,7 @@ class SearchController extends GetxController {
         price: '2450',
         beforePrice: '7000',
         image:
-        'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
-    const RecentlyViewedModel(
+        'asset/image/category_home_page_images/category_img_1.jpg'), const RecentlyViewedModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: false,
         offer: '35',
@@ -100,16 +81,13 @@ class SearchController extends GetxController {
         price: '2450',
         beforePrice: '7000',
         image:
-        'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
-  ];
+        'asset/image/category_home_page_images/category_img_1.jpg'), ];
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
   }
 
-
-
-  void closeDrawer() {
+  void popp() {
     Navigator.pop(context);
   }
 
@@ -122,5 +100,4 @@ class SearchController extends GetxController {
     SystemNavigator.pop();
     update();
   }
-
 }

@@ -1,10 +1,10 @@
 class ReviewModel {
-  const ReviewModel(
-      {required this.rating,
-        required this.name,
-        required this.date,
-        required this.desc,
-      });
+  const ReviewModel({
+    required this.rating,
+    required this.name,
+    required this.date,
+    required this.desc,
+  });
 
   final String rating;
   final String name;
@@ -13,4 +13,3 @@ class ReviewModel {
 
   static fromJson(responseJson) {}
 }
-

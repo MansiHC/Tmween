@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/address_controller.dart';
-import 'package:tmween/controller/your_order_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/drawer/profile/add_address_screen.dart';
 import 'package:tmween/utils/extensions.dart';
@@ -34,8 +33,7 @@ class YourAddressesScreen extends StatelessWidget {
                           child: topView(addressController)),
                       Expanded(
                           child: SingleChildScrollView(
-                              child:_bottomView(addressController))),
-
+                              child: _bottomView(addressController))),
                     ],
                   )));
         });
@@ -90,7 +88,7 @@ class YourAddressesScreen extends StatelessWidget {
       margin: EdgeInsets.all(3),
       decoration: BoxDecoration(
           color: Colors.white,
-          border: Border.all(color: isDefault?AppColors.blue:Colors.white),
+          border: Border.all(color: isDefault ? AppColors.blue : Colors.white),
           boxShadow: [
             if (isDefault)
               BoxShadow(
@@ -108,10 +106,10 @@ class YourAddressesScreen extends StatelessWidget {
               Text('Salim Akka',
                   textAlign: TextAlign.start,
                   style: TextStyle(color: Color(0xFF666666), fontSize: 15)),
-              if(isDefault)
-              Text(LocaleKeys.defaultText.tr,
-                  textAlign: TextAlign.end,
-                  style: TextStyle(color: Color(0xFF55AFD5), fontSize: 14)),
+              if (isDefault)
+                Text(LocaleKeys.defaultText.tr,
+                    textAlign: TextAlign.end,
+                    style: TextStyle(color: Color(0xFF55AFD5), fontSize: 14)),
             ]),
             3.heightBox,
             Text('102/11',
@@ -145,8 +143,8 @@ class YourAddressesScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomButton(
-                  horizontalPadding: 20,
-                  width: 120,
+                    horizontalPadding: 20,
+                    width: 120,
                     fontSize: 16,
                     text: LocaleKeys.edit,
                     onPressed: () {
@@ -154,11 +152,10 @@ class YourAddressesScreen extends StatelessWidget {
                     }),
                 CustomButton(
                     horizontalPadding: 20,
-                  width: 120,
+                    width: 120,
                     fontSize: 16,
                     text: LocaleKeys.remove,
-                    onPressed: () {
-                    }),
+                    onPressed: () {}),
               ],
             ),
             10.heightBox

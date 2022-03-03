@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/deactivate_account_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
@@ -87,6 +88,8 @@ class DeactivateAccountScreen extends StatelessWidget {
                             deactivateAccountController.passwordController,
                         keyboardType: TextInputType.visiblePassword,
                         obscureText: true,
+                        prefixIcon: SvgPicture.asset(ImageConstanst.lockIcon,color: AppColors.primaryColor,),
+
                         hintText: LocaleKeys.password,
                         validator: (value) {
                           return null;

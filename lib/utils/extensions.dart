@@ -31,7 +31,6 @@ extension StringExtension on String {
           .hasMatch(this);
 }
 
-
 extension IterableExtensions<E> on Iterable<E> {
   Iterable<List<E>> chunked(int chunkSize) sync* {
     if (length <= 0) {

@@ -74,9 +74,9 @@ class TopSelectionContainer extends StatelessWidget {
         Expanded(
             child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),
-                child: Image.network(
+                child: Image.asset(
                   topSelection.image,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 ))),
         5.heightBox,
         Padding(
@@ -129,7 +129,8 @@ class TopSelectionContainer extends StatelessWidget {
                       fontWeight: FontWeight.bold)),
               2.widthBox,
               Expanded(
-                  child: Text('${LocaleKeys.sar.tr} ${topSelection.beforePrice!}',
+                  child: Text(
+                      '${LocaleKeys.sar.tr} ${topSelection.beforePrice!}',
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           decoration: TextDecoration.lineThrough,

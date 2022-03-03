@@ -1,22 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tmween/controller/address_controller.dart';
 import 'package:tmween/controller/notification_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
-import 'package:tmween/model/address_type_model.dart';
-import 'package:tmween/model/country_model.dart';
-import 'package:tmween/model/state_model.dart';
 import 'package:tmween/screens/drawer/profile/notification_container.dart';
-import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
-import 'package:tmween/utils/views/custom_button.dart';
-
-import '../../../controller/add_address_controller.dart';
-import '../../../utils/views/custom_text_form_field.dart';
-
-import 'package:dropdown_button2/dropdown_button2.dart';
-
 
 class NotificationScreen extends StatelessWidget {
   late String language;
@@ -50,17 +38,17 @@ class NotificationScreen extends StatelessWidget {
 
   Widget _bottomView(NotificationController notificationController) {
     return Expanded(
-        child:Container(
-                margin: EdgeInsets.all(
-                  15,
-                ),
-                child: ListView.builder(
-                    itemCount: notificationController.notifications.length,
-                    itemBuilder: (context, index) {
-                      return NotificationContainer(
-                          notification:
-                          notificationController.notifications[index],index:index);
-                    })));
+        child: Container(
+            margin: EdgeInsets.all(
+              15,
+            ),
+            child: ListView.builder(
+                itemCount: notificationController.notifications.length,
+                itemBuilder: (context, index) {
+                  return NotificationContainer(
+                      notification: notificationController.notifications[index],
+                      index: index);
+                })));
   }
 
   Widget topView(NotificationController notificationController) {

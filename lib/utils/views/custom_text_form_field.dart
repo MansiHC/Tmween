@@ -28,13 +28,13 @@ class CustomTextFormField extends StatelessWidget {
       required this.keyboardType,
       required this.hintText,
       this.errorText,
-        this.enabled,
-        this.onChanged,
+      this.enabled,
+      this.onChanged,
       this.suffixIcon,
       this.autoFocus,
       this.obscureText,
       this.isDense,
-        this.onTap,
+      this.onTap,
       this.inputFormatters,
       required this.validator,
       this.textInputAction,
@@ -49,10 +49,10 @@ class CustomTextFormField extends StatelessWidget {
       obscureText: obscureText ?? false,
       inputFormatters: inputFormatters,
       validator: validator,
-      autofocus: autoFocus??false,
-      enabled: enabled??true,
-      onTap: onTap??(){},
-      onChanged: onChanged??(text){},
+      autofocus: autoFocus ?? false,
+      enabled: enabled ?? true,
+      onTap: onTap ?? () {},
+      onChanged: onChanged ?? (text) {},
       onFieldSubmitted: onSubmitted ??
           (term) {
             FocusScope.of(context).nextFocus();
@@ -63,7 +63,7 @@ class CustomTextFormField extends StatelessWidget {
         color: Colors.black,
       ),
       decoration: InputDecoration(
-        isDense: isDense??false,
+          isDense: isDense ?? false,
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: AppColors.darkblue),
           ),
@@ -79,7 +79,8 @@ class CustomTextFormField extends StatelessWidget {
             fontSize: 16,
           ),
           suffixIcon: suffixIcon,
-          prefixIcon: prefixIcon),
+          prefixIconConstraints: BoxConstraints.loose(Size.square(36)),
+          prefixIcon: Padding(padding:EdgeInsets.symmetric(horizontal: 10),child:prefixIcon)),
     );
   }
 }
@@ -107,10 +108,10 @@ class CustomBoxTextFormField extends StatelessWidget {
       required this.keyboardType,
       required this.hintText,
       this.errorText,
-        this.fillColor,
-        this.filled,
-        this.borderColor,
-        this.maxLines,
+      this.fillColor,
+      this.filled,
+      this.borderColor,
+      this.maxLines,
       this.suffixIcon,
       this.obscureText,
       this.readOnly,
@@ -129,7 +130,7 @@ class CustomBoxTextFormField extends StatelessWidget {
       obscureText: obscureText ?? false,
       inputFormatters: inputFormatters,
       validator: validator,
-      maxLines: maxLines??1,
+      maxLines: maxLines ?? 1,
       onFieldSubmitted: onSubmitted ??
           (term) {
             FocusScope.of(context).nextFocus();
@@ -143,16 +144,18 @@ class CustomBoxTextFormField extends StatelessWidget {
           isDense: true,
           contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           border: OutlineInputBorder(
-            borderSide: BorderSide(color: borderColor??AppColors.lightGrayColor),
+            borderSide:
+                BorderSide(color: borderColor ?? AppColors.lightGrayColor),
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: borderColor??AppColors.lightGrayColor),
+            borderSide:
+                BorderSide(color: borderColor ?? AppColors.lightGrayColor),
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: AppColors.primaryColor),
           ),
-          filled: filled??false,
-          fillColor:fillColor?? Colors.grey,
+          filled: filled ?? false,
+          fillColor: fillColor ?? Colors.grey,
           errorMaxLines: 2,
           hintText: hintText.tr,
           hintStyle: TextStyle(
@@ -163,8 +166,9 @@ class CustomBoxTextFormField extends StatelessWidget {
             color: Colors.grey,
             fontSize: 16,
           ),
+          prefixIconConstraints: BoxConstraints.loose(Size.square(36)),
           suffixIcon: suffixIcon,
-          prefixIcon: prefixIcon),
+          prefixIcon: Padding(padding:EdgeInsets.symmetric(horizontal: 10),child:prefixIcon)),
     );
   }
 }

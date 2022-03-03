@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
-import 'package:tmween/utils/helper.dart';
 
 import '../../../controller/change_password_controller.dart';
 import '../../../utils/views/custom_text_form_field.dart';
@@ -41,45 +40,46 @@ class ChangePasswordScreen extends StatelessWidget {
 
   Widget _bottomView(ChangePasswordController changePasswordController) {
     return Expanded(
-        child:  SingleChildScrollView(
-                child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 15),
-    child:Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                15.heightBox,
-                Text(
+        child: SingleChildScrollView(
+            child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    15.heightBox,
+                    Text(
                       LocaleKeys.email.tr,
                       style: TextStyle(fontSize: 14, color: Colors.black54),
                     ),
-                5.heightBox,
-                     Text(
+                    5.heightBox,
+                    Text(
                       'salim.akka@tmween.com',
                       style: TextStyle(
                           fontSize: 16,
                           color: Colors.black54,
                           fontWeight: FontWeight.bold),
                     ),
-                15.heightBox,
-                 Text(
+                    15.heightBox,
+                    Text(
                       LocaleKeys.mobileNumber.tr,
                       style: TextStyle(fontSize: 14, color: Colors.black54),
                     ),
-                5.heightBox,
-               Text(
+                    5.heightBox,
+                    Text(
                       '+249 9822114455',
                       style: TextStyle(
                           fontSize: 16,
                           color: Colors.black54,
                           fontWeight: FontWeight.bold),
                     ),
-                20.heightBox,
-                 CustomTextFormField(
+                    20.heightBox,
+                    CustomTextFormField(
                         controller:
                             changePasswordController.newPasswordController,
                         keyboardType: TextInputType.visiblePassword,
                         obscureText: true,
                         hintText: LocaleKeys.newPassword,
+                        prefixIcon: SvgPicture.asset(ImageConstanst.lockIcon,color: AppColors.primaryColor,),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return LocaleKeys.emptyNewPassword.tr;
@@ -94,12 +94,14 @@ class ChangePasswordScreen extends StatelessWidget {
                           }
                           return null;
                         }),
-                5.heightBox,
-               CustomTextFormField(
+                    5.heightBox,
+                    CustomTextFormField(
                         controller:
                             changePasswordController.retypePasswordController,
                         keyboardType: TextInputType.visiblePassword,
                         obscureText: true,
+                        prefixIcon: SvgPicture.asset(ImageConstanst.lock2Icon,color: AppColors.primaryColor,),
+
                         hintText: LocaleKeys.retypePassword,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -115,60 +117,64 @@ class ChangePasswordScreen extends StatelessWidget {
                           }
                           return null;
                         }),
-                25.heightBox,
-                 Text(
-                    '${LocaleKeys.enterOtpSentTo.tr} salim.akka@tmween.com',
-                    style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black54,
-                        fontWeight: FontWeight.bold),
-                  ),
-                10.heightBox,
-                CustomTextFormField(
-                    controller: changePasswordController.otpController,
-                    keyboardType: TextInputType.number,
-                    hintText: LocaleKeys.otp,
-                    textInputAction: TextInputAction.done,
-                    suffixIcon: InkWell(
-                        onTap: () {},
-                        child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 15),
-                            child: Text(
-                              LocaleKeys.resend.tr,
-                              style: TextStyle(
-                                  color: AppColors.blue,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold),
-                            ))),
-                    validator: (value) {}),
-                15.heightBox,
-                Row(
-                    children: [
-                      Expanded(child: TextButton(onPressed: () {
-                      },
-                        child: Text(
-                          LocaleKeys.cancel.tr,
-                          style: TextStyle(
-                              color: Colors.grey[400],
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold),
-                        ) ,
-                      )),
-                      Expanded(child:TextButton(onPressed: () {  },
-                        child: Text(
-                          LocaleKeys.save.tr,
-                          style: TextStyle(
-                              color: AppColors.darkblue,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ))
-                    ],
-                  ),
-                50.heightBox,
-              ],
-            ))));
+                    25.heightBox,
+                    Text(
+                      '${LocaleKeys.enterOtpSentTo.tr} salim.akka@tmween.com',
+                      style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    10.heightBox,
+                    CustomTextFormField(
+                        controller: changePasswordController.otpController,
+                        keyboardType: TextInputType.number,
+                        prefixIcon: SvgPicture.asset(ImageConstanst.otpIcon,color: AppColors.primaryColor,),
+                        hintText: LocaleKeys.otp,
+                        textInputAction: TextInputAction.done,
+                        suffixIcon: InkWell(
+                            onTap: () {},
+                            child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 15),
+                                child: Text(
+                                  LocaleKeys.resend.tr,
+                                  style: TextStyle(
+                                      color: AppColors.blue,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold),
+                                ))),
+                        validator: (value) {}),
+                    15.heightBox,
+                    Row(
+                      children: [
+                        Expanded(
+                            child: TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            LocaleKeys.cancel.tr,
+                            style: TextStyle(
+                                color: Colors.grey[400],
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        )),
+                        Expanded(
+                            child: TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            LocaleKeys.save.tr,
+                            style: TextStyle(
+                                color: AppColors.darkblue,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ))
+                      ],
+                    ),
+                    50.heightBox,
+                  ],
+                ))));
   }
 
   Widget topView(ChangePasswordController changePasswordController) {

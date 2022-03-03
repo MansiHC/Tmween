@@ -20,7 +20,7 @@ class NotificationContainer extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
-          color: index % 2 == 0 ?   Color(0xFFF7F7F7):Colors.white,
+          color: index % 2 == 0 ? Color(0xFFF7F7F7) : Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(4))),
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

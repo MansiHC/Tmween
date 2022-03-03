@@ -1,19 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/forgot_otp_controller.dart';
-import 'package:tmween/controller/otp_controller.dart';
-import 'package:tmween/lang/locale_keys.g.dart';
+import 'package:tmween/screens/authentication/login/reset_password_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
-import 'package:tmween/utils/views/otp_text_filed.dart';
 
-import '../../../controller/forgot_password_controller.dart';
 import '../../../utils/views/custom_button.dart';
 import '../../../utils/views/custom_text_form_field.dart';
 
 class ForgotOtpScreen extends StatelessWidget {
-
   late String language;
   final forgotOtpController = Get.put(ForgotOtpController());
 
@@ -51,11 +48,17 @@ class ForgotOtpScreen extends StatelessWidget {
         5.heightBox,
         Text(
           'To continue, complete this verification step.',
-          style: TextStyle(fontSize: 13, color: Color(0xFF727272),fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 13,
+              color: Color(0xFF727272),
+              fontWeight: FontWeight.bold),
         ),
         Text(
-          "We've sent an OTP to the mobile number \n+91 9876543210. Please enter it below to complete verification." ,
-          style: TextStyle(fontSize: 13, color: Color(0xFF727272),fontWeight: FontWeight.bold),
+          "We've sent an OTP to the mobile number \n+91 9876543210. Please enter it below to complete verification.",
+          style: TextStyle(
+              fontSize: 13,
+              color: Color(0xFF727272),
+              fontWeight: FontWeight.bold),
         ),
         10.heightBox,
         CustomBoxTextFormField(
@@ -63,21 +66,26 @@ class ForgotOtpScreen extends StatelessWidget {
             keyboardType: TextInputType.number,
             hintText: 'Enter OTP',
             textInputAction: TextInputAction.done,
+            prefixIcon: SvgPicture.asset(ImageConstanst.otpIcon,color: AppColors.primaryColor,),
             borderColor: Color(0xFFDDDDDD),
-
             validator: (value) {}),
         10.heightBox,
         CustomButton(
             text: 'Continue',
             fontSize: 16,
             onPressed: () {
-               }),
+              forgotOtpController.navigateTo(ResetPasswordScreen());
+            }),
         20.heightBox,
-        Align(alignment:Alignment.topCenter,child:Text(
-          'Resend OTP',
-          style: TextStyle(fontSize: 14, color: Color(0xFF2192CA),fontWeight: FontWeight.bold),
-        )),
-
+        Align(
+            alignment: Alignment.topCenter,
+            child: Text(
+              'Resend OTP',
+              style: TextStyle(
+                  fontSize: 14,
+                  color: Color(0xFF2192CA),
+                  fontWeight: FontWeight.bold),
+            )),
       ],
     );
   }

@@ -1,6 +1,5 @@
 class CountryModel {
-  const CountryModel(
-      {required this.name});
+  const CountryModel({required this.name});
 
   final String name;
 

@@ -1,29 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:tmween/controller/forgot_otp_controller.dart';
-import 'package:tmween/controller/otp_controller.dart';
-import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
-import 'package:tmween/utils/views/otp_text_filed.dart';
 
-import '../../../controller/forgot_password_controller.dart';
+import '../../../controller/reset_password_controller.dart';
 import '../../../utils/views/custom_button.dart';
 import '../../../utils/views/custom_text_form_field.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
-
   late String language;
-  final forgotOtpController = Get.put(ForgotOtpController());
+  final resetPasswordController = Get.put(ResetPasswordController());
 
   @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
-    return GetBuilder<ForgotOtpController>(
-        init: ForgotOtpController(),
+    return GetBuilder<ResetPasswordController>(
+        init: ResetPasswordController(),
         builder: (contet) {
-          forgotOtpController.context = context;
+          resetPasswordController.context = context;
           return Scaffold(
               body: SingleChildScrollView(
                   child: Column(
@@ -34,55 +30,150 @@ class ResetPasswordScreen extends StatelessWidget {
                       BoxConstraints(minWidth: double.infinity, maxHeight: 90),
                   color: AppColors.appBarColor,
                   padding: EdgeInsets.only(top: 20),
-                  child: topView(forgotOtpController)),
+                  child: topView(resetPasswordController)),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                child: bottomView(forgotOtpController),
+                child: bottomView(resetPasswordController),
               )
             ],
           )));
         });
   }
 
-  Widget bottomView(ForgotOtpController forgotOtpController) {
+  Widget bottomView(ResetPasswordController resetPasswordController) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         5.heightBox,
         Text(
-          'To continue, complete this verification step.',
-          style: TextStyle(fontSize: 13, color: Color(0xFF727272),fontWeight: FontWeight.bold),
-        ),
-        Text(
-          "We've sent an OTP to the mobile number \n+91 9876543210. Please enter it below to complete verification." ,
-          style: TextStyle(fontSize: 13, color: Color(0xFF727272),fontWeight: FontWeight.bold),
+          "We'll ask for this password whenever you sign in.",
+          style: TextStyle(
+              fontSize: 13,
+              color: Color(0xFF727272),
+              fontWeight: FontWeight.bold),
         ),
         10.heightBox,
         CustomBoxTextFormField(
-            controller: forgotOtpController.otpController,
-            keyboardType: TextInputType.number,
-            hintText: 'Enter OTP',
+            controller: resetPasswordController.newPasswordController,
+            keyboardType: TextInputType.visiblePassword,
+            obscureText: true,
+            hintText: 'Enter new password',
             textInputAction: TextInputAction.done,
+            prefixIcon: SvgPicture.asset(ImageConstanst.lockIcon,color: AppColors.primaryColor,),
             borderColor: Color(0xFFDDDDDD),
-
+            validator: (value) {}),
+        5.heightBox,
+        Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            SvgPicture.asset(ImageConstanst.iIcon,height: 13,width: 13,),
+            2.widthBox,
+            Text(
+              "Passwords must be at least 8 Characters.",
+              style: TextStyle(
+                  fontSize: 13,
+                  color: Color(0xFF727272),
+                  fontWeight: FontWeight.bold),
+            )
+          ],
+        ),
+        10.heightBox,
+        CustomBoxTextFormField(
+            controller: resetPasswordController.confirmPasswordController,
+            keyboardType: TextInputType.visiblePassword,
+            obscureText: true,
+            hintText: 'Re-enter new password',
+            textInputAction: TextInputAction.done,
+            prefixIcon: SvgPicture.asset(ImageConstanst.lock2Icon,color: AppColors.primaryColor,),
+            borderColor: Color(0xFFDDDDDD),
             validator: (value) {}),
         10.heightBox,
-        CustomButton(
-            text: 'Continue',
-            fontSize: 16,
-            onPressed: () {
-               }),
-        20.heightBox,
-        Align(alignment:Alignment.topCenter,child:Text(
-          'Resend OTP',
-          style: TextStyle(fontSize: 14, color: Color(0xFF2192CA),fontWeight: FontWeight.bold),
-        )),
-
+        CustomButton(text: 'Continue', fontSize: 16, onPressed: () {}),
+        30.heightBox,
+        Text(
+          'Secure password tips:',
+          style: TextStyle(
+              fontSize: 14,
+              color: Color(0xFF575757),
+              fontWeight: FontWeight.bold),
+        ),
+        10.heightBox,
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 8,
+              height: 8,
+              margin: EdgeInsets.only(top: 6),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle, color: AppColors.primaryColor),
+            ),
+            10.widthBox,
+            Expanded(
+                child: Text(
+                    'Use at least 8 characters, a combination of numbers and letters is best.',
+                    style: TextStyle(fontSize: 13,fontWeight: FontWeight.bold, color: Color(0xFF0727272))))
+          ],
+        ),
+        5.heightBox,
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 8,
+              height: 8,
+              margin: EdgeInsets.only(top: 6),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle, color: AppColors.primaryColor),
+            ),
+            10.widthBox,
+            Expanded(
+                child: Text(
+                    'Do not use the same password you have used with us previously.',
+                    style: TextStyle(fontSize: 13,fontWeight: FontWeight.bold, color: Color(0xFF0727272))))
+          ],
+        ),
+        5.heightBox,
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 8,
+              height: 8,
+              margin: EdgeInsets.only(top: 6),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle, color: AppColors.primaryColor),
+            ),
+            10.widthBox,
+            Expanded(
+                child: Text(
+                    'Do not use dictionary words, your name, e-mail address, mobile phone number or other personal information that can be easily obtained.',
+                    style: TextStyle(fontSize: 13,fontWeight: FontWeight.bold, color: Color(0xFF0727272))))
+          ],
+        ),
+        5.heightBox,
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 8,
+              height: 8,
+              margin: EdgeInsets.only(top: 6),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle, color: AppColors.primaryColor),
+            ),
+            10.widthBox,
+            Expanded(
+                child: Text(
+                    'Do not use the same password for multiple online accounts.',
+                    style: TextStyle(fontSize: 13,fontWeight: FontWeight.bold, color: Color(0xFF0727272))))
+          ],
+        ),
       ],
     );
   }
 
-  Widget topView(ForgotOtpController forgotOtpController) {
+  Widget topView(ResetPasswordController resetPasswordController) {
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
         child: Stack(
@@ -96,7 +187,7 @@ class ResetPasswordScreen extends StatelessWidget {
                     color: Colors.white, // Button color
                     child: InkWell(
                       onTap: () {
-                        forgotOtpController.exitScreen();
+                        resetPasswordController.exitScreen();
                       },
                       child: SizedBox(
                           width: 24,

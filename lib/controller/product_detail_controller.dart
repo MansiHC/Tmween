@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/controller/review_model.dart';
 import 'package:tmween/model/seller_on_tmween_model.dart';
-import 'package:tmween/screens/authentication/login/login_screen.dart';
 
 import '../model/address_model.dart';
 import '../model/recently_viewed_model.dart';
@@ -91,18 +90,26 @@ class ProductDetailController extends GetxController {
   ];
 
   List<ReviewModel> reviews = const <ReviewModel>[
-    const ReviewModel(rating:'4.1',name:'Alberto Brando',date:'21 January 2019',desc:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
-        'incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation '
-        'ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
-        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,'
-        ' sunt in culpa qui officia deserunt mollit anim id est laborum.'),
-
- const ReviewModel(rating:'4.1',name:'Alberto Brando',date:'21 January 2019',desc:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
-        'incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation '
-        'ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
-        'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,'
-        ' sunt in culpa qui officia deserunt mollit anim id est laborum.')
-
+    const ReviewModel(
+        rating: '4.1',
+        name: 'Alberto Brando',
+        date: '21 January 2019',
+        desc:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
+            'incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation '
+            'ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+            'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,'
+            ' sunt in culpa qui officia deserunt mollit anim id est laborum.'),
+    const ReviewModel(
+        rating: '4.1',
+        name: 'Alberto Brando',
+        date: '21 January 2019',
+        desc:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
+            'incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation '
+            'ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
+            'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,'
+            ' sunt in culpa qui officia deserunt mollit anim id est laborum.')
   ];
 
   int val = 1;
@@ -144,17 +151,16 @@ class ProductDetailController extends GetxController {
 
   late final List<Widget> imageSliders = imgList
       .map((item) => Container(
-            child: Image.network(item, fit: BoxFit.cover),
+            child: Image.asset(item, fit: BoxFit.contain),
           ))
       .toList();
 
   final List<String> imgList = [
-    'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
-    'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
-    'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
-    'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
-    'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
-    'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
+    'asset/image/product_detail_page_images/slider_thumb_1.jpg',
+    'asset/image/product_detail_page_images/slider_thumb_2.jpg',
+    'asset/image/product_detail_page_images/slider_thumb_3.jpg',
+    'asset/image/product_detail_page_images/slider_thumb_4.jpg',
+    'asset/image/product_detail_page_images/slider_thumb_5.jpg',
   ];
 
   int quntity = 1;
@@ -168,8 +174,7 @@ class ProductDetailController extends GetxController {
         price: '2450',
         beforePrice: '7000',
         image:
-            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
-    const RecentlyViewedModel(
+        'asset/image/product_detail_page_images/similar_product_img_1.jpg',),   const RecentlyViewedModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: true,
         offer: '35',
@@ -177,8 +182,7 @@ class ProductDetailController extends GetxController {
         price: '2450',
         beforePrice: '7000',
         image:
-            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
-    const RecentlyViewedModel(
+        'asset/image/product_detail_page_images/similar_product_img_2.jpg',),  const RecentlyViewedModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: false,
         offer: '35',
@@ -186,8 +190,7 @@ class ProductDetailController extends GetxController {
         price: '2450',
         beforePrice: '7000',
         image:
-            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
-    const RecentlyViewedModel(
+        'asset/image/product_detail_page_images/similar_product_img_1.jpg',),   const RecentlyViewedModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: false,
         offer: '35',
@@ -195,8 +198,7 @@ class ProductDetailController extends GetxController {
         price: '2450',
         beforePrice: '7000',
         image:
-            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
-  ];
+        'asset/image/product_detail_page_images/similar_product_img_2.jpg',),  ];
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));

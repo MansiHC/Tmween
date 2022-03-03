@@ -39,7 +39,8 @@ class OtpScreen extends StatelessWidget {
           language = Get.locale!.languageCode;
           otpController.phone = phone;
           return Scaffold(
-              body: Column(
+              body: SingleChildScrollView(
+              child:  Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
@@ -53,7 +54,7 @@ class OtpScreen extends StatelessWidget {
                 child: bottomView(otpController),
               )
             ],
-          ));
+          )));
         });
   }
 
@@ -160,14 +161,8 @@ class OtpScreen extends StatelessWidget {
                 onChanged: (value) {
                   if (value.length == 1) {
                     FocusScope.of(otpController.context).nextFocus();
-                    otpController.verifyOTP(
-                        name!,
-                        email!,
-                        phone,
-                        password!,
-                        deviceType!,
-                        langCode!,
-                        agreeTerms!);
+                    otpController.verifyOTP(name!, email!, phone, password!,
+                        deviceType!, langCode!, agreeTerms!);
                   }
                   if (value.length == 0) {
                     FocusScope.of(otpController.context).previousFocus();

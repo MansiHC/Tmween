@@ -6,7 +6,8 @@ const Map<String, String> es_ES = {
   "emptyPhoneNumberEmail": "Ingrese el número de teléfono/correo electrónico",
   "loginWithOTP": "Iniciar sesión usando OTP",
   "waitingToDeliver": "Te estamos esperando para entregar tu primer pedido.",
-  "shopProductsFrom": "Compre productos del supermercado en línea más grande de Dubái.",
+  "shopProductsFrom":
+      "Compre productos del supermercado en línea más grande de Dubái.",
   "startShopping": "Empieza a comprar",
   "addNewAddress": "AGREGAR NUEVA DIRECCIÓN",
   "personalAddress": "Dirección personal",
@@ -41,7 +42,8 @@ const Map<String, String> es_ES = {
   "chooseState": "Elige un estado",
   "makeDefault": "Hacer que esta sea mi dirección predeterminada",
   "deliveryInstruction": "Agregar instrucciones de entrega",
-  "deliveryInstructionText": "Las preferencias se utilizan para planificar la entrega. Sin embargo, los envíos a veces pueden llegar antes o después de lo previsto.",
+  "deliveryInstructionText":
+      "Las preferencias se utilizan para planificar la entrega. Sin embargo, los envíos a veces pueden llegar antes o después de lo previsto.",
   "addressType": "Tipo de dirección",
   "selectAddressType": "Seleccione un tipo de dirección",
   "sentOTP":
@@ -162,13 +164,17 @@ const Map<String, String> es_ES = {
   "whenDeactivate": "Cuando desactivas la cuenta",
   "whenDeactivateText1": "Te extrañaremos.",
   "whenDeactivateText2": "Quiere poder acceder a su lista de deseos.",
-  "whenDeactivateText3": "No recibirá actualizaciones sobre las últimas ofertas y descuentos.",
-  "whenDeactivateText4": "Tendrás que completar tus datos mientras revisas una y otra vez.",
+  "whenDeactivateText3":
+      "No recibirá actualizaciones sobre las últimas ofertas y descuentos.",
+  "whenDeactivateText4":
+      "Tendrás que completar tus datos mientras revisas una y otra vez.",
   "whenDeactivateText5": "No podrá consultar sus pedidos anteriores.",
   "howReactivate": "¿Cómo reactivo mi cuenta de Tmween?",
   "howReactivateText1": "Volver es fácil.",
-  "howReactivateText2": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  "howReactivateText3": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  "howReactivateText2":
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  "howReactivateText3":
+      "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
   "noInternet": "Sin conexión a Internet",
   "relevance": "Relevancia",
   "popularity": "Popularidad",

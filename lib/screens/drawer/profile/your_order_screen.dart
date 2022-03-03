@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tmween/controller/my_account_controller.dart';
 import 'package:tmween/controller/your_order_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/utils/extensions.dart';
@@ -42,11 +41,11 @@ class YourOrderScreen extends StatelessWidget {
         child: Container(
             padding: EdgeInsets.symmetric(
                 horizontal: 20,
-                vertical:
-                   language=='ar'? MediaQuery.of(yourOrderController.context).size.height /
-                        3.8:MediaQuery.of(yourOrderController.context).size.height /
-                       3.6),
-
+                vertical: language == 'ar'
+                    ? MediaQuery.of(yourOrderController.context).size.height /
+                        3.8
+                    : MediaQuery.of(yourOrderController.context).size.height /
+                        3.6),
             child: Container(
                 padding: EdgeInsets.all(15),
                 decoration: BoxDecoration(
@@ -68,9 +67,10 @@ class YourOrderScreen extends StatelessWidget {
                     ),
                     10.heightBox,
                     CustomButton(
-                        text: LocaleKeys.startShopping, onPressed: () {
+                        text: LocaleKeys.startShopping,
+                        onPressed: () {
                           yourOrderController.navigateToDashboardScreen();
-                    }),
+                        }),
                     5.heightBox
                   ],
                 ))));

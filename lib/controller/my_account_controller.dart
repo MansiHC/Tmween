@@ -3,21 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
-import 'package:tmween/screens/drawer/profile/update_profile_screen.dart';
 
-import '../screens/authentication/login/login_screen.dart';
 import '../utils/global.dart';
 import '../utils/my_shared_preferences.dart';
 import 'drawer_controller.dart';
 
 class MyAccountController extends GetxController {
   late BuildContext context;
-TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   int userId = 0;
   int loginLogId = 0;
-
-
 
   @override
   void onInit() {
@@ -62,7 +58,6 @@ TextEditingController passwordController = TextEditingController();
   }
 
   void pop() {
-
     Navigator.of(context).pop(false);
     update();
   }
@@ -75,8 +70,6 @@ TextEditingController passwordController = TextEditingController();
         MaterialPageRoute(builder: (context) => DrawerScreen()),
         (Route<dynamic> route) => false);*/
   }
-
-
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));

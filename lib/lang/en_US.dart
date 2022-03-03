@@ -1,4 +1,3 @@
-
 const Map<String, String> en_US = {
   "appTitle": "Tmween",
   "getStarted": "Get Started",
@@ -11,16 +10,16 @@ const Map<String, String> en_US = {
   "change": "Change",
   "edit": "Edit",
   "sentOTP":
-  "We’ve sent a One Time Password (OTP) to the mobile number above. Please enter it to complete verification.",
+      "We’ve sent a One Time Password (OTP) to the mobile number above. Please enter it to complete verification.",
   "sentOTPEmail":
-  "We’ve sent a One Time Password (OTP) to the mobile number/email above. Please enter it to complete verification.",
+      "We’ve sent a One Time Password (OTP) to the mobile number/email above. Please enter it to complete verification.",
   "inText": "IN",
   "validPhoneNumber": "Please Enter Valid Phone Number",
   "keepMeSignedIn": "Keep me signed in",
   "forgotPassword": "forgot password?",
   "chooseLocation": "Choose your location",
   "chooseLocationText":
-  "Select a delivery location to see product availability and delivery options",
+      "Select a delivery location to see product availability and delivery options",
   "addAddressText": "Add an address or\npick-up point",
   "defaultAddress": "Default address",
   "login": "Login",
@@ -42,7 +41,7 @@ const Map<String, String> en_US = {
   "emptyPassword": "Please Enter Password",
   "validPasswordLength": "Password Length must be 8",
   "validPassword":
-  "Password should Contain at least one UpperCase, one LowerCase, one Digit,one Special Character",
+      "Password should Contain at least one UpperCase, one LowerCase, one Digit,one Special Character",
   "confirmPassword": "Confirm Password",
   "emptyConfirmPassword": "Please Enter Confirm Password",
   "passwordMatch": "Password and Confirm Password doesn't match",
@@ -153,7 +152,8 @@ const Map<String, String> en_US = {
   "filter": "Filter",
   "bestMatch": "Best Match",
   "deliveryInstruction": "Add delivery instructions",
-  "deliveryInstructionText": "Preferences are used to plan your delivery. However, shipments can sometimes arrive early or later than planned.",
+  "deliveryInstructionText":
+      "Preferences are used to plan your delivery. However, shipments can sometimes arrive early or later than planned.",
   "addressType": "Address type",
   "selectAddressType": "Select an address type",
   "otpVerification": "OTP Verification",
@@ -163,13 +163,17 @@ const Map<String, String> en_US = {
   "whenDeactivate": "When you deactivate the account",
   "whenDeactivateText1": "We will miss you.",
   "whenDeactivateText2": "You want be able to access your Wish list.",
-  "whenDeactivateText3": "You will not get updates about the latest offers & discounts.",
-  "whenDeactivateText4": "You will have to fill your details while checking out over and over again.",
+  "whenDeactivateText3":
+      "You will not get updates about the latest offers & discounts.",
+  "whenDeactivateText4":
+      "You will have to fill your details while checking out over and over again.",
   "whenDeactivateText5": "You won't be able to check your past orders.",
   "howReactivate": "How do I reactivate my Tmween account?",
   "howReactivateText1": "Coming back is easy.",
-  "howReactivateText2": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  "howReactivateText3": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  "howReactivateText2":
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  "howReactivateText3":
+      "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
   "noInternet": "No Internet connection",
   "relevance": "Relevance",
   "popularity": "Popularity",
@@ -187,7 +191,6 @@ const Map<String, String> en_US = {
   "inStock": "In Stock",
   "orderNowOnly": "Order now, only",
   "leftInStock": "left in stock",
-
   "fundWallet": "left in stock",
   "fundWalletCap": "left in stock",
   "creditDebitNet": "left in stock",
@@ -197,7 +200,6 @@ const Map<String, String> en_US = {
   "rs": "left in stock",
   "walletActivityFor": "left in stock",
   "myWallet": "left in stock",
-
   "newText": "No Internet connection",
   "reviews": "No Internet connection",
   "mrp": "No Internet connection",

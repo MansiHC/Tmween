@@ -49,26 +49,23 @@ class DashboardScreen extends StatelessWidget {
               SizedBox(
                   height: 200,
                   width: MediaQuery.of(context).size.width,
-                  child: Image.network(
-                    'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80',
-                    fit: BoxFit.fill,
+                  child: Image.asset(
+          'asset/image/home_page_banner_images/home_banner_1.jpg',   fit: BoxFit.fill,
                   )),
               _bestSeller(dashboardController),
               _soldByTmween(dashboardController),
               SizedBox(
                   height: 200,
                   width: MediaQuery.of(context).size.width,
-                  child: Image.network(
-                    'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
-                    fit: BoxFit.fill,
+                  child: Image.asset(
+                    'asset/image/home_page_banner_images/home_banner_2.jpg', fit: BoxFit.fill,
                   )),
               _topSelection(dashboardController),
               SizedBox(
                   height: 200,
                   width: MediaQuery.of(context).size.width,
-                  child: Image.network(
-                    'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
-                    fit: BoxFit.fill,
+                  child: Image.asset(
+                    'asset/image/home_page_banner_images/home_banner_3.jpg',    fit: BoxFit.fill,
                   )),
               _recentlyViewed(dashboardController),
               10.heightBox,
@@ -128,9 +125,7 @@ class DashboardScreen extends StatelessWidget {
   }
 
   _shopByCategory(DashboardController dashboardController) {
-
-
-      return Column(
+    return Column(
       children: [
         20.heightBox,
         Row(
@@ -169,7 +164,7 @@ class DashboardScreen extends StatelessWidget {
           ],
         ),
         5.heightBox,
-          Container(
+        Container(
             decoration: BoxDecoration(
               color: AppColors.lightGrayColor,
               borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -180,13 +175,15 @@ class DashboardScreen extends StatelessWidget {
                 physics: ScrollPhysics(),
                 itemCount: dashboardController.categories.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,crossAxisSpacing: 1.5,
-                    mainAxisSpacing: 1.5, childAspectRatio: 0.7),
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 1.5,
+                    mainAxisSpacing: 1.5,
+                    childAspectRatio: 0.7),
                 itemBuilder: (context, index) {
-    return SelectCategoryContainer(
-    category: dashboardController.categories[index]);
-    }))
-      /*  Container(
+                  return SelectCategoryContainer(
+                      category: dashboardController.categories[index]);
+                }))
+        /*  Container(
             decoration: BoxDecoration(
               color: AppColors.lightGrayColor,
               borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -206,14 +203,14 @@ class DashboardScreen extends StatelessWidget {
 
   List<TableRow> dynamicRow() {
     List<TableRow> rows = [];
-    Iterable<List<SelectCategoryModel>> lst = dashboardController.categories.chunked(3);
+    Iterable<List<SelectCategoryModel>> lst =
+        dashboardController.categories.chunked(3);
     lst.forEach((element) {
       List<Widget> columns = [];
-      for (int j = 0 ; j <element.length; j++) {
-        columns.add(SelectCategoryContainer(
-            category: element[j]));
+      for (int j = 0; j < element.length; j++) {
+        columns.add(SelectCategoryContainer(category: element[j]));
       }
-       rows.add(TableRow(children: columns));
+      rows.add(TableRow(children: columns));
     });
     return rows;
   }
@@ -338,10 +335,12 @@ class DashboardScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return InkWell(
                           onTap: () {
-                        dashboardController.navigateTo(ProductDetailScreen());
-                      },
-                      child: BestSellerContainer(
-                          bestSeller: dashboardController.bestSellers[index]));
+                            dashboardController
+                                .navigateTo(ProductDetailScreen());
+                          },
+                          child: BestSellerContainer(
+                              bestSeller:
+                                  dashboardController.bestSellers[index]));
                     })),
             20.heightBox
           ],
@@ -402,11 +401,12 @@ class DashboardScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return InkWell(
                           onTap: () {
-                        dashboardController.navigateTo(ProductDetailScreen());
-                      },
-                      child: SoldByTmweenContainer(
-                          soldByTmween:
-                              dashboardController.soldByTmweens[index]));
+                            dashboardController
+                                .navigateTo(ProductDetailScreen());
+                          },
+                          child: SoldByTmweenContainer(
+                              soldByTmween:
+                                  dashboardController.soldByTmweens[index]));
                     })),
             20.heightBox
           ],
@@ -467,11 +467,12 @@ class DashboardScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return InkWell(
                           onTap: () {
-                        dashboardController.navigateTo(ProductDetailScreen());
-                      },
-                      child: TopSelectionContainer(
-                          topSelection:
-                              dashboardController.topSelections[index]));
+                            dashboardController
+                                .navigateTo(ProductDetailScreen());
+                          },
+                          child: TopSelectionContainer(
+                              topSelection:
+                                  dashboardController.topSelections[index]));
                     })),
             20.heightBox
           ],
@@ -533,11 +534,12 @@ class DashboardScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return InkWell(
                           onTap: () {
-                        dashboardController.navigateTo(ProductDetailScreen());
-                      },
-                      child: RecentlyViewedContainer(
-                          recentlyViewed:
-                              dashboardController.recentlVieweds[index]));
+                            dashboardController
+                                .navigateTo(ProductDetailScreen());
+                          },
+                          child: RecentlyViewedContainer(
+                              recentlyViewed:
+                                  dashboardController.recentlVieweds[index]));
                     })),
             20.heightBox
           ],

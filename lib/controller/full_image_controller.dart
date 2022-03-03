@@ -4,46 +4,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:tmween/model/address_model.dart';
-import 'package:tmween/model/language_model.dart';
-import 'package:tmween/screens/authentication/login/login_screen.dart';
-import 'package:tmween/screens/drawer/categories_screen.dart';
-import 'package:tmween/screens/drawer/dashboard/dashboard_screen.dart';
-import 'package:tmween/screens/drawer/search_screen.dart';
-import 'package:tmween/screens/drawer/wishlist_screen.dart';
-import 'package:tmween/service/api.dart';
 
-import '../lang/locale_keys.g.dart';
 import '../model/recently_viewed_model.dart';
-import '../screens/drawer/cart_screen.dart';
-import '../utils/global.dart';
-import '../utils/my_shared_preferences.dart';
 
 class FullImageController extends GetxController {
   late BuildContext context;
   TextEditingController searchController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  late bool visibleList= false;
+  late bool visibleList = false;
 
   int current = 0;
   final CarouselController controller = CarouselController();
 
-  void changPage(int index){
+  void changPage(int index) {
     current = index;
     update();
-
   }
-  final List<String> items = [
-    'Sofa',
-    'Bed'
-  ];
+
+  final List<String> items = ['Sofa', 'Bed'];
 
   late final List<Widget> imageSliders = imgList
       .map((item) => Container(
-    child:
-    Image.network(item, fit: BoxFit.cover),
-  ))
+            child: Image.network(item, fit: BoxFit.cover),
+          ))
       .toList();
 
   final List<String> imgList = [
@@ -64,7 +48,7 @@ class FullImageController extends GetxController {
         price: '2450',
         beforePrice: '7000',
         image:
-        'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
     const RecentlyViewedModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: true,
@@ -73,7 +57,7 @@ class FullImageController extends GetxController {
         price: '2450',
         beforePrice: '7000',
         image:
-        'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
     const RecentlyViewedModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: false,
@@ -82,7 +66,7 @@ class FullImageController extends GetxController {
         price: '2450',
         beforePrice: '7000',
         image:
-        'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
     const RecentlyViewedModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: false,
@@ -91,14 +75,12 @@ class FullImageController extends GetxController {
         price: '2450',
         beforePrice: '7000',
         image:
-        'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
+            'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
   ];
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
   }
-
-
 
   void closeDrawer() {
     Navigator.pop(context);
@@ -117,5 +99,4 @@ class FullImageController extends GetxController {
     SystemNavigator.pop();
     update();
   }
-
 }

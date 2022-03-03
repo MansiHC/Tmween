@@ -9,8 +9,7 @@ import 'package:tmween/utils/extensions.dart';
 import '../../../utils/global.dart';
 
 class SearchContainer extends StatelessWidget {
-  SearchContainer({Key? key, required this.recentlyViewed})
-      : super(key: key);
+  SearchContainer({Key? key, required this.recentlyViewed}) : super(key: key);
   final RecentlyViewedModel recentlyViewed;
   var language;
 
@@ -74,9 +73,9 @@ class SearchContainer extends StatelessWidget {
         Expanded(
             child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),
-                child: Image.network(
+                child: Image.asset(
                   recentlyViewed.image,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                   height: 100,
                 ))),
         5.heightBox,
@@ -130,7 +129,8 @@ class SearchContainer extends StatelessWidget {
                       fontWeight: FontWeight.bold)),
               2.widthBox,
               Expanded(
-                  child: Text('${LocaleKeys.sar.tr} ${recentlyViewed.beforePrice!}',
+                  child: Text(
+                      '${LocaleKeys.sar.tr} ${recentlyViewed.beforePrice!}',
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           decoration: TextDecoration.lineThrough,

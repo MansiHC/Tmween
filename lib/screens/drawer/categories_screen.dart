@@ -13,7 +13,6 @@ class CategoriesScreen extends StatelessWidget {
 
   CategoriesScreen({Key? key, this.fromDrawer = false}) : super(key: key);
 
-  
   final categoriesController = Get.put(CategoriesController());
 
   @override
@@ -45,13 +44,16 @@ class CategoriesScreen extends StatelessWidget {
                         child: Container(
                             color: AppColors.appBarColor,
                             child: Container(
-                                decoration: BoxDecoration(color:Colors.white,borderRadius: BorderRadius.circular(2)),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(2)),
                                 height: 40,
                                 margin: EdgeInsets.only(
                                     bottom: 10, left: 15, right: 15),
                                 child: CustomTextFormField(
-                                    isDense:true,
-                                    controller: categoriesController.searchController,
+                                    isDense: true,
+                                    controller:
+                                        categoriesController.searchController,
                                     keyboardType: TextInputType.text,
                                     hintText: LocaleKeys.searchProducts.tr,
                                     textInputAction: TextInputAction.search,

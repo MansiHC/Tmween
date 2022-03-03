@@ -6,7 +6,6 @@ import 'package:tmween/controller/drawer_controller.dart';
 import 'package:tmween/controller/login_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/language_model.dart';
-import 'package:tmween/screens/drawer/cart_screen.dart';
 import 'package:tmween/screens/drawer/categories_screen.dart';
 import 'package:tmween/screens/drawer/deal_of_the_day_screen.dart';
 import 'package:tmween/screens/drawer/profile/add_address_screen.dart';
@@ -22,17 +21,13 @@ import 'address_container.dart';
 import 'profile/my_account_screen.dart';
 
 class DrawerScreen extends StatelessWidget {
-
   final drawerController = Get.put(DrawerControllers());
   final searchController = Get.put(SearchController());
 
-
   late var language;
-
 
   @override
   Widget build(BuildContext context) {
-
     language = Get.locale!.languageCode;
     return GetBuilder<DrawerControllers>(
         init: DrawerControllers(),
@@ -42,9 +37,9 @@ class DrawerScreen extends StatelessWidget {
               onWillPop: () => _onWillPop(drawerController),
               child: Scaffold(
                   appBar: AppBar(
-                    iconTheme: IconThemeData(color: Colors.white,size:38),
+                    iconTheme: IconThemeData(color: Colors.white, size: 38),
                     backgroundColor: AppColors.appBarColor,
-                    centerTitle:drawerController.pageIndex==2? true:false,
+                    centerTitle: drawerController.pageIndex == 2 ? true : false,
                     titleSpacing: 0.0,
                     title: drawerController.pageIndex == 0
                         ? InkWell(
@@ -88,43 +83,54 @@ class DrawerScreen extends StatelessWidget {
                                     ],
                                   ),
                                 ]))
-                        : drawerController.pageIndex==2?
-          GetBuilder<SearchController>(
-          init: SearchController(),
-          builder: (contet) {
-        return searchController.visibleList? SvgPicture.asset(ImageConstanst.logo,height: 40,):
-        Text(
-          'Search Products',
-          style: TextStyle(color: Colors.white),
-        )
-        ;})
-                        :Text(
-                            drawerController.pageTitle,
-                            style: TextStyle(color: Colors.white),
-                          ),
+                        : drawerController.pageIndex == 2
+                            ? GetBuilder<SearchController>(
+                                init: SearchController(),
+                                builder: (contet) {
+                                  return searchController.visibleList
+                                      ? SvgPicture.asset(
+                                          ImageConstanst.logo,
+                                          height: 40,
+                                        )
+                                      : Text(
+                                          'Search Products',
+                                          style: TextStyle(color: Colors.white),
+                                        );
+                                })
+                            : Text(
+                                drawerController.pageTitle,
+                                style: TextStyle(color: Colors.white),
+                              ),
                     actions: [
                       drawerController.pageIndex == 0
                           ? InkWell(
                               onTap: () {
                                 MySharedPreferences.instance
-                                    .getBoolValuesSF(SharedPreferencesKeys.isLogin)
+                                    .getBoolValuesSF(
+                                        SharedPreferencesKeys.isLogin)
                                     .then((value) async {
-                                      bool isLogin = value!;
-                                  if(!isLogin){
+                                  bool isLogin = value!;
+                                  if (!isLogin) {
                                     _loginFirstDialog(drawerController);
-                                  }else {
-                                    drawerController.navigateTo(
-                                        MyAccountScreen());
+                                  } else {
+                                    drawerController
+                                        .navigateTo(MyAccountScreen());
                                   }
                                 });
                               },
                               child: Container(
                                 width: 45,
-                                child: drawerController.isLogin?CircleAvatar(
-                                  radius: 45,
-                                  backgroundImage: NetworkImage(
-                                      'http://i.imgur.com/QSev0hg.jpg'),
-                                ):SvgPicture.asset(ImageConstanst.user,height: 42,width: 42,),
+                                child: drawerController.isLogin
+                                    ? CircleAvatar(
+                                        radius: 45,
+                                        backgroundImage: NetworkImage(
+                                            'http://i.imgur.com/QSev0hg.jpg'),
+                                      )
+                                    : SvgPicture.asset(
+                                        ImageConstanst.user,
+                                        height: 42,
+                                        width: 42,
+                                      ),
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
@@ -142,36 +148,42 @@ class DrawerScreen extends StatelessWidget {
                   drawer: _buildDrawer(drawerController),
                   bottomNavigationBar: _buildBottomNavBar(drawerController),
                   body: Column(children: [
-                    drawerController.pageIndex==2 || drawerController.pageIndex==3?Container():
-                    Container(
-                        color: AppColors.appBarColor,
-                        padding: EdgeInsets.only(top: 5),
-                        child: Container(
-                            decoration: BoxDecoration(color:Colors.white,borderRadius: BorderRadius.circular(2)),
-                            height: 40,
-                            margin: EdgeInsets.only(
-                                bottom: 10, left: 15, right: 15),
-                            child:InkWell(onTap: (){
-                              drawerController.changePage(2);
-                            },child: CustomTextFormField(
-                              isDense:true,
-enabled:  false,
-
-                                controller: drawerController.searchController,
-                                keyboardType: TextInputType.text,
-                                hintText: LocaleKeys.searchProducts.tr,
-                                textInputAction: TextInputAction.search,
-                                onSubmitted: (term) {
-                                  FocusScope.of(context).unfocus();
-                                },
-                                prefixIcon: Icon(
-                                  Icons.search,
-                                  color: AppColors.primaryColor,
-                                  size: 32,
-                                ),
-                                validator: (value) {
-                                  return null;
-                                })))),
+                    drawerController.pageIndex == 2 ||
+                            drawerController.pageIndex == 3
+                        ? Container()
+                        : Container(
+                            color: AppColors.appBarColor,
+                            padding: EdgeInsets.only(top: 5),
+                            child: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(2)),
+                                height: 40,
+                                margin: EdgeInsets.only(
+                                    bottom: 10, left: 15, right: 15),
+                                child: InkWell(
+                                    onTap: () {
+                                      drawerController.changePage(2);
+                                    },
+                                    child: CustomTextFormField(
+                                        isDense: true,
+                                        enabled: false,
+                                        controller:
+                                            drawerController.searchController,
+                                        keyboardType: TextInputType.text,
+                                        hintText: LocaleKeys.searchProducts.tr,
+                                        textInputAction: TextInputAction.search,
+                                        onSubmitted: (term) {
+                                          FocusScope.of(context).unfocus();
+                                        },
+                                        prefixIcon: Icon(
+                                          Icons.search,
+                                          color: AppColors.primaryColor,
+                                          size: 32,
+                                        ),
+                                        validator: (value) {
+                                          return null;
+                                        })))),
                     Expanded(
                         child:
                             drawerController.pages[drawerController.pageIndex]),
@@ -209,25 +221,27 @@ enabled:  false,
                       return (index != drawerController.addresses.length)
                           ? AddressContainer(
                               address: drawerController.addresses[index])
-                          : InkWell(onTap:(){
-                            drawerController.navigateTo(AddAddressScreen());
-                      },child:Container(
-                              width: 150,
-                              padding: EdgeInsets.all(10),
-                              margin: EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border:
-                                      Border.all(color: AppColors.lightBlue),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(2))),
-                              child: Center(
-                                  child: Text(LocaleKeys.addAddressText.tr,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: AppColors.primaryColor,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold)))));
+                          : InkWell(
+                              onTap: () {
+                                drawerController.navigateTo(AddAddressScreen());
+                              },
+                              child: Container(
+                                  width: 150,
+                                  padding: EdgeInsets.all(10),
+                                  margin: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(
+                                          color: AppColors.lightBlue),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(2))),
+                                  child: Center(
+                                      child: Text(LocaleKeys.addAddressText.tr,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: AppColors.primaryColor,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold)))));
                     }))
           ],
         ));
@@ -329,11 +343,12 @@ enabled:  false,
                   children: [
                     SvgPicture.asset(
                       ImageConstanst.wishListssIcon,
-                      color: drawerController.pageIndex == 3?AppColors.primaryColor:Colors.white,
+                      color: drawerController.pageIndex == 3
+                          ? AppColors.primaryColor
+                          : Colors.white,
                       height: 24,
                       width: 24,
-                    )
-                        ,
+                    ),
                     5.heightBox,
                     Text(
                       LocaleKeys.wishLists.tr,
@@ -352,7 +367,9 @@ enabled:  false,
                   children: [
                     SvgPicture.asset(
                       ImageConstanst.shoppingCartIcon,
-                      color: drawerController.pageIndex == 4?AppColors.primaryColor:Colors.white,
+                      color: drawerController.pageIndex == 4
+                          ? AppColors.primaryColor
+                          : Colors.white,
                       height: 24,
                       width: 24,
                     ),
@@ -382,38 +399,38 @@ enabled:  false,
     await showDialog(
         context: drawerController.context,
         builder: (_) => AlertDialog(
-          title: Text(
-            'Please Login First',
-            style: TextStyle(
-              fontSize: 16,
-            ),
-          ),
-          actions: [
-            TextButton(
-              style: TextButton.styleFrom(padding: EdgeInsets.zero),
-              child: Text(
-                LocaleKeys.no.tr,
-                style: TextStyle(fontSize: 16, color: Colors.black54),
+              title: Text(
+                'Please Login First',
+                style: TextStyle(
+                  fontSize: 16,
+                ),
               ),
-              onPressed: () {
-                drawerController.pop();
-              },
-            ),
-            TextButton(
-              style: TextButton.styleFrom(padding: EdgeInsets.zero),
-              child: Text(
-                LocaleKeys.yes.tr,
-                style: TextStyle(fontSize: 16, color: Colors.black54),
-              ),
-              onPressed: () {
-                Get.delete<LoginController>();
-                Get.delete<DrawerControllers>();
-                Get.off(LoginScreen(from:SharedPreferencesKeys.isDrawer));
-              //  drawerController.navigateToLoginScreen();
-              },
-            ),
-          ],
-        ));
+              actions: [
+                TextButton(
+                  style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                  child: Text(
+                    LocaleKeys.no.tr,
+                    style: TextStyle(fontSize: 16, color: Colors.black54),
+                  ),
+                  onPressed: () {
+                    drawerController.pop();
+                  },
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                  child: Text(
+                    LocaleKeys.yes.tr,
+                    style: TextStyle(fontSize: 16, color: Colors.black54),
+                  ),
+                  onPressed: () {
+                    Get.delete<LoginController>();
+                    Get.delete<DrawerControllers>();
+                    Get.off(LoginScreen(from: SharedPreferencesKeys.isDrawer));
+                    //  drawerController.navigateToLoginScreen();
+                  },
+                ),
+              ],
+            ));
   }
 
   _buildDrawer(DrawerControllers drawerController) {
@@ -578,7 +595,6 @@ enabled:  false,
               },
             ),
           ]),
-
         ],
       ),
     );

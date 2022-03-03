@@ -1,6 +1,5 @@
 class StateModel {
-  const StateModel(
-      {required this.name});
+  const StateModel({required this.name});
 
   final String name;
 

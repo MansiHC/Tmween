@@ -58,8 +58,9 @@ class ReviewProductScreen extends StatelessWidget {
                           padding: EdgeInsets.all(10),
                           width: 120,
                           height: 100,
-                          child: SvgPicture.asset(
-                            ImageConstanst.warranty,
+                          child: Image.asset(
+                            'asset/image/product_review_and_rating_images/product_review_img.jpg',
+                            fit: BoxFit.contain,
                             height: 60,
                             width: 60,
                           ),
@@ -97,33 +98,43 @@ class ReviewProductScreen extends StatelessWidget {
                           ),
                         )),
                     20.heightBox,
-                    Container(width:260,child:Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _emojiView(reviewProductController, ImageConstanst.star1MoodIcon,1),
-                        _emojiView(reviewProductController, ImageConstanst.star2MoodIcon,2),
-                        _emojiView(reviewProductController, ImageConstanst.star3MoodIcon,3),
-                        _emojiView(reviewProductController, ImageConstanst.star4MoodIcon,4),
-                        _emojiView(reviewProductController, ImageConstanst.star5MoodIcon,5),
-                    ],)),
-5.heightBox,
-                   Container(width:240,child: RatingBar.builder(
-                      initialRating: reviewProductController.currentRating,
-                      minRating: 0,
-                      direction: Axis.horizontal,
-                      allowHalfRating: false,
-                      itemCount: 5,
-                      unratedColor: Color(0xFFDDDDDD),
-                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                      itemBuilder: (context, _) => Icon(
-                        Icons.star,
-                        color: Color(0xFFFEBD06),
-                      ),
-                      onRatingUpdate: (rating) {
-                        reviewProductController.currentRating = rating;
-                        reviewProductController.update();
-                      },
-                    )),
+                    Container(
+                        width: 260,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            _emojiView(reviewProductController,
+                                ImageConstanst.star1MoodIcon, 1),
+                            _emojiView(reviewProductController,
+                                ImageConstanst.star2MoodIcon, 2),
+                            _emojiView(reviewProductController,
+                                ImageConstanst.star3MoodIcon, 3),
+                            _emojiView(reviewProductController,
+                                ImageConstanst.star4MoodIcon, 4),
+                            _emojiView(reviewProductController,
+                                ImageConstanst.star5MoodIcon, 5),
+                          ],
+                        )),
+                    5.heightBox,
+                    Container(
+                        width: 240,
+                        child: RatingBar.builder(
+                          initialRating: reviewProductController.currentRating,
+                          minRating: 0,
+                          direction: Axis.horizontal,
+                          allowHalfRating: false,
+                          itemCount: 5,
+                          unratedColor: Color(0xFFDDDDDD),
+                          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                          itemBuilder: (context, _) => Icon(
+                            Icons.star,
+                            color: Color(0xFFFEBD06),
+                          ),
+                          onRatingUpdate: (rating) {
+                            reviewProductController.currentRating = rating;
+                            reviewProductController.update();
+                          },
+                        )),
                     30.heightBox,
                     Text(
                       'Leave a comment',
@@ -154,15 +165,20 @@ class ReviewProductScreen extends StatelessWidget {
                 ))));
   }
 
-  _emojiView(ReviewProductController reviewProductController,String image, int number){
+  _emojiView(ReviewProductController reviewProductController, String image,
+      int number) {
     return Container(
-        foregroundDecoration: number>reviewProductController.currentRating?
-        BoxDecoration(
-        color: Color(0xFFFFE19B),
-    backgroundBlendMode: BlendMode.saturation,
-    ):BoxDecoration(),
-        child:
-        SvgPicture.asset(image,height: 34,width: 34,));
+        foregroundDecoration: number > reviewProductController.currentRating
+            ? BoxDecoration(
+                color: Color(0xFFFFE19B),
+                backgroundBlendMode: BlendMode.saturation,
+              )
+            : BoxDecoration(),
+        child: SvgPicture.asset(
+          image,
+          height: 34,
+          width: 34,
+        ));
   }
 
   Widget topView(ReviewProductController reviewProductController) {

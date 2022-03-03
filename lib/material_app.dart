@@ -4,7 +4,6 @@ import 'package:tmween/scroll_example.dart';
 
 import 'data.dart';
 
-
 class MyMaterialApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

@@ -7,6 +7,7 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/otp_text_filed.dart';
 
+import '../../../controller/login_controller.dart';
 import '../../../utils/views/custom_button.dart';
 
 class LoginOtpScreen extends StatelessWidget {
@@ -16,6 +17,7 @@ class LoginOtpScreen extends StatelessWidget {
 
   late String language;
   final otpController = Get.put(OtpController());
+  final loginController = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
@@ -50,15 +52,19 @@ class LoginOtpScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-
           children: [
             Text(
               '${LocaleKeys.inText.tr} ${phoneEmail}',
               style: TextStyle(fontSize: 14, color: Colors.black),
             ),
             5.widthBox,
-            InkWell(
+            GetBuilder<LoginController>(
+            init: LoginController(),
+    builder: (contet) {
+    loginController.context = otpController.context;
+           return  InkWell(
                 onTap: () {
+                  loginController.isPasswordScreen = false;
                   otpController.exitScreen();
                 },
                 child: Wrap(
@@ -75,7 +81,7 @@ class LoginOtpScreen extends StatelessWidget {
                       size: 16,
                     )
                   ],
-                ))
+                ));})
           ],
         ),
         10.heightBox,
@@ -220,7 +226,7 @@ class LoginOtpScreen extends StatelessWidget {
         CustomButton(
             text: LocaleKeys.loginWithPassword.tr,
             onPressed: () {
-              otpController.navigateToPasswordScreen();
+              otpController.exitScreen();
             })
       ],
     );

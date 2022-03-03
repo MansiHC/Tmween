@@ -37,13 +37,16 @@ class DealsOfTheDayScreen extends StatelessWidget {
                     Container(
                         color: AppColors.appBarColor,
                         child: Container(
-                            decoration: BoxDecoration(color:Colors.white,borderRadius: BorderRadius.circular(2)),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(2)),
                             height: 40,
                             margin: EdgeInsets.only(
                                 bottom: 10, left: 15, right: 15),
                             child: CustomTextFormField(
-                                isDense:true,
-                                controller: dealOfTheDayController.searchController,
+                                isDense: true,
+                                controller:
+                                    dealOfTheDayController.searchController,
                                 keyboardType: TextInputType.text,
                                 hintText: LocaleKeys.searchProducts.tr,
                                 textInputAction: TextInputAction.search,
@@ -77,11 +80,12 @@ class DealsOfTheDayScreen extends StatelessWidget {
                                 dealOfTheDayController.deals.length, (index) {
                               return InkWell(
                                   onTap: () {
-                                dealOfTheDayController.navigateTo(ProductDetailScreen());
-                              },
-                              child: DealsOfTheDayContainer(
-                                deal: dealOfTheDayController.deals[index],
-                              ));
+                                    dealOfTheDayController
+                                        .navigateTo(ProductDetailScreen());
+                                  },
+                                  child: DealsOfTheDayContainer(
+                                    deal: dealOfTheDayController.deals[index],
+                                  ));
                             })))
                   ],
                 ),

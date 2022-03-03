@@ -1,7 +1,8 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:tmween/controller/address_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/address_type_model.dart';
 import 'package:tmween/model/country_model.dart';
@@ -12,9 +13,6 @@ import 'package:tmween/utils/views/custom_button.dart';
 
 import '../../../controller/add_address_controller.dart';
 import '../../../utils/views/custom_text_form_field.dart';
-
-import 'package:dropdown_button2/dropdown_button2.dart';
-
 
 class AddAddressScreen extends StatelessWidget {
   late String language;
@@ -65,26 +63,24 @@ class AddAddressScreen extends StatelessWidget {
                                 border: Border.all(
                                   color: Color(0xFFA7A7A7),
                                 ),
-                                color: Color(0xFFEEEEEE)
-                            ),
+                                color: Color(0xFFEEEEEE)),
                             isExpanded: true,
                             hint: Text(
                               LocaleKeys.selectCountry.tr,
                               style: TextStyle(fontSize: 14),
                             ),
                             items: addressController.countries
-                                .map((item) =>
-                                DropdownMenuItem<CountryModel>(
-                                  value: item,
-                                  child: Text(
-                                    item.name,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.black,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ))
+                                .map((item) => DropdownMenuItem<CountryModel>(
+                                      value: item,
+                                      child: Text(
+                                        item.name,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ))
                                 .toList(),
                             value: addressController.countryValue,
                             onChanged: (value) {
@@ -97,13 +93,14 @@ class AddAddressScreen extends StatelessWidget {
                             ),
                             iconSize: 24,
                             buttonHeight: 40,
-                            buttonPadding: const EdgeInsets.only(
-                                left: 10, right: 10),
+                            buttonPadding:
+                                const EdgeInsets.only(left: 10, right: 10),
                             dropdownDecoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(2),
                             ),
                             offset: const Offset(0, 0),
-                          ),),
+                          ),
+                        ),
                         10.heightBox,
                         Text(
                           LocaleKeys.fullName.tr,
@@ -117,6 +114,7 @@ class AddAddressScreen extends StatelessWidget {
                             controller: addressController.fullNameController,
                             keyboardType: TextInputType.name,
                             hintText: '',
+                            prefixIcon: SvgPicture.asset(ImageConstanst.userIcon,color: AppColors.primaryColor,),
                             validator: (value) {}),
                         10.heightBox,
                         Text(
@@ -129,9 +127,10 @@ class AddAddressScreen extends StatelessWidget {
                         5.heightBox,
                         CustomBoxTextFormField(
                             controller:
-                            addressController.mobileNumberController,
+                                addressController.mobileNumberController,
                             keyboardType: TextInputType.phone,
                             hintText: '',
+                            prefixIcon: SvgPicture.asset(ImageConstanst.phoneCallIcon,color: AppColors.primaryColor,),
                             validator: (value) {}),
                         10.heightBox,
                         Text(
@@ -146,6 +145,7 @@ class AddAddressScreen extends StatelessWidget {
                             controller: addressController.pincodeController,
                             keyboardType: TextInputType.number,
                             hintText: '',
+                            prefixIcon: SvgPicture.asset(ImageConstanst.worldIcon,color: AppColors.primaryColor,),
                             validator: (value) {}),
                         10.heightBox,
                         Text(
@@ -160,6 +160,7 @@ class AddAddressScreen extends StatelessWidget {
                             controller: addressController.houseNoController,
                             keyboardType: TextInputType.text,
                             hintText: '',
+                            prefixIcon: SvgPicture.asset(ImageConstanst.homeIcon,color: AppColors.primaryColor,),
                             validator: (value) {}),
                         10.heightBox,
                         Text(
@@ -174,6 +175,7 @@ class AddAddressScreen extends StatelessWidget {
                             controller: addressController.areaStreetController,
                             keyboardType: TextInputType.text,
                             hintText: '',
+                            prefixIcon: SvgPicture.asset(ImageConstanst.homeIcon,color: AppColors.primaryColor,),
                             validator: (value) {}),
                         10.heightBox,
                         Text(
@@ -188,6 +190,7 @@ class AddAddressScreen extends StatelessWidget {
                             controller: addressController.landmarkController,
                             keyboardType: TextInputType.text,
                             hintText: '',
+                            prefixIcon: SvgPicture.asset(ImageConstanst.pinIcon,color: AppColors.primaryColor,),
                             validator: (value) {}),
                         10.heightBox,
                         Text(
@@ -202,6 +205,7 @@ class AddAddressScreen extends StatelessWidget {
                             controller: addressController.townCityController,
                             keyboardType: TextInputType.text,
                             hintText: '',
+                            prefixIcon: SvgPicture.asset(ImageConstanst.townHallIcon,color: AppColors.primaryColor,),
                             validator: (value) {}),
                         10.heightBox,
                         Text(
@@ -219,26 +223,24 @@ class AddAddressScreen extends StatelessWidget {
                                 border: Border.all(
                                   color: Color(0xFFA7A7A7),
                                 ),
-                                color: Color(0xFFEEEEEE)
-                            ),
+                                color: Color(0xFFEEEEEE)),
                             isExpanded: true,
                             hint: Text(
                               LocaleKeys.chooseState.tr,
                               style: TextStyle(fontSize: 14),
                             ),
                             items: addressController.states
-                                .map((item) =>
-                                DropdownMenuItem<StateModel>(
-                                  value: item,
-                                  child: Text(
-                                    item.name,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.black,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ))
+                                .map((item) => DropdownMenuItem<StateModel>(
+                                      value: item,
+                                      child: Text(
+                                        item.name,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ))
                                 .toList(),
                             value: addressController.stateValue,
                             onChanged: (value) {
@@ -251,13 +253,14 @@ class AddAddressScreen extends StatelessWidget {
                             ),
                             iconSize: 24,
                             buttonHeight: 40,
-                            buttonPadding: const EdgeInsets.only(
-                                left: 10, right: 10),
+                            buttonPadding:
+                                const EdgeInsets.only(left: 10, right: 10),
                             dropdownDecoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(2),
                             ),
                             offset: const Offset(0, 0),
-                          ),),
+                          ),
+                        ),
                         TextButton(
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.zero,
@@ -265,25 +268,22 @@ class AddAddressScreen extends StatelessWidget {
                             onPressed: () =>
                                 addressController.updateDefaultCheckBox(),
                             child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   SizedBox(
                                       height: 24.0,
                                       width: 24.0,
                                       child: Theme(
                                           data: Theme.of(
-                                              addressController.context)
+                                                  addressController.context)
                                               .copyWith(
-                                            unselectedWidgetColor:
-                                            Colors.grey,
+                                            unselectedWidgetColor: Colors.grey,
                                           ),
                                           child: Checkbox(
                                               value:
-                                              addressController
-                                                  .isDefault,
-                                              activeColor: AppColors
-                                                  .primaryColor,
+                                                  addressController.isDefault,
+                                              activeColor:
+                                                  AppColors.primaryColor,
                                               onChanged: (value) {
                                                 addressController
                                                     .updateDefaultCheckBox();
@@ -292,8 +292,7 @@ class AddAddressScreen extends StatelessWidget {
                                   Text(
                                     LocaleKeys.makeDefault.tr,
                                     style: TextStyle(
-                                        fontSize: 12,
-                                        color: Color(0xFF9C9C9C)),
+                                        fontSize: 12, color: Color(0xFF9C9C9C)),
                                   )
                                 ])),
                         Text(
@@ -301,13 +300,14 @@ class AddAddressScreen extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF555555)),),
+                              color: Color(0xFF555555)),
+                        ),
                         5.heightBox,
                         Text(
                           LocaleKeys.deliveryInstructionText.tr,
-                          style: TextStyle(
-                              fontSize: 13,
-                              color: Color(0xFF9C9C9C)),),
+                          style:
+                              TextStyle(fontSize: 13, color: Color(0xFF9C9C9C)),
+                        ),
                         10.heightBox,
                         Text(
                           LocaleKeys.addressType.tr,
@@ -324,8 +324,7 @@ class AddAddressScreen extends StatelessWidget {
                                 border: Border.all(
                                   color: Color(0xFFA7A7A7),
                                 ),
-                                color: Color(0xFFEEEEEE)
-                            ),
+                                color: Color(0xFFEEEEEE)),
                             isExpanded: true,
                             hint: Text(
                               LocaleKeys.selectAddressType.tr,
@@ -333,20 +332,21 @@ class AddAddressScreen extends StatelessWidget {
                             ),
                             items: addressController.addressTypes
                                 .map((item) =>
-                                DropdownMenuItem<AddressTypeModel>(
-                                  value: item,
-                                  child: Text(
-                                    item.name.tr,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.black,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ))
+                                    DropdownMenuItem<AddressTypeModel>(
+                                      value: item,
+                                      child: Text(
+                                        item.name.tr,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ))
                                 .toList(),
-                            onTap: (){
-                              addressController.isAddressOpened = !addressController.isAddressOpened;
+                            onTap: () {
+                              addressController.isAddressOpened =
+                                  !addressController.isAddressOpened;
                               addressController.update();
                             },
                             value: addressController.addressTypeValue,
@@ -354,28 +354,32 @@ class AddAddressScreen extends StatelessWidget {
                               var val = value as AddressTypeModel;
                               addressController.updateAddressType(val);
                             },
-                            icon: addressController.isAddressOpened?
-                            Icon(
-                              Icons.keyboard_arrow_up_sharp,
-                              color: Colors.black45,
-                            )
+                            icon: addressController.isAddressOpened
+                                ? Icon(
+                                    Icons.keyboard_arrow_up_sharp,
+                                    color: Colors.black45,
+                                  )
                                 : Icon(
-                              Icons.keyboard_arrow_down_sharp,
-                              color: Colors.black45,
-                            ),
+                                    Icons.keyboard_arrow_down_sharp,
+                                    color: Colors.black45,
+                                  ),
                             iconSize: 24,
                             buttonHeight: 40,
-                            buttonPadding: const EdgeInsets.only(
-                                left: 10, right: 10),
+                            buttonPadding:
+                                const EdgeInsets.only(left: 10, right: 10),
                             dropdownDecoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(2),
                             ),
                             offset: const Offset(0, 0),
-                          ),),
+                          ),
+                        ),
                         30.heightBox,
-                        CustomButton(text: LocaleKeys.addNewAddress.tr,fontSize: 16, onPressed: (){
-                          addressController.exitScreen();
-                        }),
+                        CustomButton(
+                            text: LocaleKeys.addNewAddress.tr,
+                            fontSize: 16,
+                            onPressed: () {
+                              addressController.exitScreen();
+                            }),
                         30.heightBox,
                       ],
                     )))));

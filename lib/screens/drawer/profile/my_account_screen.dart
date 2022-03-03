@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/my_account_controller.dart';
-import 'package:tmween/controller/my_wallet_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/drawer/profile/notification_screen.dart';
 import 'package:tmween/screens/drawer/profile/update_profile_screen.dart';
@@ -157,19 +156,24 @@ class MyAccountScreen extends StatelessWidget {
                         '1999 Bluff Street MOODY Alabama - 35004',
                         style: TextStyle(color: Colors.black54, fontSize: 12),
                       )),
-                      InkWell(onTap:(){
-                        myAccountController.navigateTo(YourAddressesScreen());
-                      },child:Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(2)),
-                            border: Border.all(color: AppColors.primaryColor)),
-                        padding: EdgeInsets.all(3),
-                        child: Text(
-                          LocaleKeys.change.tr,
-                          style: TextStyle(
-                              color: AppColors.primaryColor, fontSize: 12),
-                        ),
-                      ))
+                      InkWell(
+                          onTap: () {
+                            myAccountController
+                                .navigateTo(YourAddressesScreen());
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(2)),
+                                border:
+                                    Border.all(color: AppColors.primaryColor)),
+                            padding: EdgeInsets.all(3),
+                            child: Text(
+                              LocaleKeys.change.tr,
+                              style: TextStyle(
+                                  color: AppColors.primaryColor, fontSize: 12),
+                            ),
+                          ))
                     ],
                   ),
                 ),
@@ -180,8 +184,7 @@ class MyAccountScreen extends StatelessWidget {
         CustomListTile(
             title: LocaleKeys.yourOrders,
             onTap: () {
-              myAccountController
-                  .navigateTo(YourOrderScreen());
+              myAccountController.navigateTo(YourOrderScreen());
             },
             leadingIcon: ImageConstanst.yourOrdersIcon),
         Padding(
@@ -220,7 +223,9 @@ class MyAccountScreen extends StatelessWidget {
         CustomListTile(
             title: LocaleKeys.wishLists,
             onTap: () {
-              myAccountController.navigateTo(WishlistScreen(fromProfile: true,));
+              myAccountController.navigateTo(WishlistScreen(
+                fromProfile: true,
+              ));
             },
             leadingIcon: ImageConstanst.wishlistIcon),
         Padding(

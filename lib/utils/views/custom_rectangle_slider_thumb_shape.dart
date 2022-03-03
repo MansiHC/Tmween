@@ -20,19 +20,19 @@ class CustomRectangleSliderThumbShape extends SliderComponentShape {
 
   @override
   void paint(
-      PaintingContext context,
-      Offset center, {
-        required Animation<double> activationAnimation,
-        required Animation<double> enableAnimation,
-        required bool isDiscrete,
-        required TextPainter labelPainter,
-        required RenderBox parentBox,
-        required SliderThemeData sliderTheme,
-        required TextDirection textDirection,
-        required double value,
-        required double textScaleFactor,
-        required Size sizeWithOverflow,
-      }) {
+    PaintingContext context,
+    Offset center, {
+    required Animation<double> activationAnimation,
+    required Animation<double> enableAnimation,
+    required bool isDiscrete,
+    required TextPainter labelPainter,
+    required RenderBox parentBox,
+    required SliderThemeData sliderTheme,
+    required TextDirection textDirection,
+    required double value,
+    required double textScaleFactor,
+    required Size sizeWithOverflow,
+  }) {
     final Canvas canvas = context.canvas;
 
     final rRect = RRect.fromRectAndRadius(
@@ -58,13 +58,13 @@ class CustomRectangleSliderThumbShape extends SliderComponentShape {
         textDirection: TextDirection.ltr);
     tp.layout();
     Offset textCenter =
-    Offset(center.dx - (tp.width / 2), center.dy - (tp.height / 2));
+        Offset(center.dx - (tp.width / 2), center.dy - (tp.height / 2));
 
     canvas.drawRRect(rRect, paint);
     tp.paint(canvas, textCenter);
   }
 
   String getValue(double value) {
-    return (min+(max-min)*value).round().toString();
+    return (min + (max - min) * value).round().toString();
   }
 }

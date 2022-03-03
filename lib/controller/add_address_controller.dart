@@ -6,9 +6,7 @@ import 'package:tmween/model/address_type_model.dart';
 import 'package:tmween/model/country_model.dart';
 import 'package:tmween/model/state_model.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
-import 'package:tmween/screens/drawer/profile/update_profile_screen.dart';
 
-import '../screens/authentication/login/login_screen.dart';
 import '../utils/global.dart';
 import '../utils/my_shared_preferences.dart';
 
@@ -28,12 +26,12 @@ class AddAddressController extends GetxController {
   final formKey = GlobalKey<FormState>();
 
   late List<CountryModel> countries;
-   CountryModel? countryValue;
+  CountryModel? countryValue;
 
-   late List<StateModel> states;
-   StateModel? stateValue;
+  late List<StateModel> states;
+  StateModel? stateValue;
 
-   late List<AddressTypeModel> addressTypes;
+  late List<AddressTypeModel> addressTypes;
   AddressTypeModel? addressTypeValue;
 
   bool isDefault = false;
@@ -42,16 +40,28 @@ class AddAddressController extends GetxController {
   @override
   void onInit() {
     countries = <CountryModel>[
-      CountryModel(name: 'India',),
-      CountryModel(name: 'Sudan',),
+      CountryModel(
+        name: 'India',
+      ),
+      CountryModel(
+        name: 'Sudan',
+      ),
     ];
     states = <StateModel>[
-      StateModel(name: 'Gujarat',),
-      StateModel(name: 'Ahmedabad',),
+      StateModel(
+        name: 'Gujarat',
+      ),
+      StateModel(
+        name: 'Ahmedabad',
+      ),
     ];
     addressTypes = <AddressTypeModel>[
-      AddressTypeModel(name: LocaleKeys.personalAddress,),
-      AddressTypeModel(name: LocaleKeys.officeAddress,),
+      AddressTypeModel(
+        name: LocaleKeys.personalAddress,
+      ),
+      AddressTypeModel(
+        name: LocaleKeys.officeAddress,
+      ),
     ];
     MySharedPreferences.instance
         .getIntValuesSF(SharedPreferencesKeys.userId)
@@ -66,18 +76,20 @@ class AddAddressController extends GetxController {
     super.onInit();
   }
 
-void updateCountry(CountryModel? value){
-  countryValue = value!;
-  update();
-}
-void updateState(StateModel? value){
-  stateValue = value!;
-  update();
-}
-void updateAddressType(AddressTypeModel? value){
-  addressTypeValue = value!;
-  update();
-}
+  void updateCountry(CountryModel? value) {
+    countryValue = value!;
+    update();
+  }
+
+  void updateState(StateModel? value) {
+    stateValue = value!;
+    update();
+  }
+
+  void updateAddressType(AddressTypeModel? value) {
+    addressTypeValue = value!;
+    update();
+  }
 
   void updateDefaultCheckBox() {
     isDefault = !isDefault;
@@ -98,8 +110,6 @@ void updateAddressType(AddressTypeModel? value){
         MaterialPageRoute(builder: (context) => DrawerScreen()),
         (Route<dynamic> route) => false);
   }
-
-
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));

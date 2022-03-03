@@ -11,6 +11,7 @@ import 'package:tmween/utils/extensions.dart';
 import '../../controller/search_controller.dart';
 import '../../lang/locale_keys.g.dart';
 import '../../utils/global.dart';
+import '../../utils/views/custom_button.dart';
 import 'address_container.dart';
 import 'dashboard/product_detail_screen.dart';
 
@@ -238,11 +239,11 @@ class SearchScreen extends StatelessWidget {
             itemBuilder: (ctx, i) {
               return InkWell(
                   onTap: () {
-                searchController.navigateTo(ProductDetailScreen());
-              },
-              child: SearchContainer(
-                recentlyViewed: searchController.recentlVieweds[i],
-              ));
+                    searchController.navigateTo(ProductDetailScreen());
+                  },
+                  child: SearchContainer(
+                    recentlyViewed: searchController.recentlVieweds[i],
+                  ));
             },
           ),
         ),
@@ -315,33 +316,36 @@ class SearchScreen extends StatelessWidget {
                     ),
                     10.heightBox,
                     Wrap(
-                      spacing: 10,
-                      children: List.generate(searchController.historyList.length, (index) =>  InkWell(
-                          onTap: (){
-                            searchController.searchController.text = searchController.historyList[index];
-                            searchController.visibleList = true;
-                            searchController.update();
-                          },
-                          child:Container(
-                            padding: EdgeInsets.all(5),
-                            margin: EdgeInsets.symmetric(
-                                horizontal: 2, vertical: 6),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(6),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Colors.grey[300]!,
-                                      blurRadius: 3,
-                                      spreadRadius: 3)
-                                ]),
-                            child: Text(
-                              searchController.historyList[index],
-                              style: TextStyle(
-                                  fontSize: 12.5, color: Color(0xFF5B5B5B)),
-                            ),
-                          )))
-                    ),
+                        spacing: 10,
+                        children: List.generate(
+                            searchController.historyList.length,
+                            (index) => InkWell(
+                                onTap: () {
+                                  searchController.searchController.text =
+                                      searchController.historyList[index];
+                                  searchController.visibleList = true;
+                                  searchController.update();
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(5),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 2, vertical: 6),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(6),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: Colors.grey[300]!,
+                                            blurRadius: 3,
+                                            spreadRadius: 3)
+                                      ]),
+                                  child: Text(
+                                    searchController.historyList[index],
+                                    style: TextStyle(
+                                        fontSize: 12.5,
+                                        color: Color(0xFF5B5B5B)),
+                                  ),
+                                )))),
                     30.heightBox,
                     Text(
                       LocaleKeys.popularSearch.tr,
@@ -356,30 +360,30 @@ class SearchScreen extends StatelessWidget {
                       children: <Widget>[
                         for (var item in searchController.historyList)
                           InkWell(
-                              onTap: (){
+                              onTap: () {
                                 searchController.searchController.text = item;
                                 searchController.visibleList = true;
                                 searchController.update();
                               },
-                              child:Container(
-                            padding: EdgeInsets.all(5),
-                            margin: EdgeInsets.symmetric(
-                                horizontal: 2, vertical: 6),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(6),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Colors.grey[300]!,
-                                      blurRadius: 3,
-                                      spreadRadius: 3)
-                                ]),
-                            child: Text(
-                              item,
-                              style: TextStyle(
-                                  fontSize: 12.5, color: Color(0xFF5B5B5B)),
-                            ),
-                          )),
+                              child: Container(
+                                padding: EdgeInsets.all(5),
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 2, vertical: 6),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(6),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.grey[300]!,
+                                          blurRadius: 3,
+                                          spreadRadius: 3)
+                                    ]),
+                                child: Text(
+                                  item,
+                                  style: TextStyle(
+                                      fontSize: 12.5, color: Color(0xFF5B5B5B)),
+                                ),
+                              )),
                       ],
                     ),
                   ],
@@ -416,25 +420,27 @@ class SearchScreen extends StatelessWidget {
                       return (index != searchController.addresses.length)
                           ? AddressContainer(
                               address: searchController.addresses[index])
-                          : InkWell(onTap:(){
-                        searchController.navigateTo(AddAddressScreen());
-                      },child:Container(
-                              width: 150,
-                              padding: EdgeInsets.all(10),
-                              margin: EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border:
-                                      Border.all(color: AppColors.lightBlue),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(2))),
-                              child: Center(
-                                  child: Text(LocaleKeys.addAddressText.tr,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: AppColors.primaryColor,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold)))));
+                          : InkWell(
+                              onTap: () {
+                                searchController.navigateTo(AddAddressScreen());
+                              },
+                              child: Container(
+                                  width: 150,
+                                  padding: EdgeInsets.all(10),
+                                  margin: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(
+                                          color: AppColors.lightBlue),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(2))),
+                                  child: Center(
+                                      child: Text(LocaleKeys.addAddressText.tr,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: AppColors.primaryColor,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold)))));
                     }))
           ],
         ));
@@ -445,19 +451,28 @@ class SearchScreen extends StatelessWidget {
         init: SearchController(),
         builder: (contet) {
           return Container(
-              height: 270,
+              height: 290,
               padding: EdgeInsets.all(15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   10.heightBox,
-                  Text(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [Text(
                     LocaleKeys.bestMatch.tr,
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 18,
                         fontWeight: FontWeight.bold),
-                  ),
+                  ), CustomButton(
+                        width: 80,
+                        horizontalPadding:5 ,
+                        text: LocaleKeys.apply.tr,
+                        fontSize: 14,
+                        onPressed: () {
+                          searchController.popp();
+                        })],),
                   10.heightBox,
                   RadioListTile(
                     contentPadding: EdgeInsets.zero,

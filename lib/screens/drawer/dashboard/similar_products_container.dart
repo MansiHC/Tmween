@@ -19,7 +19,7 @@ class SimilarProductsContainer extends StatelessWidget {
     language = Get.locale!.languageCode;
     return Container(
       width: 165,
-      margin: EdgeInsets.only(right: 7,top: 5,bottom:5,left: 3),
+      margin: EdgeInsets.only(right: 7, top: 5, bottom: 5, left: 3),
       decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
@@ -77,9 +77,9 @@ class SimilarProductsContainer extends StatelessWidget {
         Expanded(
             child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),
-                child: Image.network(
+                child: Image.asset(
                   products.image,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 ))),
         5.heightBox,
         Padding(

@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/model/address_model.dart';
 import 'package:tmween/model/language_model.dart';
-import 'package:tmween/screens/authentication/login/login_screen.dart';
 import 'package:tmween/screens/drawer/categories_screen.dart';
 import 'package:tmween/screens/drawer/dashboard/dashboard_screen.dart';
 import 'package:tmween/screens/drawer/search_screen.dart';
@@ -24,7 +23,7 @@ class DrawerControllers extends GetxController {
   String pageTitle = 'Home';
   late List<LanguageModel> languages;
   late LanguageModel languageValue;
-   bool isLogin= true;
+  bool isLogin = true;
 
   List<AddressModel> addresses = const <AddressModel>[
     const AddressModel(
@@ -67,7 +66,7 @@ class DrawerControllers extends GetxController {
         .addBoolToSF(SharedPreferencesKeys.isDrawer, true);
     languages = <LanguageModel>[
       LanguageModel(name: LocaleKeys.english.tr, locale: Locale('en', 'US')),
-     /* LanguageModel(name: LocaleKeys.arabian.tr, locale: Locale('ar', 'DZ')),
+      /* LanguageModel(name: LocaleKeys.arabian.tr, locale: Locale('ar', 'DZ')),
       LanguageModel(name: LocaleKeys.spanish.tr, locale: Locale('es', 'ES')),*/
     ];
     languageValue = languages[0];
@@ -82,7 +81,6 @@ class DrawerControllers extends GetxController {
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
   }
-
 
   void closeDrawer() {
     Navigator.pop(context);

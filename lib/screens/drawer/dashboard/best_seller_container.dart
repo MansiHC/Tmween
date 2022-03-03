@@ -73,9 +73,9 @@ class BestSellerContainer extends StatelessWidget {
         Expanded(
             child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),
-                child: Image.network(
+                child: Image.asset(
                   bestSeller.image,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 ))),
         5.heightBox,
         Padding(

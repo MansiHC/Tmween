@@ -40,40 +40,41 @@ class ProductDetailScreen extends StatelessWidget {
                           padding: EdgeInsets.only(top: 20),
                           child: topView(productDetailController)),
                       InkWell(
-                        onTap: (){
-                          showModalBottomSheet<void>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return _bottomSheetView(productDetailController);
-                              });
-                        },
+                          onTap: () {
+                            showModalBottomSheet<void>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return _bottomSheetView(
+                                      productDetailController);
+                                });
+                          },
                           child: Container(
-                          color: Colors.white,
-                          padding: EdgeInsets.symmetric(vertical: 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                ImageConstanst.locationPinIcon,
-                                color: Color(0xFF454545),
-                                height: 16,
-                                width: 16,
-                              ),
-                              3.widthBox,
-                              Text(
-                                '1999 Bluff Street MOODY Alabama - 35004',
-                                style: TextStyle(
+                              color: Colors.white,
+                              padding: EdgeInsets.symmetric(vertical: 5),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    ImageConstanst.locationPinIcon,
                                     color: Color(0xFF454545),
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Icon(
-                                Icons.arrow_drop_down_sharp,
-                                size: 16,
-                              ),
-                              5.widthBox
-                            ],
-                          ))),
+                                    height: 16,
+                                    width: 16,
+                                  ),
+                                  3.widthBox,
+                                  Text(
+                                    '1999 Bluff Street MOODY Alabama - 35004',
+                                    style: TextStyle(
+                                        color: Color(0xFF454545),
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Icon(
+                                    Icons.arrow_drop_down_sharp,
+                                    size: 16,
+                                  ),
+                                  5.widthBox
+                                ],
+                              ))),
                       _bottomView(productDetailController),
                     ],
                   )));
@@ -151,7 +152,6 @@ class ProductDetailScreen extends StatelessWidget {
                             children: [
                               Container(
                                   height: 200,
-                                  width: 400,
                                   child: InkWell(
                                       onTap: () {
                                         productDetailController.navigateTo(
@@ -244,7 +244,7 @@ class ProductDetailScreen extends StatelessWidget {
                                             : Colors.white)),
                             padding: EdgeInsets.all(5),
                             margin: EdgeInsets.only(right: 5),
-                            child: Image.network(
+                            child: Image.asset(
                               productDetailController.imgList[index],
                               fit: BoxFit.cover,
                             )));
@@ -610,10 +610,15 @@ class ProductDetailScreen extends StatelessWidget {
                     15.heightBox,
                     Padding(
                         padding: EdgeInsets.only(right: 15),
-                        child: CustomButton(text: 'BUY NOW',fontSize: 14, onPressed: () {})),
+                        child: CustomButton(
+                            text: 'BUY NOW', fontSize: 14, onPressed: () {})),
                     Padding(
                         padding: EdgeInsets.only(right: 15),
-                        child: CustomButton(text: 'ADD TO CART',fontSize:14,backgroundColor: Color(0xFF314156), onPressed: () {})),
+                        child: CustomButton(
+                            text: 'ADD TO CART',
+                            fontSize: 14,
+                            backgroundColor: Color(0xFF314156),
+                            onPressed: () {})),
                     10.heightBox,
                     Padding(
                         padding: EdgeInsets.only(right: 15),
@@ -623,7 +628,7 @@ class ProductDetailScreen extends StatelessWidget {
                         padding: EdgeInsets.only(right: 15),
                         child: _guaranteeSection(productDetailController)),
                     15.heightBox,
-                     Padding(
+                    Padding(
                         padding: EdgeInsets.only(right: 15),
                         child: _sellerSection(productDetailController)),
                     15.heightBox,
@@ -666,7 +671,6 @@ class ProductDetailScreen extends StatelessWidget {
   Widget _similarProducts(ProductDetailController productDetailController) {
     return Container(
         height: 244,
-
         child: ListView.builder(
             itemCount: productDetailController.recentlVieweds.length,
             scrollDirection: Axis.horizontal,
@@ -682,7 +686,6 @@ class ProductDetailScreen extends StatelessWidget {
         BoxShadow(color: Colors.grey[200]!, blurRadius: 5, spreadRadius: 5)
       ]),
       padding: EdgeInsets.symmetric(vertical: 10),
-
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -697,19 +700,21 @@ class ProductDetailScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF000000)),
               ),
-              InkWell(onTap:(){
-                productDetailController.navigateTo(ReviewProductScreen());
-              },child:Container(
-                height: 35,
-                color: AppColors.primaryColor,
-                width: 120,
-                child: Center(
-                    child: Text(
-                  'Rate Product',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 13, color: Colors.white),
-                )),
-              ))
+              InkWell(
+                  onTap: () {
+                    productDetailController.navigateTo(ReviewProductScreen());
+                  },
+                  child: Container(
+                    height: 35,
+                    color: AppColors.primaryColor,
+                    width: 120,
+                    child: Center(
+                        child: Text(
+                      'Rate Product',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 13, color: Colors.white),
+                    )),
+                  ))
             ],
           ),
           5.heightBox,
@@ -1784,29 +1789,31 @@ class ProductDetailScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return (index != productDetailController.addresses.length)
                           ? AddressContainer(
-                          address: productDetailController.addresses[index])
-                          : InkWell(onTap:(){
-                        productDetailController.navigateTo(AddAddressScreen());
-                      },child:Container(
-                          width: 150,
-                          padding: EdgeInsets.all(10),
-                          margin: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              border:
-                              Border.all(color: AppColors.lightBlue),
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(2))),
-                          child: Center(
-                              child: Text(LocaleKeys.addAddressText.tr,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: AppColors.primaryColor,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold)))));
+                              address: productDetailController.addresses[index])
+                          : InkWell(
+                              onTap: () {
+                                productDetailController
+                                    .navigateTo(AddAddressScreen());
+                              },
+                              child: Container(
+                                  width: 150,
+                                  padding: EdgeInsets.all(10),
+                                  margin: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(
+                                          color: AppColors.lightBlue),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(2))),
+                                  child: Center(
+                                      child: Text(LocaleKeys.addAddressText.tr,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: AppColors.primaryColor,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold)))));
                     }))
           ],
         ));
   }
-
 }

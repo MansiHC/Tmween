@@ -31,17 +31,20 @@ class TopSelectionScreen extends StatelessWidget {
                 style: TextStyle(color: Colors.white),
               ),
             ),
-            body: Column(
+            body:SingleChildScrollView(
+          child: Column(
               children: [
                 Container(
                     color: AppColors.appBarColor,
                     child: Container(
-                        decoration: BoxDecoration(color:Colors.white,borderRadius: BorderRadius.circular(2)),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(2)),
                         height: 40,
-                        margin: EdgeInsets.only(
-                            bottom: 10, left: 15, right: 15),
+                        margin:
+                            EdgeInsets.only(bottom: 10, left: 15, right: 15),
                         child: CustomTextFormField(
-                            isDense:true,
+                            isDense: true,
                             controller: topSelectionController.searchController,
                             keyboardType: TextInputType.text,
                             hintText: LocaleKeys.searchProducts.tr,
@@ -77,16 +80,17 @@ class TopSelectionScreen extends StatelessWidget {
                             (index) {
                           return InkWell(
                               onTap: () {
-                            topSelectionController.navigateTo(ProductDetailScreen());
-                          },
+                                topSelectionController
+                                    .navigateTo(ProductDetailScreen());
+                              },
                               child: TopSelectionContainer(
-                            topSelection:
-                                topSelectionController.topSelections[index],
-                          ));
+                                topSelection:
+                                    topSelectionController.topSelections[index],
+                              ));
                         })))
               ],
             ),
-          );
+            ));
         });
   }
 }

@@ -35,19 +35,19 @@ void main() async {
           .then((value) async {
         isLogin = value ?? false;
         MySharedPreferences.instance
-          .getBoolValuesSF(SharedPreferencesKeys.isDrawer)
-          .then((value) async {
-        isDrawer = value ?? false;
+            .getBoolValuesSF(SharedPreferencesKeys.isDrawer)
+            .then((value) async {
+          isDrawer = value ?? false;
 
-        runApp(
-          MyApp(
-            isLogin: isLogin,
-            isSplash: isSplash,
-            isDrawer: isDrawer,
-            language: language,
-          ),
-        );
-      });
+          runApp(
+            MyApp(
+              isLogin: isLogin,
+              isSplash: isSplash,
+              isDrawer: isDrawer,
+              language: language,
+            ),
+          );
+        });
       });
     });
   });
@@ -93,16 +93,19 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: LocaleKeys.appTitle,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        primaryColor: AppColors.primaryColor,
-        brightness: Brightness.light,
-        backgroundColor: const Color(0xFFE5E5E5),
-        accentColor: Colors.black,
-        accentIconTheme: IconThemeData(color: Colors.white),
-        dividerColor: Colors.white54,
-        fontFamily: AppConstants.fontFamily
-      ),
-      home:isDrawer?DrawerScreen(): isLogin ? DrawerScreen() : SplashScreen(),
+          primarySwatch: Colors.blue,
+          primaryColor: AppColors.primaryColor,
+          brightness: Brightness.light,
+          backgroundColor: const Color(0xFFE5E5E5),
+          accentColor: Colors.black,
+          accentIconTheme: IconThemeData(color: Colors.white),
+          dividerColor: Colors.white54,
+          fontFamily: AppConstants.fontFamily),
+      home: isDrawer
+          ? DrawerScreen()
+          : isLogin
+              ? DrawerScreen()
+              : SplashScreen(),
     );
   }
 }

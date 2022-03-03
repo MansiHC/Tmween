@@ -25,14 +25,13 @@ class LoginController extends GetxController {
   final formKey = GlobalKey<FormState>();
   late BuildContext context;
   bool rememberMe = false;
-  bool loginEmail = true;
+  bool isPasswordScreen = false;
   bool changeEmail = false;
-  bool visiblePhoneEmail = true;
-  bool isPhoneEmailEmpty = false;
   bool visiblePassword = false;
   TextEditingController phoneEmailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   late List<Tab> tabList;
+  late TabController tabController;
 
   @override
   void onInit() {
@@ -43,6 +42,8 @@ class LoginController extends GetxController {
     tabList.add(new Tab(
       text: LocaleKeys.storeOwner.tr,
     ));
+
+
     MySharedPreferences.instance
         .getBoolValuesSF(SharedPreferencesKeys.isSplash)
         .then((value) async {
@@ -138,7 +139,6 @@ class LoginController extends GetxController {
   bool loading = false;
 
   doLogin() async {
-    loginEmail = false;
     update();
     /*loading = true;
     notifyListeners();
@@ -166,18 +166,19 @@ class LoginController extends GetxController {
   }
 
   doLoginWithPassword() {
-    if (formKey.currentState!.validate()) {
+  //  if (formKey.currentState!.validate()) {
       navigateToDrawerScreen();
-    }
+    //}
   }
 
   void navigateToSignupScreen() {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => SignUpScreen()));
   }
-void navigateToForgotPasswordScreen() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ForgotPasswordScreen()));
+
+  void navigateToForgotPasswordScreen() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => ForgotPasswordScreen()));
   }
 
   void navigateToOTPScreen() {
@@ -187,21 +188,10 @@ void navigateToForgotPasswordScreen() {
             context,
             MaterialPageRoute(
                 builder: (context) => LoginOtpScreen(
-                    phoneEmail: phoneEmailController.text.toString())))
-        .then((value) {
-      if (value) {
-        changeEmail = false;
-        visiblePhoneEmail = false;
-      } else {
-        changeEmail = true;
-        visiblePhoneEmail = true;
-      }
-      update();
-    });
+                    phoneEmail: phoneEmailController.text.toString())));
   }
 
   void navigateToDrawerScreen() {
-
     rememberMe == true
         ? MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, true)
@@ -211,20 +201,17 @@ void navigateToForgotPasswordScreen() {
         .addBoolToSF(SharedPreferencesKeys.isLogin, true);
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => DrawerScreen()),
-            (Route<dynamic> route) => false);
+        (Route<dynamic> route) => false);
   }
 
   void exitScreen(String from) {
-    loginEmail = true;
-    visiblePhoneEmail = true;
 
-    if(from==SharedPreferencesKeys.isDrawer) {
+    if (from == SharedPreferencesKeys.isDrawer) {
       Navigator.of(context).pop();
-    }else{
+    } else {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => SplashScreen()),
-              (Route<dynamic> route) => false);
-
+          (Route<dynamic> route) => false);
     }
   }
 
@@ -234,8 +221,8 @@ void navigateToForgotPasswordScreen() {
   }
 
   void login() {
-    if (formKey.currentState!.validate()) {
+   // if (formKey.currentState!.validate()) {
       doLogin();
-    }
+    //}
   }
 }

@@ -87,14 +87,14 @@ class SignUpController extends GetxController {
   }
 
   void signUp() {
-    if (formKey.currentState!.validate()) {
-      if (agree) {
+   // if (formKey.currentState!.validate()) {
+     // if (agree) {
         //doRequest();
         navigateToOtpScreen();
-      } else {
-        Helper.showSnackBar(context, LocaleKeys.emptyAgreeTerms.tr);
-      }
-    }
+      //} else {
+       // Helper.showSnackBar(context, LocaleKeys.emptyAgreeTerms.tr);
+      //}
+    //}
   }
 
   void navigateToOtpScreen() {

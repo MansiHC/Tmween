@@ -99,21 +99,17 @@ class OtpController extends GetxController {
   }
 
   void navigateToDrawerScreen() {
-
     MySharedPreferences.instance
         .addBoolToSF(SharedPreferencesKeys.isLogin, true);
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => DrawerScreen()),
-            (Route<dynamic> route) => false);
+        (Route<dynamic> route) => false);
   }
 
   void exitScreen() {
     Navigator.of(context).pop(false);
   }
 
-  void navigateToPasswordScreen() {
-    Navigator.of(context).pop(true);
-  }
 
   void notifyClick1(bool click) {
     click1 = click;

@@ -36,13 +36,16 @@ class RecentlyViewedScreen extends StatelessWidget {
                     Container(
                         color: AppColors.appBarColor,
                         child: Container(
-                            decoration: BoxDecoration(color:Colors.white,borderRadius: BorderRadius.circular(2)),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(2)),
                             height: 40,
                             margin: EdgeInsets.only(
                                 bottom: 10, left: 15, right: 15),
                             child: CustomTextFormField(
-                                isDense:true,
-                                controller: recentlyProviderController.searchController,
+                                isDense: true,
+                                controller:
+                                    recentlyProviderController.searchController,
                                 keyboardType: TextInputType.text,
                                 hintText: LocaleKeys.searchProducts.tr,
                                 textInputAction: TextInputAction.search,
@@ -77,12 +80,13 @@ class RecentlyViewedScreen extends StatelessWidget {
                                     .recentlVieweds.length, (index) {
                               return InkWell(
                                   onTap: () {
-                                recentlyProviderController.navigateTo(ProductDetailScreen());
-                              },
-                              child: RecentlyViewedContainer(
-                                recentlyViewed: recentlyProviderController
-                                    .recentlVieweds[index],
-                              ));
+                                    recentlyProviderController
+                                        .navigateTo(ProductDetailScreen());
+                                  },
+                                  child: RecentlyViewedContainer(
+                                    recentlyViewed: recentlyProviderController
+                                        .recentlVieweds[index],
+                                  ));
                             })))
                   ],
                 ),

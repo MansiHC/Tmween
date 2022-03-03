@@ -37,13 +37,16 @@ class BestSellerScreen extends StatelessWidget {
                     Container(
                         color: AppColors.appBarColor,
                         child: Container(
-                            decoration: BoxDecoration(color:Colors.white,borderRadius: BorderRadius.circular(2)),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(2)),
                             height: 40,
                             margin: EdgeInsets.only(
                                 bottom: 10, left: 15, right: 15),
                             child: CustomTextFormField(
-                                isDense:true,
-                                controller: bestSellerController.searchController,
+                                isDense: true,
+                                controller:
+                                    bestSellerController.searchController,
                                 keyboardType: TextInputType.text,
                                 hintText: LocaleKeys.searchProducts.tr,
                                 textInputAction: TextInputAction.search,
@@ -78,12 +81,13 @@ class BestSellerScreen extends StatelessWidget {
                                 (index) {
                               return InkWell(
                                   onTap: () {
-                                bestSellerController.navigateTo(ProductDetailScreen());
-                              },
+                                    bestSellerController
+                                        .navigateTo(ProductDetailScreen());
+                                  },
                                   child: BestSellerContainer(
-                                bestSeller:
-                                    bestSellerController.bestSellers[index],
-                              ));
+                                    bestSeller:
+                                        bestSellerController.bestSellers[index],
+                                  ));
                             })))
                   ],
                 ),

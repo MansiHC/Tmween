@@ -56,8 +56,16 @@ class FilterScreen extends StatelessWidget {
   _showOnly(FilterController filterController) {
     return ExpansionTile(
       trailing: filterController.isShowOnlyExpanded
-          ? SvgPicture.asset(ImageConstanst.minusIcon,height: 16,width: 16,)
-          : SvgPicture.asset(ImageConstanst.plusIcon,height: 16,width: 16,),
+          ? SvgPicture.asset(
+              ImageConstanst.minusIcon,
+              height: 16,
+              width: 16,
+            )
+          : SvgPicture.asset(
+              ImageConstanst.plusIcon,
+              height: 16,
+              width: 16,
+            ),
       onExpansionChanged: (isExapanded) {
         filterController.updateShowOnlyExpanded();
       },
@@ -88,18 +96,20 @@ class FilterScreen extends StatelessWidget {
                               height: 24.0,
                               width: 24.0,
                               child: Theme(
-                                  data: Theme.of(filterController.context).copyWith(
+                                  data: Theme.of(filterController.context)
+                                      .copyWith(
                                     unselectedWidgetColor: Colors.grey,
                                   ),
                                   child: Checkbox(
                                       shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(4)),
-                                      checkColor:Colors.black,
-                                      value:  map["isChecked"],
+                                          borderRadius:
+                                              BorderRadius.circular(4)),
+                                      checkColor: Colors.black,
+                                      value: map["isChecked"],
                                       activeColor: Colors.white,
                                       side: MaterialStateBorderSide.resolveWith(
-                                            (states) =>
-                                            BorderSide(width: 1.5, color: Colors.black),
+                                        (states) => BorderSide(
+                                            width: 1.5, color: Colors.black),
                                       ),
                                       onChanged: (value) {
                                         map["isChecked"] = value;
@@ -156,8 +166,16 @@ class FilterScreen extends StatelessWidget {
   _categories(FilterController filterController) {
     return ExpansionTile(
       trailing: filterController.isCategoryExpanded
-          ? SvgPicture.asset(ImageConstanst.minusIcon,height: 16,width: 16,)
-          : SvgPicture.asset(ImageConstanst.plusIcon,height: 16,width: 16,),
+          ? SvgPicture.asset(
+              ImageConstanst.minusIcon,
+              height: 16,
+              width: 16,
+            )
+          : SvgPicture.asset(
+              ImageConstanst.plusIcon,
+              height: 16,
+              width: 16,
+            ),
       onExpansionChanged: (isExapanded) {
         filterController.updateCategoryExpanded();
       },
@@ -179,8 +197,16 @@ class FilterScreen extends StatelessWidget {
   _brands(FilterController filterController) {
     return ExpansionTile(
       trailing: filterController.isBrandExpanded
-          ? SvgPicture.asset(ImageConstanst.minusIcon,height: 16,width: 16,)
-          : SvgPicture.asset(ImageConstanst.plusIcon,height: 16,width: 16,),
+          ? SvgPicture.asset(
+              ImageConstanst.minusIcon,
+              height: 16,
+              width: 16,
+            )
+          : SvgPicture.asset(
+              ImageConstanst.plusIcon,
+              height: 16,
+              width: 16,
+            ),
       onExpansionChanged: (isExapanded) {
         filterController.updateBrandExpanded();
       },
@@ -202,8 +228,16 @@ class FilterScreen extends StatelessWidget {
   _seller(FilterController filterController) {
     return ExpansionTile(
       trailing: filterController.isSellerExpanded
-          ? SvgPicture.asset(ImageConstanst.minusIcon,height: 16,width: 16,)
-          : SvgPicture.asset(ImageConstanst.plusIcon,height: 16,width: 16,),
+          ? SvgPicture.asset(
+              ImageConstanst.minusIcon,
+              height: 16,
+              width: 16,
+            )
+          : SvgPicture.asset(
+              ImageConstanst.plusIcon,
+              height: 16,
+              width: 16,
+            ),
       onExpansionChanged: (isExapanded) {
         filterController.updateSellerExpanded();
       },
@@ -225,8 +259,16 @@ class FilterScreen extends StatelessWidget {
   _searchByPrice(FilterController filterController) {
     return ExpansionTile(
         trailing: filterController.isPriceExpanded
-            ? SvgPicture.asset(ImageConstanst.minusIcon,height: 16,width: 16,)
-            : SvgPicture.asset(ImageConstanst.plusIcon,height: 16,width: 16,),
+            ? SvgPicture.asset(
+                ImageConstanst.minusIcon,
+                height: 16,
+                width: 16,
+              )
+            : SvgPicture.asset(
+                ImageConstanst.plusIcon,
+                height: 16,
+                width: 16,
+              ),
         onExpansionChanged: (isExapanded) {
           filterController.updatePriceExpanded();
         },
@@ -293,8 +335,16 @@ class FilterScreen extends StatelessWidget {
   _collection(FilterController filterController) {
     return ExpansionTile(
       trailing: filterController.isCollectionExpanded
-          ? SvgPicture.asset(ImageConstanst.minusIcon,height: 16,width: 16,)
-          : SvgPicture.asset(ImageConstanst.plusIcon,height: 16,width: 16,),
+          ? SvgPicture.asset(
+              ImageConstanst.minusIcon,
+              height: 16,
+              width: 16,
+            )
+          : SvgPicture.asset(
+              ImageConstanst.plusIcon,
+              height: 16,
+              width: 16,
+            ),
       onExpansionChanged: (isExapanded) {
         filterController.updateCollectionExpanded();
       },
