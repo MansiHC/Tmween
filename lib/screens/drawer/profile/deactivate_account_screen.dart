@@ -88,8 +88,10 @@ class DeactivateAccountScreen extends StatelessWidget {
                             deactivateAccountController.passwordController,
                         keyboardType: TextInputType.visiblePassword,
                         obscureText: true,
-                        prefixIcon: SvgPicture.asset(ImageConstanst.lockIcon,color: AppColors.primaryColor,),
-
+                        prefixIcon: SvgPicture.asset(
+                          ImageConstanst.lockIcon,
+                          color: AppColors.primaryColor,
+                        ),
                         hintText: LocaleKeys.password,
                         validator: (value) {
                           return null;

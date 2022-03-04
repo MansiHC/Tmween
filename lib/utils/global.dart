@@ -129,6 +129,7 @@ abstract class SharedPreferencesKeys {
   static const String isDarkTheme = 'isDarkTheme';
   static const String homeCountryDetails = 'homeCountry';
   static const isLogin = "isLogin";
+  static const isDashboard = "isDashboard";
   static const isDrawer = "isDrawer";
   static const isSplash = "isSplash";
   static const userId = "userId";

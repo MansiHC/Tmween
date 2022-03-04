@@ -218,7 +218,10 @@ class UpdateProfileScreen extends StatelessWidget {
                 keyboardType: TextInputType.name,
                 hintText: LocaleKeys.name,
                 textInputAction: TextInputAction.done,
-                prefixIcon: SvgPicture.asset(ImageConstanst.userIcon,color: AppColors.primaryColor,),
+                prefixIcon: SvgPicture.asset(
+                  ImageConstanst.userIcon,
+                  color: AppColors.primaryColor,
+                ),
                 validator: (value) {}),
             10.heightBox,
             Text(
@@ -234,7 +237,10 @@ class UpdateProfileScreen extends StatelessWidget {
                 keyboardType: TextInputType.name,
                 hintText: LocaleKeys.lastName,
                 textInputAction: TextInputAction.done,
-                prefixIcon: SvgPicture.asset(ImageConstanst.userIcon,color: AppColors.primaryColor,),
+                prefixIcon: SvgPicture.asset(
+                  ImageConstanst.userIcon,
+                  color: AppColors.primaryColor,
+                ),
                 validator: (value) {}),
             15.heightBox,
             CustomButton(
@@ -256,7 +262,10 @@ class UpdateProfileScreen extends StatelessWidget {
                 keyboardType: TextInputType.phone,
                 hintText: LocaleKeys.mobileNumber,
                 textInputAction: TextInputAction.done,
-                prefixIcon: SvgPicture.asset(ImageConstanst.phoneCallIcon,color: AppColors.primaryColor,),
+                prefixIcon: SvgPicture.asset(
+                  ImageConstanst.phoneCallIcon,
+                  color: AppColors.primaryColor,
+                ),
                 suffixIcon: InkWell(
                     onTap: () {
                       _showOtpVerificationDialog(editAccountController,
@@ -286,7 +295,10 @@ class UpdateProfileScreen extends StatelessWidget {
                 controller: editAccountController.emailController,
                 keyboardType: TextInputType.emailAddress,
                 hintText: LocaleKeys.email,
-                prefixIcon: SvgPicture.asset(ImageConstanst.emailIcon,color: AppColors.primaryColor,),
+                prefixIcon: SvgPicture.asset(
+                  ImageConstanst.emailIcon,
+                  color: AppColors.primaryColor,
+                ),
                 textInputAction: TextInputAction.done,
                 suffixIcon: InkWell(
                     onTap: () {

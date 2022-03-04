@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:tmween/controller/login_controller.dart';
-import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/utils/extensions.dart';
-import 'package:tmween/utils/global.dart';
-import 'package:tmween/utils/views/custom_button.dart';
-import 'package:tmween/utils/views/custom_text_form_field.dart';
 
-class IndividualLoginScreen extends StatelessWidget {
+import '../../../../controller/login_controller.dart';
+import '../../../../lang/locale_keys.g.dart';
+import '../../../../utils/global.dart';
+import '../../../../utils/views/custom_button.dart';
+import '../../../../utils/views/custom_text_form_field.dart';
+
+class StoreOwnerLoginScreen extends StatelessWidget {
   var language;
   final loginController = Get.put(LoginController());
 
@@ -31,34 +31,32 @@ class IndividualLoginScreen extends StatelessWidget {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 25, vertical: 10),
                             child: Form(
-                                key: loginController.formKey,
+                                key: loginController.storeOwnerFormKey,
                                 child: Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     CustomTextFormField(
-                                            controller: loginController
-                                                .phoneEmailController,
-                                            keyboardType: TextInputType.text,
-                                            hintText:
-                                                LocaleKeys.phoneNumberEmail,
-                                            prefixIcon: SvgPicture.asset(ImageConstanst.phoneEmailIcon,
-
-                                              color: AppColors.primaryColor,),
-                                            textInputAction:
-                                                TextInputAction.done,
-                                            onSubmitted: (term) {
-                                              FocusScope.of(context).unfocus();
-                                              loginController.login();
-                                            },
-                                            validator: (value) {
-                                              if (value!.isEmpty) {
-                                                return LocaleKeys
-                                                    .emptyPhoneNumberEmail.tr;
-                                              }
-                                              return null;
-                                            }),
-
+                                        controller: loginController
+                                            .phoneEmailController,
+                                        keyboardType: TextInputType.text,
+                                        hintText: LocaleKeys.phoneNumberEmail,
+                                        prefixIcon: SvgPicture.asset(
+                                          ImageConstanst.phoneEmailIcon,
+                                          color: AppColors.primaryColor,
+                                        ),
+                                        textInputAction: TextInputAction.done,
+                                        onSubmitted: (term) {
+                                          FocusScope.of(context).unfocus();
+                                          loginController.login();
+                                        },
+                                        validator: (value) {
+                                          if (value!.isEmpty) {
+                                            return LocaleKeys
+                                                .emptyPhoneNumberEmail.tr;
+                                          }
+                                          return null;
+                                        }),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -123,9 +121,7 @@ class IndividualLoginScreen extends StatelessWidget {
                                         )
                                       ],
                                     ),
-
-                                            Expanded(child: _loginWithEmail()),
-
+                                    Expanded(child: _loginWithEmail()),
                                   ],
                                 ))))));
           });
@@ -140,7 +136,7 @@ class IndividualLoginScreen extends StatelessWidget {
             text: LocaleKeys.login,
             onPressed: () {
               //loginController.login();
-              loginController.isPasswordScreen =true;
+              loginController.isStorePasswordScreen = true;
               loginController.update();
             }),
         Visibility(visible: loginController.loading, child: 5.heightBox),
@@ -222,6 +218,4 @@ class IndividualLoginScreen extends StatelessWidget {
       ],
     );
   }
-
-
 }

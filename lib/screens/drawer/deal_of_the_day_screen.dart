@@ -53,10 +53,28 @@ class DealsOfTheDayScreen extends StatelessWidget {
                                 onSubmitted: (term) {
                                   FocusScope.of(context).unfocus();
                                 },
-                                prefixIcon: Icon(
-                                  Icons.search,
-                                  color: AppColors.primaryColor,
-                                  size: 32,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 10),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: AppColors.lightGrayColor),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: AppColors.lightGrayColor),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: AppColors.lightGrayColor),
+                                  ),
+                                  isDense: true,
+                                  hintText: LocaleKeys.searchProducts.tr,
+                                  prefixIcon: Icon(
+                                    Icons.search,
+                                    color: AppColors.primaryColor,
+                                    size: 32,
+                                  ),
                                 ),
                                 validator: (value) {
                                   return null;
@@ -64,14 +82,13 @@ class DealsOfTheDayScreen extends StatelessWidget {
                     Container(
                         margin: EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: AppColors.lightGrayColor,
                           borderRadius: BorderRadius.all(Radius.circular(4)),
                         ),
                         padding: EdgeInsets.all(1.5),
                         child: GridView.count(
                             padding: EdgeInsets.zero,
-                            crossAxisSpacing: 15,
-                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 5,
                             crossAxisCount: 2,
                             shrinkWrap: true,
                             childAspectRatio: 0.66,
@@ -85,6 +102,7 @@ class DealsOfTheDayScreen extends StatelessWidget {
                                   },
                                   child: DealsOfTheDayContainer(
                                     deal: dealOfTheDayController.deals[index],
+                                    from: SharedPreferencesKeys.isDashboard,
                                   ));
                             })))
                   ],

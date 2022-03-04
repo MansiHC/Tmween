@@ -9,7 +9,12 @@ import '../../../model/deals_of_the_day_model.dart';
 import '../../../utils/global.dart';
 
 class DealsOfTheDayContainer extends StatelessWidget {
-  DealsOfTheDayContainer({Key? key, required this.deal}) : super(key: key);
+  DealsOfTheDayContainer(
+      {Key? key,
+      required this.deal,
+      this.from = SharedPreferencesKeys.isDrawer})
+      : super(key: key);
+  final String from;
   final DealsOfTheDayModel deal;
   var language;
 
@@ -17,8 +22,18 @@ class DealsOfTheDayContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
     return Container(
+      margin: from == SharedPreferencesKeys.isDashboard
+          ? EdgeInsets.all(4)
+          : EdgeInsets.only(right: 7),
       decoration: BoxDecoration(
           color: Colors.white,
+          boxShadow: from == SharedPreferencesKeys.isDashboard
+              ? [
+                  BoxShadow(
+                      color: Colors.grey[200]!, spreadRadius: 1, blurRadius: 1)
+                ]
+              : [],
+          border: Border.all(color: Color(0xFFE8E8E8)),
           borderRadius: BorderRadius.all(Radius.circular(4))),
       child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: <
           Widget>[

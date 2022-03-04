@@ -110,7 +110,6 @@ class OtpController extends GetxController {
     Navigator.of(context).pop(false);
   }
 
-
   void notifyClick1(bool click) {
     click1 = click;
     update();

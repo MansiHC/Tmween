@@ -7,8 +7,8 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/otp_text_filed.dart';
 
-import '../../../controller/login_controller.dart';
-import '../../../utils/views/custom_button.dart';
+import '../../../../controller/login_controller.dart';
+import '../../../../utils/views/custom_button.dart';
 
 class LoginOtpScreen extends StatelessWidget {
   final String phoneEmail;
@@ -59,29 +59,30 @@ class LoginOtpScreen extends StatelessWidget {
             ),
             5.widthBox,
             GetBuilder<LoginController>(
-            init: LoginController(),
-    builder: (contet) {
-    loginController.context = otpController.context;
-           return  InkWell(
-                onTap: () {
-                  loginController.isPasswordScreen = false;
-                  otpController.exitScreen();
-                },
-                child: Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    Text(
-                      LocaleKeys.change,
-                      style: TextStyle(
-                          fontSize: 16, color: AppColors.primaryColor),
-                    ),
-                    Icon(
-                      Icons.edit,
-                      color: AppColors.primaryColor,
-                      size: 16,
-                    )
-                  ],
-                ));})
+                init: LoginController(),
+                builder: (contet) {
+                  loginController.context = otpController.context;
+                  return InkWell(
+                      onTap: () {
+                        loginController.isPasswordScreen = false;
+                        otpController.exitScreen();
+                      },
+                      child: Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          Text(
+                            LocaleKeys.change,
+                            style: TextStyle(
+                                fontSize: 16, color: AppColors.primaryColor),
+                          ),
+                          Icon(
+                            Icons.edit,
+                            color: AppColors.primaryColor,
+                            size: 16,
+                          )
+                        ],
+                      ));
+                })
           ],
         ),
         10.heightBox,

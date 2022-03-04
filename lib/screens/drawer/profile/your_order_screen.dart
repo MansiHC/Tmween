@@ -43,9 +43,9 @@ class YourOrderScreen extends StatelessWidget {
                 horizontal: 20,
                 vertical: language == 'ar'
                     ? MediaQuery.of(yourOrderController.context).size.height /
-                        3.8
+                        3.9
                     : MediaQuery.of(yourOrderController.context).size.height /
-                        3.6),
+                        3.8),
             child: Container(
                 padding: EdgeInsets.all(15),
                 decoration: BoxDecoration(
@@ -68,6 +68,7 @@ class YourOrderScreen extends StatelessWidget {
                     10.heightBox,
                     CustomButton(
                         text: LocaleKeys.startShopping,
+                        fontSize: 18,
                         onPressed: () {
                           yourOrderController.navigateToDashboardScreen();
                         }),

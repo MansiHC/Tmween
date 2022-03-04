@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/forgot_otp_controller.dart';
-import 'package:tmween/screens/authentication/login/reset_password_screen.dart';
+import 'package:tmween/screens/authentication/login/forgot_password/reset_password_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
-import '../../../utils/views/custom_button.dart';
-import '../../../utils/views/custom_text_form_field.dart';
+import '../../../../utils/views/custom_button.dart';
+import '../../../../utils/views/custom_text_form_field.dart';
 
 class ForgotOtpScreen extends StatelessWidget {
   late String language;
@@ -66,7 +66,10 @@ class ForgotOtpScreen extends StatelessWidget {
             keyboardType: TextInputType.number,
             hintText: 'Enter OTP',
             textInputAction: TextInputAction.done,
-            prefixIcon: SvgPicture.asset(ImageConstanst.otpIcon,color: AppColors.primaryColor,),
+            prefixIcon: SvgPicture.asset(
+              ImageConstanst.otpIcon,
+              color: AppColors.primaryColor,
+            ),
             borderColor: Color(0xFFDDDDDD),
             validator: (value) {}),
         10.heightBox,

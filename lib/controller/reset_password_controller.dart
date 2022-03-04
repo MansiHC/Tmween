@@ -2,7 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/service/api.dart';
+
+import '../screens/authentication/login/login_screen.dart';
 
 class ResetPasswordController extends GetxController {
   late BuildContext context;
@@ -18,8 +21,13 @@ class ResetPasswordController extends GetxController {
     Navigator.of(context).pop(false);
   }
 
-  void navigateToPasswordScreen() {
-    Navigator.of(context).pop(true);
+  void navigateToLoginScreen() {
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+            builder: (context) => LoginScreen(
+                  from: LocaleKeys.forgotPassword,
+                )),
+        (Route<dynamic> route) => false);
   }
 
   void navigateTo(Widget route) {

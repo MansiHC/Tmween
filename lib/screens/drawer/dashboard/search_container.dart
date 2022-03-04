@@ -18,9 +18,13 @@ class SearchContainer extends StatelessWidget {
     language = Get.locale!.languageCode;
     return Container(
       width: 165,
+      margin: EdgeInsets.all(3),
       decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(color: Color(0xFFE8E8E8)),
+          boxShadow: [
+            BoxShadow(color: Colors.grey[200]!, spreadRadius: 1, blurRadius: 1)
+          ],
           borderRadius: BorderRadius.all(Radius.circular(4))),
       child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: <
           Widget>[

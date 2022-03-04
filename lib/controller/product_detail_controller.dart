@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:tmween/controller/review_model.dart';
+import 'package:tmween/model/review_model.dart';
 import 'package:tmween/model/seller_on_tmween_model.dart';
 
 import '../model/address_model.dart';
@@ -167,38 +167,42 @@ class ProductDetailController extends GetxController {
 
   List<RecentlyViewedModel> recentlVieweds = const <RecentlyViewedModel>[
     const RecentlyViewedModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: true,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image:
-        'asset/image/product_detail_page_images/similar_product_img_1.jpg',),   const RecentlyViewedModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: true,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image:
-        'asset/image/product_detail_page_images/similar_product_img_2.jpg',),  const RecentlyViewedModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: false,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image:
-        'asset/image/product_detail_page_images/similar_product_img_1.jpg',),   const RecentlyViewedModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: false,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image:
-        'asset/image/product_detail_page_images/similar_product_img_2.jpg',),  ];
+      title: 'WOW Raw Apple Cider Vinegar 750 ml',
+      fulfilled: true,
+      offer: '35',
+      rating: '4.1',
+      price: '2450',
+      beforePrice: '7000',
+      image: 'asset/image/product_detail_page_images/similar_product_img_1.jpg',
+    ),
+    const RecentlyViewedModel(
+      title: 'WOW Raw Apple Cider Vinegar 750 ml',
+      fulfilled: true,
+      offer: '35',
+      rating: '4.1',
+      price: '2450',
+      beforePrice: '7000',
+      image: 'asset/image/product_detail_page_images/similar_product_img_2.jpg',
+    ),
+    const RecentlyViewedModel(
+      title: 'WOW Raw Apple Cider Vinegar 750 ml',
+      fulfilled: false,
+      offer: '35',
+      rating: '4.1',
+      price: '2450',
+      beforePrice: '7000',
+      image: 'asset/image/product_detail_page_images/similar_product_img_1.jpg',
+    ),
+    const RecentlyViewedModel(
+      title: 'WOW Raw Apple Cider Vinegar 750 ml',
+      fulfilled: false,
+      offer: '35',
+      rating: '4.1',
+      price: '2450',
+      beforePrice: '7000',
+      image: 'asset/image/product_detail_page_images/similar_product_img_2.jpg',
+    ),
+  ];
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));

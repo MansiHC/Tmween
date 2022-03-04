@@ -25,8 +25,7 @@ class DashboardController extends GetxController {
 
   late final List<Widget> imageSliders = imgList
       .map((item) => Container(
-            child:
-                Image.asset(item, fit: BoxFit.fill, width: double.maxFinite),
+            child: Image.asset(item, fit: BoxFit.fill, width: double.maxFinite),
           ))
       .toList();
 
@@ -42,54 +41,52 @@ class DashboardController extends GetxController {
     const SelectCategoryModel(
         title: 'Furniture',
         offer: '50',
-        image:
-            'asset/image/category_home_page_images/category_img_1.jpg'),
+        image: 'asset/image/category_home_page_images/category_img_1.jpg'),
     const SelectCategoryModel(
         title: 'Watches',
         offer: '50',
-        image:'asset/image/category_home_page_images/category_img_2.jpg'),
+        image: 'asset/image/category_home_page_images/category_img_2.jpg'),
     const SelectCategoryModel(
         title: 'Sunglasses',
         offer: '50',
-        image:
-        'asset/image/category_home_page_images/category_img_3.jpg'),
+        image: 'asset/image/category_home_page_images/category_img_3.jpg'),
     const SelectCategoryModel(
         title: 'Electronics',
         offer: '50',
-        image:
-        'asset/image/category_home_page_images/category_img_4.jpg'),    const SelectCategoryModel(
+        image: 'asset/image/category_home_page_images/category_img_4.jpg'),
+    const SelectCategoryModel(
         title: 'Sports, Fitness & Outdoor',
         offer: '50',
-        image:
-        'asset/image/category_home_page_images/category_img_5.jpg'), const SelectCategoryModel(
+        image: 'asset/image/category_home_page_images/category_img_5.jpg'),
+    const SelectCategoryModel(
         title: 'Computers & Gaming',
         offer: '50',
-        image:
-        'asset/image/category_home_page_images/category_img_6.jpg'),   const SelectCategoryModel(
+        image: 'asset/image/category_home_page_images/category_img_6.jpg'),
+    const SelectCategoryModel(
         title: 'Belts',
         offer: '50',
-        image:
-        'asset/image/category_home_page_images/category_img_7.jpg'),const SelectCategoryModel(
+        image: 'asset/image/category_home_page_images/category_img_7.jpg'),
+    const SelectCategoryModel(
         title: 'Wallets & Clutches',
         offer: '50',
-        image:
-        'asset/image/category_home_page_images/category_img_8.jpg'),const SelectCategoryModel(
+        image: 'asset/image/category_home_page_images/category_img_8.jpg'),
+    const SelectCategoryModel(
         title: 'Jewelry',
         offer: '50',
-        image:
-        'asset/image/category_home_page_images/category_img_9.jpg'),const SelectCategoryModel(
+        image: 'asset/image/category_home_page_images/category_img_9.jpg'),
+    const SelectCategoryModel(
         title: 'Beauty',
         offer: '50',
-        image:
-        'asset/image/category_home_page_images/category_img_10.jpg'),const SelectCategoryModel(
+        image: 'asset/image/category_home_page_images/category_img_10.jpg'),
+    const SelectCategoryModel(
         title: 'Outdoor',
         offer: '50',
-        image:
-        'asset/image/category_home_page_images/category_img_11.jpg'),const SelectCategoryModel(
+        image: 'asset/image/category_home_page_images/category_img_11.jpg'),
+    const SelectCategoryModel(
         title: 'Daily Needs',
         offer: '50',
-        image:
-        'asset/image/category_home_page_images/category_img_12.jpg'),];
+        image: 'asset/image/category_home_page_images/category_img_12.jpg'),
+  ];
 
   List<DealsOfTheDayModel> deals = const <DealsOfTheDayModel>[
     const DealsOfTheDayModel(
@@ -99,32 +96,32 @@ class DashboardController extends GetxController {
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-        'asset/image/deals_of_the_day_home/deals_img.jpg'),   const DealsOfTheDayModel(
+        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
+    const DealsOfTheDayModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: false,
         offer: '35',
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-        'asset/image/deals_of_the_day_home/deals_img.jpg'),     const DealsOfTheDayModel(
+        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
+    const DealsOfTheDayModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: false,
         offer: '35',
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-        'asset/image/deals_of_the_day_home/deals_img.jpg'),     const DealsOfTheDayModel(
+        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
+    const DealsOfTheDayModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: true,
         offer: '35',
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-        'asset/image/deals_of_the_day_home/deals_img.jpg'),    ];
+        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
+  ];
   List<BestSellerModel> bestSellers = const <BestSellerModel>[
     const BestSellerModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
@@ -133,8 +130,7 @@ class DashboardController extends GetxController {
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-           'asset/image/deals_of_the_day_home/deals_img.jpg'),  
+        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
     const BestSellerModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: false,
@@ -142,8 +138,7 @@ class DashboardController extends GetxController {
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-           'asset/image/deals_of_the_day_home/deals_img.jpg'),  
+        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
     const BestSellerModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: false,
@@ -151,8 +146,7 @@ class DashboardController extends GetxController {
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-           'asset/image/deals_of_the_day_home/deals_img.jpg'),  
+        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
     const BestSellerModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: true,
@@ -160,8 +154,7 @@ class DashboardController extends GetxController {
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-           'asset/image/deals_of_the_day_home/deals_img.jpg'),  
+        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
   ];
   List<SoldByTmweenModel> soldByTmweens = const <SoldByTmweenModel>[
     const SoldByTmweenModel(
@@ -171,8 +164,7 @@ class DashboardController extends GetxController {
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-           'asset/image/deals_of_the_day_home/deals_img.jpg'),  
+        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
     const SoldByTmweenModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: false,
@@ -180,8 +172,7 @@ class DashboardController extends GetxController {
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-           'asset/image/deals_of_the_day_home/deals_img.jpg'),  
+        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
     const SoldByTmweenModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: false,
@@ -189,8 +180,7 @@ class DashboardController extends GetxController {
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-           'asset/image/deals_of_the_day_home/deals_img.jpg'),  
+        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
     const SoldByTmweenModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: true,
@@ -198,8 +188,7 @@ class DashboardController extends GetxController {
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-           'asset/image/deals_of_the_day_home/deals_img.jpg'),  
+        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
   ];
   List<TopSelectionModel> topSelections = const <TopSelectionModel>[
     const TopSelectionModel(
@@ -209,8 +198,7 @@ class DashboardController extends GetxController {
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-           'asset/image/deals_of_the_day_home/deals_img.jpg'),  
+        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
     const TopSelectionModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: true,
@@ -218,8 +206,7 @@ class DashboardController extends GetxController {
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-           'asset/image/deals_of_the_day_home/deals_img.jpg'),  
+        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
     const TopSelectionModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: false,
@@ -227,8 +214,7 @@ class DashboardController extends GetxController {
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-           'asset/image/deals_of_the_day_home/deals_img.jpg'),  
+        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
     const TopSelectionModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: true,
@@ -236,8 +222,7 @@ class DashboardController extends GetxController {
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-           'asset/image/deals_of_the_day_home/deals_img.jpg'),  
+        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
   ];
   List<RecentlyViewedModel> recentlVieweds = const <RecentlyViewedModel>[
     const RecentlyViewedModel(
@@ -247,8 +232,7 @@ class DashboardController extends GetxController {
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-           'asset/image/deals_of_the_day_home/deals_img.jpg'),  
+        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
     const RecentlyViewedModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: true,
@@ -256,8 +240,7 @@ class DashboardController extends GetxController {
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-           'asset/image/deals_of_the_day_home/deals_img.jpg'),  
+        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
     const RecentlyViewedModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: false,
@@ -265,8 +248,7 @@ class DashboardController extends GetxController {
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-           'asset/image/deals_of_the_day_home/deals_img.jpg'),  
+        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
     const RecentlyViewedModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: false,
@@ -274,8 +256,7 @@ class DashboardController extends GetxController {
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-           'asset/image/deals_of_the_day_home/deals_img.jpg'),  
+        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
   ];
 
   void navigateTo(Widget route) {

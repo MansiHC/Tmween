@@ -50,7 +50,8 @@ class DashboardScreen extends StatelessWidget {
                   height: 200,
                   width: MediaQuery.of(context).size.width,
                   child: Image.asset(
-          'asset/image/home_page_banner_images/home_banner_1.jpg',   fit: BoxFit.fill,
+                    'asset/image/home_page_banner_images/home_banner_1.jpg',
+                    fit: BoxFit.fill,
                   )),
               _bestSeller(dashboardController),
               _soldByTmween(dashboardController),
@@ -58,14 +59,16 @@ class DashboardScreen extends StatelessWidget {
                   height: 200,
                   width: MediaQuery.of(context).size.width,
                   child: Image.asset(
-                    'asset/image/home_page_banner_images/home_banner_2.jpg', fit: BoxFit.fill,
+                    'asset/image/home_page_banner_images/home_banner_2.jpg',
+                    fit: BoxFit.fill,
                   )),
               _topSelection(dashboardController),
               SizedBox(
                   height: 200,
                   width: MediaQuery.of(context).size.width,
                   child: Image.asset(
-                    'asset/image/home_page_banner_images/home_banner_3.jpg',    fit: BoxFit.fill,
+                    'asset/image/home_page_banner_images/home_banner_3.jpg',
+                    fit: BoxFit.fill,
                   )),
               _recentlyViewed(dashboardController),
               10.heightBox,
@@ -88,6 +91,7 @@ class DashboardScreen extends StatelessWidget {
           carouselController: dashboardController.controller,
           options: CarouselOptions(
               autoPlay: true,
+              enableInfiniteScroll: false,
               enlargeCenterPage: false,
               viewportFraction: 1,
               aspectRatio: 1.6,

@@ -20,7 +20,7 @@ const Map<String, String> en_US = {
   "chooseLocation": "Choose your location",
   "chooseLocationText":
       "Select a delivery location to see product availability and delivery options",
-  "addAddressText": "Add an address or\npick-up point",
+  "addAddressText": "Add an address",
   "defaultAddress": "Default address",
   "login": "Login",
   "or": "or",

@@ -22,6 +22,7 @@ class CustomTextFormField extends StatelessWidget {
   final ValueChanged<String>? onSubmitted;
   final ValueChanged<String>? onChanged;
   final GestureTapCallback? onTap;
+  final InputDecoration? decoration;
 
   CustomTextFormField(
       {required this.controller,
@@ -35,6 +36,7 @@ class CustomTextFormField extends StatelessWidget {
       this.obscureText,
       this.isDense,
       this.onTap,
+      this.decoration,
       this.inputFormatters,
       required this.validator,
       this.textInputAction,
@@ -62,25 +64,28 @@ class CustomTextFormField extends StatelessWidget {
         fontSize: 16,
         color: Colors.black,
       ),
-      decoration: InputDecoration(
-          isDense: isDense ?? false,
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: AppColors.darkblue),
-          ),
-          fillColor: Colors.grey,
-          errorMaxLines: 2,
-          hintText: hintText.tr,
-          hintStyle: TextStyle(
-            color: Colors.grey,
-            fontSize: 16,
-          ),
-          labelStyle: TextStyle(
-            color: Colors.grey,
-            fontSize: 16,
-          ),
-          suffixIcon: suffixIcon,
-          prefixIconConstraints: BoxConstraints.loose(Size.square(36)),
-          prefixIcon: Padding(padding:EdgeInsets.symmetric(horizontal: 10),child:prefixIcon)),
+      decoration: decoration ??
+          InputDecoration(
+              isDense: isDense ?? false,
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: AppColors.darkblue),
+              ),
+              fillColor: Colors.grey,
+              errorMaxLines: 2,
+              hintText: hintText.tr,
+              hintStyle: TextStyle(
+                color: Colors.grey,
+                fontSize: 16,
+              ),
+              labelStyle: TextStyle(
+                color: Colors.grey,
+                fontSize: 16,
+              ),
+              suffixIcon: suffixIcon,
+              prefixIconConstraints: BoxConstraints.loose(Size.square(36)),
+              prefixIcon: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: prefixIcon)),
     );
   }
 }
@@ -168,7 +173,9 @@ class CustomBoxTextFormField extends StatelessWidget {
           ),
           prefixIconConstraints: BoxConstraints.loose(Size.square(36)),
           suffixIcon: suffixIcon,
-          prefixIcon: Padding(padding:EdgeInsets.symmetric(horizontal: 10),child:prefixIcon)),
+          prefixIcon: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: prefixIcon)),
     );
   }
 }

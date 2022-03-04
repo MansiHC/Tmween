@@ -17,48 +17,48 @@ class WishlistController extends GetxController {
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-        'asset/image/wish_lists_images/wishlist_img_1.jpg'),   const SoldByTmweenModel(
+        image: 'asset/image/wish_lists_images/wishlist_img_1.jpg'),
+    const SoldByTmweenModel(
         title: 'New Apple iPhone 12 (64GB)-Black',
         fulfilled: false,
         offer: '35',
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-        'asset/image/wish_lists_images/wishlist_img_2.jpg'),   const SoldByTmweenModel(
+        image: 'asset/image/wish_lists_images/wishlist_img_2.jpg'),
+    const SoldByTmweenModel(
         title: 'Lenovo V15 Intel Core i5 11th Gen 15.6 inches',
         fulfilled: false,
         offer: '35',
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-        'asset/image/wish_lists_images/wishlist_img_3.jpg'), const SoldByTmweenModel(
+        image: 'asset/image/wish_lists_images/wishlist_img_3.jpg'),
+    const SoldByTmweenModel(
         title: 'EDICT by Boat DynaBeats EWH01 Wireless Bluetooth',
         fulfilled: true,
         offer: '35',
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-        'asset/image/wish_lists_images/wishlist_img_4.jpg'),const SoldByTmweenModel(
+        image: 'asset/image/wish_lists_images/wishlist_img_4.jpg'),
+    const SoldByTmweenModel(
         title: 'D-Link DSL-2750U Wireless-N 300 ADSL2/2+ 4-Port Router',
         fulfilled: true,
         offer: '35',
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-        'asset/image/wish_lists_images/wishlist_img_5.jpg'),const SoldByTmweenModel(
+        image: 'asset/image/wish_lists_images/wishlist_img_5.jpg'),
+    const SoldByTmweenModel(
         title: 'Lenovo Casual Laptop Briefcase T210 (Toploader) 39.62 cm...',
         fulfilled: true,
         offer: '35',
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-        'asset/image/wish_lists_images/wishlist_img_6.jpg'), ];
+        image: 'asset/image/wish_lists_images/wishlist_img_6.jpg'),
+  ];
 
   void exitScreen() {
     Navigator.of(context).pop();

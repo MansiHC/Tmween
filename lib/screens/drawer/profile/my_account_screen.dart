@@ -262,6 +262,17 @@ class MyAccountScreen extends StatelessWidget {
           ),
         ),
         CustomListTile(
+            title: LocaleKeys.customerService,
+            onTap: () {},
+            leadingIcon: ImageConstanst.customerServiceIcon),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 15),
+          child: Divider(
+            thickness: 1,
+            color: Colors.grey[300]!,
+          ),
+        ),
+        CustomListTile(
             title: LocaleKeys.logout,
             onTap: () {
               _logout(myAccountController);
@@ -274,6 +285,7 @@ class MyAccountScreen extends StatelessWidget {
             color: Colors.grey[300]!,
           ),
         ),
+        50.heightBox
       ],
     )));
   }

@@ -17,8 +17,7 @@ class BestSellerController extends GetxController {
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-        'asset/image/deals_of_the_day_home/deals_img.jpg'),
+        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
     const BestSellerModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: false,
@@ -26,8 +25,7 @@ class BestSellerController extends GetxController {
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-        'asset/image/deals_of_the_day_home/deals_img.jpg'),
+        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
     const BestSellerModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: false,
@@ -35,8 +33,7 @@ class BestSellerController extends GetxController {
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-        'asset/image/deals_of_the_day_home/deals_img.jpg'),
+        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
     const BestSellerModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: true,
@@ -44,8 +41,7 @@ class BestSellerController extends GetxController {
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-        'asset/image/deals_of_the_day_home/deals_img.jpg'),
+        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
   ];
 
   void navigateTo(Widget route) {

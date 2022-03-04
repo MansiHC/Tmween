@@ -6,11 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/otp_controller.dart';
+import 'package:tmween/screens/authentication/login/store_owner/store_owner_otp_screen.dart';
 import 'package:tmween/screens/splash_screen.dart';
 
 import '../lang/locale_keys.g.dart';
-import '../screens/authentication/login/forgot_password_screen.dart';
-import '../screens/authentication/login/login_otp_screen.dart';
+import '../screens/authentication/login/forgot_password/forgot_password_screen.dart';
+import '../screens/authentication/login/individual/login_otp_screen.dart';
 import '../screens/authentication/signup/signup_screen.dart';
 import '../screens/drawer/drawer_screen.dart';
 import '../service/api.dart';
@@ -23,15 +24,18 @@ class LoginController extends GetxController {
   late Map<String, dynamic> deviceData;
   var isSplash;
   final formKey = GlobalKey<FormState>();
+  final storeOwnerFormKey = GlobalKey<FormState>();
   late BuildContext context;
   bool rememberMe = false;
   bool isPasswordScreen = false;
+  bool isStorePasswordScreen = false;
   bool changeEmail = false;
   bool visiblePassword = false;
   TextEditingController phoneEmailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   late List<Tab> tabList;
   late TabController tabController;
+  int currentTabIndex = 1;
 
   @override
   void onInit() {
@@ -42,7 +46,6 @@ class LoginController extends GetxController {
     tabList.add(new Tab(
       text: LocaleKeys.storeOwner.tr,
     ));
-
 
     MySharedPreferences.instance
         .getBoolValuesSF(SharedPreferencesKeys.isSplash)
@@ -166,14 +169,20 @@ class LoginController extends GetxController {
   }
 
   doLoginWithPassword() {
-  //  if (formKey.currentState!.validate()) {
-      navigateToDrawerScreen();
+    //  if (formKey.currentState!.validate()) {
+    navigateToDrawerScreen();
     //}
   }
 
   void navigateToSignupScreen() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => SignUpScreen()));
+        context,
+        MaterialPageRoute(
+            builder: (context) => SignUpScreen(
+                  from: currentTabIndex == 0
+                      ? LocaleKeys.individual
+                      : LocaleKeys.storeOwner,
+                )));
   }
 
   void navigateToForgotPasswordScreen() {
@@ -185,10 +194,20 @@ class LoginController extends GetxController {
     Get.delete<OtpController>();
 
     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => LoginOtpScreen(
-                    phoneEmail: phoneEmailController.text.toString())));
+        context,
+        MaterialPageRoute(
+            builder: (context) => LoginOtpScreen(
+                phoneEmail: phoneEmailController.text.toString())));
+  }
+
+  void navigateToStoreOwnerOTPScreen() {
+    Get.delete<OtpController>();
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => StoreOwnerOtpScreen(
+                phoneEmail: phoneEmailController.text.toString())));
   }
 
   void navigateToDrawerScreen() {
@@ -205,7 +224,6 @@ class LoginController extends GetxController {
   }
 
   void exitScreen(String from) {
-
     if (from == SharedPreferencesKeys.isDrawer) {
       Navigator.of(context).pop();
     } else {
@@ -221,8 +239,8 @@ class LoginController extends GetxController {
   }
 
   void login() {
-   // if (formKey.currentState!.validate()) {
-      doLogin();
+    // if (formKey.currentState!.validate()) {
+    doLogin();
     //}
   }
 }

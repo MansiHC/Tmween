@@ -114,7 +114,10 @@ class AddAddressScreen extends StatelessWidget {
                             controller: addressController.fullNameController,
                             keyboardType: TextInputType.name,
                             hintText: '',
-                            prefixIcon: SvgPicture.asset(ImageConstanst.userIcon,color: AppColors.primaryColor,),
+                            prefixIcon: SvgPicture.asset(
+                              ImageConstanst.userIcon,
+                              color: AppColors.primaryColor,
+                            ),
                             validator: (value) {}),
                         10.heightBox,
                         Text(
@@ -130,7 +133,10 @@ class AddAddressScreen extends StatelessWidget {
                                 addressController.mobileNumberController,
                             keyboardType: TextInputType.phone,
                             hintText: '',
-                            prefixIcon: SvgPicture.asset(ImageConstanst.phoneCallIcon,color: AppColors.primaryColor,),
+                            prefixIcon: SvgPicture.asset(
+                              ImageConstanst.phoneCallIcon,
+                              color: AppColors.primaryColor,
+                            ),
                             validator: (value) {}),
                         10.heightBox,
                         Text(
@@ -145,7 +151,10 @@ class AddAddressScreen extends StatelessWidget {
                             controller: addressController.pincodeController,
                             keyboardType: TextInputType.number,
                             hintText: '',
-                            prefixIcon: SvgPicture.asset(ImageConstanst.worldIcon,color: AppColors.primaryColor,),
+                            prefixIcon: SvgPicture.asset(
+                              ImageConstanst.worldIcon,
+                              color: AppColors.primaryColor,
+                            ),
                             validator: (value) {}),
                         10.heightBox,
                         Text(
@@ -160,7 +169,10 @@ class AddAddressScreen extends StatelessWidget {
                             controller: addressController.houseNoController,
                             keyboardType: TextInputType.text,
                             hintText: '',
-                            prefixIcon: SvgPicture.asset(ImageConstanst.homeIcon,color: AppColors.primaryColor,),
+                            prefixIcon: SvgPicture.asset(
+                              ImageConstanst.homeIcon,
+                              color: AppColors.primaryColor,
+                            ),
                             validator: (value) {}),
                         10.heightBox,
                         Text(
@@ -175,7 +187,10 @@ class AddAddressScreen extends StatelessWidget {
                             controller: addressController.areaStreetController,
                             keyboardType: TextInputType.text,
                             hintText: '',
-                            prefixIcon: SvgPicture.asset(ImageConstanst.homeIcon,color: AppColors.primaryColor,),
+                            prefixIcon: SvgPicture.asset(
+                              ImageConstanst.homeIcon,
+                              color: AppColors.primaryColor,
+                            ),
                             validator: (value) {}),
                         10.heightBox,
                         Text(
@@ -190,7 +205,10 @@ class AddAddressScreen extends StatelessWidget {
                             controller: addressController.landmarkController,
                             keyboardType: TextInputType.text,
                             hintText: '',
-                            prefixIcon: SvgPicture.asset(ImageConstanst.pinIcon,color: AppColors.primaryColor,),
+                            prefixIcon: SvgPicture.asset(
+                              ImageConstanst.pinIcon,
+                              color: AppColors.primaryColor,
+                            ),
                             validator: (value) {}),
                         10.heightBox,
                         Text(
@@ -205,7 +223,10 @@ class AddAddressScreen extends StatelessWidget {
                             controller: addressController.townCityController,
                             keyboardType: TextInputType.text,
                             hintText: '',
-                            prefixIcon: SvgPicture.asset(ImageConstanst.townHallIcon,color: AppColors.primaryColor,),
+                            prefixIcon: SvgPicture.asset(
+                              ImageConstanst.townHallIcon,
+                              color: AppColors.primaryColor,
+                            ),
                             validator: (value) {}),
                         10.heightBox,
                         Text(

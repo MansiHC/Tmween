@@ -17,7 +17,7 @@ class MyAccountController extends GetxController {
 
   @override
   void onInit() {
-    MySharedPreferences.instance
+    /*MySharedPreferences.instance
         .getIntValuesSF(SharedPreferencesKeys.userId)
         .then((value) async {
       userId = value!;
@@ -26,7 +26,7 @@ class MyAccountController extends GetxController {
           .then((value) async {
         loginLogId = value!;
       });
-    });
+    });*/
     super.onInit();
   }
 

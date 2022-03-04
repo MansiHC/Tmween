@@ -5,9 +5,9 @@ import 'package:get/get.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
-import '../../../controller/reset_password_controller.dart';
-import '../../../utils/views/custom_button.dart';
-import '../../../utils/views/custom_text_form_field.dart';
+import '../../../../controller/reset_password_controller.dart';
+import '../../../../utils/views/custom_button.dart';
+import '../../../../utils/views/custom_text_form_field.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   late String language;
@@ -59,14 +59,21 @@ class ResetPasswordScreen extends StatelessWidget {
             obscureText: true,
             hintText: 'Enter new password',
             textInputAction: TextInputAction.done,
-            prefixIcon: SvgPicture.asset(ImageConstanst.lockIcon,color: AppColors.primaryColor,),
+            prefixIcon: SvgPicture.asset(
+              ImageConstanst.lockIcon,
+              color: AppColors.primaryColor,
+            ),
             borderColor: Color(0xFFDDDDDD),
             validator: (value) {}),
         5.heightBox,
         Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            SvgPicture.asset(ImageConstanst.iIcon,height: 13,width: 13,),
+            SvgPicture.asset(
+              ImageConstanst.iIcon,
+              height: 13,
+              width: 13,
+            ),
             2.widthBox,
             Text(
               "Passwords must be at least 8 Characters.",
@@ -84,11 +91,19 @@ class ResetPasswordScreen extends StatelessWidget {
             obscureText: true,
             hintText: 'Re-enter new password',
             textInputAction: TextInputAction.done,
-            prefixIcon: SvgPicture.asset(ImageConstanst.lock2Icon,color: AppColors.primaryColor,),
+            prefixIcon: SvgPicture.asset(
+              ImageConstanst.lock2Icon,
+              color: AppColors.primaryColor,
+            ),
             borderColor: Color(0xFFDDDDDD),
             validator: (value) {}),
         10.heightBox,
-        CustomButton(text: 'Continue', fontSize: 16, onPressed: () {}),
+        CustomButton(
+            text: 'Continue',
+            fontSize: 16,
+            onPressed: () {
+              resetPasswordController.navigateToLoginScreen();
+            }),
         30.heightBox,
         Text(
           'Secure password tips:',
@@ -112,7 +127,10 @@ class ResetPasswordScreen extends StatelessWidget {
             Expanded(
                 child: Text(
                     'Use at least 8 characters, a combination of numbers and letters is best.',
-                    style: TextStyle(fontSize: 13,fontWeight: FontWeight.bold, color: Color(0xFF0727272))))
+                    style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF0727272))))
           ],
         ),
         5.heightBox,
@@ -130,7 +148,10 @@ class ResetPasswordScreen extends StatelessWidget {
             Expanded(
                 child: Text(
                     'Do not use the same password you have used with us previously.',
-                    style: TextStyle(fontSize: 13,fontWeight: FontWeight.bold, color: Color(0xFF0727272))))
+                    style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF0727272))))
           ],
         ),
         5.heightBox,
@@ -148,7 +169,10 @@ class ResetPasswordScreen extends StatelessWidget {
             Expanded(
                 child: Text(
                     'Do not use dictionary words, your name, e-mail address, mobile phone number or other personal information that can be easily obtained.',
-                    style: TextStyle(fontSize: 13,fontWeight: FontWeight.bold, color: Color(0xFF0727272))))
+                    style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF0727272))))
           ],
         ),
         5.heightBox,
@@ -166,7 +190,10 @@ class ResetPasswordScreen extends StatelessWidget {
             Expanded(
                 child: Text(
                     'Do not use the same password for multiple online accounts.',
-                    style: TextStyle(fontSize: 13,fontWeight: FontWeight.bold, color: Color(0xFF0727272))))
+                    style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF0727272))))
           ],
         ),
       ],

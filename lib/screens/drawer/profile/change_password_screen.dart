@@ -79,7 +79,10 @@ class ChangePasswordScreen extends StatelessWidget {
                         keyboardType: TextInputType.visiblePassword,
                         obscureText: true,
                         hintText: LocaleKeys.newPassword,
-                        prefixIcon: SvgPicture.asset(ImageConstanst.lockIcon,color: AppColors.primaryColor,),
+                        prefixIcon: SvgPicture.asset(
+                          ImageConstanst.lockIcon,
+                          color: AppColors.primaryColor,
+                        ),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return LocaleKeys.emptyNewPassword.tr;
@@ -100,8 +103,10 @@ class ChangePasswordScreen extends StatelessWidget {
                             changePasswordController.retypePasswordController,
                         keyboardType: TextInputType.visiblePassword,
                         obscureText: true,
-                        prefixIcon: SvgPicture.asset(ImageConstanst.lock2Icon,color: AppColors.primaryColor,),
-
+                        prefixIcon: SvgPicture.asset(
+                          ImageConstanst.lock2Icon,
+                          color: AppColors.primaryColor,
+                        ),
                         hintText: LocaleKeys.retypePassword,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -129,7 +134,10 @@ class ChangePasswordScreen extends StatelessWidget {
                     CustomTextFormField(
                         controller: changePasswordController.otpController,
                         keyboardType: TextInputType.number,
-                        prefixIcon: SvgPicture.asset(ImageConstanst.otpIcon,color: AppColors.primaryColor,),
+                        prefixIcon: SvgPicture.asset(
+                          ImageConstanst.otpIcon,
+                          color: AppColors.primaryColor,
+                        ),
                         hintText: LocaleKeys.otp,
                         textInputAction: TextInputAction.done,
                         suffixIcon: InkWell(

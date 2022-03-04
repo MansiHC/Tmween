@@ -56,7 +56,7 @@ const Map<String, String> es_ES = {
   "chooseLocation": "Elija su ubicación",
   "chooseLocationText":
       "Seleccione una ubicación de entrega para ver la disponibilidad del producto y las opciones de entrega",
-  "addAddressText": "Agregar una dirección o\npunto de recogida",
+  "addAddressText": "Añadir una dirección",
   "defaultAddress": "Dirección predeterminada",
   "english": "English",
   "arabian": "عربي",

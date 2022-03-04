@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
-import 'package:tmween/screens/authentication/login/forgot_otp_screen.dart';
+import 'package:tmween/screens/authentication/login/forgot_password/forgot_otp_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
-import '../../../controller/forgot_password_controller.dart';
-import '../../../utils/views/custom_button.dart';
-import '../../../utils/views/custom_text_form_field.dart';
+import '../../../../controller/forgot_password_controller.dart';
+import '../../../../utils/views/custom_button.dart';
+import '../../../../utils/views/custom_text_form_field.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   late String language;
@@ -60,7 +60,10 @@ class ForgotPasswordScreen extends StatelessWidget {
             keyboardType: TextInputType.text,
             hintText: LocaleKeys.phoneNumberEmail,
             textInputAction: TextInputAction.done,
-            prefixIcon: SvgPicture.asset(ImageConstanst.phoneEmailIcon,color: AppColors.primaryColor,),
+            prefixIcon: SvgPicture.asset(
+              ImageConstanst.phoneEmailIcon,
+              color: AppColors.primaryColor,
+            ),
             borderColor: Color(0xFFDDDDDD),
             suffixIcon: IconButton(
                 onPressed: () {
@@ -94,18 +97,23 @@ class ForgotPasswordScreen extends StatelessWidget {
             text: TextSpan(
                 text:
                     'If you no longer use the e-mail address associated with your Tmween account, you may contact ',
-                style: TextStyle(fontSize: 13,fontWeight: FontWeight.bold, color: Color(0xFF0727272)),
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF0727272)),
                 children: <InlineSpan>[
                   TextSpan(
                       text: '${LocaleKeys.customerService.tr} ',
                       style: TextStyle(
-                        fontSize: 13,fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
                         color: Color(0xFF61ABD1),
                       )),
                   TextSpan(
                     text: 'for help restoring access to your account.',
                     style: TextStyle(
-                      fontSize: 13,fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
                       color: Color(0xFF0727272),
                     ),
                   )

@@ -39,8 +39,10 @@ class IndividualSignUpScreen extends StatelessWidget {
                                           signUpController.firstNameController,
                                       keyboardType: TextInputType.name,
                                       hintText: LocaleKeys.firstName,
-                                      prefixIcon: SvgPicture.asset(ImageConstanst.userIcon,color: AppColors.primaryColor,),
-
+                                      prefixIcon: SvgPicture.asset(
+                                        ImageConstanst.userIcon,
+                                        color: AppColors.primaryColor,
+                                      ),
                                       validator: (value) {
                                         if (value!.isEmpty) {
                                           return LocaleKeys.emptyFirstName.tr;
@@ -53,8 +55,10 @@ class IndividualSignUpScreen extends StatelessWidget {
                                             signUpController.lastNameController,
                                         keyboardType: TextInputType.name,
                                         hintText: LocaleKeys.lastName,
-                                        prefixIcon: SvgPicture.asset(ImageConstanst.userIcon,color: AppColors.primaryColor,),
-
+                                        prefixIcon: SvgPicture.asset(
+                                          ImageConstanst.userIcon,
+                                          color: AppColors.primaryColor,
+                                        ),
                                         validator: (value) {
                                           if (value!.isEmpty) {
                                             return LocaleKeys.emptyLastName.tr;
@@ -66,8 +70,10 @@ class IndividualSignUpScreen extends StatelessWidget {
                                             signUpController.emailController,
                                         keyboardType:
                                             TextInputType.emailAddress,
-                                        prefixIcon: SvgPicture.asset(ImageConstanst.emailIcon,color: AppColors.primaryColor,),
-
+                                        prefixIcon: SvgPicture.asset(
+                                          ImageConstanst.emailIcon,
+                                          color: AppColors.primaryColor,
+                                        ),
                                         hintText: LocaleKeys.yourEmail,
                                         inputFormatters: [
                                           FilteringTextInputFormatter.deny(
@@ -90,8 +96,10 @@ class IndividualSignUpScreen extends StatelessWidget {
                                             TextInputType.visiblePassword,
                                         obscureText:
                                             signUpController.visiblePassword,
-                                        prefixIcon: SvgPicture.asset(ImageConstanst.lockIcon,color: AppColors.primaryColor,),
-
+                                        prefixIcon: SvgPicture.asset(
+                                          ImageConstanst.lockIcon,
+                                          color: AppColors.primaryColor,
+                                        ),
                                         suffixIcon: IconButton(
                                             icon: Icon(
                                               signUpController.visiblePassword
@@ -129,8 +137,10 @@ class IndividualSignUpScreen extends StatelessWidget {
                                             TextInputType.visiblePassword,
                                         obscureText: signUpController
                                             .visibleConfirmPassword,
-                                        prefixIcon: SvgPicture.asset(ImageConstanst.lock2Icon,color: AppColors.primaryColor,),
-
+                                        prefixIcon: SvgPicture.asset(
+                                          ImageConstanst.lock2Icon,
+                                          color: AppColors.primaryColor,
+                                        ),
                                         suffixIcon: IconButton(
                                             icon: Icon(
                                               signUpController
@@ -166,8 +176,10 @@ class IndividualSignUpScreen extends StatelessWidget {
                                             signUpController.phoneController,
                                         keyboardType: TextInputType.phone,
                                         hintText: LocaleKeys.phoneNumber,
-                                        prefixIcon: SvgPicture.asset(ImageConstanst.phoneCallIcon,color: AppColors.primaryColor,),
-
+                                        prefixIcon: SvgPicture.asset(
+                                          ImageConstanst.phoneCallIcon,
+                                          color: AppColors.primaryColor,
+                                        ),
                                         inputFormatters: [
                                           LengthLimitingTextInputFormatter(10),
                                           FilteringTextInputFormatter.digitsOnly

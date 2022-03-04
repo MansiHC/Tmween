@@ -233,8 +233,8 @@ class SearchScreen extends StatelessWidget {
             itemCount: searchController.recentlVieweds.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                mainAxisSpacing: 5,
-                crossAxisSpacing: 5,
+                mainAxisSpacing: 2,
+                crossAxisSpacing: 2,
                 childAspectRatio: 0.66),
             itemBuilder: (ctx, i) {
               return InkWell(
@@ -304,14 +304,19 @@ class SearchScreen extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF585858)),
                         ),
-                        Text(
-                          LocaleKeys.clear.tr,
-                          style: TextStyle(
-                              fontSize: 12.5,
-                              decoration: TextDecoration.underline,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF585858)),
-                        ),
+                        InkWell(
+                            onTap: () {
+                              // searchController.historyList.clear();
+                              // searchController.update();
+                            },
+                            child: Text(
+                              LocaleKeys.clear.tr,
+                              style: TextStyle(
+                                  fontSize: 12.5,
+                                  decoration: TextDecoration.underline,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF585858)),
+                            )),
                       ],
                     ),
                     10.heightBox,
@@ -358,7 +363,7 @@ class SearchScreen extends StatelessWidget {
                     Wrap(
                       spacing: 10,
                       children: <Widget>[
-                        for (var item in searchController.historyList)
+                        for (var item in searchController.popularSearchList)
                           InkWell(
                               onTap: () {
                                 searchController.searchController.text = item;
@@ -459,20 +464,24 @@ class SearchScreen extends StatelessWidget {
                   10.heightBox,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [Text(
-                    LocaleKeys.bestMatch.tr,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                  ), CustomButton(
-                        width: 80,
-                        horizontalPadding:5 ,
-                        text: LocaleKeys.apply.tr,
-                        fontSize: 14,
-                        onPressed: () {
-                          searchController.popp();
-                        })],),
+                    children: [
+                      Text(
+                        LocaleKeys.bestMatch.tr,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      CustomButton(
+                          width: 80,
+                          horizontalPadding: 5,
+                          text: LocaleKeys.apply.tr,
+                          fontSize: 14,
+                          onPressed: () {
+                            searchController.popp();
+                          })
+                    ],
+                  ),
                   10.heightBox,
                   RadioListTile(
                     contentPadding: EdgeInsets.zero,

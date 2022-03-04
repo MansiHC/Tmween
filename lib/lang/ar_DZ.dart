@@ -53,7 +53,7 @@ const Map<String, String> ar_DZ = {
   "chooseLocation": "اختر موقعك",
   "chooseLocationText":
       "حدد موقع التسليم لمعرفة مدى توفر المنتج وخيارات التسليم",
-  "addAddressText": "أضف عنوانًا أو\nنقطة الالتقاط",
+  "addAddressText": "أضف عنوانا",
   "defaultAddress": "العنوان الافتراضي",
   "loginWithPassword": "تسجيل الدخول بكلمة مرور",
   "change": "يتغير",

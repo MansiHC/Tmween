@@ -145,13 +145,16 @@ class ProductDetailScreen extends StatelessWidget {
                             ],
                           ))),
                   Padding(
-                      padding: EdgeInsets.only(top: 50, right: 40, left: 40),
+                      padding: EdgeInsets.only(
+                        top: 50,
+                      ),
                       child: Align(
                           alignment: Alignment.topCenter,
                           child: Stack(
                             children: [
                               Container(
                                   height: 200,
+                                  width: double.maxFinite,
                                   child: InkWell(
                                       onTap: () {
                                         productDetailController.navigateTo(
@@ -169,6 +172,7 @@ class ProductDetailScreen extends StatelessWidget {
                                         options: CarouselOptions(
                                           autoPlay: false,
                                           enlargeCenterPage: false,
+                                          enableInfiniteScroll: false,
                                           viewportFraction: 1,
                                           aspectRatio: 1.6,
                                           pageSnapping: true,
@@ -194,7 +198,7 @@ class ProductDetailScreen extends StatelessWidget {
                                             .animateToPage(entry.key),
                                         child: Container(
                                           width: 8.0,
-                                          height: 1.0,
+                                          height: 2,
                                           margin: EdgeInsets.symmetric(
                                               vertical: 8.0, horizontal: 4.0),
                                           decoration: BoxDecoration(
@@ -203,7 +207,7 @@ class ProductDetailScreen extends StatelessWidget {
                                                           .current ==
                                                       entry.key
                                                   ? AppColors.darkblue
-                                                  : Colors.white),
+                                                  : Colors.grey),
                                         ),
                                       );
                                     }).toList(),
@@ -685,7 +689,7 @@ class ProductDetailScreen extends StatelessWidget {
       decoration: BoxDecoration(color: Colors.white, boxShadow: [
         BoxShadow(color: Colors.grey[200]!, blurRadius: 5, spreadRadius: 5)
       ]),
-      padding: EdgeInsets.symmetric(vertical: 10),
+      padding: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1266,7 +1270,7 @@ class ProductDetailScreen extends StatelessWidget {
                     ),
                   ])
                 ])*/
-                Row(
+            Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
@@ -1280,20 +1284,21 @@ class ProductDetailScreen extends StatelessWidget {
                           width: 35,
                         ),
                         5.heightBox,
-                        Text(
-                          'WARRANTY',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              height: 2,
-                              color: Color(0xFF333333),
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold),
-                        ),
+                        SizedBox(
+                            height: 34,
+                            child: Text(
+                              'WARRANTY',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color(0xFF333333),
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold),
+                            )),
                         Text(
                           "As per Weswox's",
                           textAlign: TextAlign.center,
                           style:
-                              TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
+                          TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
                         ),
                       ],
                     )),
@@ -1314,19 +1319,21 @@ class ProductDetailScreen extends StatelessWidget {
                           width: 35,
                         ),
                         5.heightBox,
-                        Text(
-                          '100% ORIGINAL',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Color(0xFF333333),
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold),
-                        ),
+                        SizedBox(
+                            height: 34,
+                            child: Text(
+                              '100% ORIGINAL',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color(0xFF333333),
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold),
+                            )),
                         Text(
                           "Products",
                           textAlign: TextAlign.center,
                           style:
-                              TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
+                          TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
                         ),
                       ],
                     )),
@@ -1347,20 +1354,21 @@ class ProductDetailScreen extends StatelessWidget {
                           width: 35,
                         ),
                         5.heightBox,
-                        Text(
-                          'SECURE',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              height: 2,
-                              color: Color(0xFF333333),
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold),
-                        ),
+                        SizedBox(
+                            height: 34,
+                            child: Text(
+                              'SECURE',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color(0xFF333333),
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold),
+                            )),
                         Text(
                           "PAYMENTS",
                           textAlign: TextAlign.center,
                           style:
-                              TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
+                          TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
                         ),
                       ],
                     )),
@@ -1380,20 +1388,21 @@ class ProductDetailScreen extends StatelessWidget {
                           width: 35,
                         ),
                         5.heightBox,
-                        Text(
-                          '100% BUYER',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              height: 2,
-                              color: Color(0xFF333333),
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold),
-                        ),
+                        SizedBox(
+                            height: 34,
+                            child: Text(
+                              '100% BUYER',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color(0xFF333333),
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold),
+                            )),
                         Text(
                           "PROTECTION",
                           textAlign: TextAlign.center,
                           style:
-                              TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
+                          TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
                         ),
                       ],
                     )),

@@ -43,17 +43,16 @@ class WishlistScreen extends StatelessWidget {
                         color: Colors.white,
                         child: Container(
                             margin: EdgeInsets.only(
-                                top: 20, bottom: 10, right: 10, left: 10),
+                                top: 15, bottom: 10, right: 10, left: 10),
                             decoration: BoxDecoration(
-                              color: Color(0xFFF9F9F9),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(4)),
                             ),
                             padding: EdgeInsets.all(1.5),
                             child: GridView.count(
                                 padding: EdgeInsets.zero,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10,
+                                crossAxisSpacing: 5,
+                                mainAxisSpacing: 5,
                                 crossAxisCount: 2,
                                 shrinkWrap: true,
                                 childAspectRatio: 0.66,

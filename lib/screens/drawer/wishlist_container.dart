@@ -18,8 +18,12 @@ class WishlistContainer extends StatelessWidget {
     language = Get.locale!.languageCode;
     return Container(
       width: 165,
+      margin: EdgeInsets.all(4),
       decoration: BoxDecoration(
           color: Colors.white,
+          boxShadow: [
+            BoxShadow(color: Colors.grey[200]!, spreadRadius: 1, blurRadius: 1)
+          ],
           border: Border.all(color: Color(0xFFE8E8E8)),
           borderRadius: BorderRadius.all(Radius.circular(4))),
       child: Column(

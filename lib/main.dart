@@ -1,6 +1,7 @@
 import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
@@ -38,15 +39,17 @@ void main() async {
             .getBoolValuesSF(SharedPreferencesKeys.isDrawer)
             .then((value) async {
           isDrawer = value ?? false;
-
-          runApp(
-            MyApp(
-              isLogin: isLogin,
-              isSplash: isSplash,
-              isDrawer: isDrawer,
-              language: language,
-            ),
-          );
+          SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+              .then((_) {
+            runApp(
+              MyApp(
+                isLogin: isLogin,
+                isSplash: isSplash,
+                isDrawer: isDrawer,
+                language: language,
+              ),
+            );
+          });
         });
       });
     });

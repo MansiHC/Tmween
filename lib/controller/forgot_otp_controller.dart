@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:tmween/controller/login_controller.dart';
 import 'package:tmween/service/api.dart';
 
 class ForgotOtpController extends GetxController {
@@ -22,6 +23,8 @@ class ForgotOtpController extends GetxController {
   }
 
   void navigateTo(Widget route) {
+    Get.delete<LoginController>();
+
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
   }
 }

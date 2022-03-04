@@ -6,7 +6,7 @@ import 'package:tmween/screens/authentication/signup/otp_screen.dart';
 import 'package:tmween/service/api.dart';
 import 'package:tmween/utils/helper.dart';
 
-class SignUpController extends GetxController {
+class StoreOwnerSignUpController extends GetxController {
   bool agree = false;
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();

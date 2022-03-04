@@ -9,8 +9,12 @@ import 'package:tmween/utils/extensions.dart';
 import '../../../utils/global.dart';
 
 class SoldByTmweenContainer extends StatelessWidget {
-  SoldByTmweenContainer({Key? key, required this.soldByTmween})
+  SoldByTmweenContainer(
+      {Key? key,
+      required this.soldByTmween,
+      this.from = SharedPreferencesKeys.isDrawer})
       : super(key: key);
+  final String from;
   final SoldByTmweenModel soldByTmween;
   var language;
 
@@ -19,9 +23,18 @@ class SoldByTmweenContainer extends StatelessWidget {
     language = Get.locale!.languageCode;
     return Container(
       width: 165,
-      margin: EdgeInsets.only(right: 7),
+      margin: from == SharedPreferencesKeys.isDashboard
+          ? EdgeInsets.all(4)
+          : EdgeInsets.only(right: 7),
       decoration: BoxDecoration(
           color: Colors.white,
+          boxShadow: from == SharedPreferencesKeys.isDashboard
+              ? [
+                  BoxShadow(
+                      color: Colors.grey[200]!, spreadRadius: 1, blurRadius: 1)
+                ]
+              : [],
+          border: Border.all(color: Color(0xFFE8E8E8)),
           borderRadius: BorderRadius.all(Radius.circular(4))),
       child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: <
           Widget>[

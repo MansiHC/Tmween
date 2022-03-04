@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 
-import '../utils/global.dart';
-import '../utils/my_shared_preferences.dart';
-
 class FundWalletController extends GetxController {
   late BuildContext context;
 
@@ -26,7 +23,7 @@ class FundWalletController extends GetxController {
 
   @override
   void onInit() {
-    MySharedPreferences.instance
+    /* MySharedPreferences.instance
         .getIntValuesSF(SharedPreferencesKeys.userId)
         .then((value) async {
       userId = value!;
@@ -35,7 +32,7 @@ class FundWalletController extends GetxController {
           .then((value) async {
         loginLogId = value!;
       });
-    });
+    });*/
     super.onInit();
   }
 

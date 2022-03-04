@@ -45,7 +45,16 @@ class SearchController extends GetxController {
     'Outdoor',
     'Sport,Fitness and Outdoor',
     'Jewelry',
-    'COmputer and Gaming',
+    'Computer and Gaming',
+  ];
+  final List<String> popularSearchList = [
+    'Watches',
+    'Sunglasses',
+    'Furniture',
+    'Outdoor',
+    'Sport,Fitness and Outdoor',
+    'Jewelry',
+    'Computer and Gaming',
   ];
 
   List<RecentlyViewedModel> recentlVieweds = const <RecentlyViewedModel>[
@@ -56,32 +65,32 @@ class SearchController extends GetxController {
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-        'asset/image/category_home_page_images/category_img_1.jpg'),  const RecentlyViewedModel(
+        image: 'asset/image/category_home_page_images/category_img_1.jpg'),
+    const RecentlyViewedModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: true,
         offer: '35',
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-        'asset/image/category_home_page_images/category_img_1.jpg'),  const RecentlyViewedModel(
+        image: 'asset/image/category_home_page_images/category_img_1.jpg'),
+    const RecentlyViewedModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: false,
         offer: '35',
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-        'asset/image/category_home_page_images/category_img_1.jpg'), const RecentlyViewedModel(
+        image: 'asset/image/category_home_page_images/category_img_1.jpg'),
+    const RecentlyViewedModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: false,
         offer: '35',
         rating: '4.1',
         price: '2450',
         beforePrice: '7000',
-        image:
-        'asset/image/category_home_page_images/category_img_1.jpg'), ];
+        image: 'asset/image/category_home_page_images/category_img_1.jpg'),
+  ];
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));

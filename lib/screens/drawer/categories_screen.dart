@@ -60,10 +60,28 @@ class CategoriesScreen extends StatelessWidget {
                                     onSubmitted: (term) {
                                       FocusScope.of(context).unfocus();
                                     },
-                                    prefixIcon: Icon(
-                                      Icons.search,
-                                      color: AppColors.primaryColor,
-                                      size: 32,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 10),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: AppColors.lightGrayColor),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: AppColors.lightGrayColor),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: AppColors.lightGrayColor),
+                                      ),
+                                      isDense: true,
+                                      hintText: LocaleKeys.searchProducts.tr,
+                                      prefixIcon: Icon(
+                                        Icons.search,
+                                        color: AppColors.primaryColor,
+                                        size: 32,
+                                      ),
                                     ),
                                     validator: (value) {
                                       return null;

@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
-import 'package:tmween/screens/authentication/login/store_owner_login_screen.dart';
+import 'package:tmween/screens/authentication/login/store_owner/store_owner_login_password_screen.dart';
+import 'package:tmween/screens/authentication/login/store_owner/store_owner_login_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
 import '../../../controller/login_controller.dart';
-import 'individual_login_password_screen.dart';
-import 'individual_login_screen.dart';
+import 'individual/individual_login_password_screen.dart';
+import 'individual/individual_login_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   final String from;
@@ -25,7 +26,6 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen>
     with TickerProviderStateMixin {
-
   /*late AnimationController controller;
   late Animation<Offset> offset;
 */
@@ -34,8 +34,8 @@ class _LoginScreenState extends State<LoginScreen>
 
   @override
   void initState() {
-    loginController.tabController =
-        new TabController(vsync: this, length: loginController.tabList.length);
+    loginController.tabController = TabController(
+        vsync: this, length: loginController.tabList.length, initialIndex: 1);
 
     super.initState();
   }
@@ -68,37 +68,41 @@ class _LoginScreenState extends State<LoginScreen>
                                           MediaQuery.of(context).size.height /
                                               2.4),
                                   child: topView(loginController)),
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border(
-                                      bottom: BorderSide(
-                                          color: AppColors.primaryColor,
-                                          width: 0.8)),
-                                ),
+                              ColoredBox(
+                                color: Color.fromRGBO(195, 208, 225, 1),
                                 child: TabBar(
+                                    onTap: (index) {
+                                      loginController.currentTabIndex = index;
+                                    },
                                     controller: loginController.tabController,
-                                    indicatorColor: AppColors.primaryColor,
+                                    indicator: BoxDecoration(
+                                        color: AppColors.primaryColor),
                                     indicatorSize: TabBarIndicatorSize.tab,
                                     labelStyle: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold),
-                                    labelColor: AppColors.primaryColor,
+                                    labelColor: Colors.white,
                                     unselectedLabelColor: Colors.black,
                                     tabs: loginController.tabList),
                               ),
+                              /* GetBuilder<StoreOwnerController>(
+          init: StoreOwnerController(),
+          builder: (contet) {
+          storeOwnerController.context = context;
+          return*/
                               Expanded(
                                 child: TabBarView(
                                   controller: loginController.tabController,
                                   children: [
-                                    loginController.isPasswordScreen?
-                                    IndividualLoginPasswordScreen()
-                                        :
-                                IndividualLoginScreen(),
-                                    StoreOwnerLoginScreen()
+                                    loginController.isPasswordScreen
+                                        ? IndividualLoginPasswordScreen()
+                                        : IndividualLoginScreen(),
+                                    loginController.isStorePasswordScreen
+                                        ? StoreOwnerLoginPasswordScreen()
+                                        : StoreOwnerLoginScreen()
                                   ],
                                 ),
-                              )
+                              ) //;})
                             ],
                           )))));
         });

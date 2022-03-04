@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
@@ -52,7 +51,6 @@ class FundWalletScreen extends StatelessWidget {
                         controller: fundWalletController.amountController,
                         keyboardType: TextInputType.number,
                         hintText: 'Amount',
-
                         validator: (value) {}),
                     10.heightBox,
                     InkWell(

@@ -7,37 +7,26 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/otp_text_filed.dart';
 
-class OtpScreen extends StatelessWidget {
-  final String phone;
-  final String? name;
-  final String? email;
-  final String? password;
-  final String? agreeTerms;
-  final String? langCode;
-  final String? deviceType;
+import '../../../../controller/login_controller.dart';
+import '../../../../utils/views/custom_button.dart';
 
-  OtpScreen(
-      {Key? key,
-      this.name,
-      this.email,
-      this.password,
-      this.agreeTerms,
-      this.langCode,
-      this.deviceType,
-      required this.phone})
-      : super(key: key);
+class StoreOwnerOtpScreen extends StatelessWidget {
+  final String phoneEmail;
+
+  StoreOwnerOtpScreen({Key? key, required this.phoneEmail}) : super(key: key);
 
   late String language;
   final otpController = Get.put(OtpController());
+  final loginController = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
+    language = Get.locale!.languageCode;
     return GetBuilder<OtpController>(
         init: OtpController(),
         builder: (contet) {
           otpController.context = context;
-          language = Get.locale!.languageCode;
-          otpController.phone = phone;
+          otpController.phone = phoneEmail;
           return Scaffold(
               body: SingleChildScrollView(
                   child: Column(
@@ -65,34 +54,40 @@ class OtpScreen extends StatelessWidget {
         Row(
           children: [
             Text(
-              '${LocaleKeys.inText.tr} ${phone}',
+              '${LocaleKeys.inText.tr} ${phoneEmail}',
               style: TextStyle(fontSize: 14, color: Colors.black),
             ),
             5.widthBox,
-            InkWell(
-                onTap: () {
-                  otpController.exitScreen();
-                },
-                child: Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    Text(
-                      LocaleKeys.change,
-                      style: TextStyle(
-                          fontSize: 16, color: AppColors.primaryColor),
-                    ),
-                    Icon(
-                      Icons.edit,
-                      color: AppColors.primaryColor,
-                      size: 16,
-                    )
-                  ],
-                ))
+            GetBuilder<LoginController>(
+                init: LoginController(),
+                builder: (contet) {
+                  loginController.context = otpController.context;
+                  return InkWell(
+                      onTap: () {
+                        loginController.isStorePasswordScreen = false;
+                        otpController.exitScreen();
+                      },
+                      child: Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          Text(
+                            LocaleKeys.change,
+                            style: TextStyle(
+                                fontSize: 16, color: AppColors.primaryColor),
+                          ),
+                          Icon(
+                            Icons.edit,
+                            color: AppColors.primaryColor,
+                            size: 16,
+                          )
+                        ],
+                      ));
+                })
           ],
         ),
         10.heightBox,
         Text(
-          LocaleKeys.sentOTP.tr,
+          LocaleKeys.sentOTPEmail.tr,
           style: TextStyle(fontSize: 14, color: Colors.black),
         ),
         10.heightBox,
@@ -161,8 +156,7 @@ class OtpScreen extends StatelessWidget {
                 onChanged: (value) {
                   if (value.length == 1) {
                     FocusScope.of(otpController.context).nextFocus();
-                    otpController.verifyOTP(name!, email!, phone, password!,
-                        deviceType!, langCode!, agreeTerms!);
+                    otpController.verifyLoginOTP();
                   }
                   if (value.length == 0) {
                     FocusScope.of(otpController.context).previousFocus();
@@ -198,6 +192,43 @@ class OtpScreen extends StatelessWidget {
               LocaleKeys.resendCode.tr,
               style: TextStyle(fontSize: 16, color: AppColors.primaryColor),
             )),
+        10.heightBox,
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            30.widthBox,
+            Expanded(
+                child: Padding(
+                    padding: EdgeInsets.only(top: 5),
+                    child: Divider(
+                      thickness: 1,
+                      color: Colors.black12,
+                    ))),
+            10.widthBox,
+            Text(
+              LocaleKeys.or.tr,
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey,
+              ),
+            ),
+            10.widthBox,
+            Expanded(
+                child: Padding(
+                    padding: EdgeInsets.only(top: 5),
+                    child: Divider(
+                      thickness: 1,
+                      color: Colors.black12,
+                    ))),
+            30.widthBox
+          ],
+        ),
+        10.heightBox,
+        CustomButton(
+            text: LocaleKeys.loginWithPassword.tr,
+            onPressed: () {
+              otpController.exitScreen();
+            })
       ],
     );
   }

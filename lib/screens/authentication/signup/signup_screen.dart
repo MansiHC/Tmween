@@ -10,6 +10,10 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
 class SignUpScreen extends StatefulWidget {
+  final String from;
+
+  SignUpScreen({Key? key, this.from = LocaleKeys.storeOwner}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return _SignUpScreenState();
@@ -24,8 +28,10 @@ class _SignUpScreenState extends State<SignUpScreen>
 
   @override
   void initState() {
-    _tabController =
-        new TabController(vsync: this, length: signUpController.tabList.length);
+    _tabController = new TabController(
+        vsync: this,
+        length: signUpController.tabList.length,
+        initialIndex: widget.from == LocaleKeys.individual ? 0 : 1);
     super.initState();
   }
 
@@ -63,22 +69,17 @@ class _SignUpScreenState extends State<SignUpScreen>
                                                   .height /
                                               3.5)),
                                   child: topView(signUpController)),
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border(
-                                      bottom: BorderSide(
-                                          color: AppColors.primaryColor,
-                                          width: 0.8)),
-                                ),
+                              ColoredBox(
+                                color: Color.fromRGBO(195, 208, 225, 1),
                                 child: TabBar(
                                     controller: _tabController,
-                                    indicatorColor: AppColors.primaryColor,
+                                    indicator: BoxDecoration(
+                                        color: AppColors.primaryColor),
                                     indicatorSize: TabBarIndicatorSize.tab,
                                     labelStyle: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold),
-                                    labelColor: AppColors.primaryColor,
+                                    labelColor: Colors.white,
                                     unselectedLabelColor: Colors.black,
                                     tabs: signUpController.tabList),
                               ),
