@@ -9,10 +9,12 @@ class OtpTextFormField extends StatelessWidget {
   final GestureTapCallback onTap;
   final ValueChanged<String>? onChanged;
   final TextEditingController controller;
+  final ValueChanged<String>? onSubmitted;
 
   OtpTextFormField(
       {required this.clicked,
       required this.onTap,
+        this.onSubmitted,
       required this.onChanged,
       required this.controller});
 
@@ -26,16 +28,24 @@ class OtpTextFormField extends StatelessWidget {
         autofocus: true,
         onChanged: onChanged,
         showCursor: false,
+
         readOnly: false,
+        onSubmitted: onSubmitted,
+        textInputAction: TextInputAction.next,
         textAlign: TextAlign.center,
         style: TextStyle(
             fontSize: 24, color: clicked ? Colors.white : Colors.black),
         keyboardType: TextInputType.number,
         onTap: onTap,
         maxLength: 1,
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(1),
+          FilteringTextInputFormatter.digitsOnly
+        ],
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 10),
           counter: Offstage(),
+
           fillColor:
               clicked ? AppColors.primaryColor : AppColors.lightGrayColor,
           filled: true,

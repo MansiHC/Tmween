@@ -286,12 +286,11 @@ class FilterScreen extends StatelessWidget {
                 trackShape: RectangularSliderTrackShape(),
                 trackHeight: 4.0,
                 thumbShape: CustomRectangleSliderThumbShape(
-                    thumbRadius: 40.0, max: 10, min: 0, thumbHeight: 50),
+                    thumbRadius: 20.0, max: 10, min: 0, thumbHeight: 50),
               ),
               child: RangeSlider(
                 values: filterController.currentRangeValues,
-                max: 100,
-                divisions: 5,
+                max: 700,
                 labels: RangeLabels(
                   filterController.currentRangeValues.start.round().toString(),
                   filterController.currentRangeValues.end.round().toString(),
@@ -307,11 +306,11 @@ class FilterScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '${LocaleKeys.fromSar.tr} 0',
+                    '${LocaleKeys.fromSar.tr} ${filterController.currentRangeValues.start.round()}',
                     style: TextStyle(color: Color(0xFF4B4B4B), fontSize: 14),
                   ),
                   Text(
-                    '${LocaleKeys.toSar.tr} 700',
+                    '${LocaleKeys.toSar.tr} ${filterController.currentRangeValues.end.round()}',
                     style: TextStyle(color: Color(0xFF4B4B4B), fontSize: 14),
                   ),
                 ],

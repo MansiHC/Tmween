@@ -13,6 +13,9 @@ import 'package:tmween/utils/views/custom_text_form_field.dart';
 class StoreOwnerLoginPasswordScreen extends StatelessWidget {
   var language;
   final loginController = Get.put(LoginController());
+  final String from;
+
+  StoreOwnerLoginPasswordScreen({Key? key, required this.from,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +36,15 @@ class StoreOwnerLoginPasswordScreen extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 25, vertical: 10),
                                 child: Form(
-                                    key: loginController.formKey,
+                                    key: loginController.storeOwnerFormKey2,
                                     child: Column(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.start,
                                       children: [
                                         Row(
                                           children: [
                                             Text(
-                                              '${LocaleKeys.inText.tr} ${loginController.phoneEmailController.text}',
+                                              '${LocaleKeys.inText.tr} ${loginController.storePhoneEmailController.text}',
                                               style: TextStyle(
                                                   fontSize: 14,
                                                   color: Colors.black),
@@ -82,30 +85,35 @@ class StoreOwnerLoginPasswordScreen extends StatelessWidget {
                                               color: AppColors.primaryColor,
                                             ),
                                             controller: loginController
-                                                .passwordController,
+                                                .storePasswordController,
                                             keyboardType:
                                                 TextInputType.visiblePassword,
+                                            textInputAction: TextInputAction.done,
                                             obscureText:
-                                                loginController.visiblePassword,
+                                                loginController.storeVisiblePassword,
                                             suffixIcon: IconButton(
                                                 icon: Icon(
                                                   loginController
-                                                          .visiblePassword
+                                                          .storeVisiblePassword
                                                       ? Icons.visibility_off
                                                       : Icons.visibility,
                                                   color: Colors.grey,
                                                 ),
                                                 onPressed: () {
                                                   loginController
-                                                      .visiblePasswordIcon();
+                                                      .visibleStorePasswordIcon();
                                                 }),
                                             hintText: LocaleKeys.yourPassword,
+                                            onSubmitted: (term) {
+                                              FocusScope.of(context).unfocus();
+                                              loginController.doLoginWithPassword();
+                                            },
                                             validator: (value) {
                                               if (value!.isEmpty) {
                                                 return LocaleKeys
                                                     .emptyPassword.tr;
                                               } else if (loginController
-                                                      .passwordController
+                                                      .storePasswordController
                                                       .value
                                                       .text
                                                       .length <
@@ -113,7 +121,7 @@ class StoreOwnerLoginPasswordScreen extends StatelessWidget {
                                                 return LocaleKeys
                                                     .validPasswordLength.tr;
                                               } else if (!loginController
-                                                  .passwordController.value.text
+                                                  .storePasswordController.value.text
                                                   .validatePassword()) {
                                                 return LocaleKeys
                                                     .validPassword.tr;
@@ -129,7 +137,7 @@ class StoreOwnerLoginPasswordScreen extends StatelessWidget {
                                                   padding: EdgeInsets.zero,
                                                 ),
                                                 onPressed: () => loginController
-                                                    .notifyCheckBox(),
+                                                    .notifyStoreCheckBox(),
                                                 child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.start,
@@ -149,11 +157,11 @@ class StoreOwnerLoginPasswordScreen extends StatelessWidget {
                                                                       AppColors
                                                                           .primaryColor,
                                                                   value: loginController
-                                                                      .rememberMe,
+                                                                      .storeRememberMe,
                                                                   onChanged:
                                                                       (value) {
                                                                     loginController
-                                                                        .notifyCheckBox();
+                                                                        .notifyStoreCheckBox();
                                                                   }))),
                                                       10.widthBox,
                                                       Text(
@@ -165,7 +173,12 @@ class StoreOwnerLoginPasswordScreen extends StatelessWidget {
                                                       )
                                                     ])),
                                             Expanded(
-                                              child: Text(
+                                              child: InkWell(
+                                                onTap: () {
+                                                  loginController
+                                                      .navigateToForgotPasswordScreen(AppConstants.store,from);
+                                                },
+                                                child:Text(
                                                   LocaleKeys.forgotPassword.tr,
                                                   textAlign: language == 'ar'
                                                       ? TextAlign.left
@@ -175,7 +188,7 @@ class StoreOwnerLoginPasswordScreen extends StatelessWidget {
                                                       color: AppColors
                                                           .primaryColor,
                                                       fontWeight:
-                                                          FontWeight.bold)),
+                                                          FontWeight.bold))),
                                             )
                                           ],
                                         ),
@@ -195,16 +208,16 @@ class StoreOwnerLoginPasswordScreen extends StatelessWidget {
             onPressed: () {
               loginController.doLoginWithPassword();
             }),
-        Visibility(visible: loginController.loading, child: 5.heightBox),
+        Visibility(visible: loginController.storeLoading, child: 5.heightBox),
         Visibility(
-          visible: loginController.loading,
+          visible: loginController.storeLoading,
           child: Align(
               alignment: Alignment.topCenter,
               child: CircularProgressIndicator(
                 backgroundColor: AppColors.primaryColor,
               )),
         ),
-        Visibility(visible: loginController.loading, child: 5.heightBox),
+        Visibility(visible: loginController.storeLoading, child: 5.heightBox),
         10.heightBox,
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,

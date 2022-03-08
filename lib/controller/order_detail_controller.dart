@@ -1,34 +1,46 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 
-class MyWalletController extends GetxController {
+import '../model/order_model.dart';
+
+class OrderDetailController extends GetxController {
   late BuildContext context;
+  double currentRating = 3;
 
   int userId = 0;
   int loginLogId = 0;
-  TextEditingController amountController = TextEditingController();
+  bool noOrders = true;
+  TextEditingController searchController = TextEditingController();
+  List<OrderModel> orders = const <OrderModel>[
+    const OrderModel(
+                title: 'Book name - author name details of book',
+      image:'asset/image/my_cart_images/book.png',
+          deliveryStatus: 'Delivered Today',
+      rating: 0,
+      ratingStatus: 'Rate this product now',
+      isRating: true
+    ), const OrderModel(
+                title: 'Book name - author name details of book',
+      image:'asset/image/my_cart_images/book.png',
+          deliveryStatus: 'Delivered Today',
+      rating: 3,
+      ratingStatus: 'Write Review',
+      isRating: true
+    ),const OrderModel(
+                title: 'Book name - author name details of book',
+      image:'asset/image/my_cart_images/book.png',
+          deliveryStatus: 'Refund Completed',
+      isRating: false
+    ),
 
-
-  final formKey = GlobalKey<FormState>();
-
-  List<String> walletActivitys = const <String>[
-    'December 2021',
-    'November 2021',
-    'October 2021'
-  ];
-
-  final List<String> amounts = [
-    '200',
-    '500',
-    '1000',
-    '2000',
   ];
 
   @override
   void onInit() {
-    /* MySharedPreferences.instance
+    /*MySharedPreferences.instance
         .getIntValuesSF(SharedPreferencesKeys.userId)
         .then((value) async {
       userId = value!;
@@ -42,6 +54,7 @@ class MyWalletController extends GetxController {
   }
 
   void exitScreen() {
+
     Navigator.of(context).pop();
   }
 

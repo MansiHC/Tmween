@@ -15,6 +15,12 @@ class ForgotPasswordScreen extends StatelessWidget {
   late String language;
   final forgotPasswordController = Get.put(ForgotPasswordController());
 
+  final String from;
+  final String frm;
+
+  ForgotPasswordScreen({Key? key, required this.from,required this.frm}) : super(key: key);
+
+
   @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
@@ -47,13 +53,33 @@ class ForgotPasswordScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         5.heightBox,
-        Text(
-          'Enter the email address or mobile phone number associated with your Tmween account.',
+
+        RichText(text: TextSpan(text:'Enter the ',
           style: TextStyle(
-              fontSize: 13,
+              fontSize: 14,
               color: Color(0xFF0727272),
               fontWeight: FontWeight.bold),
-        ),
+          children: [
+            TextSpan(text:'EMAIL ADDRESS '  ,  style: TextStyle(
+            fontSize: 14,
+            color: Colors.black,
+            fontWeight: FontWeight.bold),),
+            TextSpan(text:'or '  ,  style: TextStyle(
+            fontSize: 14,
+            color: Color(0xFF0727272),
+            fontWeight: FontWeight.bold),),
+            TextSpan(text:'MOBILE PHONE NUMBER '  ,  style: TextStyle(
+            fontSize: 14,
+            color: Colors.black,
+            fontWeight: FontWeight.bold),),
+
+            TextSpan(text:'associated with your Tmween account.'  ,  style: TextStyle(
+                fontSize: 14,
+                color: Color(0xFF0727272),
+                fontWeight: FontWeight.bold),),
+          ]
+        )),
+
         10.heightBox,
         CustomBoxTextFormField(
             controller: forgotPasswordController.emailMobileController,
@@ -64,6 +90,10 @@ class ForgotPasswordScreen extends StatelessWidget {
               ImageConstanst.phoneEmailIcon,
               color: AppColors.primaryColor,
             ),
+            onSubmitted: (term){
+              FocusScope.of(forgotPasswordController.context).unfocus();
+              forgotPasswordController.navigateTo(ForgotOtpScreen(frm:frm));
+            },
             borderColor: Color(0xFFDDDDDD),
             suffixIcon: IconButton(
                 onPressed: () {
@@ -81,7 +111,7 @@ class ForgotPasswordScreen extends StatelessWidget {
             text: 'Continue',
             fontSize: 16,
             onPressed: () {
-              forgotPasswordController.navigateTo(ForgotOtpScreen());
+              forgotPasswordController.navigateTo(ForgotOtpScreen(frm: frm,));
             }),
         20.heightBox,
         Text(
@@ -136,7 +166,8 @@ class ForgotPasswordScreen extends StatelessWidget {
                     color: Colors.white, // Button color
                     child: InkWell(
                       onTap: () {
-                        forgotPasswordController.exitScreen();
+                        Get.delete<ForgotPasswordController>();
+                        forgotPasswordController.navigateToLoginScreen(from,frm);
                       },
                       child: SizedBox(
                           width: 24,

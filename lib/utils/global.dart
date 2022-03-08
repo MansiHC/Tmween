@@ -31,6 +31,10 @@ abstract class AppConstants {
       "FbuaPNITXrR16tRwXBAJGexrgUKtXMsKMp52CfVxnBzn9L2CUMqEOIaYgbBbrf5LrdCg8wzbDLtn14MW";
   static const success = "Success";
   static String fontFamily = 'OpenSans';
+  static String productDetail = 'productDetail';
+  static String forgotPassword = 'forgotPassword';
+  static String individual = 'individual';
+  static String store = 'store';
 }
 
 abstract class UrlConstants {
@@ -121,6 +125,9 @@ abstract class ImageConstanst {
   static const String delete = 'asset/image/delete.svg';
   static const String freeDelivery = 'asset/image/free_delivery.svg';
   static const String info = 'asset/image/info.svg';
+  static const String creditCardIcon = 'asset/image/credit_card.svg';
+  static const String internetBankingIcon = 'asset/image/internet_banking.svg';
+  static const String upiIcon = 'asset/image/upi.svg';
   static const String accountSettingIcon =
       'asset/image/account_setting_icon.svg';
 }

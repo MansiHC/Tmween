@@ -91,10 +91,26 @@ class OtpScreen extends StatelessWidget {
           ],
         ),
         10.heightBox,
-        Text(
-          LocaleKeys.sentOTP.tr,
-          style: TextStyle(fontSize: 14, color: Colors.black),
-        ),
+        RichText(text:TextSpan(text:
+        "We've sent an One Time Password (OTP) to the mobile number",
+            style: TextStyle(
+                fontSize: 14,
+                color: Color(0xFF727272),
+                fontWeight: FontWeight.bold),
+            children: [
+              TextSpan(text:
+              " +91 9876543210. ",
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold)),  TextSpan(text:
+              "Please enter it below to complete verification.",
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF727272),
+                      fontWeight: FontWeight.bold)),
+            ]
+        )),
         10.heightBox,
         Text(
           LocaleKeys.enterOTP.tr,

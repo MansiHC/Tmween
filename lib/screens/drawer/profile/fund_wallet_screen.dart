@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
 import '../../../controller/fund_wallet_controller.dart';
+import '../../../lang/locale_keys.g.dart';
 import '../../../utils/views/custom_text_form_field.dart';
 
 class FundWalletScreen extends StatelessWidget {
@@ -21,7 +23,7 @@ class FundWalletScreen extends StatelessWidget {
           fundWalletController.context = context;
           return Scaffold(
               body: Container(
-                  color: Colors.white,
+                  color: Color(0xFFF2F2F2),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -41,71 +43,165 @@ class FundWalletScreen extends StatelessWidget {
     return Expanded(
         child: SingleChildScrollView(
             child: Container(
-                color: Colors.white,
                 padding: EdgeInsets.all(
                   15,
                 ),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomTextFormField(
-                        controller: fundWalletController.amountController,
-                        keyboardType: TextInputType.number,
-                        hintText: 'Amount',
-                        validator: (value) {}),
+                    Container(
+                      color: Colors.white,
+                      padding: EdgeInsets.all(
+                        10,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Recharge Amount',
+                            style: TextStyle(
+                              color: Color(0xFF7D7D7D),
+                              fontSize: 14,
+                            ),
+                          ),
+                          Text(
+                            '${LocaleKeys.sar.tr} 100',
+                            style: TextStyle(
+                              color: Color(0xFF7D7D7D),
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      color: Colors.white,
+                      padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Total Amount Payable',
+                            style: TextStyle(
+                                color: Colors.black54,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '${LocaleKeys.sar.tr} 100',
+                            style: TextStyle(
+                                color: Colors.black54,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                    20.heightBox,
+                    Text(
+                      'Payment Option',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold),
+                    ),
                     10.heightBox,
-                    InkWell(
-                        onTap: () {
-                          fundWalletController.isCreditChecked =
-                              !fundWalletController.isCreditChecked;
-                          fundWalletController.update();
-                        },
-                        child: Container(
-                            color: Color(0xFFFBFBFB),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 20, horizontal: 10),
-                            child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Credit/Debit Card, Net Banking',
-                                    style: TextStyle(
-                                      color: Color(0xFF727272),
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                  10.widthBox,
-                                  SizedBox(
-                                      height: 24.0,
-                                      width: 24.0,
-                                      child: Theme(
-                                          data: Theme.of(
-                                                  fundWalletController.context)
-                                              .copyWith(
-                                            unselectedWidgetColor:
-                                                Color(0xFF59AC4E),
-                                          ),
-                                          child: Checkbox(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(4)),
-                                              checkColor: Color(0xFF59AC4E),
-                                              value: fundWalletController
-                                                  .isCreditChecked,
-                                              activeColor: Colors.white,
-                                              side: MaterialStateBorderSide
-                                                  .resolveWith(
-                                                (states) => BorderSide(
-                                                    width: 1.5,
-                                                    color: Color(0xFF59AC4E)),
-                                              ),
-                                              onChanged: (value) {
-                                                fundWalletController
-                                                    .isCreditChecked = value!;
-                                                fundWalletController.update();
-                                              }))),
-                                ])))
+                    Container(
+                        color: Colors.white,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            10.heightBox,
+                            Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                Wrap(children: [
+                                SvgPicture.asset(ImageConstanst.upiIcon,height: 24,width: 24,),
+                                    15.widthBox,
+                                    Text(
+                                      'UPI',
+                                      style: TextStyle(
+                                          color: Colors.black54,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    )]),
+                                    Icon(
+                                      Icons.arrow_right,
+                                      color: Colors.grey[600],
+                                    )
+                                  ],
+                                )),
+                            10.heightBox,
+                            Divider(
+                              height: 1,
+                              thickness: 1,
+                              color: Color(0xFFE6E6E6),
+                            ),
+                            10.heightBox,
+                            Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                Wrap(children: [
+                                SvgPicture.asset(ImageConstanst.creditCardIcon,height: 24,width: 24,),
+                                    15.widthBox,
+                                    Text(
+                                      'Credit/Debit Card',
+                                      style: TextStyle(
+                                          color: Colors.black54,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    )]),
+                                    Icon(
+                                      Icons.arrow_right,
+                                      color: Colors.grey[600],
+                                    )
+                                  ],
+                                )),
+                            10.heightBox,
+                            Divider(
+                              height: 1,
+                              thickness: 1,
+                              color: Color(0xFFE6E6E6),
+                            ),
+                            10.heightBox,
+                            Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                   Wrap(children: [
+                                    SvgPicture.asset(ImageConstanst.internetBankingIcon,height: 24,width: 24,),
+                                    15.widthBox,
+                                    Text(
+                                      'Net Banking',
+                                      style: TextStyle(
+                                          color: Colors.black54,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    ),]),
+                                    Icon(
+                                      Icons.arrow_right,
+                                      color: Colors.grey[600],
+                                    )
+                                  ],
+                                )),
+                            10.heightBox,
+                            Divider(
+                              height: 1,
+                              thickness: 1,
+                              color: Color(0xFFE6E6E6),
+                            ),
+
+                          ],
+                        ))
                   ],
                 ))));
   }
@@ -139,7 +235,7 @@ class FundWalletScreen extends StatelessWidget {
             Align(
               alignment: Alignment.center,
               child: Text(
-                'Fund Wallet',
+                'Payment',
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),

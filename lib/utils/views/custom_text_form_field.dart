@@ -16,6 +16,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool? isDense;
   final bool? autoFocus;
   final bool? enabled;
+  final bool isPrefix;
   final List<TextInputFormatter>? inputFormatters;
   final FormFieldValidator<String> validator;
   final TextInputAction? textInputAction;
@@ -30,6 +31,7 @@ class CustomTextFormField extends StatelessWidget {
       required this.hintText,
       this.errorText,
       this.enabled,
+        this.isPrefix = true,
       this.onChanged,
       this.suffixIcon,
       this.autoFocus,
@@ -82,10 +84,12 @@ class CustomTextFormField extends StatelessWidget {
                 fontSize: 16,
               ),
               suffixIcon: suffixIcon,
-              prefixIconConstraints: BoxConstraints.loose(Size.square(36)),
-              prefixIcon: Padding(
+              prefixIconConstraints: isPrefix?BoxConstraints.loose(Size.square(36)):BoxConstraints.loose(Size.square(36)),
+              prefixIcon: isPrefix?Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: prefixIcon)),
+                  child: prefixIcon):Padding(
+    padding: EdgeInsets.only(right: 5),
+    child:prefixIcon)),
     );
   }
 }

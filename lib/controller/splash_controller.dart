@@ -18,8 +18,8 @@ class SplashController extends GetxController {
   void onInit() {
     languages = <LanguageModel>[
       LanguageModel(name: LocaleKeys.english.tr, locale: Locale('en', 'US')),
-      /*LanguageModel(name: LocaleKeys.arabian.tr, locale: Locale('ar', 'DZ')),
-      LanguageModel(name: LocaleKeys.spanish.tr, locale: Locale('es', 'ES')),*/
+      LanguageModel(name: LocaleKeys.arabian.tr, locale: Locale('ar', 'DZ')),
+      LanguageModel(name: LocaleKeys.spanish.tr, locale: Locale('es', 'ES')),
     ];
     languageValue = languages[0];
     super.onInit();

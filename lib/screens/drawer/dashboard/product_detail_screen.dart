@@ -622,7 +622,9 @@ class ProductDetailScreen extends StatelessWidget {
                             text: 'ADD TO CART',
                             fontSize: 14,
                             backgroundColor: Color(0xFF314156),
-                            onPressed: () {})),
+                            onPressed: () {
+                              productDetailController.navigateToCartScreen();
+                            })),
                     10.heightBox,
                     Padding(
                         padding: EdgeInsets.only(right: 15),

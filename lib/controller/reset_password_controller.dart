@@ -21,11 +21,12 @@ class ResetPasswordController extends GetxController {
     Navigator.of(context).pop(false);
   }
 
-  void navigateToLoginScreen() {
+  void navigateToLoginScreen(String frm) {
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
             builder: (context) => LoginScreen(
                   from: LocaleKeys.forgotPassword,
+              frm: frm,
                 )),
         (Route<dynamic> route) => false);
   }

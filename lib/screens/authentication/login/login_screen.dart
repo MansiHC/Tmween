@@ -15,8 +15,11 @@ import 'individual/individual_login_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   final String from;
+  final String? frm;
+  final bool? isPassword;
+  final bool? isStorePassword;
 
-  LoginScreen({Key? key, required this.from}) : super(key: key);
+  LoginScreen({Key? key, required this.from,this.frm,this.isPassword=false,this.isStorePassword=false}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -34,9 +37,18 @@ class _LoginScreenState extends State<LoginScreen>
 
   @override
   void initState() {
+    if(widget.from!=null) {
+      if(widget.from == SharedPreferencesKeys.isDrawer){
+        loginController.isPasswordScreen = widget.isPassword!;
+        if(widget.isPassword!){
+          loginController.currentTabIndex = 0;
+        }else{
+          loginController.currentTabIndex = 1;
+        }
+        loginController.isStorePasswordScreen = widget.isStorePassword!;
+      }}
     loginController.tabController = TabController(
-        vsync: this, length: loginController.tabList.length, initialIndex: 1);
-
+        vsync: this, length: loginController.tabList.length, initialIndex: loginController.currentTabIndex);
     super.initState();
   }
 
@@ -48,11 +60,13 @@ class _LoginScreenState extends State<LoginScreen>
 
   @override
   Widget build(BuildContext context) {
+
     language = Get.locale!.languageCode;
     return GetBuilder<LoginController>(
         init: LoginController(),
         builder: (contet) {
           loginController.context = context;
+
           return DefaultTabController(
               length: 2,
               child: Scaffold(
@@ -95,10 +109,10 @@ class _LoginScreenState extends State<LoginScreen>
                                   controller: loginController.tabController,
                                   children: [
                                     loginController.isPasswordScreen
-                                        ? IndividualLoginPasswordScreen()
+                                        ? IndividualLoginPasswordScreen(from:widget.from)
                                         : IndividualLoginScreen(),
                                     loginController.isStorePasswordScreen
-                                        ? StoreOwnerLoginPasswordScreen()
+                                        ? StoreOwnerLoginPasswordScreen(from:widget.from)
                                         : StoreOwnerLoginScreen()
                                   ],
                                 ),
@@ -130,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen>
                         color: Colors.white,
                         child: InkWell(
                           onTap: () {
-                            loginController.exitScreen(widget.from);
+                            loginController.exitScreen(widget.from,widget.frm);
                           },
                           child: SizedBox(
                               width: 24,

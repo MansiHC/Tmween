@@ -45,10 +45,11 @@ class IndividualLoginScreen extends StatelessWidget {
                                           ImageConstanst.phoneEmailIcon,
                                           color: AppColors.primaryColor,
                                         ),
-                                        textInputAction: TextInputAction.done,
+
                                         onSubmitted: (term) {
                                           FocusScope.of(context).unfocus();
-                                          loginController.login();
+                                          loginController.isPasswordScreen = true;
+                                          loginController.update();
                                         },
                                         validator: (value) {
                                           if (value!.isEmpty) {
@@ -101,7 +102,7 @@ class IndividualLoginScreen extends StatelessWidget {
                                                         color: Colors.grey),
                                                   )
                                                 ])),
-                                        Expanded(
+                                        /*Expanded(
                                           child: InkWell(
                                               onTap: () {
                                                 loginController
@@ -118,7 +119,7 @@ class IndividualLoginScreen extends StatelessWidget {
                                                           .primaryColor,
                                                       fontWeight:
                                                           FontWeight.bold))),
-                                        )
+                                        )*/
                                       ],
                                     ),
                                     Expanded(child: _loginWithEmail()),

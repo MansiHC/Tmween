@@ -12,6 +12,9 @@ import '../../../../utils/views/custom_text_form_field.dart';
 class ResetPasswordScreen extends StatelessWidget {
   late String language;
   final resetPasswordController = Get.put(ResetPasswordController());
+  final String frm;
+
+  ResetPasswordScreen({Key? key,required this.frm}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +61,7 @@ class ResetPasswordScreen extends StatelessWidget {
             keyboardType: TextInputType.visiblePassword,
             obscureText: true,
             hintText: 'Enter new password',
-            textInputAction: TextInputAction.done,
+
             prefixIcon: SvgPicture.asset(
               ImageConstanst.lockIcon,
               color: AppColors.primaryColor,
@@ -91,6 +94,10 @@ class ResetPasswordScreen extends StatelessWidget {
             obscureText: true,
             hintText: 'Re-enter new password',
             textInputAction: TextInputAction.done,
+            onSubmitted: (term){
+              FocusScope.of(resetPasswordController.context).unfocus();
+              resetPasswordController.navigateToLoginScreen(frm);
+            },
             prefixIcon: SvgPicture.asset(
               ImageConstanst.lock2Icon,
               color: AppColors.primaryColor,
@@ -102,7 +109,7 @@ class ResetPasswordScreen extends StatelessWidget {
             text: 'Continue',
             fontSize: 16,
             onPressed: () {
-              resetPasswordController.navigateToLoginScreen();
+              resetPasswordController.navigateToLoginScreen(frm);
             }),
         30.heightBox,
         Text(

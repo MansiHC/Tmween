@@ -26,9 +26,18 @@ class DrawerScreen extends StatelessWidget {
 
   late var language;
 
+  final String? from;
+
+  DrawerScreen({Key? key,  this.from}) : super(key: key);
+
+
   @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
+    if(from == AppConstants.productDetail){
+      drawerController.pageIndex = 4;
+      drawerController.pageTitle = LocaleKeys.cart.tr;
+    }
     return GetBuilder<DrawerControllers>(
         init: DrawerControllers(),
         builder: (contet) {
@@ -149,7 +158,7 @@ class DrawerScreen extends StatelessWidget {
                   bottomNavigationBar: _buildBottomNavBar(drawerController),
                   body: Column(children: [
                     drawerController.pageIndex == 2 ||
-                            drawerController.pageIndex == 3
+                            drawerController.pageIndex == 3||drawerController.pageIndex == 4
                         ? Container()
                         : Container(
                             color: AppColors.appBarColor,
@@ -571,6 +580,20 @@ class DrawerScreen extends StatelessWidget {
             thickness: 1,
             color: Colors.white24,
           ),
+
+          ListTile(
+            leading: SvgPicture.asset(
+              ImageConstanst.customerServiceIcon,
+              width: 24,
+              height: 24,
+              color: Colors.white,
+            ),
+            title: Text(LocaleKeys.customerService.tr,
+                style: TextStyle(color: Colors.white)),
+            onTap: () {
+              drawerController.closeDrawer();
+            },
+          ),
           10.heightBox,
           Wrap(children: [
             16.widthBox,
@@ -595,13 +618,14 @@ class DrawerScreen extends StatelessWidget {
               onChanged: (LanguageModel? value) async {
                 drawerController.languageValue = value!;
                 //  await context.setLocale(value.locale);
-                MySharedPreferences.instance.addStringToSF(
+             /*   MySharedPreferences.instance.addStringToSF(
                     SharedPreferencesKeys.language, value.locale.toString());
-                Get.updateLocale(value.locale);
+                Get.updateLocale(value.locale);*/
                 // drawerController.closeDrawer();
               },
             ),
           ]),
+
         ],
       ),
     );

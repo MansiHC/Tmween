@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/model/review_model.dart';
 import 'package:tmween/model/seller_on_tmween_model.dart';
+import 'package:tmween/screens/drawer/drawer_screen.dart';
+import 'package:tmween/utils/global.dart';
 
 import '../model/address_model.dart';
 import '../model/recently_viewed_model.dart';
@@ -206,6 +208,15 @@ class ProductDetailController extends GetxController {
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
+  }
+
+  void navigateToCartScreen() {
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+            builder: (context) => DrawerScreen(
+              from: AppConstants.productDetail,
+            )),
+            (Route<dynamic> route) => false);
   }
 
   void closeDrawer() {

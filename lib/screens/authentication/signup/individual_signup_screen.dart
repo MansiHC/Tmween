@@ -184,11 +184,11 @@ class IndividualSignUpScreen extends StatelessWidget {
                                           LengthLimitingTextInputFormatter(10),
                                           FilteringTextInputFormatter.digitsOnly
                                         ],
-                                        textInputAction: TextInputAction.done,
+                                       /* textInputAction: TextInputAction.done,
                                         onSubmitted: (term) {
                                           FocusScope.of(context).unfocus();
                                           signUpController.signUp();
-                                        },
+                                        },*/
                                         validator: (value) {
                                           if (value!.isEmpty) {
                                             return LocaleKeys

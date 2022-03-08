@@ -57,7 +57,7 @@ class SplashScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                    padding: EdgeInsets.only(top: 80, right: 15, left: 15),
+                    padding: EdgeInsets.only(top: 60, right: 15, left: 15),
                     child: Align(
                         alignment: language == 'ar'
                             ? Alignment.topLeft
@@ -86,10 +86,10 @@ class SplashScreen extends StatelessWidget {
                               }).toList(),
                               onChanged: (LanguageModel? value) async {
                                 splashController.languageValue = value!;
-                                MySharedPreferences.instance.addStringToSF(
+                               /* MySharedPreferences.instance.addStringToSF(
                                     SharedPreferencesKeys.language,
                                     value.locale.toString());
-                                Get.updateLocale(value.locale);
+                                Get.updateLocale(value.locale);*/
                               },
                             ),
                           ],

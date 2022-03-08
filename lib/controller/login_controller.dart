@@ -24,15 +24,21 @@ class LoginController extends GetxController {
   late Map<String, dynamic> deviceData;
   var isSplash;
   final formKey = GlobalKey<FormState>();
+  final formKey2 = GlobalKey<FormState>();
   final storeOwnerFormKey = GlobalKey<FormState>();
+  final storeOwnerFormKey2 = GlobalKey<FormState>();
   late BuildContext context;
   bool rememberMe = false;
+  bool storeRememberMe = false;
   bool isPasswordScreen = false;
   bool isStorePasswordScreen = false;
   bool changeEmail = false;
-  bool visiblePassword = false;
+  bool visiblePassword = true;
+  bool storeVisiblePassword = true;
   TextEditingController phoneEmailController = TextEditingController();
+  TextEditingController storePhoneEmailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController storePasswordController = TextEditingController();
   late List<Tab> tabList;
   late TabController tabController;
   int currentTabIndex = 1;
@@ -136,10 +142,14 @@ class LoginController extends GetxController {
   void visiblePasswordIcon() {
     visiblePassword = !visiblePassword;
     update();
+  }void visibleStorePasswordIcon() {
+    storeVisiblePassword = !storeVisiblePassword;
+    update();
   }
 
   final api = Api();
   bool loading = false;
+  bool storeLoading = false;
 
   doLogin() async {
     update();
@@ -185,9 +195,12 @@ class LoginController extends GetxController {
                 )));
   }
 
-  void navigateToForgotPasswordScreen() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => ForgotPasswordScreen()));
+  void navigateToForgotPasswordScreen(String from,String frm) {
+   // Get.delete<LoginController>();
+    //Navigator.of(context).pop();
+
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (context) => ForgotPasswordScreen(from:from,frm: frm,)));
   }
 
   void navigateToOTPScreen() {
@@ -200,6 +213,8 @@ class LoginController extends GetxController {
                 phoneEmail: phoneEmailController.text.toString())));
   }
 
+
+
   void navigateToStoreOwnerOTPScreen() {
     Get.delete<OtpController>();
 
@@ -207,7 +222,7 @@ class LoginController extends GetxController {
         context,
         MaterialPageRoute(
             builder: (context) => StoreOwnerOtpScreen(
-                phoneEmail: phoneEmailController.text.toString())));
+                phoneEmail: storePhoneEmailController.text.toString())));
   }
 
   void navigateToDrawerScreen() {
@@ -223,18 +238,38 @@ class LoginController extends GetxController {
         (Route<dynamic> route) => false);
   }
 
-  void exitScreen(String from) {
-    if (from == SharedPreferencesKeys.isDrawer) {
-      Navigator.of(context).pop();
+  void exitScreen(String from, String? frm) {
+
+    if(isPasswordScreen){
+      isPasswordScreen = false;
+      update();
+    } else if(isStorePasswordScreen){
+      isStorePasswordScreen = false;
+      update();
+    }else {
+      Get.delete<LoginController>();
+
+      if (frm == SharedPreferencesKeys.isDrawer &&
+          from == AppConstants.forgotPassword) {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => DrawerScreen()),
+                (Route<dynamic> route) => false);
+      }else if (from == SharedPreferencesKeys.isDrawer) {
+    Navigator.of(context).pop();
     } else {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => SplashScreen()),
-          (Route<dynamic> route) => false);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => SplashScreen()),
+                (Route<dynamic> route) => false);
+      }
     }
   }
 
   void notifyCheckBox() {
     rememberMe = !rememberMe;
+    update();
+  }
+  void notifyStoreCheckBox() {
+    storeRememberMe = !storeRememberMe;
     update();
   }
 

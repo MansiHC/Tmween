@@ -2,12 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/drawer/profile/fund_wallet_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_button.dart';
 
 import '../../../controller/my_wallet_controller.dart';
+import '../../../utils/views/custom_text_form_field.dart';
 
 class MyWalletScreen extends StatelessWidget {
   late String language;
@@ -23,7 +25,7 @@ class MyWalletScreen extends StatelessWidget {
           myWalletController.context = context;
           return Scaffold(
               body: Container(
-                  color: Colors.white,
+                  color:  Color(0xFFF2F2F2),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -43,14 +45,15 @@ class MyWalletScreen extends StatelessWidget {
     return Expanded(
         child: SingleChildScrollView(
             child: Container(
-                color: Colors.white,
+
                 padding: EdgeInsets.all(
                   15,
                 ),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      color: Color(0xFFF2F2F2),
+                      color: Colors.white,
                       padding: EdgeInsets.all(
                         10,
                       ),
@@ -67,63 +70,94 @@ class MyWalletScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Wallet Summary',
+                                'Current Balance  ',
                                 style: TextStyle(
-                                    color: Color(0xFF555555),
+                                    color: Colors.black,
                                     fontSize: 15,
-                                    fontWeight: FontWeight.bold),
+
+                                    ),
                               ),
                               3.heightBox,
-                              RichText(
-                                  textAlign: TextAlign.start,
-                                  text: TextSpan(
-                                      text: 'Current Balance ',
-                                      style: TextStyle(
-                                        color: Color(0xFF1992CE),
-                                        fontSize: 15,
-                                      ),
-                                      children: <InlineSpan>[
-                                        TextSpan(
-                                          text: 'Rs 0',
+
+                                        Text(
+                                           '${LocaleKeys.sar.tr} 0',
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold),
                                         ),
-                                      ]))
+
                             ],
                           )
                         ],
                       ),
                     ),
+                    15.heightBox,
+                    Text(
+                      'Add money',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        color: Color(0xFF555555),
+                        fontSize: 15,
+                      ),
+                    ),
                     10.heightBox,
-                    CustomButton(
-                      text: 'FUND WALLET',
-                      onPressed: () {
-                        myWalletController.navigateTo(FundWalletScreen());
-                      },
-                      fontSize: 15,
+                    Container(color: Colors.white,
+                      padding:EdgeInsets.all(10),child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                      CustomTextFormField(
+                        isPrefix: false,
+                          controller: myWalletController.amountController,
+                          keyboardType: TextInputType.number,
+                          hintText: 'Amount',
+                          prefixIcon: Text(LocaleKeys.sar.tr,style: TextStyle(fontSize: 14),),
+                          validator: (value) {}),
+                        15.heightBox,
+                        Wrap(
+                          spacing: 10,
+                          children: List.generate(
+                          myWalletController.amounts.length,
+                              (index) =>  InkWell(
+                                  onTap: (){
+
+                                    myWalletController.amountController.text = myWalletController
+                                        .amounts[index];
+                                    myWalletController.update();
+                                  },
+                                  child:Container(
+                                padding: EdgeInsets.all(6),
+                                decoration: BoxDecoration(
+                                  color: AppColors.lightBlueBackground,
+                                  border: Border.all(color: AppColors.blue),
+                                  borderRadius: BorderRadius.all(Radius.circular(6))
+                                ),
+                                child: Text('+${LocaleKeys.sar.tr} ${myWalletController.amounts[index]}',
+                                  style: TextStyle(color: AppColors.blue,fontSize: 12),),
+                              )),)),
+                        20.heightBox,
+                        CustomButton(
+                          text: 'FUND WALLET',
+                          onPressed: () {
+                            myWalletController.navigateTo(FundWalletScreen());
+                          },
+                          fontSize: 15,
+                        ),
+                    ],),),
+
+                    15.heightBox,
+                    Text(
+                      'Wallet activity for',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        color: Color(0xFF555555),
+                        fontSize: 15,
+                      ),
                     ),
                     10.heightBox,
                     Container(
-                        color: Color(0xFFF2F2F2),
-                        padding: EdgeInsets.all(
-                          10,
-                        ),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Wallet activity for',
-                                style: TextStyle(
-                                  color: Color(0xFF555555),
-                                  fontSize: 15,
-                                ),
-                              ),
-                              5.heightBox,
-                              Padding(
-                                  padding: EdgeInsets.only(left: 10),
-                                  child: MediaQuery.removePadding(
+                        color: Colors.white,
+                       child: MediaQuery.removePadding(
                                       context: myWalletController.context,
                                       removeTop: true,
                                       child: ListView.builder(
@@ -136,16 +170,21 @@ class MyWalletScreen extends StatelessWidget {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                5.heightBox,
-                                                Text(
+                                                10.heightBox,
+                                                Padding(padding: EdgeInsets.symmetric(horizontal: 10),child:
+                                               Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                  Text(
                                                   myWalletController
                                                       .walletActivitys[index],
                                                   style: TextStyle(
-                                                    color: Color(0xFFF18369),
+                                                    color: AppColors.primaryColor,
                                                     fontSize: 15,
                                                   ),
                                                 ),
-                                                5.heightBox,
+                                                    Icon(Icons.keyboard_arrow_right_outlined,color: Colors.grey[400],)],)),
+                                                10.heightBox,
                                                 if (index !=
                                                     (myWalletController
                                                             .walletActivitys
@@ -159,7 +198,7 @@ class MyWalletScreen extends StatelessWidget {
                                               ],
                                             );
                                           })))
-                            ]))
+
                   ],
                 ))));
   }

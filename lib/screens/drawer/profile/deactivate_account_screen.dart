@@ -7,6 +7,7 @@ import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
+import '../../../utils/views/custom_button.dart';
 import '../../../utils/views/custom_text_form_field.dart';
 
 class DeactivateAccountScreen extends StatelessWidget {
@@ -97,7 +98,7 @@ class DeactivateAccountScreen extends StatelessWidget {
                           return null;
                         })),
                 20.heightBox,
-                Padding(
+                /* Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15),
                     child: Align(
                       alignment: Alignment.center,
@@ -108,7 +109,16 @@ class DeactivateAccountScreen extends StatelessWidget {
                             color: AppColors.darkblue,
                             fontWeight: FontWeight.bold),
                       ),
-                    )),
+                    )),*/
+                Align(
+                    alignment: Alignment.center,
+                    child: CustomButton(
+                        width: 230,
+                        horizontalPadding: 10,
+                        backgroundColor: Color(0xFF0188C8),
+                        text: LocaleKeys.confirmDeactivate,
+                        fontSize: 16,
+                        onPressed: () {})),
                 15.heightBox,
                 Divider(
                   height: 5,
@@ -122,44 +132,119 @@ class DeactivateAccountScreen extends StatelessWidget {
                       LocaleKeys.whenDeactivate.tr,
                       style: TextStyle(
                           fontSize: 14,
-                          color: Colors.black54,
+                          color: Colors.black87,
                           fontWeight: FontWeight.bold),
                     )),
                 10.heightBox,
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: Text(
+                    child:Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+    Container(
+    width: 8,
+    height: 8,
+    margin: EdgeInsets.only(top: 6),
+    decoration: BoxDecoration(
+    shape: BoxShape.circle, color: Colors.black54),
+    ),
+    10.widthBox,
+    Expanded(
+    child: Text(
                       LocaleKeys.whenDeactivateText1.tr,
-                      style: TextStyle(fontSize: 12, color: Colors.black54),
-                    )),
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.bold),
+                    ))])),
                 5.heightBox,
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: Text(
+                    child:Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+    Container(
+    width: 8,
+    height: 8,
+    margin: EdgeInsets.only(top: 6),
+    decoration: BoxDecoration(
+    shape: BoxShape.circle, color: Colors.black54),
+    ),
+    10.widthBox,
+    Expanded(
+    child: Text(
                       LocaleKeys.whenDeactivateText2.tr,
-                      style: TextStyle(fontSize: 12, color: Colors.black54),
-                    )),
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.bold),
+                    ))])),
                 5.heightBox,
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: Text(
+                    child: Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+    Container(
+    width: 8,
+    height: 8,
+    margin: EdgeInsets.only(top: 6),
+    decoration: BoxDecoration(
+    shape: BoxShape.circle, color: Colors.black54),
+    ),
+    10.widthBox,
+    Expanded(
+    child:Text(
                       LocaleKeys.whenDeactivateText3.tr,
-                      style: TextStyle(fontSize: 12, color: Colors.black54),
-                    )),
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.bold),
+                    ))])),
                 5.heightBox,
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: Text(
+                    child: Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+    Container(
+    width: 8,
+    height: 8,
+    margin: EdgeInsets.only(top: 6),
+    decoration: BoxDecoration(
+    shape: BoxShape.circle, color: Colors.black54),
+    ),
+    10.widthBox,
+    Expanded(
+    child:Text(
                       LocaleKeys.whenDeactivateText4.tr,
-                      style: TextStyle(fontSize: 12, color: Colors.black54),
-                    )),
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.bold),
+                    ))])),
                 5.heightBox,
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: Text(
+                    child: Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+    Container(
+    width: 8,
+    height: 8,
+    margin: EdgeInsets.only(top: 6),
+    decoration: BoxDecoration(
+    shape: BoxShape.circle, color: Colors.black54),
+    ),
+    10.widthBox,
+    Expanded(
+    child:Text(
                       LocaleKeys.whenDeactivateText5.tr,
-                      style: TextStyle(fontSize: 12, color: Colors.black54),
-                    )),
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.bold),
+                    ))])),
                 15.heightBox,
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15),
@@ -167,30 +252,78 @@ class DeactivateAccountScreen extends StatelessWidget {
                       LocaleKeys.howReactivate.tr,
                       style: TextStyle(
                           fontSize: 14,
-                          color: Colors.black54,
+                          color: Colors.black87,
                           fontWeight: FontWeight.bold),
                     )),
                 10.heightBox,
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: Text(
-                      LocaleKeys.howReactivateText1.tr,
-                      style: TextStyle(fontSize: 12, color: Colors.black54),
-                    )),
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 8,
+                            height: 8,
+                            margin: EdgeInsets.only(top: 6),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle, color: Colors.black54),
+                          ),
+                          10.widthBox,
+                          Expanded(
+                              child: Text(
+                            LocaleKeys.howReactivateText1.tr,
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.black54,
+                                fontWeight: FontWeight.bold),
+                          ))
+                        ])),
                 5.heightBox,
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: Text(
-                      LocaleKeys.howReactivateText2.tr,
-                      style: TextStyle(fontSize: 12, color: Colors.black54),
-                    )),
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 8,
+                            height: 8,
+                            margin: EdgeInsets.only(top: 6),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle, color: Colors.black54),
+                          ),
+                          10.widthBox,
+                          Expanded(
+                              child: Text(
+                            LocaleKeys.howReactivateText2.tr,
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.black54,
+                                fontWeight: FontWeight.bold),
+                          ))
+                        ])),
                 5.heightBox,
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: Text(
-                      LocaleKeys.howReactivateText3.tr,
-                      style: TextStyle(fontSize: 12, color: Colors.black54),
-                    )),
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 8,
+                            height: 8,
+                            margin: EdgeInsets.only(top: 6),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle, color: Colors.black54),
+                          ),
+                          10.widthBox,
+                          Expanded(
+                              child: Text(
+                            LocaleKeys.howReactivateText3.tr,
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.black54,
+                                fontWeight: FontWeight.bold),
+                          ))
+                        ])),
                 15.heightBox,
                 Container(
                   height: 50,

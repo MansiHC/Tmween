@@ -14,6 +14,15 @@ class EditProfileController extends GetxController {
   TextEditingController mobileNumberController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController otpController = TextEditingController();
+  bool click1 = false;
+  bool click2 = false;
+  bool click3 = false;
+  bool click4 = false;
+  TextEditingController num1Controller = TextEditingController();
+  TextEditingController num2Controller = TextEditingController();
+  TextEditingController num3Controller = TextEditingController();
+  TextEditingController num4Controller = TextEditingController();
+
   bool enablePhone = true;
   bool enableEmail = true;
   final formKey = GlobalKey<FormState>();
@@ -52,6 +61,26 @@ class EditProfileController extends GetxController {
 
   void pop() {
     Navigator.of(context).pop(false);
+    update();
+  }
+
+  void notifyClick1(bool click) {
+    click1 = click;
+    update();
+  }
+
+  void notifyClick2(bool click) {
+    click2 = click;
+    update();
+  }
+
+  void notifyClick3(bool click) {
+    click3 = click;
+    update();
+  }
+
+  void notifyClick4(bool click) {
+    click4 = click;
     update();
   }
 }

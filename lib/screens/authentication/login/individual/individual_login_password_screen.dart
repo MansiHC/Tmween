@@ -14,6 +14,10 @@ class IndividualLoginPasswordScreen extends StatelessWidget {
   var language;
   final loginController = Get.put(LoginController());
 
+  final String from;
+
+  IndividualLoginPasswordScreen({Key? key, required this.from,}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
@@ -33,10 +37,10 @@ class IndividualLoginPasswordScreen extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 25, vertical: 10),
                                 child: Form(
-                                    key: loginController.formKey,
+                                    key: loginController.formKey2,
                                     child: Column(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.start,
                                       children: [
                                         Row(
                                           children: [
@@ -84,6 +88,7 @@ class IndividualLoginPasswordScreen extends StatelessWidget {
                                                 .passwordController,
                                             keyboardType:
                                                 TextInputType.visiblePassword,
+                                            textInputAction: TextInputAction.done,
                                             obscureText:
                                                 loginController.visiblePassword,
                                             suffixIcon: IconButton(
@@ -99,6 +104,10 @@ class IndividualLoginPasswordScreen extends StatelessWidget {
                                                       .visiblePasswordIcon();
                                                 }),
                                             hintText: LocaleKeys.yourPassword,
+                                            onSubmitted: (term){
+                                              FocusScope.of(context).unfocus();
+                                              loginController.doLoginWithPassword();
+                                            },
                                             validator: (value) {
                                               if (value!.isEmpty) {
                                                 return LocaleKeys
@@ -164,7 +173,12 @@ class IndividualLoginPasswordScreen extends StatelessWidget {
                                                       )
                                                     ])),
                                             Expanded(
-                                              child: Text(
+                                              child: InkWell(
+                                                onTap: () {
+                                                  loginController
+                                                      .navigateToForgotPasswordScreen(AppConstants.individual,from);
+                                                },
+                                                child:Text(
                                                   LocaleKeys.forgotPassword.tr,
                                                   textAlign: language == 'ar'
                                                       ? TextAlign.left
@@ -174,7 +188,7 @@ class IndividualLoginPasswordScreen extends StatelessWidget {
                                                       color: AppColors
                                                           .primaryColor,
                                                       fontWeight:
-                                                          FontWeight.bold)),
+                                                          FontWeight.bold))),
                                             )
                                           ],
                                         ),

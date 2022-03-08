@@ -9,10 +9,14 @@ import 'package:tmween/utils/global.dart';
 
 import '../../../../utils/views/custom_button.dart';
 import '../../../../utils/views/custom_text_form_field.dart';
+import '../../../../utils/views/otp_text_filed.dart';
 
 class ForgotOtpScreen extends StatelessWidget {
   late String language;
   final forgotOtpController = Get.put(ForgotOtpController());
+  final String frm;
+
+  ForgotOtpScreen({Key? key, required this.frm}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,15 +57,29 @@ class ForgotOtpScreen extends StatelessWidget {
               color: Color(0xFF727272),
               fontWeight: FontWeight.bold),
         ),
-        Text(
-          "We've sent an OTP to the mobile number \n+91 9876543210. Please enter it below to complete verification.",
+        RichText(text:TextSpan(text:
+        "We've sent an One Time Password (OTP) to the mobile number ",
           style: TextStyle(
-              fontSize: 13,
+              fontSize: 14,
               color: Color(0xFF727272),
               fontWeight: FontWeight.bold),
-        ),
+          children: [
+            TextSpan(text:
+            "+91 9876543210. ",
+            style: TextStyle(
+                fontSize: 14,
+                color: Colors.black,
+                fontWeight: FontWeight.bold)),  TextSpan(text:
+            "Please enter it below to complete verification.",
+            style: TextStyle(
+                fontSize: 14,
+                color: Color(0xFF727272),
+                fontWeight: FontWeight.bold)),
+          ]
+        )),
+
         10.heightBox,
-        CustomBoxTextFormField(
+       /* CustomBoxTextFormField(
             controller: forgotOtpController.otpController,
             keyboardType: TextInputType.number,
             hintText: 'Enter OTP',
@@ -71,13 +89,86 @@ class ForgotOtpScreen extends StatelessWidget {
               color: AppColors.primaryColor,
             ),
             borderColor: Color(0xFFDDDDDD),
-            validator: (value) {}),
+            validator: (value) {}),*/
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            OtpTextFormField(
+                controller: forgotOtpController.num1Controller,
+                onChanged: (value) {
+                  if (value.length == 1) {
+                    forgotOtpController.notifyClick1(true);
+                    FocusScope.of(forgotOtpController.context).nextFocus();
+                    forgotOtpController.notifyClick2(true);
+                  }
+                  if (value.length == 0) {
+                    FocusScope.of(forgotOtpController.context).previousFocus();
+                    forgotOtpController.notifyClick1(false);
+                  }
+                },
+                clicked: forgotOtpController.click1,
+                onTap: () {
+                  forgotOtpController.notifyClick1(true);
+                }),
+            OtpTextFormField(
+                controller: forgotOtpController.num2Controller,
+                onChanged: (value) {
+                  if (value.length == 1) {
+                    FocusScope.of(forgotOtpController.context).nextFocus();
+                    forgotOtpController.notifyClick3(true);
+                  }
+                  if (value.length == 0) {
+                    FocusScope.of(forgotOtpController.context).previousFocus();
+                    forgotOtpController.notifyClick2(false);
+                  }
+                },
+                clicked: forgotOtpController.click2,
+                onTap: () {
+                  forgotOtpController.notifyClick2(true);
+                }),
+            OtpTextFormField(
+                controller: forgotOtpController.num3Controller,
+                onChanged: (value) {
+                  if (value.length == 1) {
+                    FocusScope.of(forgotOtpController.context).nextFocus();
+                    forgotOtpController.notifyClick4(true);
+                  }
+                  if (value.length == 0) {
+                    FocusScope.of(forgotOtpController.context).previousFocus();
+                    forgotOtpController.notifyClick3(false);
+                  }
+                },
+                onSubmitted: (term){
+                  print('jfgjkfghj  $term');
+                },
+                clicked: forgotOtpController.click3,
+                onTap: () {
+                  forgotOtpController.notifyClick3(true);
+                }),
+            OtpTextFormField(
+                controller: forgotOtpController.num4Controller,
+                clicked: forgotOtpController.click4,
+                onChanged: (value) {
+                  if (value.length == 1) {
+                    FocusScope.of(forgotOtpController.context).nextFocus();
+
+                  }
+                  if (value.length == 0) {
+                    FocusScope.of(forgotOtpController.context).previousFocus();
+                    forgotOtpController.notifyClick4(false);
+                  }
+                },
+                onTap: () {
+                  forgotOtpController.notifyClick4(true);
+                }),
+          ],
+        ),
         10.heightBox,
         CustomButton(
             text: 'Continue',
             fontSize: 16,
             onPressed: () {
-              forgotOtpController.navigateTo(ResetPasswordScreen());
+              forgotOtpController.navigateTo(ResetPasswordScreen(frm: frm,));
             }),
         20.heightBox,
         Align(
