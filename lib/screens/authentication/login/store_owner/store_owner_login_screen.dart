@@ -46,9 +46,7 @@ class StoreOwnerLoginScreen extends StatelessWidget {
                                           color: AppColors.primaryColor,
                                         ),
                                         onSubmitted: (term) {
-                                          FocusScope.of(context).unfocus();
-                                          loginController.isStorePasswordScreen = true;
-                                          loginController.update();
+                                          loginController.storeLogin();
                                         },
                                         validator: (value) {
                                           if (value!.isEmpty) {
@@ -84,9 +82,8 @@ class StoreOwnerLoginScreen extends StatelessWidget {
                                                           child: Checkbox(
                                                               activeColor: AppColors
                                                                   .primaryColor,
-                                                              value:
-                                                                  loginController
-                                                                      .storeRememberMe,
+                                                              value: loginController
+                                                                  .storeRememberMe,
                                                               onChanged:
                                                                   (value) {
                                                                 loginController
@@ -101,7 +98,7 @@ class StoreOwnerLoginScreen extends StatelessWidget {
                                                         color: Colors.grey),
                                                   )
                                                 ])),
-                                      /*  Expanded(
+                                        /*  Expanded(
                                           child: InkWell(
                                               onTap: () {
                                                 loginController
@@ -135,9 +132,7 @@ class StoreOwnerLoginScreen extends StatelessWidget {
         CustomButton(
             text: LocaleKeys.login,
             onPressed: () {
-              //loginController.login();
-              loginController.isStorePasswordScreen = true;
-              loginController.update();
+              loginController.storeLogin();
             }),
         Visibility(visible: loginController.storeLoading, child: 5.heightBox),
         Visibility(

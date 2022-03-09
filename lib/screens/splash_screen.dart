@@ -9,7 +9,6 @@ import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_button.dart';
 
 import '../model/language_model.dart';
-import '../utils/my_shared_preferences.dart';
 
 class SplashScreen extends StatelessWidget {
   var language;
@@ -86,7 +85,7 @@ class SplashScreen extends StatelessWidget {
                               }).toList(),
                               onChanged: (LanguageModel? value) async {
                                 splashController.languageValue = value!;
-                               /* MySharedPreferences.instance.addStringToSF(
+                                /* MySharedPreferences.instance.addStringToSF(
                                     SharedPreferencesKeys.language,
                                     value.locale.toString());
                                 Get.updateLocale(value.locale);*/

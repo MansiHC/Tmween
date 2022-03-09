@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:image_crop/image_crop.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,15 +14,10 @@ class EditProfileController extends GetxController {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController mobileNumberController = TextEditingController();
   TextEditingController emailController = TextEditingController();
-  TextEditingController otpController = TextEditingController();
-  bool click1 = false;
-  bool click2 = false;
-  bool click3 = false;
-  bool click4 = false;
-  TextEditingController num1Controller = TextEditingController();
-  TextEditingController num2Controller = TextEditingController();
-  TextEditingController num3Controller = TextEditingController();
-  TextEditingController num4Controller = TextEditingController();
+
+  TextEditingController emailOTPController = TextEditingController();
+  TextEditingController mobileOTPController = TextEditingController();
+  String currentText = "";
 
   bool enablePhone = true;
   bool enableEmail = true;
@@ -38,6 +34,10 @@ class EditProfileController extends GetxController {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
   }
 
+  void updateNameImage() {
+    FocusScope.of(context).unfocus();
+  }
+
   void getProfileDetails() {
     nameController.text = 'Salim';
     lastNameController.text = 'Akka';
@@ -50,37 +50,31 @@ class EditProfileController extends GetxController {
     update();
   }
 
+  void updateMobileNumber() {
+   // pop();
+  }
+
+  void updateEmail() {
+   // pop();
+  }
+
+  void resendEmailOTP() {}
+
+  void resendMobileNumberOTP() {}
+
   void enableEmailAddress() {
     enableEmail = false;
     update();
   }
 
   void exitScreen() {
+    Get.delete<EditProfileController>();
     Navigator.of(context).pop();
   }
 
   void pop() {
+    emailOTPController.clear();
+    mobileOTPController.clear();
     Navigator.of(context).pop(false);
-    update();
-  }
-
-  void notifyClick1(bool click) {
-    click1 = click;
-    update();
-  }
-
-  void notifyClick2(bool click) {
-    click2 = click;
-    update();
-  }
-
-  void notifyClick3(bool click) {
-    click3 = click;
-    update();
-  }
-
-  void notifyClick4(bool click) {
-    click4 = click;
-    update();
   }
 }

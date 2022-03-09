@@ -214,9 +214,9 @@ class ProductDetailController extends GetxController {
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
             builder: (context) => DrawerScreen(
-              from: AppConstants.productDetail,
-            )),
-            (Route<dynamic> route) => false);
+                  from: AppConstants.productDetail,
+                )),
+        (Route<dynamic> route) => false);
   }
 
   void closeDrawer() {

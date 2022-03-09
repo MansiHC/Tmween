@@ -15,7 +15,10 @@ class StoreOwnerLoginPasswordScreen extends StatelessWidget {
   final loginController = Get.put(LoginController());
   final String from;
 
-  StoreOwnerLoginPasswordScreen({Key? key, required this.from,}) : super(key: key);
+  StoreOwnerLoginPasswordScreen({
+    Key? key,
+    required this.from,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -88,9 +91,10 @@ class StoreOwnerLoginPasswordScreen extends StatelessWidget {
                                                 .storePasswordController,
                                             keyboardType:
                                                 TextInputType.visiblePassword,
-                                            textInputAction: TextInputAction.done,
-                                            obscureText:
-                                                loginController.storeVisiblePassword,
+                                            textInputAction:
+                                                TextInputAction.done,
+                                            obscureText: loginController
+                                                .storeVisiblePassword,
                                             suffixIcon: IconButton(
                                                 icon: Icon(
                                                   loginController
@@ -105,8 +109,8 @@ class StoreOwnerLoginPasswordScreen extends StatelessWidget {
                                                 }),
                                             hintText: LocaleKeys.yourPassword,
                                             onSubmitted: (term) {
-                                              FocusScope.of(context).unfocus();
-                                              loginController.doLoginWithPassword();
+                                              loginController
+                                                  .doLoginWithPassword();
                                             },
                                             validator: (value) {
                                               if (value!.isEmpty) {
@@ -121,7 +125,9 @@ class StoreOwnerLoginPasswordScreen extends StatelessWidget {
                                                 return LocaleKeys
                                                     .validPasswordLength.tr;
                                               } else if (!loginController
-                                                  .storePasswordController.value.text
+                                                  .storePasswordController
+                                                  .value
+                                                  .text
                                                   .validatePassword()) {
                                                 return LocaleKeys
                                                     .validPassword.tr;
@@ -174,21 +180,25 @@ class StoreOwnerLoginPasswordScreen extends StatelessWidget {
                                                     ])),
                                             Expanded(
                                               child: InkWell(
-                                                onTap: () {
-                                                  loginController
-                                                      .navigateToForgotPasswordScreen(AppConstants.store,from);
-                                                },
-                                                child:Text(
-                                                  LocaleKeys.forgotPassword.tr,
-                                                  textAlign: language == 'ar'
-                                                      ? TextAlign.left
-                                                      : TextAlign.right,
-                                                  style: TextStyle(
-                                                      fontSize: 13,
-                                                      color: AppColors
-                                                          .primaryColor,
-                                                      fontWeight:
-                                                          FontWeight.bold))),
+                                                  onTap: () {
+                                                    loginController
+                                                        .navigateToForgotPasswordScreen(
+                                                            AppConstants.store,
+                                                            from);
+                                                  },
+                                                  child: Text(
+                                                      LocaleKeys
+                                                          .forgotPassword.tr,
+                                                      textAlign:
+                                                          language == 'ar'
+                                                              ? TextAlign.left
+                                                              : TextAlign.right,
+                                                      style: TextStyle(
+                                                          fontSize: 13,
+                                                          color: AppColors
+                                                              .primaryColor,
+                                                          fontWeight: FontWeight
+                                                              .bold))),
                                             )
                                           ],
                                         ),
@@ -253,7 +263,9 @@ class StoreOwnerLoginPasswordScreen extends StatelessWidget {
         CustomButton(
             text: LocaleKeys.loginWithOTP,
             onPressed: () {
-              loginController.navigateToStoreOwnerOTPScreen();
+
+              loginController.navigateToStoreOwnerOTPScreen(AppConstants
+                  .store,from);
             })
       ],
     );

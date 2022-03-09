@@ -7,8 +7,13 @@ class ChangePasswordController extends GetxController {
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController retypePasswordController = TextEditingController();
   TextEditingController otpController = TextEditingController();
+  String currentText = "";
 
   void exitScreen() {
     Navigator.of(context).pop();
   }
+
+  void save() {}
+
+  void resend() {}
 }

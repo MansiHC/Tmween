@@ -7,7 +7,6 @@ import 'package:tmween/utils/global.dart';
 
 import '../../../controller/fund_wallet_controller.dart';
 import '../../../lang/locale_keys.g.dart';
-import '../../../utils/views/custom_text_form_field.dart';
 
 class FundWalletScreen extends StatelessWidget {
   late String language;
@@ -119,16 +118,21 @@ class FundWalletScreen extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                Wrap(children: [
-                                SvgPicture.asset(ImageConstanst.upiIcon,height: 24,width: 24,),
-                                    15.widthBox,
-                                    Text(
-                                      'UPI',
-                                      style: TextStyle(
-                                          color: Colors.black54,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold),
-                                    )]),
+                                    Wrap(children: [
+                                      SvgPicture.asset(
+                                        ImageConstanst.upiIcon,
+                                        height: 24,
+                                        width: 24,
+                                      ),
+                                      15.widthBox,
+                                      Text(
+                                        'UPI',
+                                        style: TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ]),
                                     Icon(
                                       Icons.arrow_right,
                                       color: Colors.grey[600],
@@ -148,16 +152,21 @@ class FundWalletScreen extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                Wrap(children: [
-                                SvgPicture.asset(ImageConstanst.creditCardIcon,height: 24,width: 24,),
-                                    15.widthBox,
-                                    Text(
-                                      'Credit/Debit Card',
-                                      style: TextStyle(
-                                          color: Colors.black54,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold),
-                                    )]),
+                                    Wrap(children: [
+                                      SvgPicture.asset(
+                                        ImageConstanst.creditCardIcon,
+                                        height: 24,
+                                        width: 24,
+                                      ),
+                                      15.widthBox,
+                                      Text(
+                                        'Credit/Debit Card',
+                                        style: TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ]),
                                     Icon(
                                       Icons.arrow_right,
                                       color: Colors.grey[600],
@@ -177,16 +186,21 @@ class FundWalletScreen extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                   Wrap(children: [
-                                    SvgPicture.asset(ImageConstanst.internetBankingIcon,height: 24,width: 24,),
-                                    15.widthBox,
-                                    Text(
-                                      'Net Banking',
-                                      style: TextStyle(
-                                          color: Colors.black54,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold),
-                                    ),]),
+                                    Wrap(children: [
+                                      SvgPicture.asset(
+                                        ImageConstanst.internetBankingIcon,
+                                        height: 24,
+                                        width: 24,
+                                      ),
+                                      15.widthBox,
+                                      Text(
+                                        'Net Banking',
+                                        style: TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ]),
                                     Icon(
                                       Icons.arrow_right,
                                       color: Colors.grey[600],
@@ -199,7 +213,6 @@ class FundWalletScreen extends StatelessWidget {
                               thickness: 1,
                               color: Color(0xFFE6E6E6),
                             ),
-
                           ],
                         ))
                   ],

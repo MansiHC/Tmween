@@ -93,6 +93,10 @@ class DeactivateAccountScreen extends StatelessWidget {
                           ImageConstanst.lockIcon,
                           color: AppColors.primaryColor,
                         ),
+                        textInputAction: TextInputAction.done,
+                        onSubmitted: (term) {
+                          deactivateAccountController.deActivate();
+                        },
                         hintText: LocaleKeys.password,
                         validator: (value) {
                           return null;
@@ -118,7 +122,9 @@ class DeactivateAccountScreen extends StatelessWidget {
                         backgroundColor: Color(0xFF0188C8),
                         text: LocaleKeys.confirmDeactivate,
                         fontSize: 16,
-                        onPressed: () {})),
+                        onPressed: () {
+                          deactivateAccountController.deActivate();
+                        })),
                 15.heightBox,
                 Divider(
                   height: 5,
@@ -136,115 +142,30 @@ class DeactivateAccountScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     )),
                 10.heightBox,
-                Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    child:Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-    Container(
-    width: 8,
-    height: 8,
-    margin: EdgeInsets.only(top: 6),
-    decoration: BoxDecoration(
-    shape: BoxShape.circle, color: Colors.black54),
-    ),
-    10.widthBox,
-    Expanded(
-    child: Text(
-                      LocaleKeys.whenDeactivateText1.tr,
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.black54,
-                          fontWeight: FontWeight.bold),
-                    ))])),
+                _descView(
+                  deactivateAccountController,
+                  LocaleKeys.whenDeactivateText1.tr,
+                ),
                 5.heightBox,
-                Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    child:Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-    Container(
-    width: 8,
-    height: 8,
-    margin: EdgeInsets.only(top: 6),
-    decoration: BoxDecoration(
-    shape: BoxShape.circle, color: Colors.black54),
-    ),
-    10.widthBox,
-    Expanded(
-    child: Text(
-                      LocaleKeys.whenDeactivateText2.tr,
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.black54,
-                          fontWeight: FontWeight.bold),
-                    ))])),
+                _descView(
+                  deactivateAccountController,
+                  LocaleKeys.whenDeactivateText2.tr,
+                ),
                 5.heightBox,
-                Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-    Container(
-    width: 8,
-    height: 8,
-    margin: EdgeInsets.only(top: 6),
-    decoration: BoxDecoration(
-    shape: BoxShape.circle, color: Colors.black54),
-    ),
-    10.widthBox,
-    Expanded(
-    child:Text(
-                      LocaleKeys.whenDeactivateText3.tr,
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.black54,
-                          fontWeight: FontWeight.bold),
-                    ))])),
+                _descView(
+                  deactivateAccountController,
+                  LocaleKeys.whenDeactivateText3.tr,
+                ),
                 5.heightBox,
-                Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-    Container(
-    width: 8,
-    height: 8,
-    margin: EdgeInsets.only(top: 6),
-    decoration: BoxDecoration(
-    shape: BoxShape.circle, color: Colors.black54),
-    ),
-    10.widthBox,
-    Expanded(
-    child:Text(
-                      LocaleKeys.whenDeactivateText4.tr,
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.black54,
-                          fontWeight: FontWeight.bold),
-                    ))])),
+                _descView(
+                  deactivateAccountController,
+                  LocaleKeys.whenDeactivateText4.tr,
+                ),
                 5.heightBox,
-                Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-    Container(
-    width: 8,
-    height: 8,
-    margin: EdgeInsets.only(top: 6),
-    decoration: BoxDecoration(
-    shape: BoxShape.circle, color: Colors.black54),
-    ),
-    10.widthBox,
-    Expanded(
-    child:Text(
-                      LocaleKeys.whenDeactivateText5.tr,
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.black54,
-                          fontWeight: FontWeight.bold),
-                    ))])),
+                _descView(
+                  deactivateAccountController,
+                  LocaleKeys.whenDeactivateText5.tr,
+                ),
                 15.heightBox,
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15),
@@ -256,74 +177,20 @@ class DeactivateAccountScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     )),
                 10.heightBox,
-                Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 8,
-                            height: 8,
-                            margin: EdgeInsets.only(top: 6),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle, color: Colors.black54),
-                          ),
-                          10.widthBox,
-                          Expanded(
-                              child: Text(
-                            LocaleKeys.howReactivateText1.tr,
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.black54,
-                                fontWeight: FontWeight.bold),
-                          ))
-                        ])),
+                _descView(
+                  deactivateAccountController,
+                  LocaleKeys.howReactivateText1.tr,
+                ),
                 5.heightBox,
-                Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 8,
-                            height: 8,
-                            margin: EdgeInsets.only(top: 6),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle, color: Colors.black54),
-                          ),
-                          10.widthBox,
-                          Expanded(
-                              child: Text(
-                            LocaleKeys.howReactivateText2.tr,
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.black54,
-                                fontWeight: FontWeight.bold),
-                          ))
-                        ])),
+                _descView(
+                  deactivateAccountController,
+                  LocaleKeys.howReactivateText2.tr,
+                ),
                 5.heightBox,
-                Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 8,
-                            height: 8,
-                            margin: EdgeInsets.only(top: 6),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle, color: Colors.black54),
-                          ),
-                          10.widthBox,
-                          Expanded(
-                              child: Text(
-                            LocaleKeys.howReactivateText3.tr,
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.black54,
-                                fontWeight: FontWeight.bold),
-                          ))
-                        ])),
+                _descView(
+                  deactivateAccountController,
+                  LocaleKeys.howReactivateText3.tr,
+                ),
                 15.heightBox,
                 Container(
                   height: 50,
@@ -331,6 +198,30 @@ class DeactivateAccountScreen extends StatelessWidget {
                 )
               ],
             ))));
+  }
+
+  Widget _descView(
+      DeactivateAccountController deactivateAccountController, String text) {
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 15),
+        child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Container(
+            width: 8,
+            height: 8,
+            margin: EdgeInsets.only(top: 6),
+            decoration:
+                BoxDecoration(shape: BoxShape.circle, color: Colors.black54),
+          ),
+          10.widthBox,
+          Expanded(
+              child: Text(
+            text,
+            style: TextStyle(
+                fontSize: 12,
+                color: Colors.black54,
+                fontWeight: FontWeight.bold),
+          ))
+        ]));
   }
 
   Widget topView(DeactivateAccountController deactivateAccountController) {

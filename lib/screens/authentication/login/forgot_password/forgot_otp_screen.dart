@@ -1,15 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/forgot_otp_controller.dart';
-import 'package:tmween/screens/authentication/login/forgot_password/reset_password_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
 import '../../../../utils/views/custom_button.dart';
-import '../../../../utils/views/custom_text_form_field.dart';
-import '../../../../utils/views/otp_text_filed.dart';
+import '../../../../utils/views/otp_text_field.dart';
 
 class ForgotOtpScreen extends StatelessWidget {
   late String language;
@@ -57,118 +55,74 @@ class ForgotOtpScreen extends StatelessWidget {
               color: Color(0xFF727272),
               fontWeight: FontWeight.bold),
         ),
-        RichText(text:TextSpan(text:
-        "We've sent an One Time Password (OTP) to the mobile number ",
-          style: TextStyle(
-              fontSize: 14,
-              color: Color(0xFF727272),
-              fontWeight: FontWeight.bold),
-          children: [
-            TextSpan(text:
-            "+91 9876543210. ",
-            style: TextStyle(
-                fontSize: 14,
-                color: Colors.black,
-                fontWeight: FontWeight.bold)),  TextSpan(text:
-            "Please enter it below to complete verification.",
-            style: TextStyle(
-                fontSize: 14,
-                color: Color(0xFF727272),
-                fontWeight: FontWeight.bold)),
-          ]
-        )),
-
+        RichText(
+            text: TextSpan(
+                text:
+                    "We've sent an One Time Password (OTP) to the mobile number ",
+                style: TextStyle(
+                    fontSize: 14,
+                    color: Color(0xFF727272),
+                    fontWeight: FontWeight.bold),
+                children: [
+              TextSpan(
+                  text: "+91 9876543210. ",
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold)),
+              TextSpan(
+                  text: "Please enter it below to complete verification.",
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF727272),
+                      fontWeight: FontWeight.bold)),
+            ])),
         10.heightBox,
-       /* CustomBoxTextFormField(
-            controller: forgotOtpController.otpController,
-            keyboardType: TextInputType.number,
-            hintText: 'Enter OTP',
-            textInputAction: TextInputAction.done,
-            prefixIcon: SvgPicture.asset(
-              ImageConstanst.otpIcon,
-              color: AppColors.primaryColor,
-            ),
-            borderColor: Color(0xFFDDDDDD),
-            validator: (value) {}),*/
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            OtpTextFormField(
-                controller: forgotOtpController.num1Controller,
-                onChanged: (value) {
-                  if (value.length == 1) {
-                    forgotOtpController.notifyClick1(true);
-                    FocusScope.of(forgotOtpController.context).nextFocus();
-                    forgotOtpController.notifyClick2(true);
-                  }
-                  if (value.length == 0) {
-                    FocusScope.of(forgotOtpController.context).previousFocus();
-                    forgotOtpController.notifyClick1(false);
-                  }
-                },
-                clicked: forgotOtpController.click1,
-                onTap: () {
-                  forgotOtpController.notifyClick1(true);
-                }),
-            OtpTextFormField(
-                controller: forgotOtpController.num2Controller,
-                onChanged: (value) {
-                  if (value.length == 1) {
-                    FocusScope.of(forgotOtpController.context).nextFocus();
-                    forgotOtpController.notifyClick3(true);
-                  }
-                  if (value.length == 0) {
-                    FocusScope.of(forgotOtpController.context).previousFocus();
-                    forgotOtpController.notifyClick2(false);
-                  }
-                },
-                clicked: forgotOtpController.click2,
-                onTap: () {
-                  forgotOtpController.notifyClick2(true);
-                }),
-            OtpTextFormField(
-                controller: forgotOtpController.num3Controller,
-                onChanged: (value) {
-                  if (value.length == 1) {
-                    FocusScope.of(forgotOtpController.context).nextFocus();
-                    forgotOtpController.notifyClick4(true);
-                  }
-                  if (value.length == 0) {
-                    FocusScope.of(forgotOtpController.context).previousFocus();
-                    forgotOtpController.notifyClick3(false);
-                  }
-                },
-                onSubmitted: (term){
-                  print('jfgjkfghj  $term');
-                },
-                clicked: forgotOtpController.click3,
-                onTap: () {
-                  forgotOtpController.notifyClick3(true);
-                }),
-            OtpTextFormField(
-                controller: forgotOtpController.num4Controller,
-                clicked: forgotOtpController.click4,
-                onChanged: (value) {
-                  if (value.length == 1) {
-                    FocusScope.of(forgotOtpController.context).nextFocus();
-
-                  }
-                  if (value.length == 0) {
-                    FocusScope.of(forgotOtpController.context).previousFocus();
-                    forgotOtpController.notifyClick4(false);
-                  }
-                },
-                onTap: () {
-                  forgotOtpController.notifyClick4(true);
-                }),
-          ],
+        OtpTextField(
+          length: 4,
+          obscureText: false,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          animationType: AnimationType.scale,
+          pinTheme: PinTheme(
+            shape: PinCodeFieldShape.box,
+            borderRadius: BorderRadius.circular(5),
+            fieldHeight: 50,
+            fieldWidth: 40,
+            activeFillColor: AppColors.primaryColor,
+            activeColor: AppColors.primaryColor,
+            selectedColor: AppColors.primaryColor,
+            selectedFillColor: AppColors.primaryColor,
+            inactiveFillColor: AppColors.lightGrayColor,
+            inactiveColor: AppColors.lightGrayColor,
+          ),
+          animationDuration: const Duration(milliseconds: 300),
+          enableActiveFill: true,
+          cursorColor: Colors.white,
+          textStyle: TextStyle(color: Colors.white),
+          controller: forgotOtpController.otpController,
+          onCompleted: (v) {
+            forgotOtpController.submit(
+              frm,
+            );
+          },
+          onChanged: (value) {
+            debugPrint(value);
+            forgotOtpController.currentText = value;
+            forgotOtpController.update();
+          },
+          beforeTextPaste: (text) {
+            return true;
+          },
+          appContext: forgotOtpController.context,
         ),
         10.heightBox,
         CustomButton(
             text: 'Continue',
             fontSize: 16,
             onPressed: () {
-              forgotOtpController.navigateTo(ResetPasswordScreen(frm: frm,));
+              forgotOtpController.submit(
+                frm,
+              );
             }),
         20.heightBox,
         Align(

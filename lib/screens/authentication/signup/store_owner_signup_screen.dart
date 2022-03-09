@@ -187,8 +187,8 @@ class StoreOwnerSignUpScreen extends StatelessWidget {
                                           LengthLimitingTextInputFormatter(10),
                                           FilteringTextInputFormatter.digitsOnly
                                         ],
-                                     //   textInputAction: TextInputAction.done,
-                                       /* onSubmitted: (term) {
+                                        //   textInputAction: TextInputAction.done,
+                                        /* onSubmitted: (term) {
                                           FocusScope.of(context).unfocus();
                                           storeOwnerSignUpController.signUp();
                                         },*/

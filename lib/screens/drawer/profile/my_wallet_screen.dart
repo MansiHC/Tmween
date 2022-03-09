@@ -25,7 +25,7 @@ class MyWalletScreen extends StatelessWidget {
           myWalletController.context = context;
           return Scaffold(
               body: Container(
-                  color:  Color(0xFFF2F2F2),
+                  color: Color(0xFFF2F2F2),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -45,7 +45,6 @@ class MyWalletScreen extends StatelessWidget {
     return Expanded(
         child: SingleChildScrollView(
             child: Container(
-
                 padding: EdgeInsets.all(
                   15,
                 ),
@@ -72,21 +71,18 @@ class MyWalletScreen extends StatelessWidget {
                               Text(
                                 'Current Balance  ',
                                 style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-
-                                    ),
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                ),
                               ),
                               3.heightBox,
-
-                                        Text(
-                                           '${LocaleKeys.sar.tr} 0',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-
+                              Text(
+                                '${LocaleKeys.sar.tr} 0',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ],
                           )
                         ],
@@ -102,49 +98,60 @@ class MyWalletScreen extends StatelessWidget {
                       ),
                     ),
                     10.heightBox,
-                    Container(color: Colors.white,
-                      padding:EdgeInsets.all(10),child: Column(
+                    Container(
+                      color: Colors.white,
+                      padding: EdgeInsets.all(10),
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                      CustomTextFormField(
-                        isPrefix: false,
-                          controller: myWalletController.amountController,
-                          keyboardType: TextInputType.number,
-                          hintText: 'Amount',
-                          prefixIcon: Text(LocaleKeys.sar.tr,style: TextStyle(fontSize: 14),),
-                          validator: (value) {}),
-                        15.heightBox,
-                        Wrap(
-                          spacing: 10,
-                          children: List.generate(
-                          myWalletController.amounts.length,
-                              (index) =>  InkWell(
-                                  onTap: (){
-
-                                    myWalletController.amountController.text = myWalletController
-                                        .amounts[index];
-                                    myWalletController.update();
-                                  },
-                                  child:Container(
-                                padding: EdgeInsets.all(6),
-                                decoration: BoxDecoration(
-                                  color: AppColors.lightBlueBackground,
-                                  border: Border.all(color: AppColors.blue),
-                                  borderRadius: BorderRadius.all(Radius.circular(6))
-                                ),
-                                child: Text('+${LocaleKeys.sar.tr} ${myWalletController.amounts[index]}',
-                                  style: TextStyle(color: AppColors.blue,fontSize: 12),),
-                              )),)),
-                        20.heightBox,
-                        CustomButton(
-                          text: 'FUND WALLET',
-                          onPressed: () {
-                            myWalletController.navigateTo(FundWalletScreen());
-                          },
-                          fontSize: 15,
-                        ),
-                    ],),),
-
+                          CustomTextFormField(
+                              isPrefix: false,
+                              controller: myWalletController.amountController,
+                              keyboardType: TextInputType.number,
+                              hintText: 'Amount',
+                              prefixIcon: Text(
+                                LocaleKeys.sar.tr,
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              validator: (value) {}),
+                          15.heightBox,
+                          Wrap(
+                              spacing: 10,
+                              children: List.generate(
+                                myWalletController.amounts.length,
+                                (index) => InkWell(
+                                    onTap: () {
+                                      myWalletController.amountController.text =
+                                          myWalletController.amounts[index];
+                                      myWalletController.update();
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(6),
+                                      decoration: BoxDecoration(
+                                          color: AppColors.lightBlueBackground,
+                                          border:
+                                              Border.all(color: AppColors.blue),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(6))),
+                                      child: Text(
+                                        '+${LocaleKeys.sar.tr} ${myWalletController.amounts[index]}',
+                                        style: TextStyle(
+                                            color: AppColors.blue,
+                                            fontSize: 12),
+                                      ),
+                                    )),
+                              )),
+                          20.heightBox,
+                          CustomButton(
+                            text: 'FUND WALLET',
+                            onPressed: () {
+                              myWalletController.navigateTo(FundWalletScreen());
+                            },
+                            fontSize: 15,
+                          ),
+                        ],
+                      ),
+                    ),
                     15.heightBox,
                     Text(
                       'Wallet activity for',
@@ -157,48 +164,55 @@ class MyWalletScreen extends StatelessWidget {
                     10.heightBox,
                     Container(
                         color: Colors.white,
-                       child: MediaQuery.removePadding(
-                                      context: myWalletController.context,
-                                      removeTop: true,
-                                      child: ListView.builder(
-                                          shrinkWrap: true,
-                                          physics: ScrollPhysics(),
-                                          itemCount: myWalletController
-                                              .walletActivitys.length,
-                                          itemBuilder: (context, index) {
-                                            return Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                10.heightBox,
-                                                Padding(padding: EdgeInsets.symmetric(horizontal: 10),child:
-                                               Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                  children: [
-                                                  Text(
-                                                  myWalletController
-                                                      .walletActivitys[index],
-                                                  style: TextStyle(
-                                                    color: AppColors.primaryColor,
-                                                    fontSize: 15,
-                                                  ),
+                        child: MediaQuery.removePadding(
+                            context: myWalletController.context,
+                            removeTop: true,
+                            child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: ScrollPhysics(),
+                                itemCount:
+                                    myWalletController.walletActivitys.length,
+                                itemBuilder: (context, index) {
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      10.heightBox,
+                                      Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                myWalletController
+                                                    .walletActivitys[index],
+                                                style: TextStyle(
+                                                  color: AppColors.primaryColor,
+                                                  fontSize: 15,
                                                 ),
-                                                    Icon(Icons.keyboard_arrow_right_outlined,color: Colors.grey[400],)],)),
-                                                10.heightBox,
-                                                if (index !=
-                                                    (myWalletController
-                                                            .walletActivitys
-                                                            .length -
-                                                        1))
-                                                  Divider(
-                                                    height: 1,
-                                                    thickness: 1,
-                                                    color: Color(0xFFE6E6E6),
-                                                  )
-                                              ],
-                                            );
-                                          })))
-
+                                              ),
+                                              Icon(
+                                                Icons
+                                                    .keyboard_arrow_right_outlined,
+                                                color: Colors.grey[400],
+                                              )
+                                            ],
+                                          )),
+                                      10.heightBox,
+                                      if (index !=
+                                          (myWalletController
+                                                  .walletActivitys.length -
+                                              1))
+                                        Divider(
+                                          height: 1,
+                                          thickness: 1,
+                                          color: Color(0xFFE6E6E6),
+                                        )
+                                    ],
+                                  );
+                                })))
                   ],
                 ))));
   }

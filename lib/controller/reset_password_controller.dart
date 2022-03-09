@@ -6,6 +6,7 @@ import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/service/api.dart';
 
 import '../screens/authentication/login/login_screen.dart';
+import 'forgot_otp_controller.dart';
 
 class ResetPasswordController extends GetxController {
   late BuildContext context;
@@ -21,12 +22,18 @@ class ResetPasswordController extends GetxController {
     Navigator.of(context).pop(false);
   }
 
+  void submit(String frm) {
+    FocusScope.of(context).unfocus();
+    navigateToLoginScreen(frm);
+  }
+
   void navigateToLoginScreen(String frm) {
+    Get.delete<ForgotOtpController>();
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
             builder: (context) => LoginScreen(
                   from: LocaleKeys.forgotPassword,
-              frm: frm,
+                  frm: frm,
                 )),
         (Route<dynamic> route) => false);
   }

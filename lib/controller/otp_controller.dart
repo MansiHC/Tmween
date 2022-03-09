@@ -6,31 +6,22 @@ import 'package:tmween/screens/drawer/drawer_screen.dart';
 import 'package:tmween/service/api.dart';
 import 'package:tmween/utils/helper.dart';
 
+import '../screens/authentication/login/login_screen.dart';
 import '../utils/global.dart';
 import '../utils/my_shared_preferences.dart';
 
 class OtpController extends GetxController {
   late BuildContext context;
 
-  bool click1 = false;
-  bool click2 = false;
-  bool click3 = false;
-  bool click4 = false;
-  TextEditingController num1Controller = TextEditingController();
-  TextEditingController num2Controller = TextEditingController();
-  TextEditingController num3Controller = TextEditingController();
-  TextEditingController num4Controller = TextEditingController();
-
+  TextEditingController otpController = TextEditingController();
+  String currentText = "";
   final api = Api();
   bool loading = false;
   late String phone, otp;
 
   verifyOTP(String name, String email, String phone, String password,
       String deviceType, String langCode, String agreeTerms) async {
-    otp = num1Controller.text +
-        num2Controller.text +
-        num3Controller.text +
-        num4Controller.text;
+    otp = otpController.text;
 
     navigateToDrawerScreen();
     /*
@@ -51,11 +42,8 @@ class OtpController extends GetxController {
   }
 
   verifyLoginOTP() {
-    otp = num1Controller.text +
-        num2Controller.text +
-        num3Controller.text +
-        num4Controller.text;
-
+    FocusScope.of(context).nextFocus();
+    otp = otpController.text;
     navigateToDrawerScreen();
   }
 
@@ -110,23 +98,50 @@ class OtpController extends GetxController {
     Navigator.of(context).pop(false);
   }
 
-  void notifyClick1(bool click) {
-    click1 = click;
-    update();
+  void navigateToLoginScreen(String from, String frm) {
+    Get.delete<OtpController>();
+    if (from == AppConstants.individual) {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => LoginScreen(
+                from: frm,
+                isPassword: false,
+                isStorePassword: false,
+              )));
+    } else {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  LoginScreen(
+                    from: frm,
+                    isPassword: true,
+                    isStorePassword: true,
+                  )));
+    }
   }
 
-  void notifyClick2(bool click) {
-    click2 = click;
-    update();
+  void navigateToLoginEmailScreen(String from, String frm,bool isPassword,bool isStorePassword) {
+    Get.delete<OtpController>();
+    if (from == AppConstants.individual) {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => LoginScreen(
+                from: frm,
+                isPassword: false,
+                isStorePassword: isStorePassword,
+              )));
+    } else {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => LoginScreen(
+                from: frm,
+                isPassword: isPassword,
+                isStorePassword: false,
+              )));
+    }
   }
-
-  void notifyClick3(bool click) {
-    click3 = click;
-    update();
   }
-
-  void notifyClick4(bool click) {
-    click4 = click;
-    update();
-  }
-}

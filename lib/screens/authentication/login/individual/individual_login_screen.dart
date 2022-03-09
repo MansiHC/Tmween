@@ -45,11 +45,8 @@ class IndividualLoginScreen extends StatelessWidget {
                                           ImageConstanst.phoneEmailIcon,
                                           color: AppColors.primaryColor,
                                         ),
-
                                         onSubmitted: (term) {
-                                          FocusScope.of(context).unfocus();
-                                          loginController.isPasswordScreen = true;
-                                          loginController.update();
+                                          loginController.individuaLogin();
                                         },
                                         validator: (value) {
                                           if (value!.isEmpty) {
@@ -136,9 +133,7 @@ class IndividualLoginScreen extends StatelessWidget {
         CustomButton(
             text: LocaleKeys.login,
             onPressed: () {
-              //loginController.login();
-              loginController.isPasswordScreen = true;
-              loginController.update();
+              loginController.individuaLogin();
             }),
         Visibility(visible: loginController.loading, child: 5.heightBox),
         Visibility(

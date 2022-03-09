@@ -691,7 +691,7 @@ class ProductDetailScreen extends StatelessWidget {
       decoration: BoxDecoration(color: Colors.white, boxShadow: [
         BoxShadow(color: Colors.grey[200]!, blurRadius: 5, spreadRadius: 5)
       ]),
-      padding: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1272,7 +1272,7 @@ class ProductDetailScreen extends StatelessWidget {
                     ),
                   ])
                 ])*/
-            Row(
+                Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
@@ -1300,7 +1300,7 @@ class ProductDetailScreen extends StatelessWidget {
                           "As per Weswox's",
                           textAlign: TextAlign.center,
                           style:
-                          TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
+                              TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
                         ),
                       ],
                     )),
@@ -1335,7 +1335,7 @@ class ProductDetailScreen extends StatelessWidget {
                           "Products",
                           textAlign: TextAlign.center,
                           style:
-                          TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
+                              TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
                         ),
                       ],
                     )),
@@ -1370,7 +1370,7 @@ class ProductDetailScreen extends StatelessWidget {
                           "PAYMENTS",
                           textAlign: TextAlign.center,
                           style:
-                          TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
+                              TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
                         ),
                       ],
                     )),
@@ -1404,7 +1404,7 @@ class ProductDetailScreen extends StatelessWidget {
                           "PROTECTION",
                           textAlign: TextAlign.center,
                           style:
-                          TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
+                              TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
                         ),
                       ],
                     )),

@@ -1,19 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/otp_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
-import 'package:tmween/utils/views/otp_text_filed.dart';
 
 import '../../../../controller/login_controller.dart';
 import '../../../../utils/views/custom_button.dart';
+import '../../../../utils/views/otp_text_field.dart';
 
 class StoreOwnerOtpScreen extends StatelessWidget {
   final String phoneEmail;
+  final String from;
+  final String frm;
 
-  StoreOwnerOtpScreen({Key? key, required this.phoneEmail}) : super(key: key);
+  StoreOwnerOtpScreen({Key? key, required this.phoneEmail,required this.from,required this.frm}) : super(key: key);
 
   late String language;
   final otpController = Get.put(OtpController());
@@ -64,8 +67,10 @@ class StoreOwnerOtpScreen extends StatelessWidget {
                   loginController.context = otpController.context;
                   return InkWell(
                       onTap: () {
-                        loginController.isStorePasswordScreen = false;
-                        otpController.exitScreen();
+                      //  loginController.isStorePasswordScreen = false;
+                      //  loginController.update();
+                      //otpController.exitScreen();
+                        otpController.navigateToLoginEmailScreen(from, frm,loginController.isPasswordScreen,loginController.isStorePasswordScreen);
                       },
                       child: Wrap(
                         crossAxisAlignment: WrapCrossAlignment.center,
@@ -86,26 +91,28 @@ class StoreOwnerOtpScreen extends StatelessWidget {
           ],
         ),
         10.heightBox,
-        RichText(text:TextSpan(text:
-        "We've sent an One Time Password (OTP) to the mobile number ",
-            style: TextStyle(
-                fontSize: 14,
-                color: Color(0xFF727272),
-                fontWeight: FontWeight.bold),
-            children: [
-              TextSpan(text:
-              "+91 9876543210. ",
+        RichText(
+            text: TextSpan(
+                text:
+                    "We've sent an One Time Password (OTP) to the mobile number ",
+                style: TextStyle(
+                    fontSize: 14,
+                    color: Color(0xFF727272),
+                    fontWeight: FontWeight.bold),
+                children: [
+              TextSpan(
+                  text: "+91 9876543210. ",
                   style: TextStyle(
                       fontSize: 14,
                       color: Colors.black,
-                      fontWeight: FontWeight.bold)),  TextSpan(text:
-              "Please enter it below to complete verification.",
+                      fontWeight: FontWeight.bold)),
+              TextSpan(
+                  text: "Please enter it below to complete verification.",
                   style: TextStyle(
                       fontSize: 14,
                       color: Color(0xFF727272),
                       fontWeight: FontWeight.bold)),
-            ]
-        )),
+            ])),
         10.heightBox,
         Text(
           LocaleKeys.enterOTP.tr,
@@ -114,75 +121,40 @@ class StoreOwnerOtpScreen extends StatelessWidget {
         10.heightBox,
         buildTimer(),
         40.heightBox,
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            OtpTextFormField(
-                controller: otpController.num1Controller,
-                onChanged: (value) {
-                  if (value.length == 1) {
-                    otpController.notifyClick1(true);
-                    FocusScope.of(otpController.context).nextFocus();
-                    otpController.notifyClick2(true);
-                  }
-                  if (value.length == 0) {
-                    FocusScope.of(otpController.context).previousFocus();
-                    otpController.notifyClick1(false);
-                  }
-                },
-                clicked: otpController.click1,
-                onTap: () {
-                  otpController.notifyClick1(true);
-                }),
-            OtpTextFormField(
-                controller: otpController.num2Controller,
-                onChanged: (value) {
-                  if (value.length == 1) {
-                    FocusScope.of(otpController.context).nextFocus();
-                    otpController.notifyClick3(true);
-                  }
-                  if (value.length == 0) {
-                    FocusScope.of(otpController.context).previousFocus();
-                    otpController.notifyClick2(false);
-                  }
-                },
-                clicked: otpController.click2,
-                onTap: () {
-                  otpController.notifyClick2(true);
-                }),
-            OtpTextFormField(
-                controller: otpController.num3Controller,
-                onChanged: (value) {
-                  if (value.length == 1) {
-                    FocusScope.of(otpController.context).nextFocus();
-                    otpController.notifyClick4(true);
-                  }
-                  if (value.length == 0) {
-                    FocusScope.of(otpController.context).previousFocus();
-                    otpController.notifyClick3(false);
-                  }
-                },
-                clicked: otpController.click3,
-                onTap: () {
-                  otpController.notifyClick3(true);
-                }),
-            OtpTextFormField(
-                controller: otpController.num4Controller,
-                clicked: otpController.click4,
-                onChanged: (value) {
-                  if (value.length == 1) {
-                    FocusScope.of(otpController.context).nextFocus();
-                    otpController.verifyLoginOTP();
-                  }
-                  if (value.length == 0) {
-                    FocusScope.of(otpController.context).previousFocus();
-                    otpController.notifyClick4(false);
-                  }
-                },
-                onTap: () {
-                  otpController.notifyClick4(true);
-                }),
-          ],
+        OtpTextField(
+          length: 4,
+          obscureText: false,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          animationType: AnimationType.scale,
+          pinTheme: PinTheme(
+            shape: PinCodeFieldShape.box,
+            borderRadius: BorderRadius.circular(5),
+            fieldHeight: 50,
+            fieldWidth: 40,
+            activeFillColor: AppColors.primaryColor,
+            activeColor: AppColors.primaryColor,
+            selectedColor: AppColors.primaryColor,
+            selectedFillColor: AppColors.primaryColor,
+            inactiveFillColor: AppColors.lightGrayColor,
+            inactiveColor: AppColors.lightGrayColor,
+          ),
+          animationDuration: const Duration(milliseconds: 300),
+          enableActiveFill: true,
+          cursorColor: Colors.white,
+          textStyle: TextStyle(color: Colors.white),
+          controller: otpController.otpController,
+          onCompleted: (v) {
+            otpController.verifyLoginOTP();
+          },
+          onChanged: (value) {
+            debugPrint(value);
+            otpController.currentText = value;
+            otpController.update();
+          },
+          beforeTextPaste: (text) {
+            return true;
+          },
+          appContext: otpController.context,
         ),
         Visibility(visible: otpController.loading, child: 5.heightBox),
         Visibility(
@@ -243,7 +215,8 @@ class StoreOwnerOtpScreen extends StatelessWidget {
         CustomButton(
             text: LocaleKeys.loginWithPassword.tr,
             onPressed: () {
-              otpController.exitScreen();
+            //  otpController.exitScreen();
+              otpController.navigateToLoginScreen(from, frm);
             })
       ],
     );
@@ -301,7 +274,8 @@ class StoreOwnerOtpScreen extends StatelessWidget {
                     color: Colors.white, // Button color
                     child: InkWell(
                       onTap: () {
-                        otpController.exitScreen();
+                       // otpController.exitScreen();
+                        otpController.navigateToLoginScreen(from, frm);
                       },
                       child: SizedBox(
                           width: 24,

@@ -84,7 +84,7 @@ class FilterController extends GetxController {
   bool isPriceExpanded = true;
 
   double priceRange = 0;
-  RangeValues currentRangeValues = const RangeValues(0, 200 );
+  RangeValues currentRangeValues = const RangeValues(0, 200);
 
   void updatePrice(double value) {
     priceRange = value;

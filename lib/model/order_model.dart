@@ -3,8 +3,8 @@ class OrderModel {
     required this.title,
     required this.image,
     required this.deliveryStatus,
-     this.rating,
-     this.ratingStatus,
+    this.rating,
+    this.ratingStatus,
     required this.isRating,
   });
 

@@ -33,98 +33,94 @@ class YourOrderScreen extends StatelessWidget {
                           color: AppColors.appBarColor,
                           padding: EdgeInsets.only(top: 20),
                           child: topView(yourOrderController)),
-              Expanded(child:_bottomView(yourOrderController))
+                      Expanded(child: _bottomView(yourOrderController))
                     ],
                   )));
         });
   }
 
   Widget _bottomView(YourOrderController yourOrderController) {
-    return  InkWell(
-            onTap: (){
-              yourOrderController.noOrders = false;
-              yourOrderController.update();
-            },
-            child:yourOrderController.noOrders?_noOrderView(yourOrderController):
-                _orderList(yourOrderController)
-           );
+    return InkWell(
+        onTap: () {
+          yourOrderController.noOrders = false;
+          yourOrderController.update();
+        },
+        child: yourOrderController.noOrders
+            ? _noOrderView(yourOrderController)
+            : _orderList(yourOrderController));
   }
 
-  Widget _orderList(YourOrderController yourOrderController){
+  Widget _orderList(YourOrderController yourOrderController) {
     return SingleChildScrollView(
-        child:Container(padding: EdgeInsets.all(20),child: Column(
-      children: [
-        CustomTextFormField(
-            isDense: true,
-            enabled: false,
-            controller:
-            yourOrderController.searchController,
-            keyboardType: TextInputType.text,
-            hintText: 'Search All Orders',
-            textInputAction: TextInputAction.search,
-            onSubmitted: (term) {
-              FocusScope.of(yourOrderController.context).unfocus();
-            },
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.symmetric(
-                  horizontal: 10, vertical: 10),
-              fillColor: Colors.white,
-              filled: true,
-              border: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color:
-                    AppColors.lightGrayColor),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color:
-                    AppColors.lightGrayColor),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color:
-                    AppColors.lightGrayColor),
-              ),
+        child: Container(
+      padding: EdgeInsets.all(20),
+      child: Column(
+        children: [
+          CustomTextFormField(
               isDense: true,
-              hintText:
-              LocaleKeys.searchProducts.tr,
-              prefixIcon: Icon(
-                Icons.search,
-                color: Color(0xFF686868),
-                size: 32,
+              enabled: false,
+              controller: yourOrderController.searchController,
+              keyboardType: TextInputType.text,
+              hintText: 'Search All Orders',
+              textInputAction: TextInputAction.search,
+              onSubmitted: (term) {
+                FocusScope.of(yourOrderController.context).unfocus();
+              },
+              decoration: InputDecoration(
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                fillColor: Colors.white,
+                filled: true,
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.lightGrayColor),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.lightGrayColor),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.lightGrayColor),
+                ),
+                isDense: true,
+                hintText: LocaleKeys.searchProducts.tr,
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Color(0xFF686868),
+                  size: 32,
+                ),
               ),
-            ),
-            validator: (value) {
-              return null;
-            }),
-        20.heightBox,
-        ListView.builder(
-            padding: EdgeInsets.zero,
-            shrinkWrap: true,
-            physics: ScrollPhysics(),
-            itemCount: yourOrderController.orders.length,
-            itemBuilder: (context, index) {
-              return OrderContainer(
-                  order: yourOrderController.orders[index],
-                  index: index,
-              length: yourOrderController.orders.length);
-            })
-      ],
-    ),));
+              validator: (value) {
+                return null;
+              }),
+          20.heightBox,
+          ListView.builder(
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              physics: ScrollPhysics(),
+              itemCount: yourOrderController.orders.length,
+              itemBuilder: (context, index) {
+                return OrderContainer(
+                    order: yourOrderController.orders[index],
+                    index: index,
+                    length: yourOrderController.orders.length);
+              })
+        ],
+      ),
+    ));
   }
 
-  Widget _noOrderView(YourOrderController yourOrderController){
-    return  Container(
+  Widget _noOrderView(YourOrderController yourOrderController) {
+    return Container(
         padding: EdgeInsets.symmetric(
             horizontal: 20,
-          vertical: MediaQuery.of(yourOrderController.context).size.height/3
-           ),
+            vertical:
+                MediaQuery.of(yourOrderController.context).size.height / 3),
         child: Container(
             padding: EdgeInsets.all(15),
             decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border.all(color: Color(0xFFD7D7D7))),
-            child: Center(child:Column(
+            child: Center(
+                child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [

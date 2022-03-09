@@ -14,7 +14,7 @@ class ResetPasswordScreen extends StatelessWidget {
   final resetPasswordController = Get.put(ResetPasswordController());
   final String frm;
 
-  ResetPasswordScreen({Key? key,required this.frm}) : super(key: key);
+  ResetPasswordScreen({Key? key, required this.frm}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +61,6 @@ class ResetPasswordScreen extends StatelessWidget {
             keyboardType: TextInputType.visiblePassword,
             obscureText: true,
             hintText: 'Enter new password',
-
             prefixIcon: SvgPicture.asset(
               ImageConstanst.lockIcon,
               color: AppColors.primaryColor,
@@ -94,9 +93,8 @@ class ResetPasswordScreen extends StatelessWidget {
             obscureText: true,
             hintText: 'Re-enter new password',
             textInputAction: TextInputAction.done,
-            onSubmitted: (term){
-              FocusScope.of(resetPasswordController.context).unfocus();
-              resetPasswordController.navigateToLoginScreen(frm);
+            onSubmitted: (term) {
+              resetPasswordController.submit(frm);
             },
             prefixIcon: SvgPicture.asset(
               ImageConstanst.lock2Icon,
@@ -109,7 +107,7 @@ class ResetPasswordScreen extends StatelessWidget {
             text: 'Continue',
             fontSize: 16,
             onPressed: () {
-              resetPasswordController.navigateToLoginScreen(frm);
+              resetPasswordController.submit(frm);
             }),
         30.heightBox,
         Text(

@@ -16,7 +16,10 @@ class IndividualLoginPasswordScreen extends StatelessWidget {
 
   final String from;
 
-  IndividualLoginPasswordScreen({Key? key, required this.from,}) : super(key: key);
+  IndividualLoginPasswordScreen({
+    Key? key,
+    required this.from,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +91,8 @@ class IndividualLoginPasswordScreen extends StatelessWidget {
                                                 .passwordController,
                                             keyboardType:
                                                 TextInputType.visiblePassword,
-                                            textInputAction: TextInputAction.done,
+                                            textInputAction:
+                                                TextInputAction.done,
                                             obscureText:
                                                 loginController.visiblePassword,
                                             suffixIcon: IconButton(
@@ -104,9 +108,9 @@ class IndividualLoginPasswordScreen extends StatelessWidget {
                                                       .visiblePasswordIcon();
                                                 }),
                                             hintText: LocaleKeys.yourPassword,
-                                            onSubmitted: (term){
-                                              FocusScope.of(context).unfocus();
-                                              loginController.doLoginWithPassword();
+                                            onSubmitted: (term) {
+                                              loginController
+                                                  .doLoginWithPassword();
                                             },
                                             validator: (value) {
                                               if (value!.isEmpty) {
@@ -174,21 +178,26 @@ class IndividualLoginPasswordScreen extends StatelessWidget {
                                                     ])),
                                             Expanded(
                                               child: InkWell(
-                                                onTap: () {
-                                                  loginController
-                                                      .navigateToForgotPasswordScreen(AppConstants.individual,from);
-                                                },
-                                                child:Text(
-                                                  LocaleKeys.forgotPassword.tr,
-                                                  textAlign: language == 'ar'
-                                                      ? TextAlign.left
-                                                      : TextAlign.right,
-                                                  style: TextStyle(
-                                                      fontSize: 13,
-                                                      color: AppColors
-                                                          .primaryColor,
-                                                      fontWeight:
-                                                          FontWeight.bold))),
+                                                  onTap: () {
+                                                    loginController
+                                                        .navigateToForgotPasswordScreen(
+                                                            AppConstants
+                                                                .individual,
+                                                            from);
+                                                  },
+                                                  child: Text(
+                                                      LocaleKeys
+                                                          .forgotPassword.tr,
+                                                      textAlign:
+                                                          language == 'ar'
+                                                              ? TextAlign.left
+                                                              : TextAlign.right,
+                                                      style: TextStyle(
+                                                          fontSize: 13,
+                                                          color: AppColors
+                                                              .primaryColor,
+                                                          fontWeight: FontWeight
+                                                              .bold))),
                                             )
                                           ],
                                         ),
@@ -253,7 +262,8 @@ class IndividualLoginPasswordScreen extends StatelessWidget {
         CustomButton(
             text: LocaleKeys.loginWithOTP,
             onPressed: () {
-              loginController.navigateToOTPScreen();
+              loginController.navigateToOTPScreen( AppConstants
+                  .individual,from);
             })
       ],
     );

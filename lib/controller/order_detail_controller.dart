@@ -16,26 +16,24 @@ class OrderDetailController extends GetxController {
   TextEditingController searchController = TextEditingController();
   List<OrderModel> orders = const <OrderModel>[
     const OrderModel(
-                title: 'Book name - author name details of book',
-      image:'asset/image/my_cart_images/book.png',
-          deliveryStatus: 'Delivered Today',
-      rating: 0,
-      ratingStatus: 'Rate this product now',
-      isRating: true
-    ), const OrderModel(
-                title: 'Book name - author name details of book',
-      image:'asset/image/my_cart_images/book.png',
-          deliveryStatus: 'Delivered Today',
-      rating: 3,
-      ratingStatus: 'Write Review',
-      isRating: true
-    ),const OrderModel(
-                title: 'Book name - author name details of book',
-      image:'asset/image/my_cart_images/book.png',
-          deliveryStatus: 'Refund Completed',
-      isRating: false
-    ),
-
+        title: 'Book name - author name details of book',
+        image: 'asset/image/my_cart_images/book.png',
+        deliveryStatus: 'Delivered Today',
+        rating: 0,
+        ratingStatus: 'Rate this product now',
+        isRating: true),
+    const OrderModel(
+        title: 'Book name - author name details of book',
+        image: 'asset/image/my_cart_images/book.png',
+        deliveryStatus: 'Delivered Today',
+        rating: 3,
+        ratingStatus: 'Write Review',
+        isRating: true),
+    const OrderModel(
+        title: 'Book name - author name details of book',
+        image: 'asset/image/my_cart_images/book.png',
+        deliveryStatus: 'Refund Completed',
+        isRating: false),
   ];
 
   @override
@@ -54,7 +52,6 @@ class OrderDetailController extends GetxController {
   }
 
   void exitScreen() {
-
     Navigator.of(context).pop();
   }
 

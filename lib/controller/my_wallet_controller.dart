@@ -10,7 +10,6 @@ class MyWalletController extends GetxController {
   int loginLogId = 0;
   TextEditingController amountController = TextEditingController();
 
-
   final formKey = GlobalKey<FormState>();
 
   List<String> walletActivitys = const <String>[

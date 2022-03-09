@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,6 +26,8 @@ class DrawerControllers extends GetxController {
   late List<LanguageModel> languages;
   late LanguageModel languageValue;
   bool isLogin = true;
+
+  ListQueue<int> navigationQueue = ListQueue();
 
   List<AddressModel> addresses = const <AddressModel>[
     const AddressModel(
@@ -66,7 +70,7 @@ class DrawerControllers extends GetxController {
         .addBoolToSF(SharedPreferencesKeys.isDrawer, true);
     languages = <LanguageModel>[
       LanguageModel(name: LocaleKeys.english.tr, locale: Locale('en', 'US')),
-       LanguageModel(name: LocaleKeys.arabian.tr, locale: Locale('ar', 'DZ')),
+      LanguageModel(name: LocaleKeys.arabian.tr, locale: Locale('ar', 'DZ')),
       LanguageModel(name: LocaleKeys.spanish.tr, locale: Locale('es', 'ES')),
     ];
     languageValue = languages[0];
@@ -81,6 +85,8 @@ class DrawerControllers extends GetxController {
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
   }
+
+
 
   void closeDrawer() {
     Navigator.pop(context);

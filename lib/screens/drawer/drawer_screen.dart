@@ -28,13 +28,12 @@ class DrawerScreen extends StatelessWidget {
 
   final String? from;
 
-  DrawerScreen({Key? key,  this.from}) : super(key: key);
-
+  DrawerScreen({Key? key, this.from}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
-    if(from == AppConstants.productDetail){
+    if (from == AppConstants.productDetail) {
       drawerController.pageIndex = 4;
       drawerController.pageTitle = LocaleKeys.cart.tr;
     }
@@ -42,6 +41,15 @@ class DrawerScreen extends StatelessWidget {
         init: DrawerControllers(),
         builder: (contet) {
           drawerController.context = context;
+          if (drawerController.pageIndex == 1) {
+            drawerController.pageTitle = LocaleKeys.categories.tr;
+          } else if (drawerController.pageIndex == 2) {
+            drawerController.pageTitle = LocaleKeys.search.tr;
+          } else if (drawerController.pageIndex == 3) {
+            drawerController.pageTitle = LocaleKeys.wishLists.tr;
+          } else if (drawerController.pageIndex == 4) {
+            drawerController.pageTitle = LocaleKeys.cart.tr;
+          }
           return WillPopScope(
               onWillPop: () => _onWillPop(drawerController),
               child: Scaffold(
@@ -158,7 +166,8 @@ class DrawerScreen extends StatelessWidget {
                   bottomNavigationBar: _buildBottomNavBar(drawerController),
                   body: Column(children: [
                     drawerController.pageIndex == 2 ||
-                            drawerController.pageIndex == 3||drawerController.pageIndex == 4
+                            drawerController.pageIndex == 3 ||
+                            drawerController.pageIndex == 4
                         ? Container()
                         : Container(
                             color: AppColors.appBarColor,
@@ -279,139 +288,85 @@ class DrawerScreen extends StatelessWidget {
   }
 
   _buildBottomNavBar(DrawerControllers drawerController) {
-    return Container(
-      color: AppColors.appBarColor,
-      height: 60,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          InkWell(
-              onTap: () {
-                drawerController.changePage(0);
-              },
-              child: Wrap(
-                crossAxisAlignment: WrapCrossAlignment.center,
-                direction: Axis.vertical,
-                children: [
-                  drawerController.pageIndex == 0
-                      ? Image.asset(
-                          ImageConstanst.dashboardIcon,
-                          height: 24,
-                          width: 24,
-                        )
-                      : Image.asset(
-                          ImageConstanst.dashboardIcon,
-                          height: 24,
-                          width: 24,
-                        ),
-                  5.heightBox,
-                  Text(
-                    LocaleKeys.home.tr,
-                    style: TextStyle(fontSize: 12, color: Colors.white),
+    return BottomNavigationBar(
+      backgroundColor: AppColors.appBarColor,
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.grey,
+      type: BottomNavigationBarType.fixed,
+      currentIndex: drawerController.pageIndex,
+      onTap: (index) {
+        if (index != drawerController.pageIndex) {
+          drawerController.navigationQueue
+              .removeWhere((element) => element == index);
+          drawerController.navigationQueue.addLast(index);
+          drawerController.pageIndex = index;
+          drawerController.update();
+        }
+      },
+      items: [
+        BottomNavigationBarItem(
+            icon: drawerController.pageIndex == 0
+                ? Image.asset(
+                    ImageConstanst.dashboardIcon,
+                    height: 24,
+                    width: 24,
                   )
-                ],
-              )),
-          InkWell(
-              onTap: () {
-                drawerController.pageTitle = LocaleKeys.categories.tr;
-                drawerController.changePage(1);
-              },
-              child: Wrap(
-                  direction: Axis.vertical,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    drawerController.pageIndex == 1
-                        ? const Icon(
-                            CupertinoIcons.circle_grid_3x3_fill,
-                            color: AppColors.primaryColor,
-                            size: 24,
-                          )
-                        : const Icon(
-                            CupertinoIcons.circle_grid_3x3,
-                            color: Colors.white,
-                            size: 24,
-                          ),
-                    5.heightBox,
-                    Text(
-                      LocaleKeys.categories.tr,
-                      style: TextStyle(fontSize: 12, color: Colors.white),
-                    )
-                  ])),
-          InkWell(
-              onTap: () {
-                drawerController.changePage(2);
-                drawerController.pageTitle = LocaleKeys.search.tr;
-              },
-              child: Wrap(
-                  direction: Axis.vertical,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    drawerController.pageIndex == 2
-                        ? const Icon(
-                            CupertinoIcons.search,
-                            color: AppColors.primaryColor,
-                            size: 24,
-                          )
-                        : const Icon(
-                            CupertinoIcons.search,
-                            color: Colors.white,
-                            size: 24,
-                          ),
-                    5.heightBox,
-                    Text(
-                      LocaleKeys.search.tr,
-                      style: TextStyle(fontSize: 12, color: Colors.white),
-                    )
-                  ])),
-          InkWell(
-              onTap: () {
-                drawerController.changePage(3);
-                drawerController.pageTitle = LocaleKeys.wishLists.tr;
-              },
-              child: Wrap(
-                  direction: Axis.vertical,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      ImageConstanst.wishListssIcon,
-                      color: drawerController.pageIndex == 3
-                          ? AppColors.primaryColor
-                          : Colors.white,
-                      height: 24,
-                      width: 24,
-                    ),
-                    5.heightBox,
-                    Text(
-                      LocaleKeys.wishLists.tr,
-                      style: TextStyle(fontSize: 12, color: Colors.white),
-                    )
-                  ])),
-          InkWell(
-              onTap: () {
-                drawerController.changePage(4);
-                drawerController.pageTitle = LocaleKeys.cart.tr;
-                //drawerController.navigateTo(CartScreen());
-              },
-              child: Wrap(
-                  direction: Axis.vertical,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      ImageConstanst.shoppingCartIcon,
-                      color: drawerController.pageIndex == 4
-                          ? AppColors.primaryColor
-                          : Colors.white,
-                      height: 24,
-                      width: 24,
-                    ),
-                    5.heightBox,
-                    Text(
-                      LocaleKeys.cart.tr,
-                      style: TextStyle(fontSize: 12, color: Colors.white),
-                    )
-                  ])),
-        ],
-      ),
+                : Image.asset(
+                    ImageConstanst.dashboardIcon,
+                    height: 24,
+                    width: 24,
+                  ),
+            label: LocaleKeys.home.tr),
+        BottomNavigationBarItem(
+          icon: drawerController.pageIndex == 1
+              ? const Icon(
+                  CupertinoIcons.circle_grid_3x3_fill,
+                  color: AppColors.primaryColor,
+                  size: 24,
+                )
+              : const Icon(
+                  CupertinoIcons.circle_grid_3x3,
+                  color: Colors.white,
+                  size: 24,
+                ),
+          label: LocaleKeys.categories.tr,
+        ),
+        BottomNavigationBarItem(
+          icon: drawerController.pageIndex == 2
+              ? const Icon(
+                  CupertinoIcons.search,
+                  color: AppColors.primaryColor,
+                  size: 24,
+                )
+              : const Icon(
+                  CupertinoIcons.search,
+                  color: Colors.white,
+                  size: 24,
+                ),
+          label: LocaleKeys.search.tr,
+        ),
+        BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              ImageConstanst.wishListssIcon,
+              color: drawerController.pageIndex == 3
+                  ? AppColors.primaryColor
+                  : Colors.white,
+              height: 24,
+              width: 24,
+            ),
+            label: LocaleKeys.wishLists.tr),
+        BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              ImageConstanst.shoppingCartIcon,
+              color: drawerController.pageIndex == 4
+                  ? AppColors.primaryColor
+                  : Colors.white,
+              height: 24,
+              width: 24,
+            ),
+            label: LocaleKeys.cart.tr),
+        //TextStyle(fontSize: 12, fontWeight: FontWeight.w600))),
+      ],
     );
   }
 
@@ -454,10 +409,9 @@ class DrawerScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 16, color: Colors.black54),
                   ),
                   onPressed: () {
-                    Get.delete<LoginController>();
+
                     Get.delete<DrawerControllers>();
-                    Get.off(LoginScreen(from: SharedPreferencesKeys.isDrawer));
-                    //  drawerController.navigateToLoginScreen();
+                      drawerController.navigateTo(LoginScreen(from: SharedPreferencesKeys.isDrawer));
                   },
                 ),
               ],
@@ -580,7 +534,6 @@ class DrawerScreen extends StatelessWidget {
             thickness: 1,
             color: Colors.white24,
           ),
-
           ListTile(
             leading: SvgPicture.asset(
               ImageConstanst.customerServiceIcon,
@@ -618,51 +571,61 @@ class DrawerScreen extends StatelessWidget {
               onChanged: (LanguageModel? value) async {
                 drawerController.languageValue = value!;
                 //  await context.setLocale(value.locale);
-             /*   MySharedPreferences.instance.addStringToSF(
+                /*   MySharedPreferences.instance.addStringToSF(
                     SharedPreferencesKeys.language, value.locale.toString());
                 Get.updateLocale(value.locale);*/
                 // drawerController.closeDrawer();
               },
             ),
           ]),
-
         ],
       ),
     );
   }
 
   Future<bool> _onWillPop(DrawerControllers drawerController) async {
-    return await showDialog(
-        context: drawerController.context,
-        builder: (_) => AlertDialog(
-              title: Text(
-                LocaleKeys.wantExit.tr,
-                style: TextStyle(
-                  fontSize: 16,
-                ),
-              ),
-              actions: [
-                TextButton(
-                  style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                  child: Text(
-                    LocaleKeys.no.tr,
-                    style: TextStyle(fontSize: 16, color: Colors.black54),
+    if (drawerController.navigationQueue.isEmpty) {
+      return await showDialog(
+          context: drawerController.context,
+          builder: (_) => AlertDialog(
+                title: Text(
+                  LocaleKeys.wantExit.tr,
+                  style: TextStyle(
+                    fontSize: 16,
                   ),
-                  onPressed: () {
-                    drawerController.pop();
-                  },
                 ),
-                TextButton(
-                  style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                  child: Text(
-                    LocaleKeys.yes.tr,
-                    style: TextStyle(fontSize: 16, color: Colors.black54),
+                actions: [
+                  TextButton(
+                    style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                    child: Text(
+                      LocaleKeys.no.tr,
+                      style: TextStyle(fontSize: 16, color: Colors.black54),
+                    ),
+                    onPressed: () {
+                      drawerController.pop();
+                    },
                   ),
-                  onPressed: () {
-                    drawerController.exit();
-                  },
-                ),
-              ],
-            ));
+                  TextButton(
+                    style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                    child: Text(
+                      LocaleKeys.yes.tr,
+                      style: TextStyle(fontSize: 16, color: Colors.black54),
+                    ),
+                    onPressed: () {
+                      drawerController.exit();
+                    },
+                  ),
+                ],
+              ));
+    } else {
+      drawerController.navigationQueue.removeLast();
+      int position = drawerController.navigationQueue.isEmpty
+          ? 0
+          : drawerController.navigationQueue.last;
+      drawerController.pageIndex = position;
+      drawerController.update();
+      print(' dhfdsf ${drawerController.pageIndex}');
+      return false;
+    }
   }
 }

@@ -6,6 +6,8 @@ import 'package:tmween/screens/authentication/signup/otp_screen.dart';
 import 'package:tmween/service/api.dart';
 import 'package:tmween/utils/helper.dart';
 
+import 'otp_controller.dart';
+
 class SignUpController extends GetxController {
   bool agree = false;
   TextEditingController firstNameController = TextEditingController();
@@ -57,6 +59,7 @@ class SignUpController extends GetxController {
 
   @override
   void onInit() {
+    Get.delete<OtpController>();
     tabList = <Tab>[];
     tabList.add(new Tab(
       text: LocaleKeys.individual.tr,

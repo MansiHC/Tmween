@@ -17,6 +17,7 @@ import '../screens/drawer/drawer_screen.dart';
 import '../service/api.dart';
 import '../utils/global.dart';
 import '../utils/my_shared_preferences.dart';
+import 'forgot_otp_controller.dart';
 
 class LoginController extends GetxController {
   String? uuid, deviceNo, deviceName, platform, model, version;
@@ -45,6 +46,7 @@ class LoginController extends GetxController {
 
   @override
   void onInit() {
+    Get.delete<ForgotOtpController>();
     tabList = <Tab>[];
     tabList.add(new Tab(
       text: LocaleKeys.individual.tr,
@@ -74,6 +76,18 @@ class LoginController extends GetxController {
         'Error:': 'Failed to get platform version.'
       };
     }
+  }
+
+  void individuaLogin() {
+    FocusScope.of(context).unfocus();
+    isPasswordScreen = true;
+    update();
+  }
+
+  void storeLogin() {
+    FocusScope.of(context).unfocus();
+    isStorePasswordScreen = true;
+    update();
   }
 
   void getAndroidBuildData(AndroidDeviceInfo build) {
@@ -142,7 +156,9 @@ class LoginController extends GetxController {
   void visiblePasswordIcon() {
     visiblePassword = !visiblePassword;
     update();
-  }void visibleStorePasswordIcon() {
+  }
+
+  void visibleStorePasswordIcon() {
     storeVisiblePassword = !storeVisiblePassword;
     update();
   }
@@ -179,6 +195,8 @@ class LoginController extends GetxController {
   }
 
   doLoginWithPassword() {
+
+    FocusScope.of(context).unfocus();
     //  if (formKey.currentState!.validate()) {
     navigateToDrawerScreen();
     //}
@@ -195,37 +213,62 @@ class LoginController extends GetxController {
                 )));
   }
 
-  void navigateToForgotPasswordScreen(String from,String frm) {
-   // Get.delete<LoginController>();
+  void navigateToForgotPasswordScreen(String from, String frm) {
+    // Get.delete<LoginController>();
     //Navigator.of(context).pop();
 
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (context) => ForgotPasswordScreen(from:from,frm: frm,)));
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ForgotPasswordScreen(
+                  from: from,
+                  frm: frm,
+                )));
   }
 
-  void navigateToOTPScreen() {
+  void navigateToOTPScreen(String from, String frm) {
     Get.delete<OtpController>();
+/*
 
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => LoginOtpScreen(
                 phoneEmail: phoneEmailController.text.toString())));
+*/
+
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => LoginOtpScreen(
+              phoneEmail: phoneEmailController.text.toString(),
+              from: from,
+              frm: frm,
+            )));
   }
 
+  void navigateToStoreOwnerOTPScreen(String from, String frm) {
 
-
-  void navigateToStoreOwnerOTPScreen() {
     Get.delete<OtpController>();
 
-    Navigator.push(
+   /* Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => StoreOwnerOtpScreen(
-                phoneEmail: storePhoneEmailController.text.toString())));
+                phoneEmail: storePhoneEmailController.text.toString())));*/
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => LoginOtpScreen(
+              phoneEmail: phoneEmailController.text.toString(),
+              from: from,
+              frm: frm,
+            )));
   }
 
   void navigateToDrawerScreen() {
+    Get.delete<LoginController>();
+
     rememberMe == true
         ? MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, true)
@@ -239,27 +282,26 @@ class LoginController extends GetxController {
   }
 
   void exitScreen(String from, String? frm) {
-
-    if(isPasswordScreen){
+    if (isPasswordScreen) {
       isPasswordScreen = false;
       update();
-    } else if(isStorePasswordScreen){
+    } else if (isStorePasswordScreen) {
       isStorePasswordScreen = false;
       update();
-    }else {
+    } else {
       Get.delete<LoginController>();
 
       if (frm == SharedPreferencesKeys.isDrawer &&
           from == AppConstants.forgotPassword) {
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => DrawerScreen()),
-                (Route<dynamic> route) => false);
-      }else if (from == SharedPreferencesKeys.isDrawer) {
-    Navigator.of(context).pop();
-    } else {
+            (Route<dynamic> route) => false);
+      } else if (from == SharedPreferencesKeys.isDrawer) {
+        Navigator.of(context).pop();
+      } else {
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => SplashScreen()),
-                (Route<dynamic> route) => false);
+            (Route<dynamic> route) => false);
       }
     }
   }
@@ -268,6 +310,7 @@ class LoginController extends GetxController {
     rememberMe = !rememberMe;
     update();
   }
+
   void notifyStoreCheckBox() {
     storeRememberMe = !storeRememberMe;
     update();

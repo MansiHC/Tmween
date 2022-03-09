@@ -9,4 +9,6 @@ class DeactivateAccountController extends GetxController {
   void exitScreen() {
     Navigator.of(context).pop();
   }
+
+  void deActivate() {}
 }

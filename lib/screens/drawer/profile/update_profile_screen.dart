@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image_crop/image_crop.dart';
@@ -17,10 +18,10 @@ import 'package:tmween/screens/drawer/profile/deactivate_account_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_button.dart';
+import 'package:tmween/utils/views/otp_text_field.dart';
 
 import '../../../utils/helper.dart';
 import '../../../utils/views/custom_text_form_field.dart';
-import '../../../utils/views/otp_text_filed.dart';
 
 class UpdateProfileScreen extends StatelessWidget {
   late String language;
@@ -238,6 +239,9 @@ class UpdateProfileScreen extends StatelessWidget {
                 keyboardType: TextInputType.name,
                 hintText: LocaleKeys.lastName,
                 textInputAction: TextInputAction.done,
+                onSubmitted: (term) {
+                  editAccountController.updateNameImage();
+                },
                 prefixIcon: SvgPicture.asset(
                   ImageConstanst.userIcon,
                   color: AppColors.primaryColor,
@@ -248,7 +252,9 @@ class UpdateProfileScreen extends StatelessWidget {
                 backgroundColor: Color(0xFF0188C8),
                 text: LocaleKeys.update,
                 fontSize: 14,
-                onPressed: () {}),
+                onPressed: () {
+                  editAccountController.updateNameImage();
+                }),
             20.heightBox,
             Text(
               LocaleKeys.mobileNumber.tr,
@@ -259,6 +265,7 @@ class UpdateProfileScreen extends StatelessWidget {
             ),
             10.heightBox,
             CustomBoxTextFormField(
+                readOnly: true,
                 controller: editAccountController.mobileNumberController,
                 keyboardType: TextInputType.phone,
                 hintText: LocaleKeys.mobileNumber,
@@ -269,8 +276,11 @@ class UpdateProfileScreen extends StatelessWidget {
                 ),
                 suffixIcon: InkWell(
                     onTap: () {
-                      _showOtpVerificationDialog(editAccountController,
-                          '+249 9822114455', language == 'ar' ? 280 : 270);
+                      _showOtpVerificationDialog(
+                          editAccountController,
+                          '+249 9822114455',
+                          language == 'ar' ? 280 : 270,
+                          false);
                     },
                     child: Padding(
                         padding:
@@ -293,6 +303,7 @@ class UpdateProfileScreen extends StatelessWidget {
             ),
             10.heightBox,
             CustomBoxTextFormField(
+                readOnly: true,
                 controller: editAccountController.emailController,
                 keyboardType: TextInputType.emailAddress,
                 hintText: LocaleKeys.email,
@@ -303,8 +314,11 @@ class UpdateProfileScreen extends StatelessWidget {
                 textInputAction: TextInputAction.done,
                 suffixIcon: InkWell(
                     onTap: () {
-                      _showOtpVerificationDialog(editAccountController,
-                          'sali.akka@tmween.com', language == 'ar' ? 290 : 270);
+                      _showOtpVerificationDialog(
+                          editAccountController,
+                          'sali.akka@tmween.com',
+                          language == 'ar' ? 290 : 270,
+                          true);
                     },
                     child: Padding(
                         padding:
@@ -395,7 +409,7 @@ class UpdateProfileScreen extends StatelessWidget {
   }
 
   void _showOtpVerificationDialog(EditProfileController editProfileController,
-      String text, double height) async {
+      String text, double height, bool isEmail) async {
     await showDialog(
         context: editProfileController.context,
         builder: (_) => AlertDialog(
@@ -417,106 +431,63 @@ class UpdateProfileScreen extends StatelessWidget {
                         color: Color(0xFF7C7C7C)),
                   ),
                   15.heightBox,
-                  RichText(text: TextSpan(text:'${LocaleKeys.enterOtpSentTo.tr} ',
-                    style: TextStyle(
-                        fontSize: 13,
-                        color: Color(0xFF7C7C7C),
-                        fontWeight: FontWeight.bold),children: [
-                      TextSpan(text:text,
-                      style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold))
-                      ]),),
-
+                  RichText(
+                    text: TextSpan(
+                        text: '${LocaleKeys.enterOtpSentTo.tr} ',
+                        style: TextStyle(
+                            fontSize: 13,
+                            color: Color(0xFF7C7C7C),
+                            fontWeight: FontWeight.bold),
+                        children: [
+                          TextSpan(
+                              text: text,
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold))
+                        ]),
+                  ),
                   10.heightBox,
-               /*   CustomTextFormField(
-                      controller: editProfileController.editProfileController,
-                      keyboardType: TextInputType.number,
-                      hintText: LocaleKeys.otp,
-                      textInputAction: TextInputAction.done,
-                      suffixIcon: InkWell(
-                          onTap: () {},
-                          child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 15),
-                              child: Text(
-                                LocaleKeys.resend.tr,
-                                style: TextStyle(
-                                    color: AppColors.blue,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold),
-                              ))),
-                      validator: (value) {}),*/
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      OtpTextFormField(
-                          controller: editProfileController.num1Controller,
-                          onChanged: (value) {
-                            if (value.length == 1) {
-                              editProfileController.notifyClick1(true);
-                              FocusScope.of(editProfileController.context).nextFocus();
-                              editProfileController.notifyClick2(true);
-                            }
-                            if (value.length == 0) {
-                              FocusScope.of(editProfileController.context).previousFocus();
-                              editProfileController.notifyClick1(false);
-                            }
-                          },
-                          clicked: editProfileController.click1,
-                          onTap: () {
-                            editProfileController.notifyClick1(true);
-                          }),
-                      OtpTextFormField(
-                          controller: editProfileController.num2Controller,
-                          onChanged: (value) {
-                            if (value.length == 1) {
-                              FocusScope.of(editProfileController.context).nextFocus();
-                              editProfileController.notifyClick3(true);
-                            }
-                            if (value.length == 0) {
-                              FocusScope.of(editProfileController.context).previousFocus();
-                              editProfileController.notifyClick2(false);
-                            }
-                          },
-                          clicked: editProfileController.click2,
-                          onTap: () {
-                            editProfileController.notifyClick2(true);
-                          }),
-                      OtpTextFormField(
-                          controller: editProfileController.num3Controller,
-                          onChanged: (value) {
-                            if (value.length == 1) {
-                              FocusScope.of(editProfileController.context).nextFocus();
-                              editProfileController.notifyClick4(true);
-                            }
-                            if (value.length == 0) {
-                              FocusScope.of(editProfileController.context).previousFocus();
-                              editProfileController.notifyClick3(false);
-                            }
-                          },
-                          clicked: editProfileController.click3,
-                          onTap: () {
-                            editProfileController.notifyClick3(true);
-                          }),
-                      OtpTextFormField(
-                          controller: editProfileController.num4Controller,
-                          clicked: editProfileController.click4,
-                          onChanged: (value) {
-                            if (value.length == 1) {
-                              FocusScope.of(editProfileController.context).nextFocus();
-
-                            }
-                            if (value.length == 0) {
-                              FocusScope.of(editProfileController.context).previousFocus();
-                              editProfileController.notifyClick4(false);
-                            }
-                          },
-                          onTap: () {
-                            editProfileController.notifyClick4(true);
-                          }),
-                    ],
+                  OtpTextField(
+                    length: 4,
+                    obscureText: false,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    animationType: AnimationType.scale,
+                    pinTheme: PinTheme(
+                      shape: PinCodeFieldShape.box,
+                      borderRadius: BorderRadius.circular(5),
+                      fieldHeight: 50,
+                      fieldWidth: 40,
+                      activeFillColor: AppColors.primaryColor,
+                      activeColor: AppColors.primaryColor,
+                      selectedColor: AppColors.primaryColor,
+                      selectedFillColor: AppColors.primaryColor,
+                      inactiveFillColor: AppColors.lightGrayColor,
+                      inactiveColor: AppColors.lightGrayColor,
+                    ),
+                    animationDuration: const Duration(milliseconds: 300),
+                    enableActiveFill: true,
+                    cursorColor: Colors.white,
+                    textStyle: TextStyle(color: Colors.white),
+                    controller: isEmail
+                        ? editProfileController.emailOTPController
+                        : editProfileController.mobileOTPController,
+                    onCompleted: (v) {
+                      if (isEmail) {
+                        editProfileController.updateEmail();
+                      } else {
+                        editProfileController.updateMobileNumber();
+                      }
+                    },
+                    onChanged: (value) {
+                      debugPrint(value);
+                      editProfileController.currentText = value;
+                      editProfileController.update();
+                    },
+                    beforeTextPaste: (text) {
+                      return true;
+                    },
+                    appContext: editProfileController.context,
                   ),
                   10.heightBox,
                   Text(
@@ -526,10 +497,16 @@ class UpdateProfileScreen extends StatelessWidget {
                   5.heightBox,
                   InkWell(
                       onTap: () {
+                        if (isEmail) {
+                          editProfileController.resendEmailOTP();
+                        } else {
+                          editProfileController.resendMobileNumberOTP();
+                        }
                       },
                       child: Text(
                         LocaleKeys.resendCode.tr,
-                        style: TextStyle(fontSize: 13, color: AppColors.primaryColor),
+                        style: TextStyle(
+                            fontSize: 13, color: AppColors.primaryColor),
                       )),
                   18.heightBox,
                   Row(
@@ -551,7 +528,9 @@ class UpdateProfileScreen extends StatelessWidget {
                       Expanded(
                           child: TextButton(
                         style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                        onPressed: () {},
+                        onPressed: () {
+                          editProfileController.pop();
+                        },
                         child: Text(
                           LocaleKeys.save.tr,
                           style: TextStyle(

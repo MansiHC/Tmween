@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
@@ -8,6 +9,7 @@ import 'package:tmween/utils/global.dart';
 
 import '../../../controller/change_password_controller.dart';
 import '../../../utils/views/custom_text_form_field.dart';
+import '../../../utils/views/otp_text_field.dart';
 
 class ChangePasswordScreen extends StatelessWidget {
   late String language;
@@ -123,42 +125,86 @@ class ChangePasswordScreen extends StatelessWidget {
                           return null;
                         }),
                     25.heightBox,
-                    Text(
-                      '${LocaleKeys.enterOtpSentTo.tr} salim.akka@tmween.com',
-                      style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.black54,
-                          fontWeight: FontWeight.bold),
-                    ),
+                    RichText(
+                        text: TextSpan(
+                            text: '${LocaleKeys.enterOtpSentTo.tr} ',
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black54,
+                                fontWeight: FontWeight.bold),
+                            children: [
+                          TextSpan(
+                            text: 'salim.akka@tmween.com',
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          )
+                        ])),
+                    15.heightBox,
+                    Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        child: OtpTextField(
+                          length: 4,
+                          obscureText: false,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          animationType: AnimationType.scale,
+                          pinTheme: PinTheme(
+                            shape: PinCodeFieldShape.box,
+                            borderRadius: BorderRadius.circular(5),
+                            fieldHeight: 50,
+                            fieldWidth: 40,
+                            activeFillColor: AppColors.primaryColor,
+                            activeColor: AppColors.primaryColor,
+                            selectedColor: AppColors.primaryColor,
+                            selectedFillColor: AppColors.primaryColor,
+                            inactiveFillColor: AppColors.lightGrayColor,
+                            inactiveColor: AppColors.lightGrayColor,
+                          ),
+                          textInputAction: TextInputAction.done,
+                          animationDuration: const Duration(milliseconds: 300),
+                          enableActiveFill: true,
+                          cursorColor: Colors.white,
+                          textStyle: TextStyle(color: Colors.white),
+                          controller: changePasswordController.otpController,
+                          onCompleted: (v) {
+                            changePasswordController.save();
+                          },
+                          onChanged: (value) {
+                            debugPrint(value);
+                            changePasswordController.currentText = value;
+                            changePasswordController.update();
+                          },
+                          beforeTextPaste: (text) {
+                            return true;
+                          },
+                          appContext: changePasswordController.context,
+                        )),
                     10.heightBox,
-                    CustomTextFormField(
-                        controller: changePasswordController.otpController,
-                        keyboardType: TextInputType.number,
-                        prefixIcon: SvgPicture.asset(
-                          ImageConstanst.otpIcon,
-                          color: AppColors.primaryColor,
-                        ),
-                        hintText: LocaleKeys.otp,
-                        textInputAction: TextInputAction.done,
-                        suffixIcon: InkWell(
-                            onTap: () {},
-                            child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 15),
-                                child: Text(
-                                  LocaleKeys.resend.tr,
-                                  style: TextStyle(
-                                      color: AppColors.blue,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold),
-                                ))),
-                        validator: (value) {}),
+                    Text(
+                      LocaleKeys.notReceivedOtp.tr,
+                      style: TextStyle(fontSize: 15, color: Colors.black),
+                    ),
+                    5.heightBox,
+                    InkWell(
+                        onTap: () {
+                          changePasswordController.resend();
+                        },
+                        child: Text(
+                          LocaleKeys.resendCode.tr,
+                          style: TextStyle(
+                              fontSize: 15, color: AppColors.primaryColor),
+                        )),
                     15.heightBox,
                     Row(
                       children: [
                         Expanded(
                             child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            changePasswordController.exitScreen();
+                          },
                           child: Text(
                             LocaleKeys.cancel.tr,
                             style: TextStyle(
@@ -169,7 +215,9 @@ class ChangePasswordScreen extends StatelessWidget {
                         )),
                         Expanded(
                             child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            changePasswordController.save();
+                          },
                           child: Text(
                             LocaleKeys.save.tr,
                             style: TextStyle(

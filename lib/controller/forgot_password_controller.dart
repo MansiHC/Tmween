@@ -5,8 +5,9 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/service/api.dart';
 import 'package:tmween/utils/global.dart';
 
-import '../lang/locale_keys.g.dart';
+import '../screens/authentication/login/forgot_password/forgot_otp_screen.dart';
 import '../screens/authentication/login/login_screen.dart';
+import 'forgot_otp_controller.dart';
 
 class ForgotPasswordController extends GetxController {
   late BuildContext context;
@@ -29,21 +30,31 @@ class ForgotPasswordController extends GetxController {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
   }
 
-  void navigateToLoginScreen(String from,String frm) {
-    if(from==AppConstants.individual) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>
-          LoginScreen(
-            from: frm,
-            isPassword: true,
-            isStorePassword: false,
-          )));
-    }else{
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>
-          LoginScreen(
-            from: frm,
-            isPassword: false,
-            isStorePassword: true,
-          )));
+  void submit(String frm) {
+    FocusScope.of(context).unfocus();
+    navigateTo(ForgotOtpScreen(frm: frm));
+  }
+
+  void navigateToLoginScreen(String from, String frm) {
+    Get.delete<ForgotOtpController>();
+    if (from == AppConstants.individual) {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => LoginScreen(
+                    from: frm,
+                    isPassword: true,
+                    isStorePassword: false,
+                  )));
+    } else {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => LoginScreen(
+                    from: frm,
+                    isPassword: false,
+                    isStorePassword: true,
+                  )));
     }
   }
 }
