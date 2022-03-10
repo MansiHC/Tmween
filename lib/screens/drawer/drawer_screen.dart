@@ -1,14 +1,15 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/drawer_controller.dart';
-import 'package:tmween/controller/login_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/language_model.dart';
 import 'package:tmween/screens/drawer/categories_screen.dart';
 import 'package:tmween/screens/drawer/deal_of_the_day_screen.dart';
 import 'package:tmween/screens/drawer/profile/add_address_screen.dart';
+import 'package:tmween/screens/drawer/search_screen.dart';
 import 'package:tmween/screens/drawer/sold_by_tmween_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
@@ -43,9 +44,7 @@ class DrawerScreen extends StatelessWidget {
           drawerController.context = context;
           if (drawerController.pageIndex == 1) {
             drawerController.pageTitle = LocaleKeys.categories.tr;
-          } else if (drawerController.pageIndex == 2) {
-            drawerController.pageTitle = LocaleKeys.search.tr;
-          } else if (drawerController.pageIndex == 3) {
+          }  else if (drawerController.pageIndex == 3) {
             drawerController.pageTitle = LocaleKeys.wishLists.tr;
           } else if (drawerController.pageIndex == 4) {
             drawerController.pageTitle = LocaleKeys.cart.tr;
@@ -78,6 +77,7 @@ class DrawerScreen extends StatelessWidget {
                                   ),
                                   3.heightBox,
                                   Row(
+
                                     children: [
                                       SvgPicture.asset(
                                         ImageConstanst.locationPinIcon,
@@ -88,7 +88,7 @@ class DrawerScreen extends StatelessWidget {
                                       3.widthBox,
                                       Expanded(
                                           child: Text(
-                                        '1999 Bluff Street MOODY Alabama - 35004',
+                                        'Alabama - 35004',
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 12),
                                       )),
@@ -100,7 +100,7 @@ class DrawerScreen extends StatelessWidget {
                                     ],
                                   ),
                                 ]))
-                        : drawerController.pageIndex == 2
+                        : /*drawerController.pageIndex == 2
                             ? GetBuilder<SearchController>(
                                 init: SearchController(),
                                 builder: (contet) {
@@ -114,7 +114,7 @@ class DrawerScreen extends StatelessWidget {
                                           style: TextStyle(color: Colors.white),
                                         );
                                 })
-                            : Text(
+                            : */Text(
                                 drawerController.pageTitle,
                                 style: TextStyle(color: Colors.white),
                               ),
@@ -181,7 +181,8 @@ class DrawerScreen extends StatelessWidget {
                                     bottom: 10, left: 15, right: 15),
                                 child: InkWell(
                                     onTap: () {
-                                      drawerController.changePage(2);
+                                      //drawerController.changePage(2);
+                                      drawerController.navigateTo(SearchScreen(from: SharedPreferencesKeys.isDrawer,));
                                     },
                                     child: CustomTextFormField(
                                         isDense: true,
@@ -295,13 +296,17 @@ class DrawerScreen extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       currentIndex: drawerController.pageIndex,
       onTap: (index) {
-        if (index != drawerController.pageIndex) {
-          drawerController.navigationQueue
-              .removeWhere((element) => element == index);
-          drawerController.navigationQueue.addLast(index);
-          drawerController.pageIndex = index;
-          drawerController.update();
-        }
+        if(index == 2){
+          drawerController.navigateTo(SearchScreen(from: AppConstants.bottomBar,));
+        }else
+          if (index != drawerController.pageIndex) {
+            drawerController.navigationQueue
+                .removeWhere((element) => element == index);
+            drawerController.navigationQueue.addLast(index);
+            drawerController.pageIndex = index;
+            drawerController.update();
+          }
+
       },
       items: [
         BottomNavigationBarItem(
@@ -356,14 +361,19 @@ class DrawerScreen extends StatelessWidget {
             ),
             label: LocaleKeys.wishLists.tr),
         BottomNavigationBarItem(
-            icon: SvgPicture.asset(
+            icon: Badge(
+        badgeContent: Text('2'),
+    badgeColor: Colors.white,
+    animationType: BadgeAnimationType.fade,
+
+    child:SvgPicture.asset(
               ImageConstanst.shoppingCartIcon,
               color: drawerController.pageIndex == 4
                   ? AppColors.primaryColor
                   : Colors.white,
               height: 24,
               width: 24,
-            ),
+            )),
             label: LocaleKeys.cart.tr),
         //TextStyle(fontSize: 12, fontWeight: FontWeight.w600))),
       ],
@@ -409,7 +419,6 @@ class DrawerScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 16, color: Colors.black54),
                   ),
                   onPressed: () {
-
                     Get.delete<DrawerControllers>();
                       drawerController.navigateTo(LoginScreen(from: SharedPreferencesKeys.isDrawer));
                   },

@@ -13,6 +13,9 @@ import 'cart_recent_viewed_product_container.dart';
 
 class CartScreen extends StatelessWidget {
   late String language;
+  final String from;
+
+  CartScreen({Key? key, required this.from}) : super(key: key);
 
   final cartController = Get.put(CartController());
 
@@ -25,9 +28,49 @@ class CartScreen extends StatelessWidget {
           cartController.context = context;
           return Scaffold(
               body: Container(
-                  color: Colors.white, child: _bottomView(cartController)));
+                  color: Colors.white, child:  Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                 if(from==AppConstants.productDetail)
+                   Container(
+                      constraints: BoxConstraints(
+                          minWidth: double.infinity, maxHeight: 90),
+                      color: AppColors.appBarColor,
+                      padding: EdgeInsets.only(top: 20),
+                      child: topView(cartController)),
+
+                  Expanded(
+                      child:_bottomView(cartController))
+                ],
+              )));
         });
   }
+
+  Widget topView(CartController cartController) {
+    return Align(alignment: Alignment.centerLeft,child:Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      child:
+      ClipOval(
+        child: Material(
+          color: Colors.white, // Button color
+          child: InkWell(
+            onTap: () {
+              cartController.exitScreen();
+            },
+            child: SizedBox(
+                width: 24,
+                height: 24,
+                child: Icon(
+                  Icons.keyboard_arrow_left_sharp,
+                  color: Colors.black,
+                )),
+          ),
+        ),
+      ),
+
+    ));
+  }
+
 
   Widget _bottomView(CartController cartController) {
     return SingleChildScrollView(

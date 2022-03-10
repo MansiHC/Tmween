@@ -184,12 +184,12 @@ class DeactivateAccountScreen extends StatelessWidget {
                 5.heightBox,
                 _descView(
                   deactivateAccountController,
-                  LocaleKeys.howReactivateText2.tr,
+                  'Simply contact us to re-activate your account. Your account data will be fully restored - default settings will be applied and you will be subscribed to receive promotional emails from Tmween.',
                 ),
                 5.heightBox,
                 _descView(
                   deactivateAccountController,
-                  LocaleKeys.howReactivateText3.tr,
+                  'Tmween retains your account data for you to conveniently start off from where you left, if you decide to reactivate your account.',
                 ),
                 15.heightBox,
                 Container(

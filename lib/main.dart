@@ -16,7 +16,9 @@ import 'lang/translation_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await EasyLocalization.ensureInitialized();
-
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent, // transparent status bar
+  ));
   ThemeData theme = lightTheme;
   var isLogin = false;
   var isSplash = false;

@@ -10,6 +10,7 @@ import '../model/recently_viewed_model.dart';
 class SearchController extends GetxController {
   late BuildContext context;
   TextEditingController searchController = TextEditingController();
+  TextEditingController searchController2 = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   late bool visibleList = false;

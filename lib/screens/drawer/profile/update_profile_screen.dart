@@ -337,10 +337,15 @@ class UpdateProfileScreen extends StatelessWidget {
               color: AppColors.lightGrayColor,
             ),
             5.heightBox,
-            InkWell(
+        CustomButton(
+            backgroundColor: Color(0xFF0188C8),
+            text: LocaleKeys.changePassword,
+            fontSize: 15,
+            onPressed: () { Helper.showToast(LocaleKeys.otpSentSuccessfully.tr);
+            editAccountController.navigateTo(ChangePasswordScreen());}),
+            /*InkWell(
                 onTap: () {
-                  Helper.showToast(LocaleKeys.otpSentSuccessfully.tr);
-                  editAccountController.navigateTo(ChangePasswordScreen());
+
                 },
                 child: Text(
                   LocaleKeys.changePassword.tr,
@@ -348,14 +353,37 @@ class UpdateProfileScreen extends StatelessWidget {
                       color: Color(0xFF888888),
                       fontSize: 16,
                       fontWeight: FontWeight.bold),
-                )),
-            5.heightBox,
+                )),*/
+           /* 5.heightBox,
             Divider(
               thickness: 1,
               color: AppColors.lightGrayColor,
-            ),
+            ),*/
             5.heightBox,
-            InkWell(
+
+            Container(
+                width:  double.infinity,
+                child: ElevatedButton(
+
+                  child: Wrap(children: [
+                    SvgPicture.asset(ImageConstanst.deactivateUserIcon,height: 24,width: 24,color:  Colors.white,),
+                    10.widthBox,
+                    Text(
+                    LocaleKeys.deactivateAccount.tr,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize:15,fontWeight: FontWeight.bold),
+                  )],),
+                  onPressed:  () {
+                    editAccountController.navigateTo(DeactivateAccountScreen());
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                        Colors.red[400]),
+                    padding: MaterialStateProperty.all(EdgeInsets.symmetric(
+                        horizontal:  40, vertical: 10)),
+                  ),
+                )),
+            /*InkWell(
                 onTap: () {
                   editAccountController.navigateTo(DeactivateAccountScreen());
                 },
@@ -365,7 +393,7 @@ class UpdateProfileScreen extends StatelessWidget {
                       color: Colors.red,
                       fontSize: 16,
                       fontWeight: FontWeight.bold),
-                )),
+                )),*/
             50.heightBox,
           ],
         ));

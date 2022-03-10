@@ -153,7 +153,7 @@ class ProductDetailController extends GetxController {
 
   late final List<Widget> imageSliders = imgList
       .map((item) => Container(
-            child: Image.asset(item, fit: BoxFit.contain),
+                  child: Image.asset(item, fit: BoxFit.contain),
           ))
       .toList();
 

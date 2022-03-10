@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +11,12 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_button.dart';
 
+import '../../../controller/full_image_controller.dart';
 import '../../../controller/product_detail_controller.dart';
 import '../../../lang/locale_keys.g.dart';
 import '../../../utils/views/expandable_text.dart';
 import '../address_container.dart';
+import '../cart_screen.dart';
 import '../profile/add_address_screen.dart';
 
 class ProductDetailScreen extends StatelessWidget {
@@ -53,7 +56,7 @@ class ProductDetailScreen extends StatelessWidget {
                               padding: EdgeInsets.symmetric(vertical: 5),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
+                                               children: [
                                   SvgPicture.asset(
                                     ImageConstanst.locationPinIcon,
                                     color: Color(0xFF454545),
@@ -62,7 +65,7 @@ class ProductDetailScreen extends StatelessWidget {
                                   ),
                                   3.widthBox,
                                   Text(
-                                    '1999 Bluff Street MOODY Alabama - 35004',
+                                    'Alabama - 35004',
                                     style: TextStyle(
                                         color: Color(0xFF454545),
                                         fontSize: 12,
@@ -157,12 +160,12 @@ class ProductDetailScreen extends StatelessWidget {
                                   width: double.maxFinite,
                                   child: InkWell(
                                       onTap: () {
+                                        Get.delete<FullImageController>();
                                         productDetailController.navigateTo(
                                             FullImageScreen(
-                                                image: productDetailController
-                                                        .imgList[
+                                                image:
                                                     productDetailController
-                                                        .current]));
+                                                        .current));
                                       },
                                       child: CarouselSlider(
                                         items: productDetailController
@@ -182,7 +185,7 @@ class ProductDetailScreen extends StatelessWidget {
                                           },
                                         ),
                                       ))),
-                              Positioned(
+                              Positioned                    (
                                   bottom: 0.0,
                                   left: 0.0,
                                   right: 0.0,
@@ -250,7 +253,7 @@ class ProductDetailScreen extends StatelessWidget {
                             margin: EdgeInsets.only(right: 5),
                             child: Image.asset(
                               productDetailController.imgList[index],
-                              fit: BoxFit.cover,
+                              fit: BoxFit.contain   ,
                             )));
                   })),
           10.heightBox,
@@ -623,7 +626,8 @@ class ProductDetailScreen extends StatelessWidget {
                             fontSize: 14,
                             backgroundColor: Color(0xFF314156),
                             onPressed: () {
-                              productDetailController.navigateToCartScreen();
+                              _showDialog(productDetailController);
+                              // productDetailController.navigateToCartScreen();
                             })),
                     10.heightBox,
                     Padding(
@@ -1757,14 +1761,25 @@ class ProductDetailScreen extends StatelessWidget {
                   onPressed: () {},
                 ),
                 InkWell(
-                  child: SvgPicture.asset(
-                    ImageConstanst.shoppingCartIcon,
-                    color: Colors.white,
-                    height: 24,
-                    width: 24,
-                  ),
-                  onTap: () {},
-                ),
+                    onTap: () {
+                      productDetailController.navigateTo(CartScreen(
+                        from: AppConstants.productDetail,
+                      ));
+                    },
+                    child: Badge(
+    badgeContent: Text('2'),
+    badgeColor: Colors.white,
+    animationType: BadgeAnimationType.fade,
+
+    child:
+                        SvgPicture.asset(
+                          ImageConstanst.shoppingCartIcon,
+                          color: Colors.white,
+                          height: 24,
+                          width: 24,
+                        ),
+                    )),
+
               ],
             ),
           ],
@@ -1826,5 +1841,43 @@ class ProductDetailScreen extends StatelessWidget {
                     }))
           ],
         ));
+  }
+
+  void _showDialog(ProductDetailController productDetailController) async {
+    await showDialog(
+        context: productDetailController.context,
+        builder: (_) {
+          Future.delayed(Duration(milliseconds: 1500), () {
+            Navigator.of(productDetailController.context).pop(true);
+          });
+          return Center(
+              child: Material(
+                  type: MaterialType.transparency,
+                  child: Container(
+                    width: 160,
+                    height: 50,
+                    decoration: BoxDecoration(
+                        color: AppColors.appBarColor,
+                        borderRadius: BorderRadius.circular(4)),
+                    padding: EdgeInsets.all(10),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          CupertinoIcons.checkmark_circle_fill,
+                          color: Colors.white,
+                        ),
+                        10.widthBox,
+                        Text(
+                          'Added To Cart',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                  )));
+        });
   }
 }

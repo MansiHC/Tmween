@@ -12,9 +12,10 @@ import '../../../../utils/views/otp_text_field.dart';
 class ForgotOtpScreen extends StatelessWidget {
   late String language;
   final forgotOtpController = Get.put(ForgotOtpController());
+  final String from;
   final String frm;
 
-  ForgotOtpScreen({Key? key, required this.frm}) : super(key: key);
+  ForgotOtpScreen({Key? key,required this.from, required this.frm}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,9 @@ class ForgotOtpScreen extends StatelessWidget {
         init: ForgotOtpController(),
         builder: (contet) {
           forgotOtpController.context = context;
-          return Scaffold(
+          return WillPopScope(
+              onWillPop: () => _onWillPop(forgotOtpController),
+          child: Scaffold(
               body: SingleChildScrollView(
                   child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,8 +42,12 @@ class ForgotOtpScreen extends StatelessWidget {
                 child: bottomView(forgotOtpController),
               )
             ],
-          )));
+          ))));
         });
+  }
+  Future<bool> _onWillPop(ForgotOtpController forgotOtpController) async {
+    forgotOtpController.exitScreen();
+    return true;
   }
 
   Widget bottomView(ForgotOtpController forgotOtpController) {
@@ -78,7 +85,8 @@ class ForgotOtpScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold)),
             ])),
         10.heightBox,
-        OtpTextField(
+        Padding(padding: EdgeInsets.symmetric
+          (horizontal: MediaQuery.of(forgotOtpController.context).size.width/8),child:OtpTextField(
           length: 4,
           obscureText: false,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -102,6 +110,7 @@ class ForgotOtpScreen extends StatelessWidget {
           controller: forgotOtpController.otpController,
           onCompleted: (v) {
             forgotOtpController.submit(
+              from,
               frm,
             );
           },
@@ -114,13 +123,13 @@ class ForgotOtpScreen extends StatelessWidget {
             return true;
           },
           appContext: forgotOtpController.context,
-        ),
+        )),
         10.heightBox,
         CustomButton(
             text: 'Continue',
             fontSize: 16,
             onPressed: () {
-              forgotOtpController.submit(
+              forgotOtpController.submit(from,
                 frm,
               );
             }),

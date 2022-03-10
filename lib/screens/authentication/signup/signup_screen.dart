@@ -44,72 +44,72 @@ class _SignUpScreenState extends State<SignUpScreen>
   @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
-    return GetBuilder<SignUpController>(
-        init: SignUpController(),
-        builder: (contet) {
-          signUpController.context = context;
-          return DefaultTabController(
-              length: 2,
-              child: Scaffold(
-                  body: SingleChildScrollView(
-                      child: SizedBox(
-                          height: MediaQuery.of(context).size.height,
-                          child: Column(
-                            children: [
-                              ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                      minWidth: double.infinity,
-                                      maxHeight: language == 'ar'
-                                          ? (MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              3)
-                                          : (MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              3.5)),
-                                  child: topView(signUpController)),
-                              ColoredBox(
-                                color: Color.fromRGBO(195, 208, 225, 1),
-                                child: TabBar(
-                                    controller: _tabController,
-                                    indicator: BoxDecoration(
-                                        color: AppColors.primaryColor),
-                                    indicatorSize: TabBarIndicatorSize.tab,
-                                    labelStyle: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                    labelColor: Colors.white,
-                                    unselectedLabelColor: Colors.black,
-                                    tabs: signUpController.tabList),
-                              ),
-                              Expanded(
-                                child: TabBarView(
-                                  controller: _tabController,
-                                  children: [
-                                    IndividualSignUpScreen(),
-                                    StoreOwnerSignUpScreen()
-                                  ],
-                                ),
-                              )
-                            ],
-                          )))));
-        });
+    return SafeArea(
+        top: false,
+        child: GetBuilder<SignUpController>(
+            init: SignUpController(),
+            builder: (contet) {
+              signUpController.context = context;
+              return DefaultTabController(
+                  length: 2,
+                  child: Scaffold(
+                      body: NestedScrollView(
+                    headerSliverBuilder:
+                        (BuildContext context, bool innerBoxIsScrolled) {
+                      return [
+                        SliverAppBar(
+                            toolbarHeight: language == 'ar'
+                                ? (MediaQuery.of(context).size.height / 4)
+                                : (MediaQuery.of(context).size.height / 4.4),
+                            automaticallyImplyLeading: false,
+                            titleSpacing: 0,
+                            title:topView(signUpController),
+                            flexibleSpace: Stack(
+                              children: <Widget>[
+                                Positioned.fill(
+                                    child: Image.asset(
+                                  ImageConstanst.loginBackground,
+                                  fit: BoxFit.cover,
+                                ))
+                              ],
+                            ),
+                            floating: true,
+                            pinned: true,
+                            snap: true,
+                            bottom: PreferredSize(
+                                preferredSize: Size.fromHeight(50),
+                                child: ColoredBox(
+                                    color: Color.fromRGBO(195, 208, 225, 1),
+                                    child: TabBar(
+                                        physics: ScrollPhysics(),
+                                        controller: _tabController,
+                                        indicator: BoxDecoration(
+                                            color: AppColors.primaryColor),
+                                        indicatorSize: TabBarIndicatorSize.tab,
+                                        labelStyle: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                        labelColor: Colors.white,
+                                        unselectedLabelColor: Colors.black,
+                                        tabs: signUpController.tabList)))),
+                      ];
+                    },
+                    body: TabBarView(
+                      controller: _tabController,
+                      children: [
+                        IndividualSignUpScreen(),
+                        StoreOwnerSignUpScreen()
+                      ],
+                    ),
+                  )));
+            }));
   }
 
   Widget topView(SignUpController signUpController) {
-    return Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(ImageConstanst.loginBackground),
-            fit: BoxFit.fill,
-          ),
-        ),
-        child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+    return  Padding(
+            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 0),
             child: Column(
               children: [
-                20.heightBox,
                 Align(
                     alignment: Alignment.topLeft,
                     child: SizedBox(
@@ -192,6 +192,6 @@ class _SignUpScreenState extends State<SignUpScreen>
                                   )
                                 ])))),
               ],
-            )));
+            ));
   }
 }

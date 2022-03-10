@@ -33,6 +33,7 @@ abstract class AppConstants {
   static String fontFamily = 'OpenSans';
   static String productDetail = 'productDetail';
   static String forgotPassword = 'forgotPassword';
+  static String bottomBar = 'bottomBar';
   static String individual = 'individual';
   static String store = 'store';
 }
@@ -128,6 +129,7 @@ abstract class ImageConstanst {
   static const String creditCardIcon = 'asset/image/credit_card.svg';
   static const String internetBankingIcon = 'asset/image/internet_banking.svg';
   static const String upiIcon = 'asset/image/upi.svg';
+  static const String deactivateUserIcon = 'asset/image/deactivate_user.svg';
   static const String accountSettingIcon =
       'asset/image/account_setting_icon.svg';
 }

@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,12 +6,13 @@ import 'package:tmween/utils/global.dart';
 
 import '../../../controller/full_image_controller.dart';
 
-class FullImageScreen extends StatelessWidget {
-  late String language;
-  final fullImageController = Get.put(FullImageController());
+class FullImageScreen extends StatelessWidget     {
+  late String   language;
 
   FullImageScreen({Key? key, required this.image}) : super(key: key);
-  final String image;
+  final int image;
+  final fullImageController = Get.put(FullImageController());
+
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +21,8 @@ class FullImageScreen extends StatelessWidget {
         init: FullImageController(),
         builder: (contet) {
           fullImageController.context = context;
+          fullImageController.current = image;
+
           return Scaffold(
               body: Container(
                   color: Colors.white,
@@ -39,7 +43,60 @@ class FullImageScreen extends StatelessWidget {
 
   Widget _bottomView(FullImageController fullImageController) {
     return Expanded(
-        child: Container(
+        child: Stack(
+          children: [
+            Container(
+                height: double.maxFinite,
+                width: double.maxFinite,
+                padding: EdgeInsets.all(15),
+                child: CarouselSlider(
+
+                      items: fullImageController
+                          .imageSliders,
+                      carouselController:
+                      fullImageController.controller,
+                      options: CarouselOptions(
+                        height: MediaQuery.of(fullImageController.context).size.height,
+                        autoPlay: false,
+                        enlargeCenterPage: false,
+                        enableInfiniteScroll: false,
+                        viewportFraction: 1,
+                        aspectRatio: 1.6,
+                        initialPage: fullImageController.current,
+                        pageSnapping: true,
+                        onPageChanged: (index, reason) {
+                          fullImageController
+                              .changPage(index);
+                        },
+                      ),
+                    )),
+            Positioned(
+                bottom: 0.0,
+                left: 0.0,
+                right: 0.0,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: fullImageController.imgList
+                      .asMap()
+                      .entries
+                      .map((entry) {
+                    return  Container(
+                        width: 8.0,
+                        height: 2,
+                        margin: EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 4.0),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            color: fullImageController
+                                .current ==
+                                entry.key
+                                ? AppColors.darkblue
+                                : Colors.grey),
+                      );
+                  }).toList(),
+                )),
+          ],
+        )/*Container(
             height: double.maxFinite,
             width: double.maxFinite,
             padding: EdgeInsets.all(15),
@@ -50,7 +107,7 @@ class FullImageScreen extends StatelessWidget {
                 child: Image.asset(
                   image,
                   fit: BoxFit.contain,
-                ))));
+                )))*/);
   }
 
   Widget topView(FullImageController fullImageController) {
@@ -64,6 +121,7 @@ class FullImageScreen extends StatelessWidget {
                 color: Colors.white, // Button color
                 child: InkWell(
                   onTap: () {
+
                     fullImageController.exitScreen();
                   },
                   child: SizedBox(

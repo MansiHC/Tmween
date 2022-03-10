@@ -157,7 +157,7 @@ class ReviewProductScreen extends StatelessWidget {
                     10.heightBox,
                     CustomButton(
                       text: 'Submit',
-                      onPressed: () {},
+                      onPressed: () {  reviewProductController.exitScreen();},
                       fontSize: 16,
                     ),
                     30.heightBox

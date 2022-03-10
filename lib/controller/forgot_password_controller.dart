@@ -30,9 +30,9 @@ class ForgotPasswordController extends GetxController {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
   }
 
-  void submit(String frm) {
+  void submit(String from,String frm) {
     FocusScope.of(context).unfocus();
-    navigateTo(ForgotOtpScreen(frm: frm));
+    navigateTo(ForgotOtpScreen(from:from,frm: frm));
   }
 
   void navigateToLoginScreen(String from, String frm) {
@@ -43,6 +43,7 @@ class ForgotPasswordController extends GetxController {
           MaterialPageRoute(
               builder: (context) => LoginScreen(
                     from: frm,
+                    frm: AppConstants.individual,
                     isPassword: true,
                     isStorePassword: false,
                   )));
@@ -52,6 +53,7 @@ class ForgotPasswordController extends GetxController {
           MaterialPageRoute(
               builder: (context) => LoginScreen(
                     from: frm,
+                    frm: AppConstants.store,
                     isPassword: false,
                     isStorePassword: true,
                   )));

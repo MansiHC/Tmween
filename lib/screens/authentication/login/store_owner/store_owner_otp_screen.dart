@@ -8,6 +8,7 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
 import '../../../../controller/login_controller.dart';
+import '../../../../controller/store_otp_controller.dart';
 import '../../../../utils/views/custom_button.dart';
 import '../../../../utils/views/otp_text_field.dart';
 
@@ -19,18 +20,24 @@ class StoreOwnerOtpScreen extends StatelessWidget {
   StoreOwnerOtpScreen({Key? key, required this.phoneEmail,required this.from,required this.frm}) : super(key: key);
 
   late String language;
-  final otpController = Get.put(OtpController());
+  final otpController = Get.put(StoreOtpController());
   final loginController = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
-    return GetBuilder<OtpController>(
-        init: OtpController(),
+    return GetBuilder<StoreOtpController>(
+        init: StoreOtpController(),
         builder: (contet) {
           otpController.context = context;
           otpController.phone = phoneEmail;
-          return Scaffold(
+          return GetBuilder<LoginController>(
+              init: LoginController(),
+              builder: (contet) {
+                loginController.context = otpController.context;
+                return WillPopScope(
+                    onWillPop: () => _onWillPop(otpController,loginController),
+                child:Scaffold(
               body: SingleChildScrollView(
                   child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,11 +53,11 @@ class StoreOwnerOtpScreen extends StatelessWidget {
                 child: bottomView(otpController),
               )
             ],
-          )));
+          ))));});
         });
   }
 
-  Widget bottomView(OtpController otpController) {
+  Widget bottomView(StoreOtpController otpController) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -121,7 +128,8 @@ class StoreOwnerOtpScreen extends StatelessWidget {
         10.heightBox,
         buildTimer(),
         40.heightBox,
-        OtpTextField(
+        Padding(padding: EdgeInsets.symmetric
+          (horizontal: MediaQuery.of(otpController.context).size.width/8),child:OtpTextField(
           length: 4,
           obscureText: false,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -155,7 +163,7 @@ class StoreOwnerOtpScreen extends StatelessWidget {
             return true;
           },
           appContext: otpController.context,
-        ),
+        )),
         Visibility(visible: otpController.loading, child: 5.heightBox),
         Visibility(
           visible: otpController.loading,
@@ -212,12 +220,16 @@ class StoreOwnerOtpScreen extends StatelessWidget {
           ],
         ),
         10.heightBox,
-        CustomButton(
+    GetBuilder<LoginController>(
+    init: LoginController(),
+    builder: (contet) {
+    loginController.context = otpController.context;
+    return CustomButton(
             text: LocaleKeys.loginWithPassword.tr,
             onPressed: () {
             //  otpController.exitScreen();
-              otpController.navigateToLoginScreen(from, frm);
-            })
+              otpController.navigateToLoginScreen(from, frm,loginController.isPasswordScreen,loginController.isStorePasswordScreen);
+            });})
       ],
     );
   }
@@ -260,7 +272,16 @@ class StoreOwnerOtpScreen extends StatelessWidget {
     );
   }
 
-  Widget topView(OtpController otpController) {
+  Future<bool> _onWillPop(StoreOtpController otpController,LoginController loginController) async {
+    otpController.navigateToLoginScreen(from, frm,loginController.isPasswordScreen,loginController.isStorePasswordScreen);
+
+    return true;
+  }
+  Widget topView(StoreOtpController otpController) {
+    return    GetBuilder<LoginController>(
+        init: LoginController(),
+    builder: (contet) {
+    loginController.context = otpController.context;
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
         child: Stack(
@@ -275,7 +296,7 @@ class StoreOwnerOtpScreen extends StatelessWidget {
                     child: InkWell(
                       onTap: () {
                        // otpController.exitScreen();
-                        otpController.navigateToLoginScreen(from, frm);
+                        otpController.navigateToLoginScreen(from, frm,loginController.isPasswordScreen,loginController.isStorePasswordScreen);
                       },
                       child: SizedBox(
                           width: 24,
@@ -295,6 +316,6 @@ class StoreOwnerOtpScreen extends StatelessWidget {
               ),
             ),
           ],
-        ));
+        ));});
   }
 }

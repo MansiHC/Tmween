@@ -15,29 +15,46 @@ class FullImageController extends GetxController {
   late bool visibleList = false;
 
   int current = 0;
+  int image = 0;
   final CarouselController controller = CarouselController();
+
 
   void changPage(int index) {
     current = index;
     update();
   }
 
+
+
   final List<String> items = ['Sofa', 'Bed'];
 
   late final List<Widget> imageSliders = imgList
-      .map((item) => Container(
-            child: Image.network(item, fit: BoxFit.cover),
-          ))
+      .map((item) =>  Container(
+      height: double.maxFinite,
+      width: double.maxFinite,
+
+      child:InteractiveViewer(
+      panEnabled: true,
+      minScale: 0.1,
+      maxScale: 4,
+      child: Image.asset(item, fit: BoxFit.contain),
+          )))
       .toList();
 
   final List<String> imgList = [
-    'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
-    'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
-    'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
-    'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
-    'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
-    'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
+    'asset/image/product_detail_page_images/slider_thumb_1.jpg',
+    'asset/image/product_detail_page_images/slider_thumb_2.jpg',
+    'asset/image/product_detail_page_images/slider_thumb_3.jpg',
+    'asset/image/product_detail_page_images/slider_thumb_4.jpg',
+    'asset/image/product_detail_page_images/slider_thumb_5.jpg',
   ];
+
+  @override
+  void onInit() {
+
+    super.onInit();
+  }
+
 
   List<RecentlyViewedModel> recentlVieweds = const <RecentlyViewedModel>[
     const RecentlyViewedModel(
@@ -81,6 +98,8 @@ class FullImageController extends GetxController {
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
   }
+
+
 
   void closeDrawer() {
     Navigator.pop(context);

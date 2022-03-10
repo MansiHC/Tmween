@@ -30,7 +30,13 @@ class LoginOtpScreen extends StatelessWidget {
         builder: (contet) {
           otpController.context = context;
           otpController.phone = phoneEmail;
-          return Scaffold(
+          return GetBuilder<LoginController>(
+              init: LoginController(),
+              builder: (contet) {
+                loginController.context = otpController.context;
+                return WillPopScope(
+              onWillPop: () => _onWillPop(otpController,loginController),
+          child:Scaffold(
               body: SingleChildScrollView(
                   child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,10 +52,14 @@ class LoginOtpScreen extends StatelessWidget {
                 child: bottomView(otpController),
               )
             ],
-          )));
+          ))));});
         });
   }
+  Future<bool> _onWillPop(OtpController otpController,LoginController loginController) async {
+    otpController.navigateToLoginScreen(from, frm,loginController.isPasswordScreen,loginController.isStorePasswordScreen);
 
+    return true;
+  }
   Widget bottomView(OtpController otpController) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,7 +131,8 @@ class LoginOtpScreen extends StatelessWidget {
         10.heightBox,
         buildTimer(),
         40.heightBox,
-        OtpTextField(
+    Padding(padding: EdgeInsets.symmetric
+    (horizontal: MediaQuery.of(otpController.context).size.width/8),child:  OtpTextField(
           length: 4,
           obscureText: false,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -155,7 +166,7 @@ class LoginOtpScreen extends StatelessWidget {
             return true;
           },
           appContext: otpController.context,
-        ),
+    )),
         Visibility(visible: otpController.loading, child: 5.heightBox),
         Visibility(
           visible: otpController.loading,
@@ -212,12 +223,16 @@ class LoginOtpScreen extends StatelessWidget {
           ],
         ),
         10.heightBox,
-        CustomButton(
+    GetBuilder<LoginController>(
+    init: LoginController(),
+    builder: (contet) {
+    loginController.context = otpController.context;
+    return CustomButton(
             text: LocaleKeys.loginWithPassword.tr,
             onPressed: () {
-              otpController.navigateToLoginScreen(from, frm);
+              otpController.navigateToLoginScreen(from, frm,loginController.isPasswordScreen,loginController.isStorePasswordScreen);
              // otpController.exitScreen();
-            })
+            });})
       ],
     );
   }
@@ -261,6 +276,10 @@ class LoginOtpScreen extends StatelessWidget {
   }
 
   Widget topView(OtpController otpController) {
+    return    GetBuilder<LoginController>(
+        init: LoginController(),
+    builder: (contet) {
+    loginController.context = otpController.context;
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
         child: Stack(
@@ -275,7 +294,7 @@ class LoginOtpScreen extends StatelessWidget {
                     child: InkWell(
                       onTap: () {
                        // otpController.exitScreen();
-                        otpController.navigateToLoginScreen(from, frm);
+                        otpController.navigateToLoginScreen(from, frm,loginController.isPasswordScreen,loginController.isStorePasswordScreen);
                       },
                       child: SizedBox(
                           width: 24,
@@ -295,6 +314,6 @@ class LoginOtpScreen extends StatelessWidget {
               ),
             ),
           ],
-        ));
+        ));});
   }
 }

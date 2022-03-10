@@ -64,7 +64,7 @@ class OtpScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
+       /* Row(
           children: [
             Text(
               '${LocaleKeys.inText.tr} ${phone}',
@@ -92,7 +92,7 @@ class OtpScreen extends StatelessWidget {
                 ))
           ],
         ),
-        10.heightBox,
+        10.heightBox,*/
         RichText(
             text: TextSpan(
                 text:
@@ -123,7 +123,8 @@ class OtpScreen extends StatelessWidget {
         10.heightBox,
         buildTimer(),
         40.heightBox,
-        OtpTextField(
+        Padding(padding: EdgeInsets.symmetric
+          (horizontal: MediaQuery.of(otpController.context).size.width/8),child: OtpTextField(
           length: 4,
           obscureText: false,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -157,7 +158,7 @@ class OtpScreen extends StatelessWidget {
             return true;
           },
           appContext: otpController.context,
-        ),
+        )),
         Visibility(visible: otpController.loading, child: 5.heightBox),
         Visibility(
           visible: otpController.loading,

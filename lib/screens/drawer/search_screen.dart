@@ -18,6 +18,10 @@ import 'dashboard/product_detail_screen.dart';
 class SearchScreen extends StatelessWidget {
   final searchController = Get.put(SearchController());
   late var language;
+  final String? from;
+
+  SearchScreen({Key? key,required this.from}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +37,7 @@ class SearchScreen extends StatelessWidget {
               children: [
                 Container(
                     color: AppColors.appBarColor,
-                    padding: EdgeInsets.only(top: 5),
+                    padding: EdgeInsets.only(top: 35),
                     child: Container(
                         decoration: BoxDecoration(
                             color: Colors.white,
@@ -44,7 +48,8 @@ class SearchScreen extends StatelessWidget {
                         child: TypeAheadFormField<String>(
                           getImmediateSuggestions: true,
                           textFieldConfiguration: TextFieldConfiguration(
-                            controller: searchController.searchController,
+                            controller:from==AppConstants.bottomBar
+                            ?searchController.searchController2:searchController.searchController,
                             keyboardType: TextInputType.text,
                             textInputAction: TextInputAction.search,
                             onSubmitted: (term) {

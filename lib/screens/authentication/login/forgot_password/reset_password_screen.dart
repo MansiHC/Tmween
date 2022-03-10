@@ -12,9 +12,10 @@ import '../../../../utils/views/custom_text_form_field.dart';
 class ResetPasswordScreen extends StatelessWidget {
   late String language;
   final resetPasswordController = Get.put(ResetPasswordController());
+  final String from;
   final String frm;
 
-  ResetPasswordScreen({Key? key, required this.frm}) : super(key: key);
+  ResetPasswordScreen({Key? key, required this.from,required this.frm}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,9 @@ class ResetPasswordScreen extends StatelessWidget {
         init: ResetPasswordController(),
         builder: (contet) {
           resetPasswordController.context = context;
-          return Scaffold(
+          return WillPopScope(
+              onWillPop: () => _onWillPop(resetPasswordController),
+          child: Scaffold(
               body: SingleChildScrollView(
                   child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,8 +42,12 @@ class ResetPasswordScreen extends StatelessWidget {
                 child: bottomView(resetPasswordController),
               )
             ],
-          )));
+          ))));
         });
+  }
+  Future<bool> _onWillPop(ResetPasswordController resetPasswordController) async {
+    resetPasswordController.exitScreen();
+    return true;
   }
 
   Widget bottomView(ResetPasswordController resetPasswordController) {
@@ -94,7 +101,7 @@ class ResetPasswordScreen extends StatelessWidget {
             hintText: 'Re-enter new password',
             textInputAction: TextInputAction.done,
             onSubmitted: (term) {
-              resetPasswordController.submit(frm);
+              resetPasswordController.submit(from,frm);
             },
             prefixIcon: SvgPicture.asset(
               ImageConstanst.lock2Icon,
@@ -107,7 +114,7 @@ class ResetPasswordScreen extends StatelessWidget {
             text: 'Continue',
             fontSize: 16,
             onPressed: () {
-              resetPasswordController.submit(frm);
+              resetPasswordController.submit(from,frm);
             }),
         30.heightBox,
         Text(

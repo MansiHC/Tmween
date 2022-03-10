@@ -58,7 +58,6 @@ class YourOrderScreen extends StatelessWidget {
         children: [
           CustomTextFormField(
               isDense: true,
-              enabled: false,
               controller: yourOrderController.searchController,
               keyboardType: TextInputType.text,
               hintText: 'Search All Orders',

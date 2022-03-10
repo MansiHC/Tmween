@@ -6,6 +6,8 @@ import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
+import '../dashboard/review_product_screen.dart';
+
 class OrderDetailScreen extends StatelessWidget {
   late String language;
   final orderDetailController = Get.put(OrderDetailController());
@@ -196,10 +198,12 @@ class OrderDetailScreen extends StatelessWidget {
                               )),
                         ),
                         8.heightBox,
-                        Wrap(
-                          spacing: 8,
-                          children: [
-                            Container(
+                          InkWell(
+                            onTap: (){
+                              orderDetailController
+                                  .navigateTo(ReviewProductScreen());
+                            },
+                            child:Container(
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   border: Border.all(color: Color(0xFF3C3C3C))),
@@ -211,22 +215,9 @@ class OrderDetailScreen extends StatelessWidget {
                                     color: Color(0xFF3C3C3C),
                                     fontSize: 12,
                                   )),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(color: Color(0xFF3C3C3C))),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5),
-                              child: Text('Archive Order',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Color(0xFF3C3C3C),
-                                    fontSize: 12,
-                                  )),
-                            ),
-                          ],
-                        )
+                            ),)
+
+
                       ],
                     ))
                   ])),

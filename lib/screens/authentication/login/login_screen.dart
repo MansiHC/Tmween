@@ -16,6 +16,7 @@ import 'individual/individual_login_screen.dart';
 class LoginScreen extends StatefulWidget {
   final String from;
   final String? frm;
+  final String? frmReset;
   final bool? isPassword;
   final bool? isStorePassword;
 
@@ -23,6 +24,7 @@ class LoginScreen extends StatefulWidget {
       {Key? key,
       required this.from,
       this.frm,
+      this.frmReset,
       this.isPassword = false,
       this.isStorePassword = false})
       : super(key: key);
@@ -43,6 +45,7 @@ class _LoginScreenState extends State<LoginScreen>
 
   @override
   void initState() {
+    print('object.....${widget.from}.......${widget.frm}');
     if (widget.from == SharedPreferencesKeys.isDrawer) {
 
       if (widget.isPassword!) {
@@ -51,6 +54,12 @@ class _LoginScreenState extends State<LoginScreen>
         loginController.currentTabIndex = 1;
       }
 
+    }
+
+    if(widget.frm == AppConstants.individual || widget.frmReset == AppConstants.individual){
+      loginController.currentTabIndex = 0;
+    } else {
+      loginController.currentTabIndex = 1;
     }
     loginController.isPasswordScreen = widget.isPassword!;
     loginController.isStorePasswordScreen = widget.isStorePassword!;
@@ -78,74 +87,81 @@ class _LoginScreenState extends State<LoginScreen>
 
           return DefaultTabController(
               length: 2,
-              child: Scaffold(
-                  body: SingleChildScrollView(
-                      child: SizedBox(
-                          height: MediaQuery.of(context).size.height,
-                          child: Column(
-                            children: [
-                              ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                      minWidth: double.infinity,
-                                      maxHeight:
-                                          MediaQuery.of(context).size.height /
-                                              2.4),
-                                  child: topView(loginController)),
-                              ColoredBox(
-                                color: Color.fromRGBO(195, 208, 225, 1),
-                                child: TabBar(
-                                    onTap: (index) {
-                                      loginController.currentTabIndex = index;
-                                    },
-                                    controller: loginController.tabController,
-                                    indicator: BoxDecoration(
-                                        color: AppColors.primaryColor),
-                                    indicatorSize: TabBarIndicatorSize.tab,
-                                    labelStyle: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                    labelColor: Colors.white,
-                                    unselectedLabelColor: Colors.black,
-                                    tabs: loginController.tabList),
-                              ),
-                              /* GetBuilder<StoreOwnerController>(
-          init: StoreOwnerController(),
-          builder: (contet) {
-          storeOwnerController.context = context;
-          return*/
-                              Expanded(
-                                child: TabBarView(
-                                  controller: loginController.tabController,
-                                  children: [
-                                    loginController.isPasswordScreen
-                                        ? IndividualLoginPasswordScreen(
-                                            from: widget.from)
-                                        : IndividualLoginScreen(),
-                                    loginController.isStorePasswordScreen
-                                        ? StoreOwnerLoginPasswordScreen(
-                                            from: widget.from)
-                                        : StoreOwnerLoginScreen()
-                                  ],
-                                ),
-                              ) //;})
-                            ],
-                          )))));
+              child: WillPopScope(
+              onWillPop: () => _onWillPop(loginController),
+          child:Scaffold(
+                  body: NestedScrollView(
+              headerSliverBuilder:
+              (BuildContext context, bool innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                  toolbarHeight: MediaQuery.of(context).size.height /
+                      3.4,
+                  automaticallyImplyLeading: false,
+                  titleSpacing: 0,
+                  title: topView(loginController),
+                  flexibleSpace: Stack(
+                    children: <Widget>[
+                      Positioned.fill(
+                          child: Image.asset(
+                            ImageConstanst.loginBackground,
+                            fit: BoxFit.cover,
+                          ))
+                    ],
+                  ),
+                  floating: true,
+                  pinned: true,
+                  snap: true,
+                  bottom: PreferredSize(
+                      preferredSize: Size.fromHeight(50),
+                      child: ColoredBox(
+                          color: Color.fromRGBO(195, 208, 225, 1),
+                          child: TabBar(
+                              onTap: (index) {
+                                loginController.currentTabIndex = index;
+                              },
+                              controller: loginController.tabController,
+                              indicator: BoxDecoration(
+                                  color: AppColors.primaryColor),
+                              indicatorSize: TabBarIndicatorSize.tab,
+                              labelStyle: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                              labelColor: Colors.white,
+                              unselectedLabelColor: Colors.black,
+                              tabs: loginController.tabList)))),
+
+             ];
+              },
+                    body: TabBarView(
+                      controller: loginController.tabController,
+                      children: [
+                        loginController.isPasswordScreen
+                            ? IndividualLoginPasswordScreen(
+                            from: widget.from)
+                            : IndividualLoginScreen(),
+                        loginController.isStorePasswordScreen
+                            ? StoreOwnerLoginPasswordScreen(
+                            from: widget.from)
+                            : StoreOwnerLoginScreen()
+                      ],
+                    ),
+                  ))));
         });
+  }
+  Future<bool> _onWillPop(LoginController loginController) async {
+    loginController.exitScreen(widget.from, widget.frm);
+    return true;
   }
 
   Widget topView(LoginController loginController) {
-    return Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(ImageConstanst.loginBackground),
-            fit: BoxFit.fill,
-          ),
-        ),
-        child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+    return
+       Padding(
+            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 0),
             child: Column(
+mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                20.heightBox,
+
                 Align(
                     alignment: language == 'ar'
                         ? Alignment.topRight
@@ -157,13 +173,11 @@ class _LoginScreenState extends State<LoginScreen>
                           onTap: () {
                             loginController.exitScreen(widget.from, widget.frm);
                           },
-                          child: SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: Icon(
+                          child:  Icon(
                                 Icons.keyboard_arrow_left_sharp,
                                 color: Colors.black,
-                              )),
+                                size: 24,
+                              ),
                         ),
                       ),
                     )),
@@ -215,8 +229,9 @@ class _LoginScreenState extends State<LoginScreen>
                                             .navigateToSignupScreen();
                                       })
                               ]))),
-                )
+                ),
+                10.heightBox,
               ],
-            )));
+            ));
   }
 }

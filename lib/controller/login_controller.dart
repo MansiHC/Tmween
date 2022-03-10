@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/otp_controller.dart';
+import 'package:tmween/controller/store_otp_controller.dart';
 import 'package:tmween/screens/authentication/login/store_owner/store_owner_otp_screen.dart';
 import 'package:tmween/screens/splash_screen.dart';
 
@@ -227,7 +228,7 @@ class LoginController extends GetxController {
   }
 
   void navigateToOTPScreen(String from, String frm) {
-    Get.delete<OtpController>();
+   // Get.delete<OtpController>();
 /*
 
     Navigator.push(
@@ -249,7 +250,7 @@ class LoginController extends GetxController {
 
   void navigateToStoreOwnerOTPScreen(String from, String frm) {
 
-    Get.delete<OtpController>();
+   // Get.delete<StoreOtpController>();
 
    /* Navigator.push(
         context,
@@ -259,8 +260,8 @@ class LoginController extends GetxController {
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (context) => LoginOtpScreen(
-              phoneEmail: phoneEmailController.text.toString(),
+            builder: (context) => StoreOwnerOtpScreen(
+              phoneEmail: storePhoneEmailController.text.toString(),
               from: from,
               frm: frm,
             )));

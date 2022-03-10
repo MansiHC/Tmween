@@ -10,7 +10,7 @@ import '../screens/authentication/login/login_screen.dart';
 import '../utils/global.dart';
 import '../utils/my_shared_preferences.dart';
 
-class OtpController extends GetxController {
+class StoreOtpController extends GetxController {
   late BuildContext context;
 
   TextEditingController otpController = TextEditingController();
@@ -99,7 +99,6 @@ class OtpController extends GetxController {
   }
 
   void navigateToLoginScreen(String from, String frm,bool isPassword,bool isStorePassword) {
-  //  Get.delete<OtpController>();
     otpController.clear();
     if (from == AppConstants.individual) {
       Navigator.pushReplacement(
@@ -126,7 +125,6 @@ class OtpController extends GetxController {
   }
 
   void navigateToLoginEmailScreen(String from, String frm,bool isPassword,bool isStorePassword) {
-    //Get.delete<OtpController>();
     otpController.clear();
     if (from == AppConstants.individual) {
       Navigator.pushReplacement(
