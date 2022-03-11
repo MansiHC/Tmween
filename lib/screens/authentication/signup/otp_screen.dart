@@ -1,3 +1,4 @@
+import 'package:alt_sms_autofill/alt_sms_autofill.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +10,7 @@ import 'package:tmween/utils/global.dart';
 
 import '../../../utils/views/otp_text_field.dart';
 
-class OtpScreen extends StatelessWidget {
+class OtpScreen extends StatefulWidget {
   final String phone;
   final String? name;
   final String? email;
@@ -20,17 +21,58 @@ class OtpScreen extends StatelessWidget {
 
   OtpScreen(
       {Key? key,
-      this.name,
-      this.email,
-      this.password,
-      this.agreeTerms,
-      this.langCode,
-      this.deviceType,
-      required this.phone})
+        this.name,
+        this.email,
+        this.password,
+        this.agreeTerms,
+        this.langCode,
+        this.deviceType,
+        required this.phone})
       : super(key: key);
+
+
+  @override
+  State<StatefulWidget> createState() {
+return OtpScreenState();
+  }
+
+}
+class OtpScreenState extends State<OtpScreen> {
 
   late String language;
   final otpController = Get.put(OtpController());
+
+
+
+
+  Future<void> initSmsListener(OtpController otpController) async {
+
+    String comingSms;
+    try {
+      comingSms = (await AltSmsAutofill().listenForSms)!;
+    } on PlatformException {
+      comingSms = 'Failed to get Sms.';
+    }
+    if (!mounted) return;
+      otpController.comingSms = comingSms;
+      print("====>Message: ${otpController.comingSms}");
+      print("${otpController.comingSms[32]}");
+    otpController.otpController.text = otpController.comingSms[32] + otpController.comingSms[33] +
+          otpController.comingSms[34] + otpController.comingSms[35]
+          + otpController.comingSms[36] + otpController.comingSms[37]; //used to set the code in the message to a string and setting it to a textcontroller. message length is 38. so my code is in string index 32-37.
+  otpController.update();
+  }
+
+  @override
+  void initState() {
+   initSmsListener(otpController);
+    super.initState();
+  }
+  @override
+  void dispose() {
+    AltSmsAutofill().unregisterListener();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +81,7 @@ class OtpScreen extends StatelessWidget {
         builder: (contet) {
           otpController.context = context;
           language = Get.locale!.languageCode;
-          otpController.phone = phone;
+          otpController.phone = widget.phone;
           return Scaffold(
               body: SingleChildScrollView(
                   child: Column(

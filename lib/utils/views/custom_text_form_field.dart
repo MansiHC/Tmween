@@ -136,6 +136,7 @@ class CustomBoxTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      textAlignVertical: TextAlignVertical.top,
       readOnly: readOnly ?? false,
       keyboardType: keyboardType,
       controller: controller,

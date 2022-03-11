@@ -12,6 +12,7 @@ import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_button.dart';
 
 import '../../../controller/add_address_controller.dart';
+import '../../../model/city_model.dart';
 import '../../../utils/views/custom_text_form_field.dart';
 
 class AddAddressScreen extends StatelessWidget {
@@ -210,24 +211,7 @@ class AddAddressScreen extends StatelessWidget {
                               color: AppColors.primaryColor,
                             ),
                             validator: (value) {}),
-                        10.heightBox,
-                        Text(
-                          LocaleKeys.townCity.tr,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF383838),
-                              fontSize: 14),
-                        ),
-                        5.heightBox,
-                        CustomBoxTextFormField(
-                            controller: addressController.townCityController,
-                            keyboardType: TextInputType.text,
-                            hintText: '',
-                            prefixIcon: SvgPicture.asset(
-                              ImageConstanst.townHallIcon,
-                              color: AppColors.primaryColor,
-                            ),
-                            validator: (value) {}),
+
                         10.heightBox,
                         Text(
                           LocaleKeys.state.tr,
@@ -282,6 +266,60 @@ class AddAddressScreen extends StatelessWidget {
                             offset: const Offset(0, 0),
                           ),
                         ),
+                        10.heightBox,
+                        Text(
+                          LocaleKeys.townCity.tr,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF383838),
+                              fontSize: 14),
+                        ),
+                        5.heightBox,
+                        DropdownButtonHideUnderline(
+                          child: DropdownButton2(
+                            buttonDecoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(2),
+                                border: Border.all(
+                                  color: Color(0xFFA7A7A7),
+                                ),
+                                color: Color(0xFFEEEEEE)),
+                            isExpanded: true,
+                            hint: Text(
+                              'Choose a City',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            items: addressController.cities
+                                .map((item) => DropdownMenuItem<CityModel>(
+                              value: item,
+                              child: Text(
+                                item.name,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ))
+                                .toList(),
+                            value: addressController.cityValue,
+                            onChanged: (value) {
+                              var val = value as CityModel;
+                              addressController.updateCity(val);
+                            },
+                            icon: const Icon(
+                              Icons.keyboard_arrow_down_sharp,
+                              color: Colors.black45,
+                            ),
+                            iconSize: 24,
+                            buttonHeight: 40,
+                            buttonPadding:
+                            const EdgeInsets.only(left: 10, right: 10),
+                            dropdownDecoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(2),
+                            ),
+                            offset: const Offset(0, 0),
+                          ),
+                        ),
                         TextButton(
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.zero,
@@ -323,12 +361,31 @@ class AddAddressScreen extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF555555)),
                         ),
-                        5.heightBox,
+                        /*5.heightBox,
                         Text(
                           LocaleKeys.deliveryInstructionText.tr,
                           style:
                               TextStyle(fontSize: 13, color: Color(0xFF9C9C9C)),
-                        ),
+                        ),*/
+                        5.heightBox,
+                        Stack(children: [
+                        CustomBoxTextFormField(
+                            controller: addressController.deliveryInstructionController,
+                            keyboardType: TextInputType.text,
+                            hintText: '',
+                            maxLines: 3,
+                            prefixIcon: Container(),
+                            validator: (value) {}),
+Positioned(top:0,left:0,child:
+Padding(
+    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 12),
+    child:  SvgPicture.asset(
+                            ImageConstanst.deliveryInstructionIcon,
+                            color: AppColors.primaryColor,
+                            width: 18,
+                            height: 18,
+                          )))
+                        ],),
                         10.heightBox,
                         Text(
                           LocaleKeys.addressType.tr,

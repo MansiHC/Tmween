@@ -6,6 +6,7 @@ import 'package:tmween/controller/forgot_otp_controller.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
+import '../../../../utils/views/circular_progress_bar.dart';
 import '../../../../utils/views/custom_button.dart';
 import '../../../../utils/views/otp_text_field.dart';
 
@@ -133,6 +134,10 @@ class ForgotOtpScreen extends StatelessWidget {
                 frm,
               );
             }),
+        Visibility(
+          visible: forgotOtpController.loading,
+          child: CircularProgressBar(),
+        ),
         20.heightBox,
         Align(
             alignment: Alignment.topCenter,

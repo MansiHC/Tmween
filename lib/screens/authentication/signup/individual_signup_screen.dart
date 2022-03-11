@@ -7,14 +7,18 @@ import 'package:tmween/controller/signup_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
+import 'package:tmween/utils/views/circular_progress_bar.dart';
 import 'package:tmween/utils/views/custom_button.dart';
 import 'package:tmween/utils/views/custom_text_form_field.dart';
 
 class IndividualSignUpScreen extends StatelessWidget {
   final signUpController = Get.put(SignUpController());
+  var language;
 
   @override
   Widget build(BuildContext context) {
+    language = Get.locale!.languageCode;
+
     return GetBuilder<SignUpController>(
         init: SignUpController(),
         builder: (contet) {
@@ -245,23 +249,12 @@ class IndividualSignUpScreen extends StatelessWidget {
                                     CustomButton(
                                         text: LocaleKeys.createAccount,
                                         onPressed: () {
-                                          signUpController.signUp();
+                                          signUpController.signUp(language);
                                         }),
                                     Visibility(
-                                        visible: signUpController.loading,
-                                        child: 5.heightBox),
-                                    Visibility(
                                       visible: signUpController.loading,
-                                      child: Align(
-                                          alignment: Alignment.topCenter,
-                                          child: CircularProgressIndicator(
-                                            backgroundColor:
-                                                AppColors.primaryColor,
-                                          )),
+                                      child: CircularProgressBar(),
                                     ),
-                                    Visibility(
-                                        visible: signUpController.loading,
-                                        child: 5.heightBox),
                                     10.heightBox,
                                     Row(
                                       crossAxisAlignment:

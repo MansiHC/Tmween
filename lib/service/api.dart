@@ -7,6 +7,7 @@ import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/banner_model.dart';
 import 'package:tmween/model/deals_of_the_day_model.dart';
 import 'package:tmween/model/login_model.dart';
+import 'package:tmween/model/reset_password_model.dart';
 import 'package:tmween/model/sold_by_tmween_model.dart';
 import 'package:tmween/model/success_model.dart';
 import 'package:tmween/model/top_selection_model.dart';
@@ -17,6 +18,7 @@ import 'package:tmween/utils/helper.dart';
 import 'app_exception.dart';
 
 class Api {
+  ///Customer
   Future<SuccessModel> register(context, name, deviceType, password, email,
       phone, agreeTerms, langCode) async {
     late SuccessModel result;
@@ -36,10 +38,6 @@ class Api {
             "password": password,
             "agree_terms": agreeTerms,
             "lang_code": langCode,
-            "date": "20",
-            "month": "06",
-            "year": "1995",
-            "gender": "1",
           }));
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
@@ -65,14 +63,13 @@ class Api {
           },
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
-            "your_name": "fName" + " " + "lName",
+            "your_name": fName + " " + lName,
             "device_type": deviceType,
-            "email": "eail@g.j",
-            "phone": "5167893215",
-            "password": "Ab!1547822",
-            "agree_terms": "1",
+            "email": email,
+            "phone": phone,
+            "password": password,
+            "agree_terms": agreeTerms,
             "lang_code": langCode,
-            "birth_date": "2021-12-27",
           }));
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
@@ -86,8 +83,8 @@ class Api {
     return result;
   }
 
-  Future<LoginModel> login(context, deviceType, phone, uuid, deviceNo,
-      deviceName, platform, model, version) async {
+  Future<LoginModel> login(context, deviceType, email, password, uuid, deviceNo,
+      deviceName, platform, model, version, langCode) async {
     late LoginModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.login),
@@ -99,14 +96,15 @@ class Api {
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
             "device_type": deviceType,
-            "email": "8947047044",
-            "password": "Test@123",
+            "email": email,
+            "password": password,
             "device_uuid": uuid,
             "device_no": deviceNo,
             "device_name": deviceName,
             "device_platform": platform,
             "device_model": model,
-            "device_version": version
+            "device_version": version,
+            "lang_code": langCode
           }));
       var responseJson = _returnResponse(response);
       result = LoginModel.fromJson(responseJson);
@@ -116,7 +114,39 @@ class Api {
     return result;
   }
 
-  Future<SuccessModel> logout(context, deviceType, userId, loginLogId) async {
+  Future<LoginModel> verifyLoginOTP(context, deviceType, email, otp, uuid,
+      deviceNo, deviceName, platform, model, version, langCode) async {
+    late LoginModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.verifyLoginOTP),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": deviceType,
+            "email": email,
+            "otp": otp,
+            "device_uuid": uuid,
+            "device_no": deviceNo,
+            "device_name": deviceName,
+            "device_platform": platform,
+            "device_model": model,
+            "device_version": version,
+            "lang_code": langCode
+          }));
+      var responseJson = _returnResponse(response);
+      result = LoginModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showSnackBar(context, 'No Internet connection');
+    }
+    return result;
+  }
+
+  Future<SuccessModel> logout(
+      context, deviceType, userId, loginLogId, langCode) async {
     late SuccessModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.logout),
@@ -130,6 +160,7 @@ class Api {
             "device_type": deviceType,
             "user_id": userId,
             "password": loginLogId,
+            "lang_code": langCode
           }));
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
@@ -183,6 +214,264 @@ class Api {
     return result;
   }
 
+  Future<SuccessModel> forgotPassword(
+      context, deviceType, email, langCode) async {
+    late SuccessModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.forgotPassword),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader: AppConstants.customer_token
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": deviceType,
+            "email": email,
+            "lang_code": langCode
+          }));
+      var responseJson = _returnResponse(response);
+      result = SuccessModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<ResetPasswordModel> resetPassword(
+      context, deviceType, email, password, token, langCode) async {
+    late ResetPasswordModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.resetPassword),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader: AppConstants.customer_token
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": deviceType,
+            "email": email,
+            "password": password,
+            "token": token,
+            "lang_code": langCode
+          }));
+      var responseJson = _returnResponse(response);
+      result = ResetPasswordModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<SuccessModel> editProfile(
+      context, deviceType, userId, email, firstName, lastName, langCode) async {
+    late SuccessModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.editProfile),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader: AppConstants.customer_token
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": deviceType,
+            "user_id": userId,
+            "first_name": firstName,
+            "last_name": lastName,
+            "email": email,
+            "lang_code": langCode
+          }));
+      var responseJson = _returnResponse(response);
+      result = SuccessModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<VerifyOtpModel> getCustomerAddressList(
+      context, deviceType, userId, customerId, langCode) async {
+    late VerifyOtpModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.getCustomerAddressList),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader: AppConstants.customer_token
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": deviceType,
+                "user_id": userId,
+                "customer_id": customerId,
+                "lang_code": langCode
+              }));
+      var responseJson = _returnResponse(response);
+      result = VerifyOtpModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<SuccessModel> deleteCustomerAddress(
+      context, deviceType, id, userId, customerId, langCode) async {
+    late SuccessModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.deleteCustomerAddress),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader: AppConstants.customer_token
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": deviceType,
+                "user_id": userId,
+                "customer_id": customerId,
+                "id": id,
+                "lang_code": langCode
+              }));
+      var responseJson = _returnResponse(response);
+      result = SuccessModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<SuccessModel> editCustomerAddress(
+      context,
+      deviceType,
+      id,
+      userId,
+      customerId,
+      firstName,
+      lastName,
+      address1,
+      address2,
+      countryCode,
+      stateCode,
+      cityCode,
+      zipCode,
+      mobile,
+      isDefault,
+      langCode) async {
+    late SuccessModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.editCustomerAddress),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader: AppConstants.customer_token
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": deviceType,
+                "user_id": userId,
+                "customer_id": customerId,
+                "id": id,
+                "first_name": firstName,
+                "last_name": lastName,
+                "address1": address1,
+                "address2": address2,
+                "country_code": countryCode,
+                "state_code": stateCode,
+                "city_code": cityCode,
+                "zip": zipCode,
+                "mobile1": mobile,
+                "status": "1",
+                "is_default_shipping": isDefault,
+                "is_default_billing": isDefault,
+                "lang_code": langCode
+              }));
+      var responseJson = _returnResponse(response);
+      result = SuccessModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<SuccessModel> addCustomerAddress(
+      context,
+      deviceType,
+      id,
+      userId,
+      customerId,
+      firstName,
+      lastName,
+      address1,
+      address2,
+      countryCode,
+      stateCode,
+      cityCode,
+      zipCode,
+      mobile,
+      isDefault,
+      langCode) async {
+    late SuccessModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.addCustomerAddress),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader: AppConstants.customer_token
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": deviceType,
+                "user_id": userId,
+                "customer_id": customerId,
+                "id": id,
+                "first_name": firstName,
+                "last_name": lastName,
+                "address1": address1,
+                "address2": address2,
+                "country_code": countryCode,
+                "state_code": stateCode,
+                "city_code": cityCode,
+                "zip": zipCode,
+                "mobile1": mobile,
+                "status": "1",
+                "is_default_shipping": isDefault,
+                "is_default_billing": isDefault,
+                "lang_code": langCode
+              }));
+      var responseJson = _returnResponse(response);
+      result = SuccessModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<SuccessModel> changePassword(context, deviceType, userId, newPassword,
+      confirmPassword, langCode) async {
+    late SuccessModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.addCustomerAddress),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader: AppConstants.customer_token
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": deviceType,
+                "user_id": userId,
+                "new_password": newPassword,
+                "confirm_password": confirmPassword,
+                "lang_code": langCode
+              }));
+      var responseJson = _returnResponse(response);
+      result = SuccessModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  ///E-Commerce
   Future<DealsOfTheDayModel> getDealsOfTheDay(
       context, deviceType, langCode) async {
     late DealsOfTheDayModel result;
@@ -291,7 +580,7 @@ class Api {
       case 500:
       default:
         throw FetchDataException(
-            'Error occured while Communication with Server with StatusCode : ${response.statusCode}');
+            'Error occurred while Communication with Server with StatusCode : ${response.statusCode}');
     }
   }
 

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/authentication/signup/otp_screen.dart';
 import 'package:tmween/service/api.dart';
+import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/helper.dart';
 
 import 'otp_controller.dart';
@@ -25,7 +26,7 @@ class SignUpController extends GetxController {
   final api = Api();
   bool loading = false;
 
-  doRequest() async {
+  doRequest(language) async {
     loading = true;
     update();
     await api
@@ -33,21 +34,21 @@ class SignUpController extends GetxController {
             context,
             firstNameController.text,
             lastNameController.text,
-            "1",
+            AppConstants.device_type,
             passwordController.text,
             emailController.text,
             phoneController.text,
             agreeTo,
-            "en")
+            language)
         .then((value) {
       loading = false;
       update();
-      print('value....${value.toString()}');
-      Helper.showSnackBar(context, value.message!);
-      /* if(value.message==AppConstants.success) {
+
+       if(value.statusCode==200) {
+         Helper.showSnackBar(context, value.message!);
         navigateToOtpScreen();
-      }*/
-      navigateToOtpScreen();
+      }
+      //navigateToOtpScreen();
     }).catchError((error) {
       loading = false;
       update();
@@ -89,15 +90,15 @@ class SignUpController extends GetxController {
     update();
   }
 
-  void signUp() {
+  void signUp(language) {
+    //navigateToOtpScreen();
     // if (formKey.currentState!.validate()) {
     // if (agree) {
-    //doRequest();
-    navigateToOtpScreen();
-    //} else {
-    // Helper.showSnackBar(context, LocaleKeys.emptyAgreeTerms.tr);
-    //}
-    //}
+    doRequest(language);
+   // } else {
+   //  Helper.showSnackBar(context, LocaleKeys.emptyAgreeTerms.tr);
+  //  }
+ //   }
   }
 
   void navigateToOtpScreen() {

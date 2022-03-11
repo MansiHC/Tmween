@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:tmween/screens/drawer/dashboard/full_image_screen.dart';
 import 'package:tmween/screens/drawer/dashboard/review_product_screen.dart';
 import 'package:tmween/screens/drawer/dashboard/similar_products_container.dart';
+import 'package:tmween/screens/drawer/search_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_button.dart';
@@ -1758,7 +1759,9 @@ class ProductDetailScreen extends StatelessWidget {
                     CupertinoIcons.search,
                     color: Colors.white,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    productDetailController.navigateTo(SearchScreen(from: AppConstants.productDetail));
+                  },
                 ),
                 InkWell(
                     onTap: () {

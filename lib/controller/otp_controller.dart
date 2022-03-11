@@ -12,6 +12,8 @@ import '../utils/my_shared_preferences.dart';
 
 class OtpController extends GetxController {
   late BuildContext context;
+  String comingSms = 'Unknown';
+
 
   TextEditingController otpController = TextEditingController();
   String currentText = "";

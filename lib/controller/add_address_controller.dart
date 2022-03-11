@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/address_type_model.dart';
+import 'package:tmween/model/city_model.dart';
 import 'package:tmween/model/country_model.dart';
 import 'package:tmween/model/state_model.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
@@ -19,6 +20,7 @@ class AddAddressController extends GetxController {
   TextEditingController areaStreetController = TextEditingController();
   TextEditingController landmarkController = TextEditingController();
   TextEditingController townCityController = TextEditingController();
+  TextEditingController deliveryInstructionController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
@@ -27,6 +29,9 @@ class AddAddressController extends GetxController {
 
   late List<StateModel> states;
   StateModel? stateValue;
+
+  late List<CityModel> cities;
+  CityModel? cityValue;
 
   late List<AddressTypeModel> addressTypes;
   AddressTypeModel? addressTypeValue;
@@ -49,6 +54,14 @@ class AddAddressController extends GetxController {
         name: 'Gujarat',
       ),
       StateModel(
+        name: 'Ahmedabad',
+      ),
+    ];
+    cities = <CityModel>[
+      CityModel(
+        name: 'Gujarat',
+      ),
+      CityModel(
         name: 'Ahmedabad',
       ),
     ];
@@ -80,6 +93,11 @@ class AddAddressController extends GetxController {
 
   void updateState(StateModel? value) {
     stateValue = value!;
+    update();
+  }
+
+  void updateCity(CityModel? value) {
+    cityValue = value!;
     update();
   }
 

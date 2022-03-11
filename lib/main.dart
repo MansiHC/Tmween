@@ -77,13 +77,6 @@ class MyApp extends StatelessWidget {
     var languageCode = language.split('_')[0];
     String deviceLanguageCode = Platform.localeName.split('_')[0];
     Locale currentLocale = Locale('en', 'US');
-    if (deviceLanguageCode == 'en') {
-      currentLocale = Locale('en', 'US');
-    } else if (deviceLanguageCode == 'ar') {
-      currentLocale = Locale('ar', 'DZ');
-    } else if (deviceLanguageCode == 'es') {
-      currentLocale = Locale('es', 'ES');
-    }
     if (languageCode == 'en') {
       currentLocale = Locale('en', 'US');
     } else if (languageCode == 'ar') {
@@ -91,6 +84,14 @@ class MyApp extends StatelessWidget {
     } else if (languageCode == 'es') {
       currentLocale = Locale('es', 'ES');
     }
+    /*if (deviceLanguageCode == 'en') {
+      currentLocale = Locale('en', 'US');
+    } else if (deviceLanguageCode == 'ar') {
+      currentLocale = Locale('ar', 'DZ');
+    } else if (deviceLanguageCode == 'es') {
+      currentLocale = Locale('es', 'ES');
+    }*/
+
 
     return GetMaterialApp(
       translations: TranslationService(),

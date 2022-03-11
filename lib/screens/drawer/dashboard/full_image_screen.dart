@@ -6,13 +6,30 @@ import 'package:tmween/utils/global.dart';
 
 import '../../../controller/full_image_controller.dart';
 
-class FullImageScreen extends StatelessWidget     {
-  late String   language;
 
+
+
+class FullImageScreen extends StatefulWidget     {
   FullImageScreen({Key? key, required this.image}) : super(key: key);
   final int image;
+  @override
+  State<StatefulWidget> createState() {
+   return FullImageScreenState();
+  }
+
+}
+class FullImageScreenState extends State<FullImageScreen>     {
+  late String   language;
+
+
   final fullImageController = Get.put(FullImageController());
 
+  @override
+  void initState() {
+    fullImageController.current = widget.image;
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +38,6 @@ class FullImageScreen extends StatelessWidget     {
         init: FullImageController(),
         builder: (contet) {
           fullImageController.context = context;
-          fullImageController.current = image;
 
           return Scaffold(
               body: Container(

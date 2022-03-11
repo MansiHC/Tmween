@@ -86,12 +86,11 @@ class DrawerScreen extends StatelessWidget {
                                         width: 16,
                                       ),
                                       3.widthBox,
-                                      Expanded(
-                                          child: Text(
+                                      Text(
                                         'Alabama - 35004',
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 12),
-                                      )),
+                                      ),
                                       Icon(
                                         Icons.arrow_drop_down_sharp,
                                         size: 16,

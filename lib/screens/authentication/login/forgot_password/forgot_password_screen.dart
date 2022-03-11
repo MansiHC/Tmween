@@ -7,6 +7,7 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
 import '../../../../controller/forgot_password_controller.dart';
+import '../../../../utils/views/circular_progress_bar.dart';
 import '../../../../utils/views/custom_button.dart';
 import '../../../../utils/views/custom_text_form_field.dart';
 
@@ -129,6 +130,10 @@ class ForgotPasswordScreen extends StatelessWidget {
             onPressed: () {
               forgotPasswordController.submit(from,frm);
             }),
+        Visibility(
+          visible: forgotPasswordController.loading,
+          child: CircularProgressBar(),
+        ),
         20.heightBox,
         Text(
           'Has your email address or mobile phone number changed?',

@@ -27,6 +27,7 @@ abstract class AppColors {
 
 abstract class AppConstants {
   static const entity_type_id_customer = "4";
+  static const device_type = "1";
   static const customer_token =
       "FbuaPNITXrR16tRwXBAJGexrgUKtXMsKMp52CfVxnBzn9L2CUMqEOIaYgbBbrf5LrdCg8wzbDLtn14MW";
   static const success = "Success";
@@ -47,9 +48,17 @@ abstract class UrlConstants {
   static const String request = '$baseUrl/customer/request';
   static const String register = '$baseUrl/customer/register';
   static const String login = '$baseUrl/customer/login';
+  static const String verifyLoginOTP = '$baseUrl/customer/verify-login-otp';
   static const String logout = '$baseUrl/customer/logout';
   static const String verifyOTP = '$baseUrl/customer/verify-otp';
   static const String resendOTP = '$baseUrl/customer/resend-otp';
+  static const String forgotPassword = '$baseUrl/customer/forgot-password';
+  static const String resetPassword = '$baseUrl/customer/reset-password';
+  static const String editProfile = '$baseUrl/customer/edit-profile';
+  static const String getCustomerAddressList = '$baseUrl/customer/get-customer-address-list';
+  static const String deleteCustomerAddress = '$baseUrl/customer/delete-customer-address';
+  static const String editCustomerAddress = '$baseUrl/customer/edit-customer-address';
+  static const String addCustomerAddress = '$baseUrl/customer/add-customer-address';
 
   //e-commerce
   static const String dealOfTheDay = '$baseUrl/get-dailydeal-list';
@@ -94,6 +103,7 @@ abstract class ImageConstanst {
   static const String townHallIcon = 'asset/image/town_hall.svg';
   static const String emailIcon = 'asset/image/email.svg';
   static const String pinIcon = 'asset/image/pin.svg';
+  static const String deliveryInstructionIcon = 'asset/image/delivery_instruction.svg';
   static const String user = 'asset/image/user.svg';
   static const String original = 'asset/image/original.svg';
   static const String like = 'asset/image/like.svg';

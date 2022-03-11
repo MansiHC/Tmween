@@ -8,6 +8,7 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
 import '../../../controller/change_password_controller.dart';
+import '../../../utils/views/custom_button.dart';
 import '../../../utils/views/custom_text_form_field.dart';
 import '../../../utils/views/otp_text_field.dart';
 
@@ -199,33 +200,28 @@ class ChangePasswordScreen extends StatelessWidget {
                         )),
                     15.heightBox,
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Expanded(
-                            child: TextButton(
-                          onPressed: () {
-                            changePasswordController.exitScreen();
-                          },
-                          child: Text(
-                            LocaleKeys.cancel.tr,
-                            style: TextStyle(
-                                color: Colors.grey[400],
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        )),
-                        Expanded(
-                            child: TextButton(
-                          onPressed: () {
-                            changePasswordController.save();
-                          },
-                          child: Text(
-                            LocaleKeys.save.tr,
-                            style: TextStyle(
-                                color: AppColors.darkblue,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ))
+
+                        CustomButton(
+                            width: 150,
+                            horizontalPadding: 5,
+                            backgroundColor: Color(0xFF0188C8),
+                            text:   LocaleKeys.cancel,
+                            fontSize: 16,
+                            onPressed: () {
+                              changePasswordController.exitScreen();
+                            }),  CustomButton(
+                            width: 150,
+                            horizontalPadding: 5,
+                            backgroundColor: Color(0xFF0188C8),
+                            text:   LocaleKeys.save,
+                            fontSize: 16,
+                            onPressed: () {
+                              changePasswordController.save();
+                            }),
+
+
                       ],
                     ),
                     50.heightBox,
