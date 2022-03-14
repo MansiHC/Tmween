@@ -22,6 +22,7 @@ class Helper {
       action: SnackBarAction(
         onPressed: () {},
         label: 'ok',
+        textColor: Colors.white,
       ),
     );
 

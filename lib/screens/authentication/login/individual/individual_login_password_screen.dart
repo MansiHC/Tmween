@@ -32,6 +32,7 @@ class IndividualLoginPasswordScreen extends StatelessWidget {
             return WillPopScope(
                 onWillPop: () => _onWillPop(loginController),
                 child: SingleChildScrollView(
+                    physics: NeverScrollableScrollPhysics(),
                     child: ConstrainedBox(
                         constraints:
                             BoxConstraints(minHeight: constraint.maxHeight),
@@ -110,7 +111,8 @@ class IndividualLoginPasswordScreen extends StatelessWidget {
                                             hintText: LocaleKeys.yourPassword,
                                             onSubmitted: (term) {
                                               loginController
-                                                  .doLoginWithPassword();
+                                                  .doIndividualLoginWithPassword(
+                                                      language);
                                             },
                                             validator: (value) {
                                               if (value!.isEmpty) {
@@ -215,7 +217,7 @@ class IndividualLoginPasswordScreen extends StatelessWidget {
         CustomButton(
             text: LocaleKeys.login,
             onPressed: () {
-              loginController.doLoginWithPassword();
+              loginController.doIndividualLoginWithPassword(language);
             }),
         Visibility(visible: loginController.loading, child: 5.heightBox),
         Visibility(
@@ -262,8 +264,8 @@ class IndividualLoginPasswordScreen extends StatelessWidget {
         CustomButton(
             text: LocaleKeys.loginWithOTP,
             onPressed: () {
-              loginController.navigateToOTPScreen( AppConstants
-                  .individual,from);
+              loginController.doIndividualLoginWithOtp(
+                  language, AppConstants.individual, from);
             })
       ],
     );

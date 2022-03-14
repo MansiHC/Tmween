@@ -1,13 +1,12 @@
-class ResetPasswordModel {
+class SignupModel {
   int? statusCode;
   String? statusMessage;
   String? message;
   Data? data;
 
-  ResetPasswordModel(
-      {this.statusCode, this.statusMessage, this.message, this.data});
+  SignupModel({this.statusCode, this.statusMessage, this.message, this.data});
 
-  ResetPasswordModel.fromJson(Map<String, dynamic> json) {
+  SignupModel.fromJson(Map<String, dynamic> json) {
     statusCode = json['status_code'];
     statusMessage = json['status_message'];
     message = json['message'];
@@ -27,17 +26,17 @@ class ResetPasswordModel {
 }
 
 class Data {
-  String? token;
+  int? otp;
 
-  Data({this.token});
+  Data({this.otp});
 
   Data.fromJson(Map<String, dynamic> json) {
-    token = json['token'];
+    otp = json['otp'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['token'] = this.token;
+    data['otp'] = this.otp;
     return data;
   }
 }

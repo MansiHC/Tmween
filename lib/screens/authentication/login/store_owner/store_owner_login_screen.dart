@@ -22,83 +22,77 @@ class StoreOwnerLoginScreen extends StatelessWidget {
         builder: (contet) {
           loginController.context = context;
           return LayoutBuilder(builder: (context, constraint) {
-            return SingleChildScrollView(
-                child: ConstrainedBox(
-                    constraints:
-                        BoxConstraints(minHeight: constraint.maxHeight),
-                    child: IntrinsicHeight(
-                        child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 25, vertical: 10),
-                            child: Form(
-                                key: loginController.storeOwnerFormKey,
-                                child: Column(
+            return ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraint.maxHeight),
+                child: IntrinsicHeight(
+                    child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                        child: Form(
+                            key: loginController.storeOwnerFormKey,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CustomTextFormField(
+                                    controller: loginController
+                                        .storePhoneEmailController,
+                                    keyboardType: TextInputType.text,
+                                    hintText: LocaleKeys.phoneNumberEmail,
+                                    prefixIcon: SvgPicture.asset(
+                                      ImageConstanst.phoneEmailIcon,
+                                      color: AppColors.primaryColor,
+                                    ),
+                                    onSubmitted: (term) {
+                                      loginController.storeLogin();
+                                    },
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return LocaleKeys
+                                            .emptyPhoneNumberEmail.tr;
+                                      }
+                                      return null;
+                                    }),
+                                Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    CustomTextFormField(
-                                        controller: loginController
-                                            .storePhoneEmailController,
-                                        keyboardType: TextInputType.text,
-                                        hintText: LocaleKeys.phoneNumberEmail,
-                                        prefixIcon: SvgPicture.asset(
-                                          ImageConstanst.phoneEmailIcon,
-                                          color: AppColors.primaryColor,
+                                    TextButton(
+                                        style: TextButton.styleFrom(
+                                          padding: EdgeInsets.zero,
                                         ),
-                                        onSubmitted: (term) {
-                                          loginController.storeLogin();
-                                        },
-                                        validator: (value) {
-                                          if (value!.isEmpty) {
-                                            return LocaleKeys
-                                                .emptyPhoneNumberEmail.tr;
-                                          }
-                                          return null;
-                                        }),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        TextButton(
-                                            style: TextButton.styleFrom(
-                                              padding: EdgeInsets.zero,
-                                            ),
-                                            onPressed: () => loginController
-                                                .notifyStoreCheckBox(),
-                                            child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  SizedBox(
-                                                      height: 24.0,
-                                                      width: 24.0,
-                                                      child: Theme(
-                                                          data:
-                                                              Theme.of(context)
-                                                                  .copyWith(
-                                                            unselectedWidgetColor:
-                                                                Colors.grey,
-                                                          ),
-                                                          child: Checkbox(
-                                                              activeColor: AppColors
-                                                                  .primaryColor,
-                                                              value: loginController
-                                                                  .storeRememberMe,
-                                                              onChanged:
-                                                                  (value) {
-                                                                loginController
-                                                                    .notifyStoreCheckBox();
-                                                              }))),
-                                                  10.widthBox,
-                                                  Text(
-                                                    LocaleKeys
-                                                        .keepMeSignedIn.tr,
-                                                    style: TextStyle(
-                                                        fontSize: 13,
-                                                        color: Colors.grey),
-                                                  )
-                                                ])),
-                                        /*  Expanded(
+                                        onPressed: () => loginController
+                                            .notifyStoreCheckBox(),
+                                        child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                  height: 24.0,
+                                                  width: 24.0,
+                                                  child: Theme(
+                                                      data: Theme.of(context)
+                                                          .copyWith(
+                                                        unselectedWidgetColor:
+                                                            Colors.grey,
+                                                      ),
+                                                      child: Checkbox(
+                                                          activeColor: AppColors
+                                                              .primaryColor,
+                                                          value: loginController
+                                                              .storeRememberMe,
+                                                          onChanged: (value) {
+                                                            loginController
+                                                                .notifyStoreCheckBox();
+                                                          }))),
+                                              10.widthBox,
+                                              Text(
+                                                LocaleKeys.keepMeSignedIn.tr,
+                                                style: TextStyle(
+                                                    fontSize: 13,
+                                                    color: Colors.grey),
+                                              )
+                                            ])),
+                                    /*  Expanded(
                                           child: InkWell(
                                               onTap: () {
                                                 loginController
@@ -116,11 +110,11 @@ class StoreOwnerLoginScreen extends StatelessWidget {
                                                       fontWeight:
                                                           FontWeight.bold))),
                                         )*/
-                                      ],
-                                    ),
-                                    Expanded(child: _loginWithEmail()),
                                   ],
-                                ))))));
+                                ),
+                                Expanded(child: _loginWithEmail()),
+                              ],
+                            )))));
           });
         });
   }

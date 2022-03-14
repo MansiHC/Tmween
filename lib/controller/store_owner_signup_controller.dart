@@ -33,7 +33,6 @@ class StoreOwnerSignUpController extends GetxController {
             context,
             firstNameController.text,
             lastNameController.text,
-            "1",
             passwordController.text,
             emailController.text,
             phoneController.text,
@@ -105,13 +104,8 @@ class StoreOwnerSignUpController extends GetxController {
         context,
         MaterialPageRoute(
             builder: (context) => OtpScreen(
-                name:
-                    "${firstNameController.text}+ +${lastNameController.text}",
-                deviceType: "1",
-                password: passwordController.text,
-                email: emailController.text,
-                phone: phoneController.text,
-                agreeTerms: agreeTo,
-                langCode: "en")));
+                  otp: "",
+                  phone: phoneController.text,
+                )));
   }
 }

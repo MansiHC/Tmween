@@ -20,8 +20,7 @@ class SearchScreen extends StatelessWidget {
   late var language;
   final String? from;
 
-  SearchScreen({Key? key,required this.from}) : super(key: key);
-
+  SearchScreen({Key? key, required this.from}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +47,9 @@ class SearchScreen extends StatelessWidget {
                         child: TypeAheadFormField<String>(
                           getImmediateSuggestions: true,
                           textFieldConfiguration: TextFieldConfiguration(
-                            controller:from==AppConstants.bottomBar
-                            ?searchController.searchController2:searchController.searchController,
+                            controller: from == AppConstants.bottomBar
+                                ? searchController.searchController2
+                                : searchController.searchController,
                             keyboardType: TextInputType.text,
                             textInputAction: TextInputAction.search,
                             onSubmitted: (term) {

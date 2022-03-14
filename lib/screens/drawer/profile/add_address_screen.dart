@@ -112,9 +112,10 @@ class AddAddressScreen extends StatelessWidget {
                         ),
                         5.heightBox,
                         CustomBoxTextFormField(
+                            hintFontSize: 14,
                             controller: addressController.fullNameController,
                             keyboardType: TextInputType.name,
-                            hintText: '',
+                            hintText: 'Enter Full Name',
                             prefixIcon: SvgPicture.asset(
                               ImageConstanst.userIcon,
                               color: AppColors.primaryColor,
@@ -130,10 +131,11 @@ class AddAddressScreen extends StatelessWidget {
                         ),
                         5.heightBox,
                         CustomBoxTextFormField(
+                            hintFontSize: 14,
                             controller:
                                 addressController.mobileNumberController,
                             keyboardType: TextInputType.phone,
-                            hintText: '',
+                            hintText: 'Enter Mobile Number',
                             prefixIcon: SvgPicture.asset(
                               ImageConstanst.phoneCallIcon,
                               color: AppColors.primaryColor,
@@ -149,9 +151,10 @@ class AddAddressScreen extends StatelessWidget {
                         ),
                         5.heightBox,
                         CustomBoxTextFormField(
+                            hintFontSize: 14,
                             controller: addressController.pincodeController,
                             keyboardType: TextInputType.number,
-                            hintText: '',
+                            hintText: 'Enter Pincode',
                             prefixIcon: SvgPicture.asset(
                               ImageConstanst.worldIcon,
                               color: AppColors.primaryColor,
@@ -167,9 +170,10 @@ class AddAddressScreen extends StatelessWidget {
                         ),
                         5.heightBox,
                         CustomBoxTextFormField(
+                            hintFontSize: 14,
                             controller: addressController.houseNoController,
                             keyboardType: TextInputType.text,
-                            hintText: '',
+                            hintText: 'Enter ${LocaleKeys.houseNo.tr}',
                             prefixIcon: SvgPicture.asset(
                               ImageConstanst.homeIcon,
                               color: AppColors.primaryColor,
@@ -185,9 +189,10 @@ class AddAddressScreen extends StatelessWidget {
                         ),
                         5.heightBox,
                         CustomBoxTextFormField(
+                            hintFontSize: 14,
                             controller: addressController.areaStreetController,
                             keyboardType: TextInputType.text,
-                            hintText: '',
+                            hintText: 'Enter ${LocaleKeys.areaStreet.tr}',
                             prefixIcon: SvgPicture.asset(
                               ImageConstanst.homeIcon,
                               color: AppColors.primaryColor,
@@ -203,15 +208,15 @@ class AddAddressScreen extends StatelessWidget {
                         ),
                         5.heightBox,
                         CustomBoxTextFormField(
+                            hintFontSize: 14,
                             controller: addressController.landmarkController,
                             keyboardType: TextInputType.text,
-                            hintText: '',
+                            hintText: 'Enter ${LocaleKeys.landmark.tr}',
                             prefixIcon: SvgPicture.asset(
                               ImageConstanst.pinIcon,
                               color: AppColors.primaryColor,
                             ),
                             validator: (value) {}),
-
                         10.heightBox,
                         Text(
                           LocaleKeys.state.tr,
@@ -290,16 +295,16 @@ class AddAddressScreen extends StatelessWidget {
                             ),
                             items: addressController.cities
                                 .map((item) => DropdownMenuItem<CityModel>(
-                              value: item,
-                              child: Text(
-                                item.name,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ))
+                                      value: item,
+                                      child: Text(
+                                        item.name,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ))
                                 .toList(),
                             value: addressController.cityValue,
                             onChanged: (value) {
@@ -313,7 +318,7 @@ class AddAddressScreen extends StatelessWidget {
                             iconSize: 24,
                             buttonHeight: 40,
                             buttonPadding:
-                            const EdgeInsets.only(left: 10, right: 10),
+                                const EdgeInsets.only(left: 10, right: 10),
                             dropdownDecoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(2),
                             ),
@@ -368,24 +373,30 @@ class AddAddressScreen extends StatelessWidget {
                               TextStyle(fontSize: 13, color: Color(0xFF9C9C9C)),
                         ),*/
                         5.heightBox,
-                        Stack(children: [
-                        CustomBoxTextFormField(
-                            controller: addressController.deliveryInstructionController,
-                            keyboardType: TextInputType.text,
-                            hintText: '',
-                            maxLines: 3,
-                            prefixIcon: Container(),
-                            validator: (value) {}),
-Positioned(top:0,left:0,child:
-Padding(
-    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 12),
-    child:  SvgPicture.asset(
-                            ImageConstanst.deliveryInstructionIcon,
-                            color: AppColors.primaryColor,
-                            width: 18,
-                            height: 18,
-                          )))
-                        ],),
+                        Stack(
+                          children: [
+                            CustomBoxTextFormField(
+                                controller: addressController
+                                    .deliveryInstructionController,
+                                keyboardType: TextInputType.text,
+                                hintText: '',
+                                maxLines: 3,
+                                prefixIcon: Container(),
+                                validator: (value) {}),
+                            Positioned(
+                                top: 0,
+                                left: 0,
+                                child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 12),
+                                    child: SvgPicture.asset(
+                                      ImageConstanst.deliveryInstructionIcon,
+                                      color: AppColors.primaryColor,
+                                      width: 18,
+                                      height: 18,
+                                    )))
+                          ],
+                        ),
                         10.heightBox,
                         Text(
                           LocaleKeys.addressType.tr,

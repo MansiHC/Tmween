@@ -45,40 +45,42 @@ class DealsOfTheDayContainer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                      padding: EdgeInsets.all(4),
+                      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                       decoration: BoxDecoration(
                           color: AppColors.offerGreen,
                           borderRadius: BorderRadius.all(Radius.circular(4))),
                       child: Wrap(
                         alignment: WrapAlignment.center,
+                        crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
                           Text(deal.rating,
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 12,
+                                  fontSize: 11,
                                   fontWeight: FontWeight.bold)),
                           Icon(
                             Icons.star,
                             color: Colors.white,
-                            size: 12,
+                            size: 11,
                           )
                         ],
                       )),
                   Container(
-                      padding: EdgeInsets.all(3),
+                      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                       decoration: BoxDecoration(
-                          color: AppColors.offerGreen,
+                          color: Color(0xFFFF9529),
                           borderRadius: BorderRadius.all(Radius.circular(4))),
-                      child: Column(
+                      child: Row(
                         children: [
                           Text('${deal.offer}%',
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 12,
+                                  fontSize: 11,
                                   fontWeight: FontWeight.bold)),
+                          2.widthBox,
                           Text(LocaleKeys.off.tr,
                               style:
-                                  TextStyle(color: Colors.white, fontSize: 12)),
+                                  TextStyle(color: Colors.white, fontSize: 11)),
                         ],
                       )),
                 ])),
@@ -144,6 +146,7 @@ class DealsOfTheDayContainer extends StatelessWidget {
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           decoration: TextDecoration.lineThrough,
+                          decorationThickness: 3,
                           color: Color(0xFF7B7B7B),
                           fontSize: 10))),
               Align(

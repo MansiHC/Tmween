@@ -51,11 +51,11 @@ class EditProfileController extends GetxController {
   }
 
   void updateMobileNumber() {
-   // pop();
+    // pop();
   }
 
   void updateEmail() {
-   // pop();
+    // pop();
   }
 
   void resendEmailOTP() {}

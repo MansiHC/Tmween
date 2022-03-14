@@ -198,26 +198,25 @@ class OrderDetailScreen extends StatelessWidget {
                               )),
                         ),
                         8.heightBox,
-                          InkWell(
-                            onTap: (){
-                              orderDetailController
-                                  .navigateTo(ReviewProductScreen());
-                            },
-                            child:Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(color: Color(0xFF3C3C3C))),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5),
-                              child: Text('Write Product Review',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Color(0xFF3C3C3C),
-                                    fontSize: 12,
-                                  )),
-                            ),)
-
-
+                        InkWell(
+                          onTap: () {
+                            orderDetailController
+                                .navigateTo(ReviewProductScreen());
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(color: Color(0xFF3C3C3C))),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            child: Text('Write Product Review',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Color(0xFF3C3C3C),
+                                  fontSize: 12,
+                                )),
+                          ),
+                        )
                       ],
                     ))
                   ])),

@@ -5,8 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:tmween/controller/otp_controller.dart';
-import 'package:tmween/controller/store_otp_controller.dart';
 import 'package:tmween/screens/authentication/login/store_owner/store_owner_otp_screen.dart';
 import 'package:tmween/screens/splash_screen.dart';
 
@@ -17,6 +15,7 @@ import '../screens/authentication/signup/signup_screen.dart';
 import '../screens/drawer/drawer_screen.dart';
 import '../service/api.dart';
 import '../utils/global.dart';
+import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
 import 'forgot_otp_controller.dart';
 
@@ -77,18 +76,6 @@ class LoginController extends GetxController {
         'Error:': 'Failed to get platform version.'
       };
     }
-  }
-
-  void individuaLogin() {
-    FocusScope.of(context).unfocus();
-    isPasswordScreen = true;
-    update();
-  }
-
-  void storeLogin() {
-    FocusScope.of(context).unfocus();
-    isStorePasswordScreen = true;
-    update();
   }
 
   void getAndroidBuildData(AndroidDeviceInfo build) {
@@ -154,6 +141,20 @@ class LoginController extends GetxController {
     };*/
   }
 
+  void individuaLogin() {
+    FocusScope.of(context).unfocus();
+    if (formKey.currentState!.validate()) {
+      isPasswordScreen = true;
+      update();
+    }
+  }
+
+  void storeLogin() {
+    FocusScope.of(context).unfocus();
+    isStorePasswordScreen = true;
+    update();
+  }
+
   void visiblePasswordIcon() {
     visiblePassword = !visiblePassword;
     update();
@@ -168,38 +169,68 @@ class LoginController extends GetxController {
   bool loading = false;
   bool storeLoading = false;
 
-  doLogin() async {
-    update();
-    /*loading = true;
-    notifyListeners();
-   await api
-        .login(context, 1, phoneController.text, uuid, deviceNo, deviceName,
-            platform, model, version)
-        .then((value) {
-      if (value.message == AppConstants.success) {
-
+  doIndividualLoginWithPassword(language) async {
+    FocusScope.of(context).unfocus();
+    // navigateToDrawerScreen();
+    if (formKey2.currentState!.validate()) {
+      update();
+      loading = true;
+      update();
+      await api
+          .login(context, phoneEmailController.text, passwordController.text,
+              uuid, deviceNo, deviceName, platform, model, version, language)
+          .then((value) {
+        if (value.statusCode == 200) {
+          loading = false;
+          update();
+          MySharedPreferences.instance.addIntToSF(
+              SharedPreferencesKeys.loginLogId, value.data!.loginLogId);
+          MySharedPreferences.instance
+              .addIntToSF(SharedPreferencesKeys.token, value.data!.token);
+          MySharedPreferences.instance.addIntToSF(
+              SharedPreferencesKeys.userId, value.data!.customerData!.id);
+          navigateToDrawerScreen();
+        } else {
+          Helper.showSnackBar(context, value.message!);
+        }
+      }).catchError((error) {
         loading = false;
-        notifyListeners();
-        MySharedPreferences.instance
-            .addIntToSF(SharedPreferencesKeys.loginLogId, value.data!.loginLogId);
-        MySharedPreferences.instance
-            .addIntToSF(SharedPreferencesKeys.userId, value.data!.customerData!.id);
-        navigateToDrawerScreen();
+        update();
+        print('error....$error');
+      });
+    }
+  }
+
+  doIndividualLoginWithOtp(language, String from, String frm) async {
+    FocusScope.of(context).unfocus();
+    // navigateToDrawerScreen();
+
+    update();
+    loading = true;
+    update();
+    await api
+        .generateMobileOtp(context, phoneEmailController.text, uuid, deviceNo,
+            deviceName, platform, model, version, language)
+        .then((value) {
+      if (value.statusCode == 200) {
+        loading = false;
+        update();
+        navigateToOTPScreen(value.data!.otp.toString(), from, frm);
       } else {
         Helper.showSnackBar(context, value.message!);
       }
     }).catchError((error) {
       loading = false;
-      notifyListeners();
+      update();
       print('error....$error');
-    });*/
+    });
   }
 
-  doLoginWithPassword() {
-
-    FocusScope.of(context).unfocus();
-    //  if (formKey.currentState!.validate()) {
+  doLoginWithPassword(language) {
+    // FocusScope.of(context).unfocus();
     navigateToDrawerScreen();
+    //if (formKey.currentState!.validate()) {
+    //doLogin(language);
     //}
   }
 
@@ -227,32 +258,30 @@ class LoginController extends GetxController {
                 )));
   }
 
-  void navigateToOTPScreen(String from, String frm) {
-   // Get.delete<OtpController>();
+  void navigateToOTPScreen(String otp, String from, String frm) {
+    // Get.delete<OtpController>();
 /*
-
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => LoginOtpScreen(
                 phoneEmail: phoneEmailController.text.toString())));
 */
-
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
             builder: (context) => LoginOtpScreen(
-              phoneEmail: phoneEmailController.text.toString(),
-              from: from,
-              frm: frm,
-            )));
+                  otp: otp,
+                  phoneEmail: phoneEmailController.text.toString(),
+                  from: from,
+                  frm: frm,
+                )));
   }
 
   void navigateToStoreOwnerOTPScreen(String from, String frm) {
+    // Get.delete<StoreOtpController>();
 
-   // Get.delete<StoreOtpController>();
-
-   /* Navigator.push(
+    /* Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => StoreOwnerOtpScreen(
@@ -261,10 +290,10 @@ class LoginController extends GetxController {
         context,
         MaterialPageRoute(
             builder: (context) => StoreOwnerOtpScreen(
-              phoneEmail: storePhoneEmailController.text.toString(),
-              from: from,
-              frm: frm,
-            )));
+                  phoneEmail: storePhoneEmailController.text.toString(),
+                  from: from,
+                  frm: frm,
+                )));
   }
 
   void navigateToDrawerScreen() {
@@ -317,9 +346,9 @@ class LoginController extends GetxController {
     update();
   }
 
-  void login() {
+/* void login() {
     // if (formKey.currentState!.validate()) {
     doLogin();
     //}
-  }
+  }*/
 }

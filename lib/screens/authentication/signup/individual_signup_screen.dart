@@ -25,6 +25,7 @@ class IndividualSignUpScreen extends StatelessWidget {
           signUpController.context = context;
           return LayoutBuilder(builder: (context, constraint) {
             return SingleChildScrollView(
+                physics: NeverScrollableScrollPhysics(),
                 child: ConstrainedBox(
                     constraints:
                         BoxConstraints(minHeight: constraint.maxHeight),
@@ -185,7 +186,7 @@ class IndividualSignUpScreen extends StatelessWidget {
                                           color: AppColors.primaryColor,
                                         ),
                                         inputFormatters: [
-                                          LengthLimitingTextInputFormatter(10),
+                                          LengthLimitingTextInputFormatter(12),
                                           FilteringTextInputFormatter.digitsOnly
                                         ],
                                         /* textInputAction: TextInputAction.done,
@@ -249,7 +250,8 @@ class IndividualSignUpScreen extends StatelessWidget {
                                     CustomButton(
                                         text: LocaleKeys.createAccount,
                                         onPressed: () {
-                                          signUpController.signUp(language);
+                                          signUpController
+                                              .signUpIndividual(language);
                                         }),
                                     Visibility(
                                       visible: signUpController.loading,

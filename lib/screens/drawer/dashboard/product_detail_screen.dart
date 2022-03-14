@@ -57,7 +57,7 @@ class ProductDetailScreen extends StatelessWidget {
                               padding: EdgeInsets.symmetric(vertical: 5),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                               children: [
+                                children: [
                                   SvgPicture.asset(
                                     ImageConstanst.locationPinIcon,
                                     color: Color(0xFF454545),
@@ -115,7 +115,7 @@ class ProductDetailScreen extends StatelessWidget {
                       right: 0,
                       child: Container(
                           decoration: BoxDecoration(
-                            color: Color(0xFFF6F6F6),
+                            //     color: Color(0xFFF6F6F6),
                             borderRadius: BorderRadius.all(Radius.circular(2)),
                           ),
                           padding: EdgeInsets.all(5),
@@ -137,7 +137,7 @@ class ProductDetailScreen extends StatelessWidget {
                                     height: 20,
                                     width: 20,
                                   )),
-                              5.heightBox,
+                              15.heightBox,
                               InkWell(
                                   onTap: () {},
                                   child: SvgPicture.asset(
@@ -164,9 +164,8 @@ class ProductDetailScreen extends StatelessWidget {
                                         Get.delete<FullImageController>();
                                         productDetailController.navigateTo(
                                             FullImageScreen(
-                                                image:
-                                                    productDetailController
-                                                        .current));
+                                                image: productDetailController
+                                                    .current));
                                       },
                                       child: CarouselSlider(
                                         items: productDetailController
@@ -186,7 +185,7 @@ class ProductDetailScreen extends StatelessWidget {
                                           },
                                         ),
                                       ))),
-                              Positioned                    (
+                              Positioned(
                                   bottom: 0.0,
                                   left: 0.0,
                                   right: 0.0,
@@ -254,7 +253,7 @@ class ProductDetailScreen extends StatelessWidget {
                             margin: EdgeInsets.only(right: 5),
                             child: Image.asset(
                               productDetailController.imgList[index],
-                              fit: BoxFit.contain   ,
+                              fit: BoxFit.contain,
                             )));
                   })),
           10.heightBox,
@@ -292,6 +291,7 @@ class ProductDetailScreen extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(4))),
                   child: Wrap(
                     alignment: WrapAlignment.center,
+                    crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       Text('4.1',
                           style: TextStyle(
@@ -351,17 +351,27 @@ class ProductDetailScreen extends StatelessWidget {
                   textAlign: TextAlign.start,
                   text: TextSpan(
                       text: 'M.R.P: ',
-                      style: TextStyle(color: Color(0xFF727272), fontSize: 14),
+                      style: TextStyle(
+                          decoration: TextDecoration.lineThrough,
+                          decorationThickness: 2,
+                          color: Color(0xFF727272),
+                          fontSize: 14),
                       children: <InlineSpan>[
                         TextSpan(
                           text: 'SAR ',
-                          style:
-                              TextStyle(color: Color(0xFF727272), fontSize: 14),
+                          style: TextStyle(
+                              decoration: TextDecoration.lineThrough,
+                              decorationThickness: 2,
+                              color: Color(0xFF727272),
+                              fontSize: 14),
                         ),
                         TextSpan(
                           text: '31,955',
-                          style:
-                              TextStyle(color: Color(0xFF727272), fontSize: 14),
+                          style: TextStyle(
+                              decoration: TextDecoration.lineThrough,
+                              decorationThickness: 2,
+                              color: Color(0xFF727272),
+                              fontSize: 14),
                         ),
                       ]))),
           5.heightBox,
@@ -750,6 +760,8 @@ class ProductDetailScreen extends StatelessWidget {
                                           BorderRadius.all(Radius.circular(4))),
                                   child: Wrap(
                                     alignment: WrapAlignment.start,
+                                    crossAxisAlignment:
+                                        WrapCrossAlignment.center,
                                     children: [
                                       Text(
                                           productDetailController
@@ -1760,7 +1772,8 @@ class ProductDetailScreen extends StatelessWidget {
                     color: Colors.white,
                   ),
                   onPressed: () {
-                    productDetailController.navigateTo(SearchScreen(from: AppConstants.productDetail));
+                    productDetailController.navigateTo(
+                        SearchScreen(from: AppConstants.productDetail));
                   },
                 ),
                 InkWell(
@@ -1770,19 +1783,16 @@ class ProductDetailScreen extends StatelessWidget {
                       ));
                     },
                     child: Badge(
-    badgeContent: Text('2'),
-    badgeColor: Colors.white,
-    animationType: BadgeAnimationType.fade,
-
-    child:
-                        SvgPicture.asset(
-                          ImageConstanst.shoppingCartIcon,
-                          color: Colors.white,
-                          height: 24,
-                          width: 24,
-                        ),
+                      badgeContent: Text('2'),
+                      badgeColor: Colors.white,
+                      animationType: BadgeAnimationType.fade,
+                      child: SvgPicture.asset(
+                        ImageConstanst.shoppingCartIcon,
+                        color: Colors.white,
+                        height: 24,
+                        width: 24,
+                      ),
                     )),
-
               ],
             ),
           ],

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/address_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
@@ -142,20 +143,62 @@ class YourAddressesScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomButton(
-                    horizontalPadding: 20,
+                Container(
                     width: 120,
-                    fontSize: 16,
-                    text: LocaleKeys.edit,
-                    onPressed: () {
-                      addressController.navigateTo(AddAddressScreen());
-                    }),
-                CustomButton(
-                    horizontalPadding: 20,
+                    child: ElevatedButton(
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.edit,
+                            color: Colors.white,
+                            size: 16,
+                          ),
+                          5.widthBox,
+                          Text(
+                            LocaleKeys.edit.tr,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          )
+                        ],
+                      ),
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(AppColors.primaryColor),
+                        padding: MaterialStateProperty.all(
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 10)),
+                      ),
+                    )),
+                Container(
                     width: 120,
-                    fontSize: 16,
-                    text: LocaleKeys.remove,
-                    onPressed: () {}),
+                    child: ElevatedButton(
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            ImageConstanst.delete,
+                            color: Colors.white,
+                            height: 16,
+                            width: 16,
+                          ),
+                          5.widthBox,
+                          Text(
+                            LocaleKeys.remove.tr,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          )
+                        ],
+                      ),
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.red),
+                        padding: MaterialStateProperty.all(
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 10)),
+                      ),
+                    ))
               ],
             ),
             10.heightBox

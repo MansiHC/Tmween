@@ -23,6 +23,7 @@ class IndividualLoginScreen extends StatelessWidget {
           loginController.context = context;
           return LayoutBuilder(builder: (context, constraint) {
             return SingleChildScrollView(
+                physics: NeverScrollableScrollPhysics(),
                 child: ConstrainedBox(
                     constraints:
                         BoxConstraints(minHeight: constraint.maxHeight),

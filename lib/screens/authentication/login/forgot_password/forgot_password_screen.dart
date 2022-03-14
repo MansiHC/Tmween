@@ -30,29 +30,29 @@ class ForgotPasswordScreen extends StatelessWidget {
           forgotPasswordController.context = context;
           return WillPopScope(
               onWillPop: () => _onWillPop(forgotPasswordController),
-          child: Scaffold(
-              body: SingleChildScrollView(
-                  child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                  constraints:
-                      BoxConstraints(minWidth: double.infinity, maxHeight: 90),
-                  color: AppColors.appBarColor,
-                  padding: EdgeInsets.only(top: 20),
-                  child: topView(forgotPasswordController)),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                child: bottomView(forgotPasswordController),
-              )
-            ],
-          ))));
+              child: Scaffold(
+                  body: SingleChildScrollView(
+                      child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                      constraints: BoxConstraints(
+                          minWidth: double.infinity, maxHeight: 90),
+                      color: AppColors.appBarColor,
+                      padding: EdgeInsets.only(top: 20),
+                      child: topView(forgotPasswordController)),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                    child: bottomView(forgotPasswordController),
+                  )
+                ],
+              ))));
         });
   }
+
   Future<bool> _onWillPop(ForgotPasswordController forgotOtpController) async {
     Get.delete<ForgotPasswordController>();
-    forgotPasswordController.navigateToLoginScreen(
-        from, frm);
+    forgotPasswordController.navigateToLoginScreen(from, frm);
     return true;
   }
 
@@ -109,7 +109,7 @@ class ForgotPasswordScreen extends StatelessWidget {
               color: AppColors.primaryColor,
             ),
             onSubmitted: (term) {
-              forgotPasswordController.submit(from,frm);
+              forgotPasswordController.submit(from, frm);
             },
             borderColor: Color(0xFFDDDDDD),
             suffixIcon: IconButton(
@@ -128,7 +128,7 @@ class ForgotPasswordScreen extends StatelessWidget {
             text: 'Continue',
             fontSize: 16,
             onPressed: () {
-              forgotPasswordController.submit(from,frm);
+              forgotPasswordController.submit(from, frm);
             }),
         Visibility(
           visible: forgotPasswordController.loading,
@@ -190,7 +190,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                         Get.delete<ForgotPasswordController>();
                         forgotPasswordController.navigateToLoginScreen(
                             from, frm);
-                       // forgotPasswordController.exitScreen();
+                        // forgotPasswordController.exitScreen();
                       },
                       child: SizedBox(
                           width: 24,

@@ -16,7 +16,8 @@ class ForgotOtpScreen extends StatelessWidget {
   final String from;
   final String frm;
 
-  ForgotOtpScreen({Key? key,required this.from, required this.frm}) : super(key: key);
+  ForgotOtpScreen({Key? key, required this.from, required this.frm})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,25 +28,26 @@ class ForgotOtpScreen extends StatelessWidget {
           forgotOtpController.context = context;
           return WillPopScope(
               onWillPop: () => _onWillPop(forgotOtpController),
-          child: Scaffold(
-              body: SingleChildScrollView(
-                  child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                  constraints:
-                      BoxConstraints(minWidth: double.infinity, maxHeight: 90),
-                  color: AppColors.appBarColor,
-                  padding: EdgeInsets.only(top: 20),
-                  child: topView(forgotOtpController)),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                child: bottomView(forgotOtpController),
-              )
-            ],
-          ))));
+              child: Scaffold(
+                  body: SingleChildScrollView(
+                      child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                      constraints: BoxConstraints(
+                          minWidth: double.infinity, maxHeight: 90),
+                      color: AppColors.appBarColor,
+                      padding: EdgeInsets.only(top: 20),
+                      child: topView(forgotOtpController)),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                    child: bottomView(forgotOtpController),
+                  )
+                ],
+              ))));
         });
   }
+
   Future<bool> _onWillPop(ForgotOtpController forgotOtpController) async {
     forgotOtpController.exitScreen();
     return true;
@@ -86,51 +88,55 @@ class ForgotOtpScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold)),
             ])),
         10.heightBox,
-        Padding(padding: EdgeInsets.symmetric
-          (horizontal: MediaQuery.of(forgotOtpController.context).size.width/8),child:OtpTextField(
-          length: 4,
-          obscureText: false,
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          animationType: AnimationType.scale,
-          pinTheme: PinTheme(
-            shape: PinCodeFieldShape.box,
-            borderRadius: BorderRadius.circular(5),
-            fieldHeight: 50,
-            fieldWidth: 40,
-            activeFillColor: AppColors.primaryColor,
-            activeColor: AppColors.primaryColor,
-            selectedColor: AppColors.primaryColor,
-            selectedFillColor: AppColors.primaryColor,
-            inactiveFillColor: AppColors.lightGrayColor,
-            inactiveColor: AppColors.lightGrayColor,
-          ),
-          animationDuration: const Duration(milliseconds: 300),
-          enableActiveFill: true,
-          cursorColor: Colors.white,
-          textStyle: TextStyle(color: Colors.white),
-          controller: forgotOtpController.otpController,
-          onCompleted: (v) {
-            forgotOtpController.submit(
-              from,
-              frm,
-            );
-          },
-          onChanged: (value) {
-            debugPrint(value);
-            forgotOtpController.currentText = value;
-            forgotOtpController.update();
-          },
-          beforeTextPaste: (text) {
-            return true;
-          },
-          appContext: forgotOtpController.context,
-        )),
+        Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal:
+                    MediaQuery.of(forgotOtpController.context).size.width / 8),
+            child: OtpTextField(
+              length: 4,
+              obscureText: false,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              animationType: AnimationType.scale,
+              pinTheme: PinTheme(
+                shape: PinCodeFieldShape.box,
+                borderRadius: BorderRadius.circular(5),
+                fieldHeight: 50,
+                fieldWidth: 40,
+                activeFillColor: AppColors.primaryColor,
+                activeColor: AppColors.primaryColor,
+                selectedColor: AppColors.primaryColor,
+                selectedFillColor: AppColors.primaryColor,
+                inactiveFillColor: AppColors.lightGrayColor,
+                inactiveColor: AppColors.lightGrayColor,
+              ),
+              animationDuration: const Duration(milliseconds: 300),
+              enableActiveFill: true,
+              cursorColor: Colors.white,
+              textStyle: TextStyle(color: Colors.white),
+              controller: forgotOtpController.otpController,
+              onCompleted: (v) {
+                forgotOtpController.submit(
+                  from,
+                  frm,
+                );
+              },
+              onChanged: (value) {
+                debugPrint(value);
+                forgotOtpController.currentText = value;
+                forgotOtpController.update();
+              },
+              beforeTextPaste: (text) {
+                return true;
+              },
+              appContext: forgotOtpController.context,
+            )),
         10.heightBox,
         CustomButton(
             text: 'Continue',
             fontSize: 16,
             onPressed: () {
-              forgotOtpController.submit(from,
+              forgotOtpController.submit(
+                from,
                 frm,
               );
             }),

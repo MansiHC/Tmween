@@ -6,21 +6,18 @@ import 'package:tmween/utils/global.dart';
 
 import '../../../controller/full_image_controller.dart';
 
-
-
-
-class FullImageScreen extends StatefulWidget     {
+class FullImageScreen extends StatefulWidget {
   FullImageScreen({Key? key, required this.image}) : super(key: key);
   final int image;
+
   @override
   State<StatefulWidget> createState() {
-   return FullImageScreenState();
+    return FullImageScreenState();
   }
-
 }
-class FullImageScreenState extends State<FullImageScreen>     {
-  late String   language;
 
+class FullImageScreenState extends State<FullImageScreen> {
+  late String language;
 
   final fullImageController = Get.put(FullImageController());
 
@@ -60,59 +57,50 @@ class FullImageScreenState extends State<FullImageScreen>     {
   Widget _bottomView(FullImageController fullImageController) {
     return Expanded(
         child: Stack(
-          children: [
-            Container(
-                height: double.maxFinite,
-                width: double.maxFinite,
-                padding: EdgeInsets.all(15),
-                child: CarouselSlider(
-
-                      items: fullImageController
-                          .imageSliders,
-                      carouselController:
-                      fullImageController.controller,
-                      options: CarouselOptions(
-                        height: MediaQuery.of(fullImageController.context).size.height,
-                        autoPlay: false,
-                        enlargeCenterPage: false,
-                        enableInfiniteScroll: false,
-                        viewportFraction: 1,
-                        aspectRatio: 1.6,
-                        initialPage: fullImageController.current,
-                        pageSnapping: true,
-                        onPageChanged: (index, reason) {
-                          fullImageController
-                              .changPage(index);
-                        },
-                      ),
-                    )),
-            Positioned(
-                bottom: 0.0,
-                left: 0.0,
-                right: 0.0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: fullImageController.imgList
-                      .asMap()
-                      .entries
-                      .map((entry) {
-                    return  Container(
-                        width: 8.0,
-                        height: 2,
-                        margin: EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 4.0),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            color: fullImageController
-                                .current ==
-                                entry.key
-                                ? AppColors.darkblue
-                                : Colors.grey),
-                      );
-                  }).toList(),
-                )),
-          ],
-        )/*Container(
+      children: [
+        Container(
+            height: double.maxFinite,
+            width: double.maxFinite,
+            padding: EdgeInsets.all(15),
+            child: CarouselSlider(
+              items: fullImageController.imageSliders,
+              carouselController: fullImageController.controller,
+              options: CarouselOptions(
+                height: MediaQuery.of(fullImageController.context).size.height,
+                autoPlay: false,
+                enlargeCenterPage: false,
+                enableInfiniteScroll: false,
+                viewportFraction: 1,
+                aspectRatio: 1.6,
+                initialPage: fullImageController.current,
+                pageSnapping: true,
+                onPageChanged: (index, reason) {
+                  fullImageController.changPage(index);
+                },
+              ),
+            )),
+        Positioned(
+            bottom: 0.0,
+            left: 0.0,
+            right: 0.0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children:
+                  fullImageController.imgList.asMap().entries.map((entry) {
+                return Container(
+                  width: 8.0,
+                  height: 2,
+                  margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      color: fullImageController.current == entry.key
+                          ? AppColors.darkblue
+                          : Colors.grey),
+                );
+              }).toList(),
+            )),
+      ],
+    ) /*Container(
             height: double.maxFinite,
             width: double.maxFinite,
             padding: EdgeInsets.all(15),
@@ -123,7 +111,8 @@ class FullImageScreenState extends State<FullImageScreen>     {
                 child: Image.asset(
                   image,
                   fit: BoxFit.contain,
-                )))*/);
+                )))*/
+        );
   }
 
   Widget topView(FullImageController fullImageController) {
@@ -137,7 +126,6 @@ class FullImageScreenState extends State<FullImageScreen>     {
                 color: Colors.white, // Button color
                 child: InkWell(
                   onTap: () {
-
                     fullImageController.exitScreen();
                   },
                   child: SizedBox(

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/drawer_controller.dart';
+import 'package:tmween/controller/login_controller.dart';
+import 'package:tmween/controller/otp_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/language_model.dart';
 import 'package:tmween/screens/drawer/categories_screen.dart';
@@ -15,6 +17,7 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
 import '../../controller/search_controller.dart';
+import '../../controller/signup_controller.dart';
 import '../../utils/my_shared_preferences.dart';
 import '../../utils/views/custom_text_form_field.dart';
 import '../authentication/login/login_screen.dart';
@@ -44,7 +47,7 @@ class DrawerScreen extends StatelessWidget {
           drawerController.context = context;
           if (drawerController.pageIndex == 1) {
             drawerController.pageTitle = LocaleKeys.categories.tr;
-          }  else if (drawerController.pageIndex == 3) {
+          } else if (drawerController.pageIndex == 3) {
             drawerController.pageTitle = LocaleKeys.wishLists.tr;
           } else if (drawerController.pageIndex == 4) {
             drawerController.pageTitle = LocaleKeys.cart.tr;
@@ -77,7 +80,6 @@ class DrawerScreen extends StatelessWidget {
                                   ),
                                   3.heightBox,
                                   Row(
-
                                     children: [
                                       SvgPicture.asset(
                                         ImageConstanst.locationPinIcon,
@@ -113,10 +115,11 @@ class DrawerScreen extends StatelessWidget {
                                           style: TextStyle(color: Colors.white),
                                         );
                                 })
-                            : */Text(
-                                drawerController.pageTitle,
-                                style: TextStyle(color: Colors.white),
-                              ),
+                            : */
+                        Text(
+                            drawerController.pageTitle,
+                            style: TextStyle(color: Colors.white),
+                          ),
                     actions: [
                       drawerController.pageIndex == 0
                           ? InkWell(
@@ -181,7 +184,9 @@ class DrawerScreen extends StatelessWidget {
                                 child: InkWell(
                                     onTap: () {
                                       //drawerController.changePage(2);
-                                      drawerController.navigateTo(SearchScreen(from: SharedPreferencesKeys.isDrawer,));
+                                      drawerController.navigateTo(SearchScreen(
+                                        from: SharedPreferencesKeys.isDrawer,
+                                      ));
                                     },
                                     child: CustomTextFormField(
                                         isDense: true,
@@ -295,17 +300,17 @@ class DrawerScreen extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       currentIndex: drawerController.pageIndex,
       onTap: (index) {
-        if(index == 2){
-          drawerController.navigateTo(SearchScreen(from: AppConstants.bottomBar,));
-        }else
-          if (index != drawerController.pageIndex) {
-            drawerController.navigationQueue
-                .removeWhere((element) => element == index);
-            drawerController.navigationQueue.addLast(index);
-            drawerController.pageIndex = index;
-            drawerController.update();
-          }
-
+        if (index == 2) {
+          drawerController.navigateTo(SearchScreen(
+            from: AppConstants.bottomBar,
+          ));
+        } else if (index != drawerController.pageIndex) {
+          drawerController.navigationQueue
+              .removeWhere((element) => element == index);
+          drawerController.navigationQueue.addLast(index);
+          drawerController.pageIndex = index;
+          drawerController.update();
+        }
       },
       items: [
         BottomNavigationBarItem(
@@ -361,18 +366,17 @@ class DrawerScreen extends StatelessWidget {
             label: LocaleKeys.wishLists.tr),
         BottomNavigationBarItem(
             icon: Badge(
-        badgeContent: Text('2'),
-    badgeColor: Colors.white,
-    animationType: BadgeAnimationType.fade,
-
-    child:SvgPicture.asset(
-              ImageConstanst.shoppingCartIcon,
-              color: drawerController.pageIndex == 4
-                  ? AppColors.primaryColor
-                  : Colors.white,
-              height: 24,
-              width: 24,
-            )),
+                badgeContent: Text('2'),
+                badgeColor: Colors.white,
+                animationType: BadgeAnimationType.fade,
+                child: SvgPicture.asset(
+                  ImageConstanst.shoppingCartIcon,
+                  color: drawerController.pageIndex == 4
+                      ? AppColors.primaryColor
+                      : Colors.white,
+                  height: 24,
+                  width: 24,
+                )),
             label: LocaleKeys.cart.tr),
         //TextStyle(fontSize: 12, fontWeight: FontWeight.w600))),
       ],
@@ -419,7 +423,11 @@ class DrawerScreen extends StatelessWidget {
                   ),
                   onPressed: () {
                     Get.delete<DrawerControllers>();
-                      drawerController.navigateTo(LoginScreen(from: SharedPreferencesKeys.isDrawer));
+                    Get.delete<LoginController>();
+                    Get.delete<OtpController>();
+                    Get.delete<SignUpController>();
+                    drawerController.navigateTo(
+                        LoginScreen(from: SharedPreferencesKeys.isDrawer));
                   },
                 ),
               ],

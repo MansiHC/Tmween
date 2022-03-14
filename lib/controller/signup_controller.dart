@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/authentication/signup/otp_screen.dart';
 import 'package:tmween/service/api.dart';
-import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/helper.dart';
 
 import 'otp_controller.dart';
@@ -34,7 +33,6 @@ class SignUpController extends GetxController {
             context,
             firstNameController.text,
             lastNameController.text,
-            AppConstants.device_type,
             passwordController.text,
             emailController.text,
             phoneController.text,
@@ -44,11 +42,12 @@ class SignUpController extends GetxController {
       loading = false;
       update();
 
-       if(value.statusCode==200) {
-         Helper.showSnackBar(context, value.message!);
-        navigateToOtpScreen();
+      if (value.statusCode == 200) {
+        Helper.showSnackBar(context, value.message!);
+        navigateToOtpScreen(value.data!.otp);
+      } else {
+        Helper.showSnackBar(context, value.message!);
       }
-      //navigateToOtpScreen();
     }).catchError((error) {
       loading = false;
       update();
@@ -90,29 +89,34 @@ class SignUpController extends GetxController {
     update();
   }
 
-  void signUp(language) {
-    //navigateToOtpScreen();
-    // if (formKey.currentState!.validate()) {
-    // if (agree) {
-    doRequest(language);
-   // } else {
-   //  Helper.showSnackBar(context, LocaleKeys.emptyAgreeTerms.tr);
-  //  }
- //   }
+  void signUpIndividual(language) {
+    if (formKey.currentState!.validate()) {
+      if (agree) {
+        doRequest(language);
+      } else {
+        Helper.showSnackBar(context, LocaleKeys.emptyAgreeTerms.tr);
+      }
+    }
   }
 
-  void navigateToOtpScreen() {
+  void signUp(language) {
+    navigateToOtpScreen(1234);
+    // if (formKey.currentState!.validate()) {
+    // if (agree) {
+    // doRequest(language);
+    // } else {
+    //  Helper.showSnackBar(context, LocaleKeys.emptyAgreeTerms.tr);
+    //  }
+    //   }
+  }
+
+  void navigateToOtpScreen(int? otp) {
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => OtpScreen(
-                name:
-                    "${firstNameController.text}+ +${lastNameController.text}",
-                deviceType: "1",
-                password: passwordController.text,
-                email: emailController.text,
-                phone: phoneController.text,
-                agreeTerms: agreeTo,
-                langCode: "en")));
+                  otp: otp.toString(),
+                  phone: phoneController.text,
+                )));
   }
 }

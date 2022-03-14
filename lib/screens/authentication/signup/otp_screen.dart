@@ -12,41 +12,21 @@ import '../../../utils/views/otp_text_field.dart';
 
 class OtpScreen extends StatefulWidget {
   final String phone;
-  final String? name;
-  final String? email;
-  final String? password;
-  final String? agreeTerms;
-  final String? langCode;
-  final String? deviceType;
+  final String? otp;
 
-  OtpScreen(
-      {Key? key,
-        this.name,
-        this.email,
-        this.password,
-        this.agreeTerms,
-        this.langCode,
-        this.deviceType,
-        required this.phone})
-      : super(key: key);
-
+  OtpScreen({Key? key, this.otp, required this.phone}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-return OtpScreenState();
+    return OtpScreenState();
   }
-
 }
-class OtpScreenState extends State<OtpScreen> {
 
+class OtpScreenState extends State<OtpScreen> {
   late String language;
   final otpController = Get.put(OtpController());
 
-
-
-
   Future<void> initSmsListener(OtpController otpController) async {
-
     String comingSms;
     try {
       comingSms = (await AltSmsAutofill().listenForSms)!;
@@ -54,20 +34,26 @@ class OtpScreenState extends State<OtpScreen> {
       comingSms = 'Failed to get Sms.';
     }
     if (!mounted) return;
-      otpController.comingSms = comingSms;
-      print("====>Message: ${otpController.comingSms}");
-      print("${otpController.comingSms[32]}");
-    otpController.otpController.text = otpController.comingSms[32] + otpController.comingSms[33] +
-          otpController.comingSms[34] + otpController.comingSms[35]
-          + otpController.comingSms[36] + otpController.comingSms[37]; //used to set the code in the message to a string and setting it to a textcontroller. message length is 38. so my code is in string index 32-37.
-  otpController.update();
+    otpController.comingSms = comingSms;
+    print("====>Message: ${otpController.comingSms}");
+    print("${otpController.comingSms[32]}");
+    otpController.otpController.text = otpController.comingSms[32] +
+        otpController.comingSms[33] +
+        otpController.comingSms[34] +
+        otpController.comingSms[35] +
+        otpController.comingSms[36] +
+        otpController.comingSms[
+            37]; //used to set the code in the message to a string and setting it to a textcontroller. message length is 38. so my code is in string index 32-37.
+    otpController.update();
   }
 
   @override
   void initState() {
-   initSmsListener(otpController);
+    otpController.otpValue = widget.otp!;
+    initSmsListener(otpController);
     super.initState();
   }
+
   @override
   void dispose() {
     AltSmsAutofill().unregisterListener();
@@ -106,35 +92,11 @@ class OtpScreenState extends State<OtpScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-       /* Row(
-          children: [
-            Text(
-              '${LocaleKeys.inText.tr} ${phone}',
-              style: TextStyle(fontSize: 14, color: Colors.black),
-            ),
-            5.widthBox,
-            InkWell(
-                onTap: () {
-                  otpController.exitScreen();
-                },
-                child: Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    Text(
-                      LocaleKeys.change,
-                      style: TextStyle(
-                          fontSize: 16, color: AppColors.primaryColor),
-                    ),
-                    Icon(
-                      Icons.edit,
-                      color: AppColors.primaryColor,
-                      size: 16,
-                    )
-                  ],
-                ))
-          ],
+        Text(
+          'Otp is : ${otpController.otpValue}',
+          style: TextStyle(fontSize: 14, color: Colors.black),
         ),
-        10.heightBox,*/
+        10.heightBox,
         RichText(
             text: TextSpan(
                 text:
@@ -145,7 +107,7 @@ class OtpScreenState extends State<OtpScreen> {
                     fontWeight: FontWeight.bold),
                 children: [
               TextSpan(
-                  text: " +91 9876543210. ",
+                  text: ' ${widget.phone}. ',
                   style: TextStyle(
                       fontSize: 14,
                       color: Colors.black,
@@ -165,42 +127,45 @@ class OtpScreenState extends State<OtpScreen> {
         10.heightBox,
         buildTimer(),
         40.heightBox,
-        Padding(padding: EdgeInsets.symmetric
-          (horizontal: MediaQuery.of(otpController.context).size.width/8),child: OtpTextField(
-          length: 4,
-          obscureText: false,
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          animationType: AnimationType.scale,
-          pinTheme: PinTheme(
-            shape: PinCodeFieldShape.box,
-            borderRadius: BorderRadius.circular(5),
-            fieldHeight: 50,
-            fieldWidth: 40,
-            activeFillColor: AppColors.primaryColor,
-            activeColor: AppColors.primaryColor,
-            selectedColor: AppColors.primaryColor,
-            selectedFillColor: AppColors.primaryColor,
-            inactiveFillColor: AppColors.lightGrayColor,
-            inactiveColor: AppColors.lightGrayColor,
-          ),
-          animationDuration: const Duration(milliseconds: 300),
-          enableActiveFill: true,
-          cursorColor: Colors.white,
-          textStyle: TextStyle(color: Colors.white),
-          controller: otpController.otpController,
-          onCompleted: (v) {
-            debugPrint("Completed");
-          },
-          onChanged: (value) {
-            debugPrint(value);
-            otpController.currentText = value;
-            otpController.update();
-          },
-          beforeTextPaste: (text) {
-            return true;
-          },
-          appContext: otpController.context,
-        )),
+        Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal:
+                    MediaQuery.of(otpController.context).size.width / 8),
+            child: OtpTextField(
+              length: 4,
+              obscureText: false,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              animationType: AnimationType.scale,
+              pinTheme: PinTheme(
+                shape: PinCodeFieldShape.box,
+                borderRadius: BorderRadius.circular(5),
+                fieldHeight: 50,
+                fieldWidth: 40,
+                activeFillColor: AppColors.primaryColor,
+                activeColor: AppColors.primaryColor,
+                selectedColor: AppColors.primaryColor,
+                selectedFillColor: AppColors.primaryColor,
+                inactiveFillColor: AppColors.lightGrayColor,
+                inactiveColor: AppColors.lightGrayColor,
+              ),
+              animationDuration: const Duration(milliseconds: 300),
+              enableActiveFill: true,
+              cursorColor: Colors.white,
+              textStyle: TextStyle(color: Colors.white),
+              controller: otpController.otpController,
+              onCompleted: (v) {
+                otpController.verifyOTP();
+              },
+              onChanged: (value) {
+                debugPrint(value);
+                otpController.currentText = value;
+                otpController.update();
+              },
+              beforeTextPaste: (text) {
+                return true;
+              },
+              appContext: otpController.context,
+            )),
         Visibility(visible: otpController.loading, child: 5.heightBox),
         Visibility(
           visible: otpController.loading,
@@ -219,7 +184,7 @@ class OtpScreenState extends State<OtpScreen> {
         5.heightBox,
         InkWell(
             onTap: () {
-              otpController.resendOTP();
+              otpController.resendOTP(widget.phone);
             },
             child: Text(
               LocaleKeys.resendCode.tr,

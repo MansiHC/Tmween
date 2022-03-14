@@ -7,7 +7,9 @@ import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/banner_model.dart';
 import 'package:tmween/model/deals_of_the_day_model.dart';
 import 'package:tmween/model/login_model.dart';
+import 'package:tmween/model/login_using_otp_model.dart';
 import 'package:tmween/model/reset_password_model.dart';
+import 'package:tmween/model/signup_model.dart';
 import 'package:tmween/model/sold_by_tmween_model.dart';
 import 'package:tmween/model/success_model.dart';
 import 'package:tmween/model/top_selection_model.dart';
@@ -19,8 +21,8 @@ import 'app_exception.dart';
 
 class Api {
   ///Customer
-  Future<SuccessModel> register(context, name, deviceType, password, email,
-      phone, agreeTerms, langCode) async {
+  Future<SuccessModel> register(
+      context, name, password, email, phone, agreeTerms, langCode) async {
     late SuccessModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.register),
@@ -32,7 +34,7 @@ class Api {
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
             "your_name": name,
-            "device_type": deviceType,
+            "device_type": AppConstants.device_type,
             "email": email,
             "phone": phone,
             "password": password,
@@ -51,9 +53,9 @@ class Api {
     return result;
   }
 
-  Future<SuccessModel> request(context, fName, lName, deviceType, password,
-      email, phone, agreeTerms, langCode) async {
-    late SuccessModel result;
+  Future<SignupModel> request(context, fName, lName, password, email, phone,
+      agreeTerms, langCode) async {
+    late SignupModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.request),
           headers: {
@@ -64,7 +66,7 @@ class Api {
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
             "your_name": fName + " " + lName,
-            "device_type": deviceType,
+            "device_type": AppConstants.device_type,
             "email": email,
             "phone": phone,
             "password": password,
@@ -72,7 +74,7 @@ class Api {
             "lang_code": langCode,
           }));
       var responseJson = _returnResponse(response);
-      result = SuccessModel.fromJson(responseJson);
+      result = SignupModel.fromJson(responseJson);
     }
     /* on Exception catch (e) {
       print('never reached ${e.toString()}');
@@ -83,8 +85,8 @@ class Api {
     return result;
   }
 
-  Future<LoginModel> login(context, deviceType, email, password, uuid, deviceNo,
-      deviceName, platform, model, version, langCode) async {
+  Future<LoginModel> login(context, email, password, uuid, deviceNo, deviceName,
+      platform, model, version, langCode) async {
     late LoginModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.login),
@@ -95,7 +97,7 @@ class Api {
           },
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": deviceType,
+            "device_type": AppConstants.device_type,
             "email": email,
             "password": password,
             "device_uuid": uuid,
@@ -114,9 +116,40 @@ class Api {
     return result;
   }
 
-  Future<LoginModel> verifyLoginOTP(context, deviceType, email, otp, uuid,
-      deviceNo, deviceName, platform, model, version, langCode) async {
-    late LoginModel result;
+  Future<SignupModel> generateMobileOtp(context, email, uuid, deviceNo,
+      deviceName, platform, model, version, langCode) async {
+    late SignupModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.generateMobileOtp),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "email": email,
+                "device_uuid": uuid,
+                "device_no": deviceNo,
+                "device_name": deviceName,
+                "device_platform": platform,
+                "device_model": model,
+                "device_version": version,
+                "lang_code": langCode
+              }));
+      var responseJson = _returnResponse(response);
+      result = SignupModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showSnackBar(context, 'No Internet connection');
+    }
+    return result;
+  }
+
+  Future<LoginUsingOtpModel> verifyLoginOTP(context, email, otp, uuid, deviceNo,
+      deviceName, platform, model, version, langCode) async {
+    late LoginUsingOtpModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.verifyLoginOTP),
           headers: {
@@ -126,7 +159,7 @@ class Api {
           },
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": deviceType,
+            "device_type": AppConstants.device_type,
             "email": email,
             "otp": otp,
             "device_uuid": uuid,
@@ -138,15 +171,14 @@ class Api {
             "lang_code": langCode
           }));
       var responseJson = _returnResponse(response);
-      result = LoginModel.fromJson(responseJson);
+      result = LoginUsingOtpModel.fromJson(responseJson);
     } on SocketException {
       Helper.showSnackBar(context, 'No Internet connection');
     }
     return result;
   }
 
-  Future<SuccessModel> logout(
-      context, deviceType, userId, loginLogId, langCode) async {
+  Future<SuccessModel> logout(context, userId, loginLogId, langCode) async {
     late SuccessModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.logout),
@@ -157,7 +189,7 @@ class Api {
           },
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": deviceType,
+            "device_type": AppConstants.device_type,
             "user_id": userId,
             "password": loginLogId,
             "lang_code": langCode
@@ -170,7 +202,7 @@ class Api {
     return result;
   }
 
-  Future<VerifyOtpModel> verifyOTP(context, deviceType, phone, otp) async {
+  Future<VerifyOtpModel> verifyOTP(context, phone, otp) async {
     late VerifyOtpModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.verifyOTP),
@@ -181,7 +213,7 @@ class Api {
           },
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": deviceType,
+            "device_type": AppConstants.device_type,
             "phone": phone,
             "otp": otp,
           }));
@@ -193,29 +225,29 @@ class Api {
     return result;
   }
 
-  Future<VerifyOtpModel> resendOTP(context, deviceType, phone) async {
-    late VerifyOtpModel result;
+  Future<SignupModel> resendOTP(context, phone) async {
+    late SignupModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.resendOTP),
           headers: {
             HttpHeaders.contentTypeHeader: "application/json",
-            HttpHeaders.authorizationHeader: AppConstants.customer_token
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
           },
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": deviceType,
+            "device_type": AppConstants.device_type,
             "phone": phone,
           }));
       var responseJson = _returnResponse(response);
-      result = VerifyOtpModel.fromJson(responseJson);
+      result = SignupModel.fromJson(responseJson);
     } on SocketException {
       Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
     }
     return result;
   }
 
-  Future<SuccessModel> forgotPassword(
-      context, deviceType, email, langCode) async {
+  Future<SuccessModel> forgotPassword(context, email, langCode) async {
     late SuccessModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.forgotPassword),
@@ -225,7 +257,7 @@ class Api {
           },
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": deviceType,
+            "device_type": AppConstants.device_type,
             "email": email,
             "lang_code": langCode
           }));
@@ -238,7 +270,7 @@ class Api {
   }
 
   Future<ResetPasswordModel> resetPassword(
-      context, deviceType, email, password, token, langCode) async {
+      context, email, password, token, langCode) async {
     late ResetPasswordModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.resetPassword),
@@ -248,7 +280,7 @@ class Api {
           },
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": deviceType,
+            "device_type": AppConstants.device_type,
             "email": email,
             "password": password,
             "token": token,
@@ -263,7 +295,7 @@ class Api {
   }
 
   Future<SuccessModel> editProfile(
-      context, deviceType, userId, email, firstName, lastName, langCode) async {
+      context, userId, email, firstName, lastName, langCode) async {
     late SuccessModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.editProfile),
@@ -273,7 +305,7 @@ class Api {
           },
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": deviceType,
+            "device_type": AppConstants.device_type,
             "user_id": userId,
             "first_name": firstName,
             "last_name": lastName,
@@ -289,7 +321,7 @@ class Api {
   }
 
   Future<VerifyOtpModel> getCustomerAddressList(
-      context, deviceType, userId, customerId, langCode) async {
+      context, userId, customerId, langCode) async {
     late VerifyOtpModel result;
     try {
       final response =
@@ -300,7 +332,7 @@ class Api {
               },
               body: json.encode({
                 "entity_type_id": AppConstants.entity_type_id_customer,
-                "device_type": deviceType,
+                "device_type": AppConstants.device_type,
                 "user_id": userId,
                 "customer_id": customerId,
                 "lang_code": langCode
@@ -314,7 +346,7 @@ class Api {
   }
 
   Future<SuccessModel> deleteCustomerAddress(
-      context, deviceType, id, userId, customerId, langCode) async {
+      context, id, userId, customerId, langCode) async {
     late SuccessModel result;
     try {
       final response =
@@ -325,7 +357,7 @@ class Api {
               },
               body: json.encode({
                 "entity_type_id": AppConstants.entity_type_id_customer,
-                "device_type": deviceType,
+                "device_type": AppConstants.device_type,
                 "user_id": userId,
                 "customer_id": customerId,
                 "id": id,
@@ -341,7 +373,6 @@ class Api {
 
   Future<SuccessModel> editCustomerAddress(
       context,
-      deviceType,
       id,
       userId,
       customerId,
@@ -366,7 +397,7 @@ class Api {
               },
               body: json.encode({
                 "entity_type_id": AppConstants.entity_type_id_customer,
-                "device_type": deviceType,
+                "device_type": AppConstants.device_type,
                 "user_id": userId,
                 "customer_id": customerId,
                 "id": id,
@@ -394,7 +425,6 @@ class Api {
 
   Future<SuccessModel> addCustomerAddress(
       context,
-      deviceType,
       id,
       userId,
       customerId,
@@ -419,7 +449,7 @@ class Api {
               },
               body: json.encode({
                 "entity_type_id": AppConstants.entity_type_id_customer,
-                "device_type": deviceType,
+                "device_type": AppConstants.device_type,
                 "user_id": userId,
                 "customer_id": customerId,
                 "id": id,
@@ -445,8 +475,8 @@ class Api {
     return result;
   }
 
-  Future<SuccessModel> changePassword(context, deviceType, userId, newPassword,
-      confirmPassword, langCode) async {
+  Future<SuccessModel> changePassword(
+      context, userId, newPassword, confirmPassword, langCode) async {
     late SuccessModel result;
     try {
       final response =
@@ -457,7 +487,7 @@ class Api {
               },
               body: json.encode({
                 "entity_type_id": AppConstants.entity_type_id_customer,
-                "device_type": deviceType,
+                "device_type": AppConstants.device_type,
                 "user_id": userId,
                 "new_password": newPassword,
                 "confirm_password": confirmPassword,
@@ -472,8 +502,7 @@ class Api {
   }
 
   ///E-Commerce
-  Future<DealsOfTheDayModel> getDealsOfTheDay(
-      context, deviceType, langCode) async {
+  Future<DealsOfTheDayModel> getDealsOfTheDay(context, langCode) async {
     late DealsOfTheDayModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.dealOfTheDay),
@@ -483,7 +512,7 @@ class Api {
           },
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": deviceType,
+            "device_type": AppConstants.device_type,
             "lang_code": langCode,
           }));
       var responseJson = _returnResponse(response);
@@ -494,8 +523,7 @@ class Api {
     return result;
   }
 
-  Future<SoldByTmweenModel> getSoldByTmween(
-      context, deviceType, langCode) async {
+  Future<SoldByTmweenModel> getSoldByTmween(context, langCode) async {
     late SoldByTmweenModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.soldByTmween),
@@ -505,7 +533,7 @@ class Api {
           },
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": deviceType,
+            "device_type": AppConstants.device_type,
             "lang_code": langCode,
           }));
       var responseJson = _returnResponse(response);
@@ -517,7 +545,7 @@ class Api {
   }
 
   Future<TopSelectionModel> getTopSelection(
-      context, deviceType, isTopSelection, langCode) async {
+      context, isTopSelection, langCode) async {
     late TopSelectionModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.topSelection),
@@ -527,7 +555,7 @@ class Api {
           },
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": deviceType,
+            "device_type": AppConstants.device_type,
             "is_top_selection": isTopSelection,
             "lang_code": langCode,
           }));
@@ -539,8 +567,7 @@ class Api {
     return result;
   }
 
-  Future<BannerModel> getBanner(
-      context, deviceType, isBestSeller, langCode) async {
+  Future<BannerModel> getBanner(context, isBestSeller, langCode) async {
     late BannerModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.banner),
@@ -550,7 +577,7 @@ class Api {
           },
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": deviceType,
+            "device_type": AppConstants.device_type,
             "page": "HOME",
             "lang_code": langCode,
           }));

@@ -111,7 +111,6 @@ class SplashScreen extends StatelessWidget {
   }
 }
 
-
 /*
 
 import 'package:flutter/cupertino.dart';

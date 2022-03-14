@@ -202,26 +202,24 @@ class ChangePasswordScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-
                         CustomButton(
                             width: 150,
                             horizontalPadding: 5,
                             backgroundColor: Color(0xFF0188C8),
-                            text:   LocaleKeys.cancel,
+                            text: LocaleKeys.cancel,
                             fontSize: 16,
                             onPressed: () {
                               changePasswordController.exitScreen();
-                            }),  CustomButton(
+                            }),
+                        CustomButton(
                             width: 150,
                             horizontalPadding: 5,
                             backgroundColor: Color(0xFF0188C8),
-                            text:   LocaleKeys.save,
+                            text: LocaleKeys.save,
                             fontSize: 16,
                             onPressed: () {
                               changePasswordController.save();
                             }),
-
-
                       ],
                     ),
                     50.heightBox,

@@ -22,6 +22,7 @@ class StoreOwnerSignUpScreen extends StatelessWidget {
           storeOwnerSignUpController.context = context;
           return LayoutBuilder(builder: (context, constraint) {
             return SingleChildScrollView(
+                physics: NeverScrollableScrollPhysics(),
                 child: ConstrainedBox(
                     constraints:
                         BoxConstraints(minHeight: constraint.maxHeight),

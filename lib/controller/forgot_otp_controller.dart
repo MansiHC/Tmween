@@ -17,7 +17,7 @@ class ForgotOtpController extends GetxController {
   bool loading = false;
   late String phone, otp;
 
-  void submit(String from,String frm) {
+  void submit(String from, String frm) {
     navigateTo(ResetPasswordScreen(
       from: from,
       frm: frm,

@@ -53,9 +53,13 @@ class DrawerControllers extends GetxController {
   final pages = [
     DashboardScreen(),
     CategoriesScreen(),
-    SearchScreen(from: SharedPreferencesKeys.isDrawer,),
+    SearchScreen(
+      from: SharedPreferencesKeys.isDrawer,
+    ),
     WishlistScreen(),
-    CartScreen(from: SharedPreferencesKeys.isDrawer,)
+    CartScreen(
+      from: SharedPreferencesKeys.isDrawer,
+    )
   ];
 
   @override
@@ -85,8 +89,6 @@ class DrawerControllers extends GetxController {
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
   }
-
-
 
   void closeDrawer() {
     Navigator.pop(context);

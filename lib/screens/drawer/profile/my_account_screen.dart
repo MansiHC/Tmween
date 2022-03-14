@@ -261,7 +261,7 @@ class MyAccountScreen extends StatelessWidget {
             color: Colors.grey[300]!,
           ),
         ),
-              CustomListTile(
+        CustomListTile(
             title: LocaleKeys.logout,
             onTap: () {
               _logout(myAccountController);

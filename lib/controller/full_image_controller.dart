@@ -18,26 +18,22 @@ class FullImageController extends GetxController {
   int image = 0;
   final CarouselController controller = CarouselController();
 
-
   void changPage(int index) {
     current = index;
     update();
   }
 
-
-
   final List<String> items = ['Sofa', 'Bed'];
 
   late final List<Widget> imageSliders = imgList
-      .map((item) =>  Container(
-      height: double.maxFinite,
-      width: double.maxFinite,
-
-      child:InteractiveViewer(
-      panEnabled: true,
-      minScale: 0.1,
-      maxScale: 4,
-      child: Image.asset(item, fit: BoxFit.contain),
+      .map((item) => Container(
+          height: double.maxFinite,
+          width: double.maxFinite,
+          child: InteractiveViewer(
+            panEnabled: true,
+            minScale: 0.1,
+            maxScale: 4,
+            child: Image.asset(item, fit: BoxFit.contain),
           )))
       .toList();
 
@@ -51,10 +47,8 @@ class FullImageController extends GetxController {
 
   @override
   void onInit() {
-
     super.onInit();
   }
-
 
   List<RecentlyViewedModel> recentlVieweds = const <RecentlyViewedModel>[
     const RecentlyViewedModel(
@@ -98,8 +92,6 @@ class FullImageController extends GetxController {
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
   }
-
-
 
   void closeDrawer() {
     Navigator.pop(context);

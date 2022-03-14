@@ -92,7 +92,6 @@ class MyApp extends StatelessWidget {
       currentLocale = Locale('es', 'ES');
     }*/
 
-
     return GetMaterialApp(
       translations: TranslationService(),
       locale: currentLocale,

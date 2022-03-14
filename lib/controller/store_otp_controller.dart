@@ -52,8 +52,7 @@ class StoreOtpController extends GetxController {
     loading = true;
     update();
     await api
-        .register(context, name, deviceType, password, email, phone, agreeTerms,
-            langCode)
+        .register(context, name, password, email, phone, agreeTerms, langCode)
         .then((value) {
       loading = false;
       update();
@@ -98,24 +97,24 @@ class StoreOtpController extends GetxController {
     Navigator.of(context).pop(false);
   }
 
-  void navigateToLoginScreen(String from, String frm,bool isPassword,bool isStorePassword) {
+  void navigateToLoginScreen(
+      String from, String frm, bool isPassword, bool isStorePassword) {
     otpController.clear();
     if (from == AppConstants.individual) {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
               builder: (context) => LoginScreen(
-                from: frm,
-                frm: AppConstants.individual,
-                isPassword: true,
-                isStorePassword: isStorePassword,
-              )));
+                    from: frm,
+                    frm: AppConstants.individual,
+                    isPassword: true,
+                    isStorePassword: isStorePassword,
+                  )));
     } else {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  LoginScreen(
+              builder: (context) => LoginScreen(
                     from: frm,
                     frm: AppConstants.store,
                     isPassword: isPassword,
@@ -124,28 +123,29 @@ class StoreOtpController extends GetxController {
     }
   }
 
-  void navigateToLoginEmailScreen(String from, String frm,bool isPassword,bool isStorePassword) {
+  void navigateToLoginEmailScreen(
+      String from, String frm, bool isPassword, bool isStorePassword) {
     otpController.clear();
     if (from == AppConstants.individual) {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
               builder: (context) => LoginScreen(
-                from: frm,
-                frm: AppConstants.individual,
-                isPassword: false,
-                isStorePassword: isStorePassword,
-              )));
+                    from: frm,
+                    frm: AppConstants.individual,
+                    isPassword: false,
+                    isStorePassword: isStorePassword,
+                  )));
     } else {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
               builder: (context) => LoginScreen(
-                from: frm,
-                frm: AppConstants.store,
-                isPassword: isPassword,
-                isStorePassword: false,
-              )));
+                    from: frm,
+                    frm: AppConstants.store,
+                    isPassword: isPassword,
+                    isStorePassword: false,
+                  )));
     }
   }
-  }
+}

@@ -54,6 +54,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                   length: 2,
                   child: Scaffold(
                       body: NestedScrollView(
+                    physics: NeverScrollableScrollPhysics(),
                     headerSliverBuilder:
                         (BuildContext context, bool innerBoxIsScrolled) {
                       return [
@@ -63,7 +64,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                                 : (MediaQuery.of(context).size.height / 4.4),
                             automaticallyImplyLeading: false,
                             titleSpacing: 0,
-                            title:topView(signUpController),
+                            title: topView(signUpController),
                             flexibleSpace: Stack(
                               children: <Widget>[
                                 Positioned.fill(
@@ -81,7 +82,6 @@ class _SignUpScreenState extends State<SignUpScreen>
                                 child: ColoredBox(
                                     color: Color.fromRGBO(195, 208, 225, 1),
                                     child: TabBar(
-                                        physics: ScrollPhysics(),
                                         controller: _tabController,
                                         indicator: BoxDecoration(
                                             color: AppColors.primaryColor),
@@ -106,92 +106,89 @@ class _SignUpScreenState extends State<SignUpScreen>
   }
 
   Widget topView(SignUpController signUpController) {
-    return  Padding(
-            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 0),
-            child: Column(
-              children: [
-                Align(
-                    alignment: Alignment.topLeft,
-                    child: SizedBox(
-                        height: MediaQuery.of(context).size.height / 9.5,
-                        width: MediaQuery.of(context).size.width,
-                        child: Stack(
-                          children: [
-                            ClipOval(
-                              child: Material(
-                                color: Colors.white,
-                                child: InkWell(
-                                  onTap: () {
-                                    signUpController.exitScreen();
-                                  },
-                                  child: SizedBox(
-                                      width: 24,
-                                      height: 24,
-                                      child: Icon(
-                                        Icons.keyboard_arrow_left_sharp,
-                                        color: Colors.black,
-                                      )),
-                                ),
-                              ),
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 25, vertical: 0),
+        child: Column(
+          children: [
+            Align(
+                alignment: Alignment.topLeft,
+                child: SizedBox(
+                    height: MediaQuery.of(context).size.height / 9.5,
+                    width: MediaQuery.of(context).size.width,
+                    child: Stack(
+                      children: [
+                        ClipOval(
+                          child: Material(
+                            color: Colors.white,
+                            child: InkWell(
+                              onTap: () {
+                                signUpController.exitScreen();
+                              },
+                              child: SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: Icon(
+                                    Icons.keyboard_arrow_left_sharp,
+                                    color: Colors.black,
+                                  )),
                             ),
-                            Positioned(
-                                top: -24,
-                                left: 0,
-                                right: 0,
-                                child: Align(
-                                    alignment: Alignment.topCenter,
-                                    child: SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              6.5,
-                                      width:
-                                          MediaQuery.of(context).size.height /
-                                              6.5,
-                                      child:
-                                          SvgPicture.asset(ImageConstanst.logo),
-                                    ))),
-                          ],
-                        ))),
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(text: ' ', children: <InlineSpan>[
-                        TextSpan(
-                          text: '${LocaleKeys.signUp} '.tr,
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
+                          ),
                         ),
-                        TextSpan(
-                          text: LocaleKeys.yourAccount.tr,
-                          style: TextStyle(fontSize: 20, color: Colors.white70),
-                        )
-                      ])),
-                ),
-                10.heightBox,
-                Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Align(
-                        alignment: Alignment.topCenter,
-                        child: RichText(
-                            textAlign: TextAlign.center,
-                            text: TextSpan(
-                                text: "${LocaleKeys.loginOurWebsite.tr} ",
+                        Positioned(
+                            top: -24,
+                            left: 0,
+                            right: 0,
+                            child: Align(
+                                alignment: Alignment.topCenter,
+                                child: SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height / 6.5,
+                                  width:
+                                      MediaQuery.of(context).size.height / 6.5,
+                                  child: SvgPicture.asset(ImageConstanst.logo),
+                                ))),
+                      ],
+                    ))),
+            Align(
+              alignment: Alignment.topCenter,
+              child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(text: ' ', children: <InlineSpan>[
+                    TextSpan(
+                      text: '${LocaleKeys.signUp} '.tr,
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                    TextSpan(
+                      text: LocaleKeys.yourAccount.tr,
+                      style: TextStyle(fontSize: 20, color: Colors.white70),
+                    )
+                  ])),
+            ),
+            10.heightBox,
+            Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Align(
+                    alignment: Alignment.topCenter,
+                    child: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                            text: "${LocaleKeys.loginOurWebsite.tr} ",
+                            style:
+                                TextStyle(fontSize: 14, color: Colors.white70),
+                            children: <InlineSpan>[
+                              TextSpan(
+                                text: LocaleKeys.registerCapital.tr,
                                 style: TextStyle(
-                                    fontSize: 14, color: Colors.white70),
-                                children: <InlineSpan>[
-                                  TextSpan(
-                                    text: LocaleKeys.registerCapital.tr,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                ])))),
-              ],
-            ));
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            ])))),
+          ],
+        ));
   }
 }

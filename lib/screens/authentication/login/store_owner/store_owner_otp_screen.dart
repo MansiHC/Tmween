@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:tmween/controller/otp_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
@@ -17,7 +16,12 @@ class StoreOwnerOtpScreen extends StatelessWidget {
   final String from;
   final String frm;
 
-  StoreOwnerOtpScreen({Key? key, required this.phoneEmail,required this.from,required this.frm}) : super(key: key);
+  StoreOwnerOtpScreen(
+      {Key? key,
+      required this.phoneEmail,
+      required this.from,
+      required this.frm})
+      : super(key: key);
 
   late String language;
   final otpController = Get.put(StoreOtpController());
@@ -36,24 +40,26 @@ class StoreOwnerOtpScreen extends StatelessWidget {
               builder: (contet) {
                 loginController.context = otpController.context;
                 return WillPopScope(
-                    onWillPop: () => _onWillPop(otpController,loginController),
-                child:Scaffold(
-              body: SingleChildScrollView(
-                  child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                  constraints:
-                      BoxConstraints(minWidth: double.infinity, maxHeight: 90),
-                  color: AppColors.appBarColor,
-                  padding: EdgeInsets.only(top: 20),
-                  child: topView(otpController)),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                child: bottomView(otpController),
-              )
-            ],
-          ))));});
+                    onWillPop: () => _onWillPop(otpController, loginController),
+                    child: Scaffold(
+                        body: SingleChildScrollView(
+                            child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                            constraints: BoxConstraints(
+                                minWidth: double.infinity, maxHeight: 90),
+                            color: AppColors.appBarColor,
+                            padding: EdgeInsets.only(top: 20),
+                            child: topView(otpController)),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 15),
+                          child: bottomView(otpController),
+                        )
+                      ],
+                    ))));
+              });
         });
   }
 
@@ -74,10 +80,14 @@ class StoreOwnerOtpScreen extends StatelessWidget {
                   loginController.context = otpController.context;
                   return InkWell(
                       onTap: () {
-                      //  loginController.isStorePasswordScreen = false;
-                      //  loginController.update();
-                      //otpController.exitScreen();
-                        otpController.navigateToLoginEmailScreen(from, frm,loginController.isPasswordScreen,loginController.isStorePasswordScreen);
+                        //  loginController.isStorePasswordScreen = false;
+                        //  loginController.update();
+                        //otpController.exitScreen();
+                        otpController.navigateToLoginEmailScreen(
+                            from,
+                            frm,
+                            loginController.isPasswordScreen,
+                            loginController.isStorePasswordScreen);
                       },
                       child: Wrap(
                         crossAxisAlignment: WrapCrossAlignment.center,
@@ -128,42 +138,45 @@ class StoreOwnerOtpScreen extends StatelessWidget {
         10.heightBox,
         buildTimer(),
         40.heightBox,
-        Padding(padding: EdgeInsets.symmetric
-          (horizontal: MediaQuery.of(otpController.context).size.width/8),child:OtpTextField(
-          length: 4,
-          obscureText: false,
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          animationType: AnimationType.scale,
-          pinTheme: PinTheme(
-            shape: PinCodeFieldShape.box,
-            borderRadius: BorderRadius.circular(5),
-            fieldHeight: 50,
-            fieldWidth: 40,
-            activeFillColor: AppColors.primaryColor,
-            activeColor: AppColors.primaryColor,
-            selectedColor: AppColors.primaryColor,
-            selectedFillColor: AppColors.primaryColor,
-            inactiveFillColor: AppColors.lightGrayColor,
-            inactiveColor: AppColors.lightGrayColor,
-          ),
-          animationDuration: const Duration(milliseconds: 300),
-          enableActiveFill: true,
-          cursorColor: Colors.white,
-          textStyle: TextStyle(color: Colors.white),
-          controller: otpController.otpController,
-          onCompleted: (v) {
-            otpController.verifyLoginOTP();
-          },
-          onChanged: (value) {
-            debugPrint(value);
-            otpController.currentText = value;
-            otpController.update();
-          },
-          beforeTextPaste: (text) {
-            return true;
-          },
-          appContext: otpController.context,
-        )),
+        Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal:
+                    MediaQuery.of(otpController.context).size.width / 8),
+            child: OtpTextField(
+              length: 4,
+              obscureText: false,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              animationType: AnimationType.scale,
+              pinTheme: PinTheme(
+                shape: PinCodeFieldShape.box,
+                borderRadius: BorderRadius.circular(5),
+                fieldHeight: 50,
+                fieldWidth: 40,
+                activeFillColor: AppColors.primaryColor,
+                activeColor: AppColors.primaryColor,
+                selectedColor: AppColors.primaryColor,
+                selectedFillColor: AppColors.primaryColor,
+                inactiveFillColor: AppColors.lightGrayColor,
+                inactiveColor: AppColors.lightGrayColor,
+              ),
+              animationDuration: const Duration(milliseconds: 300),
+              enableActiveFill: true,
+              cursorColor: Colors.white,
+              textStyle: TextStyle(color: Colors.white),
+              controller: otpController.otpController,
+              onCompleted: (v) {
+                otpController.verifyLoginOTP();
+              },
+              onChanged: (value) {
+                debugPrint(value);
+                otpController.currentText = value;
+                otpController.update();
+              },
+              beforeTextPaste: (text) {
+                return true;
+              },
+              appContext: otpController.context,
+            )),
         Visibility(visible: otpController.loading, child: 5.heightBox),
         Visibility(
           visible: otpController.loading,
@@ -220,16 +233,21 @@ class StoreOwnerOtpScreen extends StatelessWidget {
           ],
         ),
         10.heightBox,
-    GetBuilder<LoginController>(
-    init: LoginController(),
-    builder: (contet) {
-    loginController.context = otpController.context;
-    return CustomButton(
-            text: LocaleKeys.loginWithPassword.tr,
-            onPressed: () {
-            //  otpController.exitScreen();
-              otpController.navigateToLoginScreen(from, frm,loginController.isPasswordScreen,loginController.isStorePasswordScreen);
-            });})
+        GetBuilder<LoginController>(
+            init: LoginController(),
+            builder: (contet) {
+              loginController.context = otpController.context;
+              return CustomButton(
+                  text: LocaleKeys.loginWithPassword.tr,
+                  onPressed: () {
+                    //  otpController.exitScreen();
+                    otpController.navigateToLoginScreen(
+                        from,
+                        frm,
+                        loginController.isPasswordScreen,
+                        loginController.isStorePasswordScreen);
+                  });
+            })
       ],
     );
   }
@@ -272,50 +290,61 @@ class StoreOwnerOtpScreen extends StatelessWidget {
     );
   }
 
-  Future<bool> _onWillPop(StoreOtpController otpController,LoginController loginController) async {
-    otpController.navigateToLoginScreen(from, frm,loginController.isPasswordScreen,loginController.isStorePasswordScreen);
+  Future<bool> _onWillPop(
+      StoreOtpController otpController, LoginController loginController) async {
+    otpController.navigateToLoginScreen(
+        from,
+        frm,
+        loginController.isPasswordScreen,
+        loginController.isStorePasswordScreen);
 
     return true;
   }
+
   Widget topView(StoreOtpController otpController) {
-    return    GetBuilder<LoginController>(
+    return GetBuilder<LoginController>(
         init: LoginController(),
-    builder: (contet) {
-    loginController.context = otpController.context;
-    return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-        child: Stack(
-          children: [
-            Align(
-                alignment: language == 'ar'
-                    ? Alignment.centerRight
-                    : Alignment.centerLeft,
-                child: ClipOval(
-                  child: Material(
-                    color: Colors.white, // Button color
-                    child: InkWell(
-                      onTap: () {
-                       // otpController.exitScreen();
-                        otpController.navigateToLoginScreen(from, frm,loginController.isPasswordScreen,loginController.isStorePasswordScreen);
-                      },
-                      child: SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: Icon(
-                            Icons.keyboard_arrow_left_sharp,
-                            color: Colors.black,
-                          )),
+        builder: (contet) {
+          loginController.context = otpController.context;
+          return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+              child: Stack(
+                children: [
+                  Align(
+                      alignment: language == 'ar'
+                          ? Alignment.centerRight
+                          : Alignment.centerLeft,
+                      child: ClipOval(
+                        child: Material(
+                          color: Colors.white, // Button color
+                          child: InkWell(
+                            onTap: () {
+                              // otpController.exitScreen();
+                              otpController.navigateToLoginScreen(
+                                  from,
+                                  frm,
+                                  loginController.isPasswordScreen,
+                                  loginController.isStorePasswordScreen);
+                            },
+                            child: SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: Icon(
+                                  Icons.keyboard_arrow_left_sharp,
+                                  color: Colors.black,
+                                )),
+                          ),
+                        ),
+                      )),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      LocaleKeys.phoneVerification.tr,
+                      style: TextStyle(fontSize: 20, color: Colors.white),
                     ),
                   ),
-                )),
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                LocaleKeys.phoneVerification.tr,
-                style: TextStyle(fontSize: 20, color: Colors.white),
-              ),
-            ),
-          ],
-        ));});
+                ],
+              ));
+        });
   }
 }

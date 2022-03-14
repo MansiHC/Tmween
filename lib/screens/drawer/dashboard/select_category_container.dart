@@ -5,7 +5,6 @@ import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/utils/extensions.dart';
 
 import '../../../model/select_category_model.dart';
-import '../../../utils/global.dart';
 
 class SelectCategoryContainer extends StatelessWidget {
   SelectCategoryContainer(
@@ -27,20 +26,23 @@ class SelectCategoryContainer extends StatelessWidget {
                 child: Align(
                     alignment: Alignment.topRight,
                     child: Container(
-                        padding: EdgeInsets.all(3),
+                        width: 55,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                         decoration: BoxDecoration(
-                            color: AppColors.offerGreen,
+                            color: Color(0xFFFF9529),
                             borderRadius: BorderRadius.all(Radius.circular(4))),
-                        child: Column(
+                        child: Row(
                           children: [
                             Text('${category.offer}%',
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 12,
+                                    fontSize: 11,
                                     fontWeight: FontWeight.bold)),
+                            2.widthBox,
                             Text(LocaleKeys.off.tr,
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 12)),
+                                    color: Colors.white, fontSize: 11)),
                           ],
                         )))),
             5.heightBox,

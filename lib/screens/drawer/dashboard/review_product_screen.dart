@@ -122,7 +122,7 @@ class ReviewProductScreen extends StatelessWidget {
                           initialRating: reviewProductController.currentRating,
                           minRating: 0,
                           direction: Axis.horizontal,
-                          allowHalfRating: false,
+                          allowHalfRating: true,
                           itemCount: 5,
                           unratedColor: Color(0xFFDDDDDD),
                           itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
@@ -157,7 +157,9 @@ class ReviewProductScreen extends StatelessWidget {
                     10.heightBox,
                     CustomButton(
                       text: 'Submit',
-                      onPressed: () {  reviewProductController.exitScreen();},
+                      onPressed: () {
+                        reviewProductController.exitScreen();
+                      },
                       fontSize: 16,
                     ),
                     30.heightBox

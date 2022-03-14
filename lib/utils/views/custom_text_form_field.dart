@@ -101,6 +101,7 @@ class CustomBoxTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final TextInputType keyboardType;
   final String hintText;
+  final double? hintFontSize;
   final String? errorText;
   final Widget? suffixIcon;
   final Widget? prefixIcon;
@@ -122,6 +123,7 @@ class CustomBoxTextFormField extends StatelessWidget {
       this.errorText,
       this.fillColor,
       this.filled,
+      this.hintFontSize,
       this.borderColor,
       this.maxLines,
       this.suffixIcon,
@@ -173,7 +175,7 @@ class CustomBoxTextFormField extends StatelessWidget {
           hintText: hintText.tr,
           hintStyle: TextStyle(
             color: Colors.grey,
-            fontSize: 16,
+            fontSize: hintFontSize ?? 16,
           ),
           labelStyle: TextStyle(
             color: Colors.grey,
