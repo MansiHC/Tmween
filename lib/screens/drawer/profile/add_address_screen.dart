@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/address_type_model.dart';
 import 'package:tmween/model/country_model.dart';
+import 'package:tmween/model/get_customer_address_list_model.dart';
 import 'package:tmween/model/state_model.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
@@ -15,33 +16,46 @@ import '../../../controller/add_address_controller.dart';
 import '../../../model/city_model.dart';
 import '../../../utils/views/custom_text_form_field.dart';
 
-class AddAddressScreen extends StatelessWidget {
+class     AddAddressScreen extends StatelessWidget {
   late String language;
 
+  final Address? address;
+
+  AddAddressScreen({Key? key,this.address}) : super(key: key);
+
   final addressController = Get.put(AddAddressController());
+
+  Future<bool> _onWillPop(AddAddressController addressController) async {
+    addressController.exitScreen();
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
+    addressController.onInit(address);
     return GetBuilder<AddAddressController>(
         init: AddAddressController(),
         builder: (contet) {
           addressController.context = context;
-          return Scaffold(
-              body: Container(
-                  color: Colors.white,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                          constraints: BoxConstraints(
-                              minWidth: double.infinity, maxHeight: 90),
-                          color: AppColors.appBarColor,
-                          padding: EdgeInsets.only(top: 20),
-                          child: topView(addressController)),
-                      _bottomView(addressController),
-                    ],
-                  )));
+
+          return WillPopScope(
+              onWillPop: () => _onWillPop(addressController),
+              child: Scaffold(
+                  body: Container(
+                      color: Colors.white,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              constraints: BoxConstraints(
+                                  minWidth: double.infinity, maxHeight: 90),
+                              color: AppColors.appBarColor,
+                              padding: EdgeInsets.only(top: 20),
+                              child: topView(addressController)),
+                          _bottomView(addressController),
+                        ],
+                      ))));
         });
   }
 
@@ -71,10 +85,10 @@ class AddAddressScreen extends StatelessWidget {
                               style: TextStyle(fontSize: 14),
                             ),
                             items: addressController.countries
-                                .map((item) => DropdownMenuItem<CountryModel>(
+                                .map((item) => DropdownMenuItem<Country>(
                                       value: item,
                                       child: Text(
-                                        item.name,
+                                        item.countryName!,
                                         style: const TextStyle(
                                           fontSize: 14,
                                           color: Colors.black,
@@ -85,8 +99,8 @@ class AddAddressScreen extends StatelessWidget {
                                 .toList(),
                             value: addressController.countryValue,
                             onChanged: (value) {
-                              var val = value as CountryModel;
-                              addressController.updateCountry(val);
+                              var val = value as Country;
+                              addressController.updateCountry(val, language);
                             },
                             icon: const Icon(
                               Icons.keyboard_arrow_down_sharp,
@@ -120,7 +134,12 @@ class AddAddressScreen extends StatelessWidget {
                               ImageConstanst.userIcon,
                               color: AppColors.primaryColor,
                             ),
-                            validator: (value) {}),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please Enter Full Name';
+                              }
+                              return null;
+                            }),
                         10.heightBox,
                         Text(
                           LocaleKeys.mobileNumber.tr,
@@ -140,7 +159,10 @@ class AddAddressScreen extends StatelessWidget {
                               ImageConstanst.phoneCallIcon,
                               color: AppColors.primaryColor,
                             ),
-                            validator: (value) {}),
+                            validator: (value) { if (value!.isEmpty) {
+                              return 'Please Enter Mobile Number';
+                            }
+                            return null;}),
                         10.heightBox,
                         Text(
                           LocaleKeys.pincode.tr,
@@ -159,7 +181,10 @@ class AddAddressScreen extends StatelessWidget {
                               ImageConstanst.worldIcon,
                               color: AppColors.primaryColor,
                             ),
-                            validator: (value) {}),
+                            validator: (value) { if (value!.isEmpty) {
+                              return 'Please Enter Pincode';
+                            }
+                            return null;}),
                         10.heightBox,
                         Text(
                           LocaleKeys.houseNo.tr,
@@ -178,7 +203,10 @@ class AddAddressScreen extends StatelessWidget {
                               ImageConstanst.homeIcon,
                               color: AppColors.primaryColor,
                             ),
-                            validator: (value) {}),
+                            validator: (value) { if (value!.isEmpty) {
+                              return 'Please Enter ${LocaleKeys.houseNo.tr}';
+                            }
+                            return null;}),
                         10.heightBox,
                         Text(
                           LocaleKeys.areaStreet.tr,
@@ -197,7 +225,10 @@ class AddAddressScreen extends StatelessWidget {
                               ImageConstanst.homeIcon,
                               color: AppColors.primaryColor,
                             ),
-                            validator: (value) {}),
+                            validator: (value) {if (value!.isEmpty) {
+                              return 'Please Enter ${LocaleKeys.areaStreet.tr}';
+                            }
+                            return null;}),
                         10.heightBox,
                         Text(
                           LocaleKeys.landmark.tr,
@@ -216,7 +247,10 @@ class AddAddressScreen extends StatelessWidget {
                               ImageConstanst.pinIcon,
                               color: AppColors.primaryColor,
                             ),
-                            validator: (value) {}),
+                            validator: (value) {if (value!.isEmpty) {
+                              return 'Please Enter ${LocaleKeys.landmark.tr}';
+                            }
+                            return null;}),
                         10.heightBox,
                         Text(
                           LocaleKeys.state.tr,
@@ -240,10 +274,10 @@ class AddAddressScreen extends StatelessWidget {
                               style: TextStyle(fontSize: 14),
                             ),
                             items: addressController.states
-                                .map((item) => DropdownMenuItem<StateModel>(
+                                .map((item) => DropdownMenuItem<States>(
                                       value: item,
                                       child: Text(
-                                        item.name,
+                                        item.stateName!,
                                         style: const TextStyle(
                                           fontSize: 14,
                                           color: Colors.black,
@@ -254,8 +288,8 @@ class AddAddressScreen extends StatelessWidget {
                                 .toList(),
                             value: addressController.stateValue,
                             onChanged: (value) {
-                              var val = value as StateModel;
-                              addressController.updateState(val);
+                              var val = value as States;
+                              addressController.updateState(val, language);
                             },
                             icon: const Icon(
                               Icons.keyboard_arrow_down_sharp,
@@ -294,10 +328,10 @@ class AddAddressScreen extends StatelessWidget {
                               style: TextStyle(fontSize: 14),
                             ),
                             items: addressController.cities
-                                .map((item) => DropdownMenuItem<CityModel>(
+                                .map((item) => DropdownMenuItem<City>(
                                       value: item,
                                       child: Text(
-                                        item.name,
+                                        item.cityName!,
                                         style: const TextStyle(
                                           fontSize: 14,
                                           color: Colors.black,
@@ -308,7 +342,7 @@ class AddAddressScreen extends StatelessWidget {
                                 .toList(),
                             value: addressController.cityValue,
                             onChanged: (value) {
-                              var val = value as CityModel;
+                              var val = value as City;
                               addressController.updateCity(val);
                             },
                             icon: const Icon(
@@ -467,7 +501,12 @@ class AddAddressScreen extends StatelessWidget {
                             text: LocaleKeys.addNewAddress.tr,
                             fontSize: 16,
                             onPressed: () {
-                              addressController.exitScreen();
+                          //    addressController.exitScreen();
+                              if(address==null) {
+                                addressController.addAddress(language);
+                              }else{
+                                addressController.editAddress(address!.id,language);
+                              }
                             }),
                         30.heightBox,
                       ],

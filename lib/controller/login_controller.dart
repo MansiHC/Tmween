@@ -173,7 +173,6 @@ class LoginController extends GetxController {
     FocusScope.of(context).unfocus();
     // navigateToDrawerScreen();
     if (formKey2.currentState!.validate()) {
-      update();
       loading = true;
       update();
       await api
@@ -185,8 +184,9 @@ class LoginController extends GetxController {
           update();
           MySharedPreferences.instance.addIntToSF(
               SharedPreferencesKeys.loginLogId, value.data!.loginLogId);
+          print('dfdfn........${value.data!.token}');
           MySharedPreferences.instance
-              .addIntToSF(SharedPreferencesKeys.token, value.data!.token);
+              .addStringToSF(SharedPreferencesKeys.token, value.data!.token);
           MySharedPreferences.instance.addIntToSF(
               SharedPreferencesKeys.userId, value.data!.customerData!.id);
           navigateToDrawerScreen();

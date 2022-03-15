@@ -12,6 +12,7 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_list_tile.dart';
 
+import '../../../utils/views/circular_progress_bar.dart';
 import 'my_wallet_screen.dart';
 
 class MyAccountScreen extends StatelessWidget {
@@ -320,12 +321,16 @@ class MyAccountScreen extends StatelessWidget {
     await showDialog(
         context: myAccountController.context,
         builder: (_) => AlertDialog(
-              title: Text(
+              title: Column(children: [Text(
                 LocaleKeys.wantLogout.tr,
                 style: TextStyle(
                   fontSize: 16,
                 ),
               ),
+                Visibility(
+                  visible: myAccountController.loading,
+                  child: CircularProgressBar(),
+                ),]),
               actions: [
                 TextButton(
                   style: TextButton.styleFrom(padding: EdgeInsets.zero),
@@ -344,7 +349,7 @@ class MyAccountScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 16, color: Colors.black54),
                   ),
                   onPressed: () {
-                    myAccountController.doLogout();
+                    myAccountController.doLogout(language);
                   },
                 ),
               ],

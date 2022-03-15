@@ -58,7 +58,7 @@ abstract class UrlConstants {
   static const String resetPassword = '$baseUrl/customer/reset-password';
   static const String editProfile = '$baseUrl/customer/edit-profile';
   static const String getCustomerAddressList =
-      '$baseUrl/customer/get-customer-address-list';
+      '$baseUrl/customer/get-customer-address-list-csc';
   static const String deleteCustomerAddress =
       '$baseUrl/customer/delete-customer-address';
   static const String editCustomerAddress =
@@ -67,6 +67,7 @@ abstract class UrlConstants {
       '$baseUrl/customer/add-customer-address';
 
   //e-commerce
+  static const String getMasterData = '$baseUrl/get-master-data';
   static const String dealOfTheDay = '$baseUrl/get-dailydeal-list';
   static const String soldByTmween = '$baseUrl/get-soldby-system-product-list';
   static const String topSelection = '$baseUrl/get-top-selected-product';

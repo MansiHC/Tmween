@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 
+import '../service/api.dart';
 import '../utils/global.dart';
+import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
 import 'drawer_controller.dart';
 
@@ -12,45 +14,55 @@ class MyAccountController extends GetxController {
   late BuildContext context;
   TextEditingController passwordController = TextEditingController();
 
+
   int userId = 0;
   int loginLogId = 0;
+  String token = '';
 
+  final api = Api();
+  bool loading = false;
   @override
   void onInit() {
-    /*MySharedPreferences.instance
-        .getIntValuesSF(SharedPreferencesKeys.userId)
+    MySharedPreferences.instance
+        .getStringValuesSF(SharedPreferencesKeys.token)
         .then((value) async {
-      userId = value!;
+      token = value!;
+      print('dhsh.....$token');
       MySharedPreferences.instance
-          .getIntValuesSF(SharedPreferencesKeys.loginLogId)
+          .getIntValuesSF(SharedPreferencesKeys.userId)
           .then((value) async {
-        loginLogId = value!;
+        userId = value!;
+        MySharedPreferences.instance
+            .getIntValuesSF(SharedPreferencesKeys.loginLogId)
+            .then((value) async {
+          loginLogId = value!;
+        });
       });
-    });*/
+    });
     super.onInit();
   }
 
-  void doLogout() async {
-    MySharedPreferences.instance
-        .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-    navigateToDashBoardScreen();
-    /*loading = true;
+  void doLogout(language) async {
+
+    loading = true;
     update();
     await api
-        .logout(context, 1, userId, loginLogId )
+        .logout(token, userId,loginLogId,
+        language)
         .then((value) {
-      if (value.message == AppConstants.success) {
-        loading = false;
-        update();
-        navigateToLoginScreen();
-      } else {
-        Helper.showSnackBar(context, value.message!);
-      }
+      loading = false;
+      update();
+      Helper.showGetSnackBar( value.message!);
+      MySharedPreferences.instance
+          .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+      navigateToDashBoardScreen();
     }).catchError((error) {
       loading = false;
       update();
       print('error....$error');
-    });*/
+    });
+
+
   }
 
   void exitScreen() {
@@ -63,6 +75,7 @@ class MyAccountController extends GetxController {
   }
 
   void navigateToDashBoardScreen() {
+    Get.delete<MyAccountController>();
     Get.delete<DrawerControllers>();
     Get.offAll(DrawerScreen());
     /*

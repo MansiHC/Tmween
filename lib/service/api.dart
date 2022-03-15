@@ -5,12 +5,16 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/banner_model.dart';
+import 'package:tmween/model/city_model.dart';
+import 'package:tmween/model/country_model.dart';
 import 'package:tmween/model/deals_of_the_day_model.dart';
+import 'package:tmween/model/get_customer_address_list_model.dart';
 import 'package:tmween/model/login_model.dart';
 import 'package:tmween/model/login_using_otp_model.dart';
 import 'package:tmween/model/reset_password_model.dart';
 import 'package:tmween/model/signup_model.dart';
 import 'package:tmween/model/sold_by_tmween_model.dart';
+import 'package:tmween/model/state_model.dart';
 import 'package:tmween/model/success_model.dart';
 import 'package:tmween/model/top_selection_model.dart';
 import 'package:tmween/model/verify_otp_model.dart';
@@ -178,12 +182,13 @@ class Api {
     return result;
   }
 
-  Future<SuccessModel> logout(context, userId, loginLogId, langCode) async {
+  Future<SuccessModel> logout(token, userId, loginLogId, langCode) async {
     late SuccessModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.logout),
           headers: {
             HttpHeaders.contentTypeHeader: "application/json",
+            'username': token,
             HttpHeaders.authorizationHeader:
                 "Bearer ${AppConstants.customer_token}"
           },
@@ -191,13 +196,13 @@ class Api {
             "entity_type_id": AppConstants.entity_type_id_customer,
             "device_type": AppConstants.device_type,
             "user_id": userId,
-            "password": loginLogId,
+            "login_log_id": loginLogId,
             "lang_code": langCode
           }));
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }
     return result;
   }
@@ -253,7 +258,8 @@ class Api {
       final response = await http.post(Uri.parse(UrlConstants.forgotPassword),
           headers: {
             HttpHeaders.contentTypeHeader: "application/json",
-            HttpHeaders.authorizationHeader: AppConstants.customer_token
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
           },
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
@@ -276,7 +282,8 @@ class Api {
       final response = await http.post(Uri.parse(UrlConstants.resetPassword),
           headers: {
             HttpHeaders.contentTypeHeader: "application/json",
-            HttpHeaders.authorizationHeader: AppConstants.customer_token
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
           },
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
@@ -301,7 +308,8 @@ class Api {
       final response = await http.post(Uri.parse(UrlConstants.editProfile),
           headers: {
             HttpHeaders.contentTypeHeader: "application/json",
-            HttpHeaders.authorizationHeader: AppConstants.customer_token
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
           },
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
@@ -320,15 +328,17 @@ class Api {
     return result;
   }
 
-  Future<VerifyOtpModel> getCustomerAddressList(
-      context, userId, customerId, langCode) async {
-    late VerifyOtpModel result;
+  Future<GetCustomerAddressListModel> getCustomerAddressList(
+      token, userId, customerId, langCode) async {
+    late GetCustomerAddressListModel result;
     try {
       final response =
           await http.post(Uri.parse(UrlConstants.getCustomerAddressList),
               headers: {
                 HttpHeaders.contentTypeHeader: "application/json",
-                HttpHeaders.authorizationHeader: AppConstants.customer_token
+                'username': token,
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
               },
               body: json.encode({
                 "entity_type_id": AppConstants.entity_type_id_customer,
@@ -338,22 +348,24 @@ class Api {
                 "lang_code": langCode
               }));
       var responseJson = _returnResponse(response);
-      result = VerifyOtpModel.fromJson(responseJson);
+      result = GetCustomerAddressListModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }
     return result;
   }
 
   Future<SuccessModel> deleteCustomerAddress(
-      context, id, userId, customerId, langCode) async {
+      token, id, userId, customerId, langCode) async {
     late SuccessModel result;
     try {
       final response =
           await http.post(Uri.parse(UrlConstants.deleteCustomerAddress),
               headers: {
                 HttpHeaders.contentTypeHeader: "application/json",
-                HttpHeaders.authorizationHeader: AppConstants.customer_token
+                'username': token,
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
               },
               body: json.encode({
                 "entity_type_id": AppConstants.entity_type_id_customer,
@@ -366,18 +378,17 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+      Helper.showGetSnackBar( LocaleKeys.noInternet.tr);
     }
     return result;
   }
 
   Future<SuccessModel> editCustomerAddress(
-      context,
+      token,
       id,
       userId,
       customerId,
-      firstName,
-      lastName,
+      fullName,
       address1,
       address2,
       countryCode,
@@ -385,6 +396,8 @@ class Api {
       cityCode,
       zipCode,
       mobile,
+      addressType,
+      deliveryInstruction,
       isDefault,
       langCode) async {
     late SuccessModel result;
@@ -393,7 +406,8 @@ class Api {
           await http.post(Uri.parse(UrlConstants.editCustomerAddress),
               headers: {
                 HttpHeaders.contentTypeHeader: "application/json",
-                HttpHeaders.authorizationHeader: AppConstants.customer_token
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
               },
               body: json.encode({
                 "entity_type_id": AppConstants.entity_type_id_customer,
@@ -401,8 +415,7 @@ class Api {
                 "user_id": userId,
                 "customer_id": customerId,
                 "id": id,
-                "first_name": firstName,
-                "last_name": lastName,
+                "fullname": fullName,
                 "address1": address1,
                 "address2": address2,
                 "country_code": countryCode,
@@ -418,18 +431,16 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+      Helper.showGetSnackBar( LocaleKeys.noInternet.tr);
     }
     return result;
   }
 
-  Future<SuccessModel> addCustomerAddress(
-      context,
-      id,
+  Future<SuccessModel>  addCustomerAddress(
+      token,
       userId,
       customerId,
-      firstName,
-      lastName,
+      fullName,
       address1,
       address2,
       countryCode,
@@ -437,6 +448,8 @@ class Api {
       cityCode,
       zipCode,
       mobile,
+      addressType,
+      deliveryInstruction,
       isDefault,
       langCode) async {
     late SuccessModel result;
@@ -445,16 +458,16 @@ class Api {
           await http.post(Uri.parse(UrlConstants.addCustomerAddress),
               headers: {
                 HttpHeaders.contentTypeHeader: "application/json",
-                HttpHeaders.authorizationHeader: AppConstants.customer_token
+                'username': token,
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
               },
               body: json.encode({
                 "entity_type_id": AppConstants.entity_type_id_customer,
                 "device_type": AppConstants.device_type,
                 "user_id": userId,
                 "customer_id": customerId,
-                "id": id,
-                "first_name": firstName,
-                "last_name": lastName,
+                "fullname": fullName,
                 "address1": address1,
                 "address2": address2,
                 "country_code": countryCode,
@@ -463,14 +476,17 @@ class Api {
                 "zip": zipCode,
                 "mobile1": mobile,
                 "status": "1",
-                "is_default_shipping": isDefault,
-                "is_default_billing": isDefault,
+                "address_type": addressType,
+                "delivery_instruction": deliveryInstruction,
+                "default_address": isDefault,
+                "is_default_shipping": 0,
+                "is_default_billing": 0,
                 "lang_code": langCode
               }));
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }
     return result;
   }
@@ -483,7 +499,8 @@ class Api {
           await http.post(Uri.parse(UrlConstants.addCustomerAddress),
               headers: {
                 HttpHeaders.contentTypeHeader: "application/json",
-                HttpHeaders.authorizationHeader: AppConstants.customer_token
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
               },
               body: json.encode({
                 "entity_type_id": AppConstants.entity_type_id_customer,
@@ -508,7 +525,8 @@ class Api {
       final response = await http.post(Uri.parse(UrlConstants.dealOfTheDay),
           headers: {
             HttpHeaders.contentTypeHeader: "application/json",
-            HttpHeaders.authorizationHeader: AppConstants.customer_token
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
           },
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
@@ -523,13 +541,80 @@ class Api {
     return result;
   }
 
+  Future<CountryModel> getCountries(langCode) async {
+    late CountryModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.getMasterData),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "data-request": ["country"],
+            "country_code": "IN",
+          }));
+      var responseJson = _returnResponse(response);
+      result = CountryModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<StateModel> getStates(countryCode, langCode) async {
+    late StateModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.getMasterData),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "data-request": ["state"],
+            "country_code": countryCode,
+            "lang_code": langCode,
+          }));
+      var responseJson = _returnResponse(response);
+      result = StateModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<CityModel> getCity(countryCode, stateCode, langCode) async {
+    late CityModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.getMasterData),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "data-request": ["city"],
+            "country_code": countryCode,
+            "state_code": stateCode,
+            "lang_code": langCode,
+          }));
+      var responseJson = _returnResponse(response);
+      result = CityModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
   Future<SoldByTmweenModel> getSoldByTmween(context, langCode) async {
     late SoldByTmweenModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.soldByTmween),
           headers: {
             HttpHeaders.contentTypeHeader: "application/json",
-            HttpHeaders.authorizationHeader: AppConstants.customer_token
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
           },
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
@@ -551,7 +636,8 @@ class Api {
       final response = await http.post(Uri.parse(UrlConstants.topSelection),
           headers: {
             HttpHeaders.contentTypeHeader: "application/json",
-            HttpHeaders.authorizationHeader: AppConstants.customer_token
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
           },
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
@@ -573,7 +659,8 @@ class Api {
       final response = await http.post(Uri.parse(UrlConstants.banner),
           headers: {
             HttpHeaders.contentTypeHeader: "application/json",
-            HttpHeaders.authorizationHeader: AppConstants.customer_token
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
           },
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,

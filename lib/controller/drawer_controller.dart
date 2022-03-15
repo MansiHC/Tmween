@@ -16,6 +16,7 @@ import 'package:tmween/service/api.dart';
 import '../lang/locale_keys.g.dart';
 import '../screens/drawer/cart_screen.dart';
 import '../utils/global.dart';
+import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
 
 class DrawerControllers extends GetxController {
@@ -62,6 +63,7 @@ class DrawerControllers extends GetxController {
     )
   ];
 
+
   @override
   void onInit() {
     MySharedPreferences.instance
@@ -78,6 +80,7 @@ class DrawerControllers extends GetxController {
       LanguageModel(name: LocaleKeys.spanish.tr, locale: Locale('es', 'ES')),
     ];
     languageValue = languages[0];
+
     super.onInit();
   }
 
@@ -104,6 +107,4 @@ class DrawerControllers extends GetxController {
     update();
   }
 
-  final api = Api();
-  bool loading = false;
 }
