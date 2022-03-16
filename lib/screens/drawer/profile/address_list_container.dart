@@ -67,16 +67,14 @@ class AddressListContainer extends StatelessWidget {
                 textAlign: TextAlign.start,
                 style: TextStyle(color: Color(0xFF666666), fontSize: 15)),
             3.heightBox,
-                if(address.cityName==null)
-                  Text(address.zip!,
+            Text('${address.landmark!}, ${address.zip!}',
+                textAlign: TextAlign.start,
+                style: TextStyle(color: Color(0xFF666666), fontSize: 15)),
+                if(address.cityName!=null)
+                  Text(address.cityName!,
                       textAlign: TextAlign.start,
                       maxLines: 2,
                       style: TextStyle(color: Color(0xFF666666), fontSize: 15)),
-            if(address.cityName!=null)
-            Text('${address.cityName!} ${address.zip!}',
-                    textAlign: TextAlign.start,
-                    maxLines: 2,
-                    style: TextStyle(color: Color(0xFF666666), fontSize: 15)),
 
             3.heightBox,
             Text('${address.stateName!}, ${address.countryName!}',

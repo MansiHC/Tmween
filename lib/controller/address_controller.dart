@@ -61,14 +61,15 @@ class AddressController extends GetxController {
     await api
         .getCustomerAddressList(token, userId,'36', language)
         .then((value) {
-      if (value.statusCode == 200) {
-        loading = false;
 
+      if (value.statusCode == 200) {
         addressList = value.data!;
-            update();
+
       } else {
         Helper.showGetSnackBar( value.message!);
       }
+      loading = false;
+      update();
     }).catchError((error) {
       loading = false;
       update();
@@ -89,12 +90,13 @@ class AddressController extends GetxController {
         '36',
         language)
         .then((value) {
-      loading = false;
-      update();
+
       if (value.statusCode == 200) {
         getAddressList(Get.locale!.languageCode);
       }
       Helper.showGetSnackBar(value.message!);
+      loading = false;
+      update();
     }).catchError((error) {
       loading = false;
       update();
@@ -122,7 +124,8 @@ class AddressController extends GetxController {
 
   void navigateToAddAddressScreen( [Address? address]) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => AddAddressScreen(address:address)))
-    .then((value) {if(value) {
+    .then((value) {
+      if(value) {
         getAddressList(Get.locale!.languageCode);
       }
     });

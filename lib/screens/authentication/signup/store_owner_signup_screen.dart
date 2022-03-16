@@ -122,7 +122,7 @@ class StoreOwnerSignUpScreen extends StatelessWidget {
                                                   .passwordController
                                                   .value
                                                   .text
-                                                  .length <
+                                                  .length <=
                                               8) {
                                             return LocaleKeys
                                                 .validPasswordLength.tr;

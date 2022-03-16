@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/service/api.dart';
@@ -7,6 +11,7 @@ import 'package:tmween/utils/global.dart';
 
 import '../screens/authentication/login/forgot_password/forgot_otp_screen.dart';
 import '../screens/authentication/login/login_screen.dart';
+import '../utils/helper.dart';
 import 'forgot_otp_controller.dart';
 
 class ForgotPasswordController extends GetxController {
@@ -14,9 +19,11 @@ class ForgotPasswordController extends GetxController {
 
   TextEditingController emailMobileController = TextEditingController();
 
+  final formKey = GlobalKey<FormState>();
   final api = Api();
   bool loading = false;
   late String phone, otp;
+
 
   void exitScreen() {
     Navigator.of(context).pop();
@@ -30,9 +37,32 @@ class ForgotPasswordController extends GetxController {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
   }
 
-  void submit(String from, String frm) {
+  generateOTP(from,frm,language) async {
     FocusScope.of(context).unfocus();
-    navigateTo(ForgotOtpScreen(from: from, frm: frm));
+    if (formKey.currentState!.validate()) {
+      loading = true;
+      update();
+      await api
+          .generateForgotPasswordOTP(context, emailMobileController.text, language)
+          .then((value) {
+        if (value.statusCode == 200) {
+          submit(from, frm,value.data!.otp.toString());
+        } else {
+          Helper.showGetSnackBar( value.message!);
+        }
+        loading = false;
+        update();
+      }).catchError((error) {
+        loading = false;
+        update();
+        print('error....$error');
+      });
+    }
+  }
+
+  void submit(String from, String frm, String otp) {
+    FocusScope.of(context).unfocus();
+    navigateTo(ForgotOtpScreen(from: from, frm: frm,otp:otp,email: emailMobileController.text,));
   }
 
   void navigateToLoginScreen(String from, String frm) {

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/my_account_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
@@ -19,6 +20,11 @@ class MyAccountScreen extends StatelessWidget {
   late String language;
   final myAccountController = Get.put(MyAccountController());
 
+  Future<bool> _onWillPop(MyAccountController myAccountController) async {
+    myAccountController.exitScreen();
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
@@ -26,7 +32,9 @@ class MyAccountScreen extends StatelessWidget {
         init: MyAccountController(),
         builder: (contet) {
           myAccountController.context = context;
-          return Scaffold(
+          return WillPopScope(
+              onWillPop: () => _onWillPop(myAccountController),
+          child: Scaffold(
               body: Container(
                   color: Colors.white,
                   child: Column(
@@ -40,7 +48,7 @@ class MyAccountScreen extends StatelessWidget {
                           child: topView(myAccountController)),
                       _bottomView(myAccountController),
                     ],
-                  )));
+                  ))));
         });
   }
 
@@ -49,7 +57,11 @@ class MyAccountScreen extends StatelessWidget {
         child: SingleChildScrollView(
             child: Column(
       children: [
-        Container(
+        Visibility(
+          visible: myAccountController.loading,
+          child: CircularProgressBar(),
+        ),
+            (!myAccountController.loading && myAccountController.profileData!=null)?  Container(
             color: AppColors.lighterGrayColor,
             padding: EdgeInsets.all(5),
             child: Column(
@@ -63,11 +75,16 @@ class MyAccountScreen extends StatelessWidget {
                           5.widthBox,
                           Container(
                             width: 80,
-                            child: CircleAvatar(
+                            child: myAccountController.profileData!.largeImageUrl!.isNotEmpty?
+                            CircleAvatar(
                               radius: 30,
                               backgroundImage: NetworkImage(
-                                  'http://i.imgur.com/QSev0hg.jpg'),
-                            ),
+                                  myAccountController.profileData!.largeImageUrl!),
+                            ):SvgPicture.asset(
+                            ImageConstanst.user,
+                            height: 42,
+                            width: 42,
+                          ),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border: Border.all(
@@ -81,7 +98,7 @@ class MyAccountScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Salim Akka',
+                                myAccountController.profileData!.yourName!,
                                 style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.black,
@@ -89,12 +106,13 @@ class MyAccountScreen extends StatelessWidget {
                               ),
                               5.heightBox,
                               Text(
-                                '+221 1234567890',
+                                myAccountController.profileData!.phone!,
                                 style: TextStyle(
                                     fontSize: 14, color: Colors.black54),
                               ),
+                              if(myAccountController.profileData!.email!=null)
                               Text(
-                                'salim.akka@tmween.com',
+                                myAccountController.profileData!.email!,
                                 style: TextStyle(
                                     fontSize: 14, color: Colors.black54),
                               ),
@@ -180,7 +198,7 @@ class MyAccountScreen extends StatelessWidget {
                 ),
                 15.heightBox,
               ],
-            )),
+            )):Container(),
         10.heightBox,
         CustomListTile(
             title: LocaleKeys.yourOrders,
@@ -339,7 +357,7 @@ class MyAccountScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 16, color: Colors.black54),
                   ),
                   onPressed: () {
-                    myAccountController.pop();
+                    myAccountController.exitScreen();
                   },
                 ),
                 TextButton(

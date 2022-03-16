@@ -6,10 +6,12 @@ import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/service/api.dart';
 
 import '../screens/authentication/login/login_screen.dart';
+import '../utils/helper.dart';
 import 'forgot_otp_controller.dart';
 
 class ResetPasswordController extends GetxController {
   late BuildContext context;
+  final formKey = GlobalKey<FormState>();
 
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
@@ -21,6 +23,29 @@ class ResetPasswordController extends GetxController {
   void exitScreen() {
     Navigator.of(context).pop(false);
   }
+
+  resetPassword(from,frm,email,token,language) async {
+    FocusScope.of(context).unfocus();
+    if (formKey.currentState!.validate()) {
+      loading = true;
+      update();
+      await api
+          .resetPassword( email,confirmPasswordController.text,token, language)
+          .then((value) {
+        if (value.statusCode == 200) {
+          submit(from, frm);
+        }
+        loading = false;
+        update();
+        Helper.showGetSnackBar( value.message!);
+      }).catchError((error) {
+        loading = false;
+        update();
+        print('error....$error');
+      });
+    }
+  }
+
 
   void submit(String from, String frm) {
     FocusScope.of(context).unfocus();

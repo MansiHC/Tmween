@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:tmween/controller/forgot_password_controller.dart';
+import 'package:tmween/controller/reset_password_controller.dart';
 import 'package:tmween/screens/authentication/login/store_owner/store_owner_otp_screen.dart';
 import 'package:tmween/screens/splash_screen.dart';
 
@@ -47,6 +49,8 @@ class LoginController extends GetxController {
   @override
   void onInit() {
     Get.delete<ForgotOtpController>();
+    Get.delete<ForgotPasswordController>();
+    Get.delete<ResetPasswordController>();
     tabList = <Tab>[];
     tabList.add(new Tab(
       text: LocaleKeys.individual.tr,
@@ -179,9 +183,9 @@ class LoginController extends GetxController {
           .login(context, phoneEmailController.text, passwordController.text,
               uuid, deviceNo, deviceName, platform, model, version, language)
           .then((value) {
+
         if (value.statusCode == 200) {
-          loading = false;
-          update();
+
           MySharedPreferences.instance.addIntToSF(
               SharedPreferencesKeys.loginLogId, value.data!.loginLogId);
           print('dfdfn........${value.data!.token}');
@@ -193,6 +197,8 @@ class LoginController extends GetxController {
         } else {
           Helper.showSnackBar(context, value.message!);
         }
+        loading = false;
+        update();
       }).catchError((error) {
         loading = false;
         update();
@@ -212,13 +218,15 @@ class LoginController extends GetxController {
         .generateMobileOtp(context, phoneEmailController.text, uuid, deviceNo,
             deviceName, platform, model, version, language)
         .then((value) {
+
       if (value.statusCode == 200) {
-        loading = false;
-        update();
+
         navigateToOTPScreen(value.data!.otp.toString(), from, frm);
       } else {
         Helper.showSnackBar(context, value.message!);
       }
+      loading = false;
+      update();
     }).catchError((error) {
       loading = false;
       update();
@@ -248,11 +256,19 @@ class LoginController extends GetxController {
   void navigateToForgotPasswordScreen(String from, String frm) {
     // Get.delete<LoginController>();
     //Navigator.of(context).pop();
+    var phoneEmail;
+if(from==AppConstants
+    .individual){
+  phoneEmail = phoneEmailController.text;
+}else if(from == AppConstants.store){
+  phoneEmail = storePhoneEmailController.text;
+}
 
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
             builder: (context) => ForgotPasswordScreen(
+              mobile:phoneEmail,
                   from: from,
                   frm: frm,
                 )));
@@ -267,6 +283,7 @@ class LoginController extends GetxController {
             builder: (context) => LoginOtpScreen(
                 phoneEmail: phoneEmailController.text.toString())));
 */
+
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(

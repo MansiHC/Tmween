@@ -73,7 +73,7 @@ class YourAddressesScreen extends StatelessWidget {
                       ),
                       Visibility(
                           visible: !addressController.loading&&
-                              addressController.addressList.length >1,
+                              addressController.addressList.length >0,
                           child:
                           Expanded(child:  Container( padding: EdgeInsets.all(
                             15,

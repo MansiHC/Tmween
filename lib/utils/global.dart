@@ -54,15 +54,19 @@ abstract class UrlConstants {
   static const String logout = '$baseUrl/customer/logout';
   static const String verifyOTP = '$baseUrl/customer/verify-otp';
   static const String resendOTP = '$baseUrl/customer/resend-otp';
-  static const String forgotPassword = '$baseUrl/customer/forgot-password';
-  static const String resetPassword = '$baseUrl/customer/reset-password';
+  static const String resendLoginOTP = '$baseUrl/customer/resend-login-otp';
+  static const String generateForgotPasswordOTP = '$baseUrl/customer/generate-forgot-pasword-mobile-otp';
+  static const String verifyForgotPasswordOTP = '$baseUrl/customer/verify-mobile-forgot-password-otp';
+  static const String resendForgotPasswordOTP = '$baseUrl/customer/resend-forgot-password-mobile-otp';
+  static const String resetPassword = '$baseUrl/customer/reset-forgot-password';
   static const String editProfile = '$baseUrl/customer/edit-profile';
+  static const String getCustomerData = '$baseUrl/customer/get-customer-data';
   static const String getCustomerAddressList =
       '$baseUrl/customer/get-customer-address-list-csc';
   static const String deleteCustomerAddress =
       '$baseUrl/customer/delete-customer-address';
   static const String editCustomerAddress =
-      '$baseUrl/customer/edit-customer-address';
+      '$baseUrl/customer/update-customer-address-mobile';
   static const String addCustomerAddress =
       '$baseUrl/customer/add-customer-address';
 

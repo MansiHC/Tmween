@@ -90,7 +90,7 @@ class ChangePasswordScreen extends StatelessWidget {
                           if (value!.isEmpty) {
                             return LocaleKeys.emptyNewPassword.tr;
                           } else if (changePasswordController
-                                  .newPasswordController.value.text.length <
+                                  .newPasswordController.value.text.length <=
                               8) {
                             return LocaleKeys.validPasswordLength.tr;
                           } else if (!changePasswordController

@@ -34,17 +34,17 @@ class OtpController extends GetxController {
     loading = true;
     update();
     await api.verifyOTP(context, phone, otp).then((value) {
-      loading = false;
-      update();
+
       if (value.statusCode == 200) {
-        loading = true;
-        update();
+
         MySharedPreferences.instance.addIntToSF(
             SharedPreferencesKeys.userId, value.data!.customerData!.id);
         navigateToDrawerScreen();
       } else {
         Helper.showSnackBar(context, value.statusMessage!);
       }
+      loading = false;
+      update();
     }).catchError((error) {
       loading = false;
       update();
@@ -144,11 +144,9 @@ class OtpController extends GetxController {
         .verifyLoginOTP(context, phone, otp, uuid, deviceNo, deviceName,
             platform, model, version, language)
         .then((value) {
-      loading = false;
-      update();
+
       if (value.statusCode == 200) {
-        loading = true;
-        update();
+
         MySharedPreferences.instance.addIntToSF(
             SharedPreferencesKeys.loginLogId, value.data!.loginLogId);
         MySharedPreferences.instance
@@ -160,6 +158,8 @@ class OtpController extends GetxController {
       } else {
         Helper.showSnackBar(context, value.statusMessage!);
       }
+      loading = false;
+      update();
     }).catchError((error) {
       loading = false;
       update();
@@ -172,13 +172,33 @@ class OtpController extends GetxController {
     loading = true;
     update();
     await api.resendOTP(context, phone).then((value) {
-      loading = false;
-      update();
+
       if (value.statusCode == 200) {
         otpValue = value.data!.otp.toString();
         update();
       }
       Helper.showSnackBar(context, value.message!);
+      loading = false;
+      update();
+    }).catchError((error) {
+      loading = false;
+      update();
+      print('error....$error');
+    });
+  }
+
+  individualLoginResendOTP(String phone) async {
+    print('hdf.....$phone');
+    loading = true;
+    update();
+    await api.resendLoginOTP(context, phone).then((value) {
+
+      if (value.statusCode == 200) {
+        otpValue = value.data!.otp.toString();
+      }
+      Helper.showSnackBar(context, value.message!);
+      loading = false;
+      update();
     }).catchError((error) {
       loading = false;
       update();

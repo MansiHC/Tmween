@@ -11,7 +11,8 @@ import '../../../../controller/login_controller.dart';
 import '../../../../utils/views/custom_button.dart';
 import '../../../../utils/views/otp_text_field.dart';
 
-class LoginOtpScreen extends StatelessWidget {
+class LoginOtpScreen extends StatefulWidget {
+
   final String phoneEmail;
   final String otp;
   final String from;
@@ -19,15 +20,29 @@ class LoginOtpScreen extends StatelessWidget {
 
   LoginOtpScreen(
       {Key? key,
-      required this.otp,
-      required this.phoneEmail,
-      required this.from,
-      required this.frm})
+        required this.otp,
+        required this.phoneEmail,
+        required this.from,
+        required this.frm})
       : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+
+    return LoginOtpScreenState();
+  }
+}
+class LoginOtpScreenState extends State<LoginOtpScreen> {
 
   late String language;
   final otpController = Get.put(OtpController());
   final loginController = Get.put(LoginController());
+  @override
+  void initState() {
+    otpController.otpValue = widget.otp;
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +51,7 @@ class LoginOtpScreen extends StatelessWidget {
         init: OtpController(),
         builder: (contet) {
           otpController.context = context;
-          otpController.phone = phoneEmail;
+          otpController.phone = widget.phoneEmail;
           return GetBuilder<LoginController>(
               init: LoginController(),
               builder: (contet) {
@@ -65,29 +80,32 @@ class LoginOtpScreen extends StatelessWidget {
         });
   }
 
+
   Future<bool> _onWillPop(
       OtpController otpController, LoginController loginController) async {
     otpController.navigateToLoginScreen(
-        from,
-        frm,
+        widget.from,
+        widget.frm,
         loginController.isPasswordScreen,
         loginController.isStorePasswordScreen);
 
     return true;
   }
 
+
+
   Widget bottomView(OtpController otpController) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Otp is: ${otp}',
+          'Otp is: ${otpController.otpValue}',
           style: TextStyle(fontSize: 14, color: Colors.black),
         ),
         Row(
           children: [
             Text(
-              '${LocaleKeys.inText.tr} ${phoneEmail}',
+              '${LocaleKeys.inText.tr} ${widget.phoneEmail}',
               style: TextStyle(fontSize: 14, color: Colors.black),
             ),
             5.widthBox,
@@ -101,8 +119,8 @@ class LoginOtpScreen extends StatelessWidget {
                         //  loginController.update();
                         // otpController.exitScreen();
                         otpController.navigateToLoginEmailScreen(
-                            from,
-                            frm,
+                            widget.from,
+                            widget.frm,
                             loginController.isPasswordScreen,
                             loginController.isStorePasswordScreen);
                       },
@@ -135,7 +153,7 @@ class LoginOtpScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold),
                 children: [
               TextSpan(
-                  text: "${phoneEmail}. ",
+                  text: "${widget.phoneEmail}. ",
                   style: TextStyle(
                       fontSize: 14,
                       color: Colors.black,
@@ -212,7 +230,7 @@ class LoginOtpScreen extends StatelessWidget {
         5.heightBox,
         InkWell(
             onTap: () {
-              otpController.resendOTP(phoneEmail);
+              otpController.individualLoginResendOTP(widget.phoneEmail);
             },
             child: Text(
               LocaleKeys.resendCode.tr,
@@ -258,8 +276,8 @@ class LoginOtpScreen extends StatelessWidget {
                   text: LocaleKeys.loginWithPassword.tr,
                   onPressed: () {
                     otpController.navigateToLoginScreen(
-                        from,
-                        frm,
+                        widget. from,
+                        widget. frm,
                         loginController.isPasswordScreen,
                         loginController.isStorePasswordScreen);
                     // otpController.exitScreen();
@@ -328,8 +346,8 @@ class LoginOtpScreen extends StatelessWidget {
                             onTap: () {
                               // otpController.exitScreen();
                               otpController.navigateToLoginScreen(
-                                  from,
-                                  frm,
+                                  widget.from,
+                                  widget.frm,
                                   loginController.isPasswordScreen,
                                   loginController.isStorePasswordScreen);
                             },

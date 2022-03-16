@@ -9,6 +9,7 @@ import 'package:tmween/model/city_model.dart';
 import 'package:tmween/model/country_model.dart';
 import 'package:tmween/model/deals_of_the_day_model.dart';
 import 'package:tmween/model/get_customer_address_list_model.dart';
+import 'package:tmween/model/get_customer_data_model.dart';
 import 'package:tmween/model/login_model.dart';
 import 'package:tmween/model/login_using_otp_model.dart';
 import 'package:tmween/model/reset_password_model.dart';
@@ -17,6 +18,7 @@ import 'package:tmween/model/sold_by_tmween_model.dart';
 import 'package:tmween/model/state_model.dart';
 import 'package:tmween/model/success_model.dart';
 import 'package:tmween/model/top_selection_model.dart';
+import 'package:tmween/model/verify_forgot_password_otp_model.dart';
 import 'package:tmween/model/verify_otp_model.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/helper.dart';
@@ -252,10 +254,32 @@ class Api {
     return result;
   }
 
-  Future<SuccessModel> forgotPassword(context, email, langCode) async {
-    late SuccessModel result;
+  Future<SignupModel> resendLoginOTP(context, phone) async {
+    late SignupModel result;
     try {
-      final response = await http.post(Uri.parse(UrlConstants.forgotPassword),
+      final response = await http.post(Uri.parse(UrlConstants.resendLoginOTP),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "phone": phone,
+          }));
+      var responseJson = _returnResponse(response);
+      result = SignupModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<SignupModel> generateForgotPasswordOTP(context, email, langCode) async {
+    late SignupModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.generateForgotPasswordOTP),
           headers: {
             HttpHeaders.contentTypeHeader: "application/json",
             HttpHeaders.authorizationHeader:
@@ -268,16 +292,69 @@ class Api {
             "lang_code": langCode
           }));
       var responseJson = _returnResponse(response);
-      result = SuccessModel.fromJson(responseJson);
+      result = SignupModel.fromJson(responseJson);
     } on SocketException {
       Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
     }
     return result;
   }
 
-  Future<ResetPasswordModel> resetPassword(
-      context, email, password, token, langCode) async {
-    late ResetPasswordModel result;
+Future<VerifyForgotPasswordMobileOTP> verifyForgotPasswordOTP(context,otp, email, uuid, deviceNo, deviceName,
+    platform, model, version, langCode) async {
+    late VerifyForgotPasswordMobileOTP result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.verifyForgotPasswordOTP),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "email": email,
+            "otp": otp,
+            "device_uuid": uuid,
+            "device_no": deviceNo,
+            "device_name": deviceName,
+            "device_platform": platform,
+            "device_model": model,
+            "device_version": version,
+            "lang_code": langCode
+          }));
+      var responseJson = _returnResponse(response);
+      result = VerifyForgotPasswordMobileOTP.fromJson(responseJson);
+    } on SocketException {
+      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+Future<SignupModel> resendForgotPasswordOTP(context, phone, langCode) async {
+    late SignupModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.resendForgotPasswordOTP),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "phone": phone,
+            "lang_code": langCode
+          }));
+      var responseJson = _returnResponse(response);
+      result = SignupModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<SuccessModel> resetPassword(
+       email, password, token, langCode) async {
+    late SuccessModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.resetPassword),
           headers: {
@@ -289,25 +366,52 @@ class Api {
             "entity_type_id": AppConstants.entity_type_id_customer,
             "device_type": AppConstants.device_type,
             "email": email,
-            "password": password,
             "token": token,
+            "password": password,
             "lang_code": langCode
           }));
       var responseJson = _returnResponse(response);
-      result = ResetPasswordModel.fromJson(responseJson);
+      result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+      Helper.showGetSnackBar( LocaleKeys.noInternet.tr);
     }
     return result;
   }
 
-  Future<SuccessModel> editProfile(
-      context, userId, email, firstName, lastName, langCode) async {
+  Future<GetCustomerDataModel> getCustomerData(
+      token, userId, langCode) async {
+    late GetCustomerDataModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.getCustomerData),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            'username': token,
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "user_id": userId,
+            "lang_code": langCode
+          }));
+      var responseJson = _returnResponse(response);
+      result = GetCustomerDataModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar( LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+
+ Future<SuccessModel> editProfile(
+      token, userId, email, firstName, lastName, langCode) async {
     late SuccessModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.editProfile),
           headers: {
             HttpHeaders.contentTypeHeader: "application/json",
+            'username': token,
             HttpHeaders.authorizationHeader:
                 "Bearer ${AppConstants.customer_token}"
           },
@@ -323,7 +427,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+      Helper.showGetSnackBar( LocaleKeys.noInternet.tr);
     }
     return result;
   }
@@ -391,6 +495,7 @@ class Api {
       fullName,
       address1,
       address2,
+      landmark,
       countryCode,
       stateCode,
       cityCode,
@@ -402,10 +507,12 @@ class Api {
       langCode) async {
     late SuccessModel result;
     try {
+      print('.........$addressType');
       final response =
           await http.post(Uri.parse(UrlConstants.editCustomerAddress),
               headers: {
                 HttpHeaders.contentTypeHeader: "application/json",
+                'username': token,
                 HttpHeaders.authorizationHeader:
                     "Bearer ${AppConstants.customer_token}"
               },
@@ -414,18 +521,22 @@ class Api {
                 "device_type": AppConstants.device_type,
                 "user_id": userId,
                 "customer_id": customerId,
-                "id": id,
                 "fullname": fullName,
                 "address1": address1,
                 "address2": address2,
+                "landmark": landmark,
+                "address_type": addressType,
                 "country_code": countryCode,
                 "state_code": stateCode,
                 "city_code": cityCode,
                 "zip": zipCode,
                 "mobile1": mobile,
                 "status": "1",
-                "is_default_shipping": isDefault,
-                "is_default_billing": isDefault,
+                "address_type": addressType,
+                "delivery_instruction": deliveryInstruction,
+                "default_address": isDefault,
+                "is_default_shipping": 0,
+                "is_default_billing": 0,
                 "lang_code": langCode
               }));
       var responseJson = _returnResponse(response);
@@ -443,6 +554,7 @@ class Api {
       fullName,
       address1,
       address2,
+      landmark,
       countryCode,
       stateCode,
       cityCode,
@@ -470,6 +582,8 @@ class Api {
                 "fullname": fullName,
                 "address1": address1,
                 "address2": address2,
+                "landmark": landmark,
+                "address_type": addressType,
                 "country_code": countryCode,
                 "state_code": stateCode,
                 "city_code": cityCode,

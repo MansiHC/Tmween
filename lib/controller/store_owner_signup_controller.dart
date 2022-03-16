@@ -16,7 +16,7 @@ class StoreOwnerSignUpController extends GetxController {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  bool visiblePassword = false, visibleConfirmPassword = false;
+  bool visiblePassword = true, visibleConfirmPassword = true;
   final formKey = GlobalKey<FormState>();
   late BuildContext context;
 

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:tmween/model/get_customer_data_model.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 
 import '../service/api.dart';
@@ -18,6 +19,7 @@ class MyAccountController extends GetxController {
   int userId = 0;
   int loginLogId = 0;
   String token = '';
+   ProfileData? profileData;
 
   final api = Api();
   bool loading = false;
@@ -32,6 +34,7 @@ class MyAccountController extends GetxController {
           .getIntValuesSF(SharedPreferencesKeys.userId)
           .then((value) async {
         userId = value!;
+        getCustomerData(Get.locale!.languageCode);
         MySharedPreferences.instance
             .getIntValuesSF(SharedPreferencesKeys.loginLogId)
             .then((value) async {
@@ -41,6 +44,28 @@ class MyAccountController extends GetxController {
     });
     super.onInit();
   }
+
+  Future<void> getCustomerData(language) async {
+    loading = true;
+    update();
+    await api
+        .getCustomerData(token, userId, language)
+        .then((value) {
+      if (value.statusCode == 200) {
+profileData = value.data![0];
+
+      } else {
+        Helper.showGetSnackBar( value.message!);
+      }
+      loading = false;
+      update();
+    }).catchError((error) {
+      loading = false;
+      update();
+      print('error....$error');
+    });
+  }
+
 
   void doLogout(language) async {
 
@@ -66,6 +91,7 @@ class MyAccountController extends GetxController {
   }
 
   void exitScreen() {
+    Get.delete<MyAccountController>();
     Navigator.of(context).pop();
   }
 

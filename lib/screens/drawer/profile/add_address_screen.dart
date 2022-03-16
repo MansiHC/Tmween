@@ -498,7 +498,7 @@ class     AddAddressScreen extends StatelessWidget {
                         ),
                         30.heightBox,
                         CustomButton(
-                            text: LocaleKeys.addNewAddress.tr,
+                            text: address==null?LocaleKeys.addNewAddress.tr:'UPDATE ADDRESS',
                             fontSize: 16,
                             onPressed: () {
                           //    addressController.exitScreen();

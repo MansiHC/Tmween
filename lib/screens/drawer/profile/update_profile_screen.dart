@@ -31,6 +31,7 @@ class UpdateProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
+
     return GetBuilder<EditProfileController>(
         init: EditProfileController(),
         builder: (contet) {

@@ -6,16 +6,21 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
 import '../../../../controller/reset_password_controller.dart';
+import '../../../../lang/locale_keys.g.dart';
+import '../../../../utils/views/circular_progress_bar.dart';
 import '../../../../utils/views/custom_button.dart';
 import '../../../../utils/views/custom_text_form_field.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   late String language;
   final resetPasswordController = Get.put(ResetPasswordController());
+  final formKey = GlobalKey<FormState>();
   final String from;
   final String frm;
+  final String token;
+  final String email;
 
-  ResetPasswordScreen({Key? key, required this.from, required this.frm})
+  ResetPasswordScreen({Key? key, required this.from, required this.frm,required this.token,required this.email})
       : super(key: key);
 
   @override
@@ -54,7 +59,9 @@ class ResetPasswordScreen extends StatelessWidget {
   }
 
   Widget bottomView(ResetPasswordController resetPasswordController) {
-    return Column(
+    return Form(
+        key: resetPasswordController.formKey,
+        child:Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         5.heightBox,
@@ -75,8 +82,22 @@ class ResetPasswordScreen extends StatelessWidget {
               ImageConstanst.lockIcon,
               color: AppColors.primaryColor,
             ),
+
             borderColor: Color(0xFFDDDDDD),
-            validator: (value) {}),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return LocaleKeys.emptyNewPassword.tr;
+              } else if (resetPasswordController
+                  .newPasswordController.value.text.length <=
+                  8) {
+                return LocaleKeys.validPasswordLength.tr;
+              } else if (!resetPasswordController
+                  .newPasswordController.value.text
+                  .validatePassword()) {
+                return LocaleKeys.validPassword.tr;
+              }
+              return null;
+            }),
         5.heightBox,
         Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
@@ -104,21 +125,38 @@ class ResetPasswordScreen extends StatelessWidget {
             hintText: 'Re-enter new password',
             textInputAction: TextInputAction.done,
             onSubmitted: (term) {
-              resetPasswordController.submit(from, frm);
+              resetPasswordController.resetPassword(from, frm,email,token,language);
             },
             prefixIcon: SvgPicture.asset(
               ImageConstanst.lock2Icon,
               color: AppColors.primaryColor,
             ),
             borderColor: Color(0xFFDDDDDD),
-            validator: (value) {}),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return LocaleKeys.emptyRetypePassword.tr;
+              } else if (resetPasswordController
+                  .newPasswordController.value.text
+                  .trim()
+                  .compareTo(resetPasswordController
+                  .confirmPasswordController.value.text
+                  .trim()) !=
+                  0) {
+                return LocaleKeys.newPasswordMatch.tr;
+              }
+              return null;
+            }),
         10.heightBox,
         CustomButton(
             text: 'Continue',
             fontSize: 16,
             onPressed: () {
-              resetPasswordController.submit(from, frm);
+              resetPasswordController.resetPassword(from, frm,email,token,language);
             }),
+        Visibility(
+          visible: resetPasswordController.loading,
+          child: CircularProgressBar(),
+        ),
         30.heightBox,
         Text(
           'Secure password tips:',
@@ -212,7 +250,7 @@ class ResetPasswordScreen extends StatelessWidget {
           ],
         ),
       ],
-    );
+    ));
   }
 
   Widget topView(ResetPasswordController resetPasswordController) {

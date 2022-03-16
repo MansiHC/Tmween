@@ -755,7 +755,7 @@ class ProductDetailScreen extends StatelessWidget {
                               Container(
                                   padding: EdgeInsets.all(4),
                                   decoration: BoxDecoration(
-                                      color: AppColors.offerGreen,
+                                      color: Colors.lightGreen,
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(4))),
                                   child: Wrap(

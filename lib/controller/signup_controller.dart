@@ -16,7 +16,7 @@ class SignUpController extends GetxController {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  bool visiblePassword = false, visibleConfirmPassword = false;
+  bool visiblePassword = true, visibleConfirmPassword = true;
   final formKey = GlobalKey<FormState>();
   late BuildContext context;
 
@@ -39,8 +39,7 @@ class SignUpController extends GetxController {
             agreeTo,
             language)
         .then((value) {
-      loading = false;
-      update();
+
 
       if (value.statusCode == 200) {
         Helper.showSnackBar(context, value.message!);
@@ -48,6 +47,8 @@ class SignUpController extends GetxController {
       } else {
         Helper.showSnackBar(context, value.message!);
       }
+      loading = false;
+      update();
     }).catchError((error) {
       loading = false;
       update();

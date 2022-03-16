@@ -79,9 +79,11 @@ class AddAddressController extends GetxController {
     ];*/
     addressTypes = <AddressTypeModel>[
       AddressTypeModel(
+        id: '1',
         name: LocaleKeys.personalAddress.tr,
       ),
       AddressTypeModel(
+        id: '2',
         name: LocaleKeys.officeAddress.tr,
       ),
     ];
@@ -111,12 +113,12 @@ class AddAddressController extends GetxController {
       addressTypeValue = AddressTypeModel(name: address.addressType!);
 */
       for(var i=0;i<addressTypes.length;i++){
-        if(addressTypes[i].name== address!.addressType){
+        if(addressTypes[i].id == address.addressType){
           addressTypeValue = addressTypes[i];
           break;
         }
       }
-
+print('sdhddhs........${address.addressType}.....${address.defaultAddress}');
       fullNameController.text = address.fullname!;
       mobileNumberController.text = address.mobile1!;
       pincodeController.text = address.zip!;
@@ -219,12 +221,13 @@ class AddAddressController extends GetxController {
             fullNameController.text,
             houseNoController.text,
             areaStreetController.text,
+            landmarkController.text,
             countryValue!.countryCode,
             stateValue!.stateCode,
             cityValue!.cityCode,
             pincodeController.text,
             mobileNumberController.text,
-            addressTypeValue!.name,
+            addressTypeValue!.id,
             deliveryInstructionController.text,
             defaultValue,
             language)
@@ -232,6 +235,7 @@ class AddAddressController extends GetxController {
       loading = false;
       update();
       if (value.statusCode == 200) {
+        Get.delete<AddAddressController>();
         Navigator.of(context).pop(true);
       }
       Helper.showGetSnackBar(value.message!);
@@ -265,12 +269,13 @@ class AddAddressController extends GetxController {
             fullNameController.text,
             houseNoController.text,
             areaStreetController.text,
+        landmarkController.text,
             countryValue!.countryCode,
             stateValue!.stateCode,
             cityValue!.cityCode,
             pincodeController.text,
             mobileNumberController.text,
-            addressTypeValue!.name,
+            addressTypeValue!.id,
             deliveryInstructionController.text,
             defaultValue,
             language)
@@ -278,6 +283,7 @@ class AddAddressController extends GetxController {
       loading = false;
       update();
       if (value.statusCode == 200) {
+        Get.delete<AddAddressController>();
         Navigator.of(context).pop(true);
       }
       Helper.showGetSnackBar(value.message!);
@@ -292,13 +298,17 @@ class AddAddressController extends GetxController {
   void updateCountry(Country? value, String language) {
     countryValue = value!;
     states = [];
+    stateValue=null;
+    update();
     getState(value.countryCode, language);
-
+update();
   }
 
   void updateState(States? value, String language) {
     stateValue = value!;
     cities = [];
+    cityValue=null;
+    update();
     getCity(value.countryCode, value.stateCode, language);
     update();
   }
@@ -320,7 +330,7 @@ class AddAddressController extends GetxController {
 
   void exitScreen() {
     Get.delete<AddAddressController>();
-    Navigator.of(context).pop();
+    Navigator.of(context).pop(false);
   }
 
   void pop() {

@@ -11,16 +11,30 @@ import '../../../../utils/views/circular_progress_bar.dart';
 import '../../../../utils/views/custom_button.dart';
 import '../../../../utils/views/custom_text_form_field.dart';
 
-class ForgotPasswordScreen extends StatelessWidget {
+class ForgotPasswordScreen extends StatefulWidget {
+
+  final String from;
+  final String mobile;
+  final String frm;
+
+  ForgotPasswordScreen({Key? key, required this.mobile,required this.from, required this.frm})
+      : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+   return ForgotPasswordScreenState();
+  }
+
+}
+class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   late String language;
   final forgotPasswordController = Get.put(ForgotPasswordController());
 
-  final String from;
-  final String frm;
-
-  ForgotPasswordScreen({Key? key, required this.from, required this.frm})
-      : super(key: key);
-
+@override
+  void initState() {
+  forgotPasswordController.emailMobileController.text = widget.mobile;
+  super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
@@ -52,12 +66,14 @@ class ForgotPasswordScreen extends StatelessWidget {
 
   Future<bool> _onWillPop(ForgotPasswordController forgotOtpController) async {
     Get.delete<ForgotPasswordController>();
-    forgotPasswordController.navigateToLoginScreen(from, frm);
+    forgotPasswordController.navigateToLoginScreen(widget.from, widget.frm);
     return true;
   }
 
   Widget bottomView(ForgotPasswordController forgotPasswordController) {
-    return Column(
+    return Form(
+        key: forgotPasswordController.formKey,
+        child:Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         5.heightBox,
@@ -109,26 +125,31 @@ class ForgotPasswordScreen extends StatelessWidget {
               color: AppColors.primaryColor,
             ),
             onSubmitted: (term) {
-              forgotPasswordController.submit(from, frm);
+              forgotPasswordController.generateOTP(widget.from, widget.frm,language);
             },
             borderColor: Color(0xFFDDDDDD),
             suffixIcon: IconButton(
                 onPressed: () {
                   forgotPasswordController.emailMobileController.clear();
-                  forgotPasswordController.update();
                 },
                 icon: Icon(
                   CupertinoIcons.clear_circled_solid,
                   color: Color(0xFFC7C7C7),
                   size: 24,
                 )),
-            validator: (value) {}),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return LocaleKeys
+                    .emptyPhoneNumberEmail.tr;
+              }
+              return null;
+            }),
         10.heightBox,
         CustomButton(
             text: 'Continue',
             fontSize: 16,
             onPressed: () {
-              forgotPasswordController.submit(from, frm);
+              forgotPasswordController.generateOTP(widget.from, widget.frm,language);
             }),
         Visibility(
           visible: forgotPasswordController.loading,
@@ -170,7 +191,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                   )
                 ])),
       ],
-    );
+    ));
   }
 
   Widget topView(ForgotPasswordController forgotPasswordController) {
@@ -189,7 +210,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                       onTap: () {
                         Get.delete<ForgotPasswordController>();
                         forgotPasswordController.navigateToLoginScreen(
-                            from, frm);
+                            widget.from, widget.frm);
                         // forgotPasswordController.exitScreen();
                       },
                       child: SizedBox(
