@@ -355,25 +355,26 @@ class CartScreen extends StatelessWidget {
     return Column(
       children: [
         Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            padding: EdgeInsets.all(10),
             decoration: BoxDecoration(color: Color(0xFF314156), boxShadow: [
               BoxShadow(
                   color: Colors.grey[200]!, blurRadius: 5, spreadRadius: 5)
             ]),
             width: double.maxFinite,
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                5.widthBox,
+                10.widthBox,
                 SvgPicture.asset(
                   ImageConstanst.logo,
                   height: 30,
                   width: 30,
                 ),
-                5.widthBox,
+                10.heightBox,
                 Expanded(
                     child: Text(
                   'Guarantee 100% Purchase Protection',
-                  textAlign: TextAlign.start,
+                  textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.white, fontSize: 14),
                 ))
               ],
@@ -381,7 +382,116 @@ class CartScreen extends StatelessWidget {
         Container(
             padding: EdgeInsets.all(10),
             color: Colors.white,
-            child: Row(
+            child: /*Table(
+                columnWidths: {
+                  0: FlexColumnWidth(5),
+                  1: FlexColumnWidth(0.1),
+                  2: FlexColumnWidth(5),
+                  3: FlexColumnWidth(0.1),
+                  4: FlexColumnWidth(4),
+                  5: FlexColumnWidth(0.1),
+                  6: FlexColumnWidth(5),
+                },
+                children: [
+                  TableRow(children: [
+                    SvgPicture.asset(
+                      ImageConstanst.sudanFlagIcon,
+                      height: 35,
+                      width: 35,
+                    ),
+                    Container(color: Color(0xFFEEEEEE), height: 35, width: 1,),
+                    SvgPicture.asset(
+                      ImageConstanst.sudanFlagIcon,
+                      height: 35,
+                      width: 35,
+                    ),
+                    Container(color: Color(0xFFEEEEEE), height: 35, width: 1,),
+                    SvgPicture.asset(
+                      ImageConstanst.sudanFlagIcon,
+                      height: 35,
+                      width: 35,
+                    ),
+                    Container(color: Color(0xFFEEEEEE), height: 35, width: 1,),
+                    SvgPicture.asset(
+                      ImageConstanst.sudanFlagIcon,
+                      height: 35,
+                      width: 35,
+                    ),
+                  ]),
+                  TableRow(children: [
+                    5.heightBox,
+                    Container(color: Color(0xFFEEEEEE), height: 5, width: 1,),
+                    5.heightBox,
+                    Container(color: Color(0xFFEEEEEE), height: 5, width: 1,),
+                    5.heightBox,
+                    Container(color: Color(0xFFEEEEEE), height: 5, width: 1,),
+                    5.heightBox,
+                  ]),
+                  TableRow(children: [
+                    Text(
+                      'WARRANTY',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Color(0xFF333333),
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Container(color: Color(0xFFEEEEEE), height: 30, width: 1,),
+                    Text(
+                      '100% ORIGINAL',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Color(0xFF333333),
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Container(color: Color(0xFFEEEEEE), height: 30, width: 1,),
+                    Text(
+                      'SECURE',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Color(0xFF333333),
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Container(color: Color(0xFFEEEEEE), height: 30, width: 1,),
+                    Text(
+                      '100% BUYER',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Color(0xFF333333),
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ]),
+                  TableRow(children: [
+                    Text(
+                      "As per Weswox's",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Color(0xFF5C5C5C), fontSize: 12.5),
+                    ), Container(color:Color(0xFFEEEEEE),  height: 30, width: 1,),
+                    Text(
+                      "Products",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Color(0xFF5C5C5C), fontSize: 12.5),
+                    ),Container(color:Color(0xFFEEEEEE), height: 30, width: 1,),
+                    Text(
+                      "PAYMENTS",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Color(0xFF5C5C5C), fontSize: 12.5),
+                    ),Container(color:Color(0xFFEEEEEE), height: 30, width: 1,),
+                    Text(
+                      "PROTECTION",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Color(0xFF5C5C5C), fontSize: 12.5),
+                    ),
+                  ])
+                ])*/
+                Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
@@ -441,7 +551,7 @@ class CartScreen extends StatelessWidget {
                                   fontWeight: FontWeight.bold),
                             )),
                         Text(
-                          "Products",
+                          "\nProducts",
                           textAlign: TextAlign.center,
                           style:
                               TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
@@ -476,7 +586,7 @@ class CartScreen extends StatelessWidget {
                                   fontWeight: FontWeight.bold),
                             )),
                         Text(
-                          "PAYMENTS",
+                          "\nPAYMENTS",
                           textAlign: TextAlign.center,
                           style:
                               TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
@@ -510,7 +620,7 @@ class CartScreen extends StatelessWidget {
                                   fontWeight: FontWeight.bold),
                             )),
                         Text(
-                          "PROTECTION",
+                          "\nPROTECTION",
                           textAlign: TextAlign.center,
                           style:
                               TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),

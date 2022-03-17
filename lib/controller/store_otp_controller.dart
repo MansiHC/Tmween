@@ -44,6 +44,7 @@ class StoreOtpController extends GetxController {
   verifyLoginOTP() {
     FocusScope.of(context).nextFocus();
     otp = otpController.text;
+    Helper.isIndividual = false;
     navigateToDrawerScreen();
   }
 
@@ -52,12 +53,12 @@ class StoreOtpController extends GetxController {
     loading = true;
     update();
     await api
-        .register(context, name, password, email, phone, agreeTerms, langCode)
+        .register(name, password, email, phone, agreeTerms, langCode)
         .then((value) {
       loading = false;
       update();
       print('value....${value.toString()}');
-      Helper.showSnackBar(context, value.message!);
+      Helper.showGetSnackBar(value.message!);
       /* if(value.message==AppConstants.success) {
         navigateToOtpScreen();
       }*/

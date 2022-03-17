@@ -20,7 +20,7 @@ class ForgotOtpController extends GetxController {
 
   final api = Api();
   bool loading = false;
-  late String phone, otp,otpValue;
+  late String phone, otp, otpValue;
   String? uuid, deviceNo, deviceName, platform, model, version;
   final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   late Map<String, dynamic> deviceData;
@@ -108,30 +108,25 @@ class ForgotOtpController extends GetxController {
     };*/
   }
 
-
-  void submit(String from, String frm,String token, String email) {
-    navigateTo(ResetPasswordScreen(
-      from: from,
-      frm: frm,
-      email:email,
-      token:token
-    ));
+  void submit(String from, String frm, String email) {
+    navigateTo(ResetPasswordScreen(from: from, frm: frm, email: email));
   }
 
-
-  verifyOTP(from,frm,language,email) async {
+  verifyOTP(from, frm, language, email) async {
     FocusScope.of(context).unfocus();
+    if (otpController.text.isEmpty) {
+      Helper.showGetSnackBar('Please Enter Otp First.');
+    } else {
       loading = true;
       update();
       await api
-          .verifyForgotPasswordOTP(context, otpController.text,email,uuid,deviceNo,deviceName,
-          platform,model,version,language)
+          .verifyForgotPasswordOTP(otpController.text, email, uuid, deviceNo,
+              deviceName, platform, model, version, language)
           .then((value) {
         if (value.statusCode == 200) {
-
-          submit(from, frm,value.data!.token!,email);
+          submit(from, frm, email);
         } else {
-          Helper.showGetSnackBar( value.message!);
+          Helper.showGetSnackBar(value.message!);
         }
         loading = false;
         update();
@@ -140,31 +135,27 @@ class ForgotOtpController extends GetxController {
         update();
         print('error....$error');
       });
-
+    }
   }
 
-  resendOTP(from,frm,language,email) async {
+  resendOTP(from, frm, language, email) async {
     FocusScope.of(context).unfocus();
-      loading = true;
+    loading = true;
+    update();
+    await api.resendForgotPasswordOTP(email, language).then((value) {
+      if (value.statusCode == 200) {
+        otpValue = value.data!.otp.toString();
+      } else {
+        Helper.showGetSnackBar(value.message!);
+      }
+      loading = false;
       update();
-      await api
-          .resendForgotPasswordOTP(context, email,language)
-          .then((value) {
-        if (value.statusCode == 200) {
-          otpValue = value.data!.otp.toString();
-        } else {
-          Helper.showGetSnackBar( value.message!);
-        }
-        loading = false;
-        update();
-      }).catchError((error) {
-        loading = false;
-        update();
-        print('error....$error');
-      });
-
+    }).catchError((error) {
+      loading = false;
+      update();
+      print('error....$error');
+    });
   }
-
 
   void exitScreen() {
     Navigator.of(context).pop(false);

@@ -1,9 +1,5 @@
-import 'dart:io';
-
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/service/api.dart';
@@ -24,7 +20,6 @@ class ForgotPasswordController extends GetxController {
   bool loading = false;
   late String phone, otp;
 
-
   void exitScreen() {
     Navigator.of(context).pop();
   }
@@ -37,18 +32,18 @@ class ForgotPasswordController extends GetxController {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
   }
 
-  generateOTP(from,frm,language) async {
+  generateOTP(from, frm, language) async {
     FocusScope.of(context).unfocus();
     if (formKey.currentState!.validate()) {
       loading = true;
       update();
       await api
-          .generateForgotPasswordOTP(context, emailMobileController.text, language)
+          .generateForgotPasswordOTP(emailMobileController.text, language)
           .then((value) {
         if (value.statusCode == 200) {
-          submit(from, frm,value.data!.otp.toString());
+          submit(from, frm, value.data!.otp.toString());
         } else {
-          Helper.showGetSnackBar( value.message!);
+          Helper.showGetSnackBar(value.message!);
         }
         loading = false;
         update();
@@ -62,7 +57,12 @@ class ForgotPasswordController extends GetxController {
 
   void submit(String from, String frm, String otp) {
     FocusScope.of(context).unfocus();
-    navigateTo(ForgotOtpScreen(from: from, frm: frm,otp:otp,email: emailMobileController.text,));
+    navigateTo(ForgotOtpScreen(
+      from: from,
+      frm: frm,
+      otp: otp,
+      email: emailMobileController.text,
+    ));
   }
 
   void navigateToLoginScreen(String from, String frm) {

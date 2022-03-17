@@ -21,6 +21,7 @@ import 'package:tmween/utils/views/custom_button.dart';
 import 'package:tmween/utils/views/otp_text_field.dart';
 
 import '../../../utils/helper.dart';
+import '../../../utils/views/circular_progress_bar.dart';
 import '../../../utils/views/custom_text_form_field.dart';
 
 class UpdateProfileScreen extends StatelessWidget {
@@ -28,15 +29,21 @@ class UpdateProfileScreen extends StatelessWidget {
 
   final editAccountController = Get.put(EditProfileController());
 
+  Future<bool> _onWillPop(EditProfileController editAccountController) async {
+    editAccountController.exitScreen();
+    return true;
+  }
   @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
 
-    return GetBuilder<EditProfileController>(
+    return WillPopScope(
+        onWillPop: () => _onWillPop(editAccountController),
+    child:GetBuilder<EditProfileController>(
         init: EditProfileController(),
         builder: (contet) {
           editAccountController.context = context;
-          editAccountController.getProfileDetails();
+          // editAccountController.getProfileDetails();
           return editAccountController.sample == null
               ? Scaffold(
                   body: Container(
@@ -50,7 +57,12 @@ class UpdateProfileScreen extends StatelessWidget {
                               color: AppColors.appBarColor,
                               padding: EdgeInsets.only(top: 20),
                               child: topView(editAccountController)),
-                          _middleView(editAccountController),
+                          Visibility(
+                            visible: editAccountController.loading,
+                            child: Expanded(child:CircularProgressBar()),
+                          ),
+                          if (!editAccountController.loading)
+                            _middleView(editAccountController),
                         ],
                       )))
               : editAccountController.lastCropped == null
@@ -67,10 +79,15 @@ class UpdateProfileScreen extends StatelessWidget {
                                   color: AppColors.appBarColor,
                                   padding: EdgeInsets.only(top: 20),
                                   child: topView(editAccountController)),
-                              _middleView(editAccountController),
+                              Visibility(
+                                visible: editAccountController.loading,
+                                child: Expanded(child:CircularProgressBar()),
+                              ),
+                              if (!editAccountController.loading)
+                                _middleView(editAccountController),
                             ],
                           )));
-        });
+        }));
   }
 
   Widget _buildCroppingImage(EditProfileController editAccountController) {
@@ -154,10 +171,17 @@ class UpdateProfileScreen extends StatelessWidget {
                 child: Stack(
                   children: [
                     editAccountController.finalImage == null
-                        ? CircleAvatar(
-                            radius: 40,
-                            backgroundImage:
-                                NetworkImage('http://i.imgur.com/QSev0hg.jpg'))
+                        ? editAccountController
+                                .profileData!.largeImageUrl!.isNotEmpty
+                            ? CircleAvatar(
+                                radius: 40,
+                                backgroundImage: NetworkImage(
+                                    'http://i.imgur.com/QSev0hg.jpg'))
+                            : SvgPicture.asset(
+                                ImageConstanst.user,
+                                height: 80,
+                                width: 80,
+                              )
                         : CircleAvatar(
                             radius: 40,
                             backgroundImage:
@@ -280,7 +304,7 @@ class UpdateProfileScreen extends StatelessWidget {
                       _showOtpVerificationDialog(
                           editAccountController,
                           '+249 9822114455',
-                          language == 'ar' ? 280 : 270,
+                          language == 'ar' ? 340 : 320,
                           false);
                     },
                     child: Padding(
@@ -318,7 +342,7 @@ class UpdateProfileScreen extends StatelessWidget {
                       _showOtpVerificationDialog(
                           editAccountController,
                           'sali.akka@tmween.com',
-                          language == 'ar' ? 290 : 270,
+                          language == 'ar' ? 340 : 320,
                           true);
                     },
                     child: Padding(
@@ -486,6 +510,8 @@ class UpdateProfileScreen extends StatelessWidget {
                                   fontWeight: FontWeight.bold))
                         ]),
                   ),
+                  10.heightBox,
+                  Container().buildTimer(30, 13.0),
                   10.heightBox,
                   OtpTextField(
                     length: 4,

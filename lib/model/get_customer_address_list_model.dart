@@ -11,11 +11,13 @@ class GetCustomerAddressListModel {
     statusCode = json['status_code'];
     statusMessage = json['status_message'];
     message = json['message'];
-    if (json['data'] != null) {
-      data = <Address>[];
-      json['data'].forEach((v) {
-        data!.add(new Address.fromJson(v));
-      });
+    if (statusCode == 200) {
+      if (json['data'] != null) {
+        data = <Address>[];
+        json['data'].forEach((v) {
+          data!.add(new Address.fromJson(v));
+        });
+      }
     }
   }
 
@@ -62,32 +64,32 @@ class Address {
 
   Address(
       {this.id,
-        this.customerId,
-        this.createdAt,
-        this.status,
-        this.updatedAt,
-        this.fullname,
-        this.firstName,
-        this.lastName,
-        this.address1,
-        this.address2,
-        this.landmark,
-        this.addressType,
-        this.defaultAddress,
-        this.deliveryInstruction,
-        this.phone1Isd,
-        this.phone1,
-        this.mobile1Isd,
-        this.mobile1,
-        this.zip,
-        this.countryCode,
-        this.stateCode,
-        this.cityCode,
-        this.isDefaultShipping,
-        this.isDefaultBilling,
-        this.countryName,
-        this.stateName,
-        this.cityName});
+      this.customerId,
+      this.createdAt,
+      this.status,
+      this.updatedAt,
+      this.fullname,
+      this.firstName,
+      this.lastName,
+      this.address1,
+      this.address2,
+      this.landmark,
+      this.addressType,
+      this.defaultAddress,
+      this.deliveryInstruction,
+      this.phone1Isd,
+      this.phone1,
+      this.mobile1Isd,
+      this.mobile1,
+      this.zip,
+      this.countryCode,
+      this.stateCode,
+      this.cityCode,
+      this.isDefaultShipping,
+      this.isDefaultBilling,
+      this.countryName,
+      this.stateName,
+      this.cityName});
 
   Address.fromJson(Map<String, dynamic> json) {
     id = json['id'];

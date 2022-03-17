@@ -55,9 +55,14 @@ abstract class UrlConstants {
   static const String verifyOTP = '$baseUrl/customer/verify-otp';
   static const String resendOTP = '$baseUrl/customer/resend-otp';
   static const String resendLoginOTP = '$baseUrl/customer/resend-login-otp';
-  static const String generateForgotPasswordOTP = '$baseUrl/customer/generate-forgot-pasword-mobile-otp';
-  static const String verifyForgotPasswordOTP = '$baseUrl/customer/verify-mobile-forgot-password-otp';
-  static const String resendForgotPasswordOTP = '$baseUrl/customer/resend-forgot-password-mobile-otp';
+  static const String generateForgotPasswordOTP =
+      '$baseUrl/customer/generate-forgot-pasword-mobile-otp';
+  static const String generateMobileOTP =
+      '$baseUrl/customer/generate-mobile-otp';
+  static const String verifyForgotPasswordOTP =
+      '$baseUrl/customer/verify-mobile-forgot-password-otp';
+  static const String resendForgotPasswordOTP =
+      '$baseUrl/customer/resend-forgot-password-mobile-otp';
   static const String resetPassword = '$baseUrl/customer/reset-forgot-password';
   static const String editProfile = '$baseUrl/customer/edit-profile';
   static const String getCustomerData = '$baseUrl/customer/get-customer-data';
@@ -165,6 +170,7 @@ abstract class SharedPreferencesKeys {
   static const isSplash = "isSplash";
   static const userId = "userId";
   static const loginLogId = "loginLogId";
+  static const isIndividual = "isIndividual";
   static const token = "token";
   static const language = "language";
 }

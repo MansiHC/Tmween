@@ -10,7 +10,9 @@ class SignupModel {
     statusCode = json['status_code'];
     statusMessage = json['status_message'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    if (statusCode == 200) {
+      data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -18,6 +20,7 @@ class SignupModel {
     data['status_code'] = this.statusCode;
     data['status_message'] = this.statusMessage;
     data['message'] = this.message;
+
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }

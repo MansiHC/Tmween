@@ -10,6 +10,7 @@ import '../service/api.dart';
 import '../utils/global.dart';
 import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
+import 'drawer_controller.dart';
 
 class AddressController extends GetxController {
   late BuildContext context;
@@ -28,30 +29,34 @@ class AddressController extends GetxController {
   final formKey = GlobalKey<FormState>();
   final api = Api();
   bool loading = false;
-    List<Address> addressList=[];
+  List<Address> addressList = [];
 
   @override
   void onInit() {
-
-    MySharedPreferences.instance
-        .getStringValuesSF(SharedPreferencesKeys.token)
-        .then((value) async {
-          token = value!;
-          print('dhsh.....$token');
-     MySharedPreferences.instance
-        .getIntValuesSF(SharedPreferencesKeys.userId)
-        .then((value) async {
-      userId = value!;
-      getAddressList(Get.locale!.languageCode);
+    if (Helper.isIndividual) {
       MySharedPreferences.instance
-          .getIntValuesSF(SharedPreferencesKeys.loginLogId)
+          .getStringValuesSF(SharedPreferencesKeys.token)
           .then((value) async {
-        loginLogId = value!;
+        token = value!;
+        print('dhsh.....$token');
+        MySharedPreferences.instance
+            .getIntValuesSF(SharedPreferencesKeys.userId)
+            .then((value) async {
+          userId = value!;
+          getAddressList(Get.locale!.languageCode);
+          MySharedPreferences.instance
+              .getIntValuesSF(SharedPreferencesKeys.loginLogId)
+              .then((value) async {
+            loginLogId = value!;
+          });
+        });
       });
-    });
-    });
-
+    }
     super.onInit();
+  }
+
+  void navigateTo(Widget route) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => route));
   }
 
   Future<void> getAddressList(language) async {
@@ -59,14 +64,18 @@ class AddressController extends GetxController {
     loading = true;
     update();
     await api
-        .getCustomerAddressList(token, userId,'36', language)
+        .getCustomerAddressList(token, userId, '36', language)
         .then((value) {
-
       if (value.statusCode == 200) {
         addressList = value.data!;
-
+      } else if (value.statusCode == 401) {
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        Get.delete<AddressController>();
+        Get.delete<DrawerControllers>();
+        Get.offAll(DrawerScreen());
       } else {
-        Helper.showGetSnackBar( value.message!);
+        Helper.showGetSnackBar(value.message!);
       }
       loading = false;
       update();
@@ -77,34 +86,32 @@ class AddressController extends GetxController {
     });
   }
 
-  Future<void> removeAddress(id,language) async {
-
-
-    loading = true;
-    update();
-    await api
-        .deleteCustomerAddress(
-        token,
-        id,
-        userId,
-        '36',
-        language)
-        .then((value) {
-
-      if (value.statusCode == 200) {
-        getAddressList(Get.locale!.languageCode);
-      }
-      Helper.showGetSnackBar(value.message!);
-      loading = false;
+  Future<void> removeAddress(id, language) async {
+    if (Helper.isIndividual) {
+      loading = true;
       update();
-    }).catchError((error) {
-      loading = false;
-      update();
-      print('error....$error');
-    });
+      await api
+          .deleteCustomerAddress(token, id, userId, '36', language)
+          .then((value) {
+        if (value.statusCode == 200) {
+          getAddressList(Get.locale!.languageCode);
+        } else if (value.statusCode == 401) {
+          MySharedPreferences.instance
+              .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+          Get.delete<AddressController>();
+          Get.delete<DrawerControllers>();
+          Get.offAll(DrawerScreen());
+        }
+        Helper.showGetSnackBar(value.message!);
+        loading = false;
+        update();
+      }).catchError((error) {
+        loading = false;
+        update();
+        print('error....$error');
+      });
+    }
   }
-
-
 
   void exitScreen() {
     Get.delete<AddressController>();
@@ -122,10 +129,13 @@ class AddressController extends GetxController {
         (Route<dynamic> route) => false);
   }
 
-  void navigateToAddAddressScreen( [Address? address]) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => AddAddressScreen(address:address)))
-    .then((value) {
-      if(value) {
+  void navigateToAddAddressScreen([Address? address]) {
+    Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AddAddressScreen(address: address)))
+        .then((value) {
+      if (value) {
         getAddressList(Get.locale!.languageCode);
       }
     });

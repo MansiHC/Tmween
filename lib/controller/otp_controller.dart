@@ -33,15 +33,13 @@ class OtpController extends GetxController {
     //    navigateToDrawerScreen();
     loading = true;
     update();
-    await api.verifyOTP(context, phone, otp).then((value) {
-
+    await api.verifyOTP(phone, otp).then((value) {
       if (value.statusCode == 200) {
-
         MySharedPreferences.instance.addIntToSF(
             SharedPreferencesKeys.userId, value.data!.customerData!.id);
         navigateToDrawerScreen();
       } else {
-        Helper.showSnackBar(context, value.statusMessage!);
+        Helper.showGetSnackBar(value.statusMessage!);
       }
       loading = false;
       update();
@@ -141,22 +139,20 @@ class OtpController extends GetxController {
     loading = true;
     update();
     await api
-        .verifyLoginOTP(context, phone, otp, uuid, deviceNo, deviceName,
-            platform, model, version, language)
+        .verifyLoginOTP(phone, otp, uuid, deviceNo, deviceName, platform, model,
+            version, language)
         .then((value) {
-
       if (value.statusCode == 200) {
-
         MySharedPreferences.instance.addIntToSF(
             SharedPreferencesKeys.loginLogId, value.data!.loginLogId);
         MySharedPreferences.instance
             .addIntToSF(SharedPreferencesKeys.token, value.data!.token);
         MySharedPreferences.instance
             .addIntToSF(SharedPreferencesKeys.userId, value.data!.customerId);
-
+        Helper.isIndividual = true;
         navigateToDrawerScreen();
       } else {
-        Helper.showSnackBar(context, value.statusMessage!);
+        Helper.showGetSnackBar(value.statusMessage!);
       }
       loading = false;
       update();
@@ -171,13 +167,12 @@ class OtpController extends GetxController {
     print('hdf.....$phone');
     loading = true;
     update();
-    await api.resendOTP(context, phone).then((value) {
-
+    await api.resendOTP(phone).then((value) {
       if (value.statusCode == 200) {
         otpValue = value.data!.otp.toString();
         update();
       }
-      Helper.showSnackBar(context, value.message!);
+      Helper.showGetSnackBar(value.message!);
       loading = false;
       update();
     }).catchError((error) {
@@ -191,12 +186,11 @@ class OtpController extends GetxController {
     print('hdf.....$phone');
     loading = true;
     update();
-    await api.resendLoginOTP(context, phone).then((value) {
-
+    await api.resendLoginOTP(phone).then((value) {
       if (value.statusCode == 200) {
         otpValue = value.data!.otp.toString();
       }
-      Helper.showSnackBar(context, value.message!);
+      Helper.showGetSnackBar(value.message!);
       loading = false;
       update();
     }).catchError((error) {

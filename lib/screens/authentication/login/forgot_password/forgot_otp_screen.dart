@@ -11,23 +11,25 @@ import '../../../../utils/views/custom_button.dart';
 import '../../../../utils/views/otp_text_field.dart';
 
 class ForgotOtpScreen extends StatefulWidget {
-
   final String from;
   final String frm;
   final String otp;
   final String email;
 
-  ForgotOtpScreen({Key? key, required this.from, required this.frm,required this.otp,required this.email})
+  ForgotOtpScreen(
+      {Key? key,
+      required this.from,
+      required this.frm,
+      required this.otp,
+      required this.email})
       : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-   return ForgotOtpScreenState();
+    return ForgotOtpScreenState();
   }
-
-
-
 }
+
 class ForgotOtpScreenState extends State<ForgotOtpScreen> {
   late String language;
   final forgotOtpController = Get.put(ForgotOtpController());
@@ -114,6 +116,8 @@ class ForgotOtpScreenState extends State<ForgotOtpScreen> {
                       fontWeight: FontWeight.bold)),
             ])),
         10.heightBox,
+        Container().buildTimer(30),
+        10.heightBox,
         Padding(
             padding: EdgeInsets.symmetric(
                 horizontal:
@@ -141,12 +145,13 @@ class ForgotOtpScreenState extends State<ForgotOtpScreen> {
               textStyle: TextStyle(color: Colors.white),
               controller: forgotOtpController.otpController,
               onCompleted: (v) {
-                forgotOtpController.verifyOTP(
-                    widget.from,
-                    widget.frm,
-                    language,
-                    widget.email
-                );
+                if (widget.from == AppConstants.individual) {
+                  forgotOtpController.verifyOTP(
+                      widget.from, widget.frm, language, widget.email);
+                } else {
+                  forgotOtpController.submit(
+                      widget.from, widget.frm, widget.email);
+                }
               },
               onChanged: (value) {
                 debugPrint(value);
@@ -163,12 +168,13 @@ class ForgotOtpScreenState extends State<ForgotOtpScreen> {
             text: 'Continue',
             fontSize: 16,
             onPressed: () {
-              forgotOtpController.verifyOTP(
-                widget.from,
-                widget.frm,
-                language,
-                widget.email
-              );
+              if (widget.from == AppConstants.individual) {
+                forgotOtpController.verifyOTP(
+                    widget.from, widget.frm, language, widget.email);
+              } else {
+                forgotOtpController.submit(
+                    widget.from, widget.frm, widget.email);
+              }
             }),
         Visibility(
           visible: forgotOtpController.loading,
@@ -176,18 +182,21 @@ class ForgotOtpScreenState extends State<ForgotOtpScreen> {
         ),
         20.heightBox,
         InkWell(
-            onTap: (){
-              forgotOtpController.resendOTP(widget.from, widget.frm, language, widget.email);
+            onTap: () {
+              if (widget.from == AppConstants.individual) {
+                forgotOtpController.resendOTP(
+                    widget.from, widget.frm, language, widget.email);
+              }
             },
-            child:Align(
-            alignment: Alignment.topCenter,
-            child: Text(
-              'Resend OTP',
-              style: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFF2192CA),
-                  fontWeight: FontWeight.bold),
-            ))),
+            child: Align(
+                alignment: Alignment.topCenter,
+                child: Text(
+                  'Resend OTP',
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF2192CA),
+                      fontWeight: FontWeight.bold),
+                ))),
       ],
     );
   }

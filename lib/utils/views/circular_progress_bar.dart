@@ -7,8 +7,9 @@ import '../global.dart';
 class CircularProgressBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-   // _showDialog(context);
+    // _showDialog(context);
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         5.heightBox,
         Align(
@@ -21,7 +22,7 @@ class CircularProgressBar extends StatelessWidget {
     );
   }
 
-  _showDialog(BuildContext context){
+  _showDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) => Center(

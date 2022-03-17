@@ -8,11 +8,11 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
 import '../../../../controller/login_controller.dart';
+import '../../../../utils/views/circular_progress_bar.dart';
 import '../../../../utils/views/custom_button.dart';
 import '../../../../utils/views/otp_text_field.dart';
 
 class LoginOtpScreen extends StatefulWidget {
-
   final String phoneEmail;
   final String otp;
   final String from;
@@ -20,29 +20,28 @@ class LoginOtpScreen extends StatefulWidget {
 
   LoginOtpScreen(
       {Key? key,
-        required this.otp,
-        required this.phoneEmail,
-        required this.from,
-        required this.frm})
+      required this.otp,
+      required this.phoneEmail,
+      required this.from,
+      required this.frm})
       : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-
     return LoginOtpScreenState();
   }
 }
-class LoginOtpScreenState extends State<LoginOtpScreen> {
 
+class LoginOtpScreenState extends State<LoginOtpScreen> {
   late String language;
   final otpController = Get.put(OtpController());
   final loginController = Get.put(LoginController());
+
   @override
   void initState() {
     otpController.otpValue = widget.otp;
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +79,6 @@ class LoginOtpScreenState extends State<LoginOtpScreen> {
         });
   }
 
-
   Future<bool> _onWillPop(
       OtpController otpController, LoginController loginController) async {
     otpController.navigateToLoginScreen(
@@ -91,8 +89,6 @@ class LoginOtpScreenState extends State<LoginOtpScreen> {
 
     return true;
   }
-
-
 
   Widget bottomView(OtpController otpController) {
     return Column(
@@ -171,7 +167,7 @@ class LoginOtpScreenState extends State<LoginOtpScreen> {
           style: TextStyle(fontSize: 16, color: Colors.black),
         ),
         10.heightBox,
-        buildTimer(),
+        Container().buildTimer(30),
         40.heightBox,
         Padding(
             padding: EdgeInsets.symmetric(
@@ -212,16 +208,10 @@ class LoginOtpScreenState extends State<LoginOtpScreen> {
               },
               appContext: otpController.context,
             )),
-        Visibility(visible: otpController.loading, child: 5.heightBox),
         Visibility(
-          visible: otpController.loading,
-          child: Align(
-              alignment: Alignment.topCenter,
-              child: CircularProgressIndicator(
-                backgroundColor: AppColors.primaryColor,
-              )),
+          visible: loginController.loading,
+          child: CircularProgressBar(),
         ),
-        Visibility(visible: otpController.loading, child: 5.heightBox),
         30.heightBox,
         Text(
           LocaleKeys.notReceivedOtp.tr,
@@ -276,52 +266,13 @@ class LoginOtpScreenState extends State<LoginOtpScreen> {
                   text: LocaleKeys.loginWithPassword.tr,
                   onPressed: () {
                     otpController.navigateToLoginScreen(
-                        widget. from,
-                        widget. frm,
+                        widget.from,
+                        widget.frm,
                         loginController.isPasswordScreen,
                         loginController.isStorePasswordScreen);
                     // otpController.exitScreen();
                   });
             })
-      ],
-    );
-  }
-
-  Row buildTimer() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Text(
-          LocaleKeys.otpExpire.tr,
-          style: TextStyle(fontSize: 16, color: Colors.black),
-        ),
-        /*TweenAnimationBuilder(
-          tween: Tween(begin: 60.0, end: 0.0),
-          duration: Duration(seconds: 60),
-          builder: (_, value, child) => Text(
-            "00:${value!.toInt()}",
-            style: TextStyle(color: AppColors.primaryColor,fontSize: 16),
-          ),
-        ),*/
-        TweenAnimationBuilder<Duration>(
-            duration: Duration(minutes: 1),
-            tween: Tween(begin: Duration(minutes: 1), end: Duration.zero),
-            onEnd: () {
-              print('Timer ended');
-            },
-            builder: (BuildContext context, Duration value, Widget? child) {
-              final minutes = value.inMinutes;
-              final seconds = value.inSeconds % 60;
-              return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                  child: Text('$minutes:$seconds',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 22)));
-            }),
       ],
     );
   }

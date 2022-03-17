@@ -15,29 +15,39 @@ class ResetPasswordController extends GetxController {
 
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
-
+  bool visiblePassword = true, visibleConfirmPassword = true;
   final api = Api();
   bool loading = false;
   late String phone, otp;
+
+  void visiblePasswordIcon() {
+    visiblePassword = !visiblePassword;
+    update();
+  }
+
+  void visibleConfirmPasswordIcon() {
+    visibleConfirmPassword = !visibleConfirmPassword;
+    update();
+  }
 
   void exitScreen() {
     Navigator.of(context).pop(false);
   }
 
-  resetPassword(from,frm,email,token,language) async {
+  resetPassword(from, frm, email, language) async {
     FocusScope.of(context).unfocus();
     if (formKey.currentState!.validate()) {
       loading = true;
       update();
       await api
-          .resetPassword( email,confirmPasswordController.text,token, language)
+          .resetPassword(email, confirmPasswordController.text, language)
           .then((value) {
         if (value.statusCode == 200) {
           submit(from, frm);
         }
         loading = false;
         update();
-        Helper.showGetSnackBar( value.message!);
+        Helper.showGetSnackBar(value.message!);
       }).catchError((error) {
         loading = false;
         update();
@@ -45,7 +55,6 @@ class ResetPasswordController extends GetxController {
       });
     }
   }
-
 
   void submit(String from, String frm) {
     FocusScope.of(context).unfocus();

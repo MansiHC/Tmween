@@ -8,6 +8,7 @@ import 'package:tmween/utils/extensions.dart';
 import '../../../controller/store_owner_signup_controller.dart';
 import '../../../lang/locale_keys.g.dart';
 import '../../../utils/global.dart';
+import '../../../utils/views/circular_progress_bar.dart';
 import '../../../utils/views/custom_button.dart';
 import '../../../utils/views/custom_text_form_field.dart';
 
@@ -239,37 +240,37 @@ class StoreOwnerSignUpScreen extends StatelessWidget {
                                                                 .notifyCheckBox();
                                                           }))),
                                               10.widthBox,
-                                              Text(
-                                                LocaleKeys.agreeTerms.tr,
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.grey),
-                                              )
+                                              RichText(
+                                                  textAlign: TextAlign.center,
+                                                  text: TextSpan(
+                                                      text: 'I agree to the ',
+                                                      style: TextStyle(
+                                                          fontSize: 15,
+                                                          color: Colors.grey),
+                                                      children: [
+                                                        TextSpan(
+                                                          text: 'terms of use ',
+                                                          style: TextStyle(
+                                                            fontSize: 15,
+                                                            color: AppColors
+                                                                .primaryColor,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                        )
+                                                      ]))
                                             ])),
                                     15.heightBox,
                                     CustomButton(
                                         text: LocaleKeys.createAccount,
                                         onPressed: () {
-                                          storeOwnerSignUpController.signUp();
+                                         // storeOwnerSignUpController.signUp();
                                         }),
-                                    Visibility(
-                                        visible:
-                                            storeOwnerSignUpController.loading,
-                                        child: 5.heightBox),
                                     Visibility(
                                       visible:
                                           storeOwnerSignUpController.loading,
-                                      child: Align(
-                                          alignment: Alignment.topCenter,
-                                          child: CircularProgressIndicator(
-                                            backgroundColor:
-                                                AppColors.primaryColor,
-                                          )),
+                                      child: CircularProgressBar(),
                                     ),
-                                    Visibility(
-                                        visible:
-                                            storeOwnerSignUpController.loading,
-                                        child: 5.heightBox),
                                     10.heightBox,
                                     Row(
                                       crossAxisAlignment:

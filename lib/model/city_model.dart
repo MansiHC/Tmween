@@ -18,7 +18,9 @@ class CityModel {
     statusCode = json['status_code'];
     statusMessage = json['status_message'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    if (statusCode == 200) {
+      data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    }
   }
 
   Map<String, dynamic> toJson() {

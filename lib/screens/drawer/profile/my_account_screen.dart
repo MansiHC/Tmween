@@ -13,6 +13,8 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_list_tile.dart';
 
+import '../../../service/api.dart';
+import '../../../utils/helper.dart';
 import '../../../utils/views/circular_progress_bar.dart';
 import 'my_wallet_screen.dart';
 
@@ -25,6 +27,7 @@ class MyAccountScreen extends StatelessWidget {
     return true;
   }
 
+
   @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
@@ -34,21 +37,21 @@ class MyAccountScreen extends StatelessWidget {
           myAccountController.context = context;
           return WillPopScope(
               onWillPop: () => _onWillPop(myAccountController),
-          child: Scaffold(
-              body: Container(
-                  color: Colors.white,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                          constraints: BoxConstraints(
-                              minWidth: double.infinity, maxHeight: 90),
-                          color: AppColors.appBarColor,
-                          padding: EdgeInsets.only(top: 20),
-                          child: topView(myAccountController)),
-                      _bottomView(myAccountController),
-                    ],
-                  ))));
+              child: Scaffold(
+                  body: Container(
+                      color: Colors.white,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              constraints: BoxConstraints(
+                                  minWidth: double.infinity, maxHeight: 90),
+                              color: AppColors.appBarColor,
+                              padding: EdgeInsets.only(top: 20),
+                              child: topView(myAccountController)),
+                          _bottomView(myAccountController),
+                        ],
+                      ))));
         });
   }
 
@@ -58,147 +61,290 @@ class MyAccountScreen extends StatelessWidget {
             child: Column(
       children: [
         Visibility(
-          visible: myAccountController.loading,
+          visible: myAccountController.loading && Helper.isIndividual,
           child: CircularProgressBar(),
         ),
-            (!myAccountController.loading && myAccountController.profileData!=null)?  Container(
-            color: AppColors.lighterGrayColor,
-            padding: EdgeInsets.all(5),
-            child: Column(
-              children: [
-                Stack(children: [
-                  Padding(
-                      padding: EdgeInsets.only(top: 10),
+        (!myAccountController.loading &&
+                myAccountController.profileData != null &&
+                Helper.isIndividual)
+            ? Container(
+                color: AppColors.lighterGrayColor,
+                padding: EdgeInsets.all(5),
+                child: Column(
+                  children: [
+                    Stack(children: [
+                      Padding(
+                          padding: EdgeInsets.only(top: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              5.widthBox,
+                              Container(
+                                width: 80,
+                                child: myAccountController
+                                        .profileData!.largeImageUrl!.isNotEmpty
+                                    ? CircleAvatar(
+                                        radius: 80,
+                                        backgroundImage: NetworkImage(
+                                            myAccountController
+                                                .profileData!.largeImageUrl!),
+                                      )
+                                    : SvgPicture.asset(
+                                        ImageConstanst.user,
+                                        height: 80,
+                                        width: 80,
+                                      ),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.white,
+                                    width: 3.0,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                  child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    myAccountController.profileData!.yourName!,
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  5.heightBox,
+                                  Text(
+                                    myAccountController.profileData!.phone!,
+                                    style: TextStyle(
+                                        fontSize: 14, color: Colors.black54),
+                                  ),
+                                  if (myAccountController.profileData!.email !=
+                                      null)
+                                    Text(
+                                      myAccountController.profileData!.email!,
+                                      style: TextStyle(
+                                          fontSize: 14, color: Colors.black54),
+                                    ),
+                                ],
+                              )),
+                            ],
+                          )),
+                      language == 'ar'
+                          ? Positioned(
+                              left: 0,
+                              top: 0,
+                              child: IconButton(
+                                padding: EdgeInsets.zero,
+                                icon: Icon(
+                                  Icons.edit,
+                                  color: AppColors.primaryColor,
+                                ),
+                                onPressed: () {
+                                  myAccountController
+                                      .navigateTo(UpdateProfileScreen());
+                                },
+                              ))
+                          : Positioned(
+                              right: 0,
+                              top: 0,
+                              child: IconButton(
+                                padding: EdgeInsets.zero,
+                                icon: Icon(
+                                  Icons.edit,
+                                  color: AppColors.primaryColor,
+                                ),
+                                onPressed: () {
+                                  myAccountController
+                                      .navigateTo(UpdateProfileScreen());
+                                },
+                              ))
+                    ]),
+                    10.heightBox,
+                    Container(
+                      padding: EdgeInsets.all(5),
+                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(2)),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey[300]!,
+                                spreadRadius: 2,
+                                blurRadius: 5)
+                          ]),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          5.widthBox,
-                          Container(
-                            width: 80,
-                            child: myAccountController.profileData!.largeImageUrl!.isNotEmpty?
-                            CircleAvatar(
-                              radius: 30,
-                              backgroundImage: NetworkImage(
-                                  myAccountController.profileData!.largeImageUrl!),
-                            ):SvgPicture.asset(
-                            ImageConstanst.user,
-                            height: 42,
-                            width: 42,
-                          ),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Colors.white,
-                                width: 3.0,
-                              ),
-                            ),
+                          Icon(
+                            Icons.location_on_rounded,
+                            color: AppColors.primaryColor,
                           ),
                           Expanded(
-                              child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                              child: Text(
+                            '1999 Bluff Street MOODY Alabama - 35004',
+                            style:
+                                TextStyle(color: Colors.black54, fontSize: 12),
+                          )),
+                          InkWell(
+                              onTap: () {
+                                myAccountController
+                                    .navigateTo(YourAddressesScreen());
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(2)),
+                                    border: Border.all(
+                                        color: AppColors.primaryColor)),
+                                padding: EdgeInsets.all(3),
+                                child: Text(
+                                  LocaleKeys.change.tr,
+                                  style: TextStyle(
+                                      color: AppColors.primaryColor,
+                                      fontSize: 12),
+                                ),
+                              ))
+                        ],
+                      ),
+                    ),
+                    15.heightBox,
+                  ],
+                ))
+            : Container(
+                color: AppColors.lighterGrayColor,
+                padding: EdgeInsets.all(5),
+                child: Column(
+                  children: [
+                    Stack(children: [
+                      Padding(
+                          padding: EdgeInsets.only(top: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(
-                                myAccountController.profileData!.yourName!,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
+                              5.widthBox,
+                              Container(
+                                width: 80,
+                                child: CircleAvatar(
+                                  radius: 30,
+                                  backgroundImage: NetworkImage(
+                                      'http://i.imgur.com/QSev0hg.jpg'),
+                                ),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.white,
+                                    width: 3.0,
+                                  ),
+                                ),
                               ),
-                              5.heightBox,
-                              Text(
-                                myAccountController.profileData!.phone!,
-                                style: TextStyle(
-                                    fontSize: 14, color: Colors.black54),
-                              ),
-                              if(myAccountController.profileData!.email!=null)
-                              Text(
-                                myAccountController.profileData!.email!,
-                                style: TextStyle(
-                                    fontSize: 14, color: Colors.black54),
-                              ),
+                              Expanded(
+                                  child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Salim Akka',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  5.heightBox,
+                                  Text(
+                                    '+221 1234567890',
+                                    style: TextStyle(
+                                        fontSize: 14, color: Colors.black54),
+                                  ),
+                                  Text(
+                                    'salim.akka@tmween.com',
+                                    style: TextStyle(
+                                        fontSize: 14, color: Colors.black54),
+                                  ),
+                                ],
+                              )),
                             ],
                           )),
+                      language == 'ar'
+                          ? Positioned(
+                              left: 0,
+                              top: 0,
+                              child: IconButton(
+                                padding: EdgeInsets.zero,
+                                icon: Icon(
+                                  Icons.edit,
+                                  color: AppColors.primaryColor,
+                                ),
+                                onPressed: () {
+                                  myAccountController
+                                      .navigateTo(UpdateProfileScreen());
+                                },
+                              ))
+                          : Positioned(
+                              right: 0,
+                              top: 0,
+                              child: IconButton(
+                                padding: EdgeInsets.zero,
+                                icon: Icon(
+                                  Icons.edit,
+                                  color: AppColors.primaryColor,
+                                ),
+                                onPressed: () {
+                                  myAccountController
+                                      .navigateTo(UpdateProfileScreen());
+                                },
+                              ))
+                    ]),
+                    10.heightBox,
+                    Container(
+                      padding: EdgeInsets.all(5),
+                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(2)),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey[300]!,
+                                spreadRadius: 2,
+                                blurRadius: 5)
+                          ]),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Icon(
+                            Icons.location_on_rounded,
+                            color: AppColors.primaryColor,
+                          ),
+                          Expanded(
+                              child: Text(
+                            '1999 Bluff Street MOODY Alabama - 35004',
+                            style:
+                                TextStyle(color: Colors.black54, fontSize: 12),
+                          )),
+                          InkWell(
+                              onTap: () {
+                                myAccountController
+                                    .navigateTo(YourAddressesScreen());
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(2)),
+                                    border: Border.all(
+                                        color: AppColors.primaryColor)),
+                                padding: EdgeInsets.all(3),
+                                child: Text(
+                                  LocaleKeys.change.tr,
+                                  style: TextStyle(
+                                      color: AppColors.primaryColor,
+                                      fontSize: 12),
+                                ),
+                              ))
                         ],
-                      )),
-                  language == 'ar'
-                      ? Positioned(
-                          left: 0,
-                          top: 0,
-                          child: IconButton(
-                            padding: EdgeInsets.zero,
-                            icon: Icon(
-                              Icons.edit,
-                              color: AppColors.primaryColor,
-                            ),
-                            onPressed: () {
-                              myAccountController
-                                  .navigateTo(UpdateProfileScreen());
-                            },
-                          ))
-                      : Positioned(
-                          right: 0,
-                          top: 0,
-                          child: IconButton(
-                            padding: EdgeInsets.zero,
-                            icon: Icon(
-                              Icons.edit,
-                              color: AppColors.primaryColor,
-                            ),
-                            onPressed: () {
-                              myAccountController
-                                  .navigateTo(UpdateProfileScreen());
-                            },
-                          ))
-                ]),
-                10.heightBox,
-                Container(
-                  padding: EdgeInsets.all(5),
-                  margin: EdgeInsets.symmetric(horizontal: 10),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(2)),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey[300]!,
-                            spreadRadius: 2,
-                            blurRadius: 5)
-                      ]),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Icon(
-                        Icons.location_on_rounded,
-                        color: AppColors.primaryColor,
                       ),
-                      Expanded(
-                          child: Text(
-                        '1999 Bluff Street MOODY Alabama - 35004',
-                        style: TextStyle(color: Colors.black54, fontSize: 12),
-                      )),
-                      InkWell(
-                          onTap: () {
-                            myAccountController
-                                .navigateTo(YourAddressesScreen());
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(2)),
-                                border:
-                                    Border.all(color: AppColors.primaryColor)),
-                            padding: EdgeInsets.all(3),
-                            child: Text(
-                              LocaleKeys.change.tr,
-                              style: TextStyle(
-                                  color: AppColors.primaryColor, fontSize: 12),
-                            ),
-                          ))
-                    ],
-                  ),
-                ),
-                15.heightBox,
-              ],
-            )):Container(),
+                    ),
+                    15.heightBox,
+                  ],
+                )),
         10.heightBox,
         CustomListTile(
             title: LocaleKeys.yourOrders,
@@ -339,16 +485,18 @@ class MyAccountScreen extends StatelessWidget {
     await showDialog(
         context: myAccountController.context,
         builder: (_) => AlertDialog(
-              title: Column(children: [Text(
-                LocaleKeys.wantLogout.tr,
-                style: TextStyle(
-                  fontSize: 16,
+              title: Column(children: [
+                Text(
+                  LocaleKeys.wantLogout.tr,
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
                 ),
-              ),
                 Visibility(
                   visible: myAccountController.loading,
                   child: CircularProgressBar(),
-                ),]),
+                ),
+              ]),
               actions: [
                 TextButton(
                   style: TextButton.styleFrom(padding: EdgeInsets.zero),
@@ -367,7 +515,11 @@ class MyAccountScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 16, color: Colors.black54),
                   ),
                   onPressed: () {
-                    myAccountController.doLogout(language);
+                    if (Helper.isIndividual) {
+                      myAccountController.doLogout(language);
+                    } else {
+                      myAccountController.navigateToDashBoardScreen();
+                    }
                   },
                 ),
               ],

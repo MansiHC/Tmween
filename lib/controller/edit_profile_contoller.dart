@@ -7,6 +7,14 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:image_crop/image_crop.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../model/get_customer_data_model.dart';
+import '../screens/drawer/drawer_screen.dart';
+import '../service/api.dart';
+import '../utils/global.dart';
+import '../utils/helper.dart';
+import '../utils/my_shared_preferences.dart';
+import 'drawer_controller.dart';
+
 class EditProfileController extends GetxController {
   late BuildContext context;
 
@@ -29,6 +37,65 @@ class EditProfileController extends GetxController {
   File? finalImage;
   final cropKey = GlobalKey<CropState>();
   String imageString = "";
+
+  int userId = 0;
+  int loginLogId = 0;
+  String token = '';
+  ProfileData? profileData;
+
+  final api = Api();
+  bool loading = false;
+
+  @override
+  void onInit() {
+    if (Helper.isIndividual)
+      MySharedPreferences.instance
+          .getStringValuesSF(SharedPreferencesKeys.token)
+          .then((value) async {
+        token = value!;
+        print('dhsh.....$token');
+        MySharedPreferences.instance
+            .getIntValuesSF(SharedPreferencesKeys.userId)
+            .then((value) async {
+          userId = value!;
+          getCustomerData(Get.locale!.languageCode);
+          MySharedPreferences.instance
+              .getIntValuesSF(SharedPreferencesKeys.loginLogId)
+              .then((value) async {
+            loginLogId = value!;
+          });
+        });
+      });
+    super.onInit();
+  }
+
+  Future<void> getCustomerData(language) async {
+    loading = true;
+    update();
+    await api.getCustomerData(token, userId, language).then((value) {
+      if (value.statusCode == 200) {
+        profileData = value.data![0];
+        nameController.text = profileData!.yourName!.split(' ')[0];
+        lastNameController.text = profileData!.yourName!.split(' ')[0];
+        mobileNumberController.text = profileData!.phone!;
+        mobileNumberController.text = profileData!.email!;
+      } else if (value.statusCode == 401) {
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        Get.delete<EditProfileController>();
+        Get.delete<DrawerControllers>();
+        Get.offAll(DrawerScreen());
+      } else {
+        Helper.showGetSnackBar(value.message!);
+      }
+      loading = false;
+      update();
+    }).catchError((error) {
+      loading = false;
+      update();
+      print('error....$error');
+    });
+  }
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));

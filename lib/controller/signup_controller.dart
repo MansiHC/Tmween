@@ -30,7 +30,6 @@ class SignUpController extends GetxController {
     update();
     await api
         .request(
-            context,
             firstNameController.text,
             lastNameController.text,
             passwordController.text,
@@ -39,13 +38,12 @@ class SignUpController extends GetxController {
             agreeTo,
             language)
         .then((value) {
-
-
       if (value.statusCode == 200) {
-        Helper.showSnackBar(context, value.message!);
+        Helper.isIndividual = true;
+        Helper.showGetSnackBar(value.message!);
         navigateToOtpScreen(value.data!.otp);
       } else {
-        Helper.showSnackBar(context, value.message!);
+        Helper.showGetSnackBar(value.message!);
       }
       loading = false;
       update();
@@ -95,7 +93,7 @@ class SignUpController extends GetxController {
       if (agree) {
         doRequest(language);
       } else {
-        Helper.showSnackBar(context, LocaleKeys.emptyAgreeTerms.tr);
+        Helper.showGetSnackBar(LocaleKeys.emptyAgreeTerms.tr);
       }
     }
   }

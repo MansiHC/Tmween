@@ -80,12 +80,22 @@ class ChangePasswordScreen extends StatelessWidget {
                         controller:
                             changePasswordController.newPasswordController,
                         keyboardType: TextInputType.visiblePassword,
-                        obscureText: true,
+                        obscureText: changePasswordController.visiblePassword,
                         hintText: LocaleKeys.newPassword,
                         prefixIcon: SvgPicture.asset(
                           ImageConstanst.lockIcon,
                           color: AppColors.primaryColor,
                         ),
+                        suffixIcon: IconButton(
+                            icon: Icon(
+                              changePasswordController.visiblePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              changePasswordController.visiblePasswordIcon();
+                            }),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return LocaleKeys.emptyNewPassword.tr;
@@ -105,11 +115,23 @@ class ChangePasswordScreen extends StatelessWidget {
                         controller:
                             changePasswordController.retypePasswordController,
                         keyboardType: TextInputType.visiblePassword,
-                        obscureText: true,
+                        obscureText:
+                            changePasswordController.visibleConfirmPassword,
                         prefixIcon: SvgPicture.asset(
                           ImageConstanst.lock2Icon,
                           color: AppColors.primaryColor,
                         ),
+                        suffixIcon: IconButton(
+                            icon: Icon(
+                              changePasswordController.visibleConfirmPassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              changePasswordController
+                                  .visibleConfirmPasswordIcon();
+                            }),
                         hintText: LocaleKeys.retypePassword,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -143,6 +165,8 @@ class ChangePasswordScreen extends StatelessWidget {
                           )
                         ])),
                     15.heightBox,
+                    Container().buildTimer(30),
+                    10.heightBox,
                     Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40),
                         child: OtpTextField(
@@ -158,11 +182,11 @@ class ChangePasswordScreen extends StatelessWidget {
                             fieldHeight: 50,
                             fieldWidth: 40,
                             activeFillColor: AppColors.primaryColor,
-                            activeColor: AppColors.primaryColor,
-                            selectedColor: AppColors.primaryColor,
+                            activeColor: Colors.grey[300],
+                            selectedColor: Colors.grey[300],
                             selectedFillColor: AppColors.primaryColor,
                             inactiveFillColor: AppColors.lightGrayColor,
-                            inactiveColor: AppColors.lightGrayColor,
+                            inactiveColor: Colors.grey[300],
                           ),
                           textInputAction: TextInputAction.done,
                           animationDuration: const Duration(milliseconds: 300),

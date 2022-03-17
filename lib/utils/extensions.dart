@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../lang/locale_keys.g.dart';
+import 'global.dart';
 
 extension NumExtension on num {
   Widget get widthBox => SizedBox(
@@ -44,5 +48,46 @@ extension IterableExtensions<E> on Iterable<E> {
       skip += chunkSize;
       if (chunk.length < chunkSize) return;
     }
+  }
+}
+
+extension WidgetExtension on Widget {
+  Widget buildTimer(time, [textSize]) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text(
+          LocaleKeys.otpExpire.tr,
+          style: TextStyle(fontSize: textSize ?? 16, color: Colors.black),
+        ),
+        /*TweenAnimationBuilder(
+          tween: Tween(begin: 60.0, end: 0.0),
+          duration: Duration(seconds: 60),
+          builder: (_, value, child) => Text(
+            "00:${value!.toInt()}",
+            style: TextStyle(color: AppColors.primaryColor,fontSize: 16),
+          ),
+        ),*/
+        5.widthBox,
+        TweenAnimationBuilder<Duration>(
+            duration: Duration(seconds: time),
+            tween: Tween(begin: Duration(seconds: time), end: Duration.zero),
+            onEnd: () {
+              print('Timer ended');
+            },
+            builder: (BuildContext context, Duration value, Widget? child) {
+              final minutes = value.inMinutes;
+              final seconds = value.inSeconds % 60;
+              return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: Text('$minutes:$seconds',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: AppColors.primaryColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: (textSize ?? 16) + 4.0)));
+            }),
+      ],
+    );
   }
 }

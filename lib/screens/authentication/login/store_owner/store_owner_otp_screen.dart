@@ -8,6 +8,7 @@ import 'package:tmween/utils/global.dart';
 
 import '../../../../controller/login_controller.dart';
 import '../../../../controller/store_otp_controller.dart';
+import '../../../../utils/views/circular_progress_bar.dart';
 import '../../../../utils/views/custom_button.dart';
 import '../../../../utils/views/otp_text_field.dart';
 
@@ -136,7 +137,7 @@ class StoreOwnerOtpScreen extends StatelessWidget {
           style: TextStyle(fontSize: 16, color: Colors.black),
         ),
         10.heightBox,
-        buildTimer(),
+        Container().buildTimer(30),
         40.heightBox,
         Padding(
             padding: EdgeInsets.symmetric(
@@ -165,7 +166,7 @@ class StoreOwnerOtpScreen extends StatelessWidget {
               textStyle: TextStyle(color: Colors.white),
               controller: otpController.otpController,
               onCompleted: (v) {
-                otpController.verifyLoginOTP();
+               // otpController.verifyLoginOTP();
               },
               onChanged: (value) {
                 debugPrint(value);
@@ -177,16 +178,10 @@ class StoreOwnerOtpScreen extends StatelessWidget {
               },
               appContext: otpController.context,
             )),
-        Visibility(visible: otpController.loading, child: 5.heightBox),
         Visibility(
-          visible: otpController.loading,
-          child: Align(
-              alignment: Alignment.topCenter,
-              child: CircularProgressIndicator(
-                backgroundColor: AppColors.primaryColor,
-              )),
+          visible: loginController.loading,
+          child: CircularProgressBar(),
         ),
-        Visibility(visible: otpController.loading, child: 5.heightBox),
         30.heightBox,
         Text(
           LocaleKeys.notReceivedOtp.tr,
@@ -248,44 +243,6 @@ class StoreOwnerOtpScreen extends StatelessWidget {
                         loginController.isStorePasswordScreen);
                   });
             })
-      ],
-    );
-  }
-
-  Row buildTimer() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Text(
-          LocaleKeys.otpExpire.tr,
-          style: TextStyle(fontSize: 16, color: Colors.black),
-        ),
-        /*TweenAnimationBuilder(
-          tween: Tween(begin: 60.0, end: 0.0),
-          duration: Duration(seconds: 60),
-          builder: (_, value, child) => Text(
-            "00:${value!.toInt()}",
-            style: TextStyle(color: AppColors.primaryColor,fontSize: 16),
-          ),
-        ),*/
-        TweenAnimationBuilder<Duration>(
-            duration: Duration(minutes: 1),
-            tween: Tween(begin: Duration(minutes: 1), end: Duration.zero),
-            onEnd: () {
-              print('Timer ended');
-            },
-            builder: (BuildContext context, Duration value, Widget? child) {
-              final minutes = value.inMinutes;
-              final seconds = value.inSeconds % 60;
-              return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Text('$minutes:$seconds',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 22)));
-            }),
       ],
     );
   }

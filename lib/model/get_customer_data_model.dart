@@ -11,11 +11,13 @@ class GetCustomerDataModel {
     statusCode = json['status_code'];
     statusMessage = json['status_message'];
     message = json['message'];
-    if (json['data'] != null) {
-      data = <ProfileData>[];
-      json['data'].forEach((v) {
-        data!.add(new ProfileData.fromJson(v));
-      });
+    if (statusCode == 200) {
+      if (json['data'] != null) {
+        data = <ProfileData>[];
+        json['data'].forEach((v) {
+          data!.add(new ProfileData.fromJson(v));
+        });
+      }
     }
   }
 
@@ -59,29 +61,29 @@ class ProfileData {
 
   ProfileData(
       {this.id,
-        this.yourName,
-        this.phone,
-        this.email,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.createdFrom,
-        this.dob,
-        this.password,
-        this.passwordHash,
-        this.defaultBilling,
-        this.defaultShipping,
-        this.taxvat,
-        this.accountVerificationToken,
-        this.confirmation,
-        this.isVerified,
-        this.gender,
-        this.resetPwdToken,
-        this.tokenExpiredAt,
-        this.otp,
-        this.expiredDate,
-        this.smallImageUrl,
-        this.largeImageUrl});
+      this.yourName,
+      this.phone,
+      this.email,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.createdFrom,
+      this.dob,
+      this.password,
+      this.passwordHash,
+      this.defaultBilling,
+      this.defaultShipping,
+      this.taxvat,
+      this.accountVerificationToken,
+      this.confirmation,
+      this.isVerified,
+      this.gender,
+      this.resetPwdToken,
+      this.tokenExpiredAt,
+      this.otp,
+      this.expiredDate,
+      this.smallImageUrl,
+      this.largeImageUrl});
 
   ProfileData.fromJson(Map<String, dynamic> json) {
     id = json['id'];

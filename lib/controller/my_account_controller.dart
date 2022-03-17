@@ -15,47 +15,51 @@ class MyAccountController extends GetxController {
   late BuildContext context;
   TextEditingController passwordController = TextEditingController();
 
-
   int userId = 0;
   int loginLogId = 0;
   String token = '';
-   ProfileData? profileData;
+  ProfileData? profileData;
 
   final api = Api();
   bool loading = false;
+
   @override
   void onInit() {
-    MySharedPreferences.instance
-        .getStringValuesSF(SharedPreferencesKeys.token)
-        .then((value) async {
-      token = value!;
-      print('dhsh.....$token');
+    if (Helper.isIndividual)
       MySharedPreferences.instance
-          .getIntValuesSF(SharedPreferencesKeys.userId)
+          .getStringValuesSF(SharedPreferencesKeys.token)
           .then((value) async {
-        userId = value!;
-        getCustomerData(Get.locale!.languageCode);
+        token = value!;
+        print('dhsh.....$token');
         MySharedPreferences.instance
-            .getIntValuesSF(SharedPreferencesKeys.loginLogId)
+            .getIntValuesSF(SharedPreferencesKeys.userId)
             .then((value) async {
-          loginLogId = value!;
+          userId = value!;
+          getCustomerData(Get.locale!.languageCode);
+          MySharedPreferences.instance
+              .getIntValuesSF(SharedPreferencesKeys.loginLogId)
+              .then((value) async {
+            loginLogId = value!;
+          });
         });
       });
-    });
     super.onInit();
   }
 
   Future<void> getCustomerData(language) async {
     loading = true;
     update();
-    await api
-        .getCustomerData(token, userId, language)
-        .then((value) {
+    await api.getCustomerData(token, userId, language).then((value) {
       if (value.statusCode == 200) {
-profileData = value.data![0];
-
+        profileData = value.data![0];
+      } else if (value.statusCode == 401) {
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        Get.delete<MyAccountController>();
+        Get.delete<DrawerControllers>();
+        Get.offAll(DrawerScreen());
       } else {
-        Helper.showGetSnackBar( value.message!);
+        Helper.showGetSnackBar(value.message!);
       }
       loading = false;
       update();
@@ -66,28 +70,24 @@ profileData = value.data![0];
     });
   }
 
-
   void doLogout(language) async {
-
     loading = true;
     update();
-    await api
-        .logout(token, userId,loginLogId,
-        language)
-        .then((value) {
+    await api.logout(token, userId, loginLogId, language).then((value) {
       loading = false;
       update();
-      Helper.showGetSnackBar( value.message!);
-      MySharedPreferences.instance
-          .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+
+      if (value.statusCode == 401 && value.statusCode == 200) {
+        navigateToDashBoardScreen();
+      } else {
+        Helper.showGetSnackBar(value.message!);
+      }
       navigateToDashBoardScreen();
     }).catchError((error) {
       loading = false;
       update();
       print('error....$error');
     });
-
-
   }
 
   void exitScreen() {
@@ -101,6 +101,8 @@ profileData = value.data![0];
   }
 
   void navigateToDashBoardScreen() {
+    MySharedPreferences.instance
+        .addBoolToSF(SharedPreferencesKeys.isLogin, false);
     Get.delete<MyAccountController>();
     Get.delete<DrawerControllers>();
     Get.offAll(DrawerScreen());

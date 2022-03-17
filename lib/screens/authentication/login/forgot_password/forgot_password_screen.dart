@@ -12,29 +12,30 @@ import '../../../../utils/views/custom_button.dart';
 import '../../../../utils/views/custom_text_form_field.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
-
   final String from;
   final String mobile;
   final String frm;
 
-  ForgotPasswordScreen({Key? key, required this.mobile,required this.from, required this.frm})
+  ForgotPasswordScreen(
+      {Key? key, required this.mobile, required this.from, required this.frm})
       : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-   return ForgotPasswordScreenState();
+    return ForgotPasswordScreenState();
   }
-
 }
+
 class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   late String language;
   final forgotPasswordController = Get.put(ForgotPasswordController());
 
-@override
+  @override
   void initState() {
-  forgotPasswordController.emailMobileController.text = widget.mobile;
-  super.initState();
+    forgotPasswordController.emailMobileController.text = widget.mobile;
+    super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
@@ -73,125 +74,136 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Widget bottomView(ForgotPasswordController forgotPasswordController) {
     return Form(
         key: forgotPasswordController.formKey,
-        child:Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        5.heightBox,
-        RichText(
-            text: TextSpan(
-                text: 'Enter the ',
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Color(0xFF0727272),
-                    fontWeight: FontWeight.bold),
-                children: [
-              TextSpan(
-                text: 'EMAIL ADDRESS ',
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold),
-              ),
-              TextSpan(
-                text: 'or ',
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Color(0xFF0727272),
-                    fontWeight: FontWeight.bold),
-              ),
-              TextSpan(
-                text: 'MOBILE PHONE NUMBER ',
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold),
-              ),
-              TextSpan(
-                text: 'associated with your Tmween account.',
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Color(0xFF0727272),
-                    fontWeight: FontWeight.bold),
-              ),
-            ])),
-        10.heightBox,
-        CustomBoxTextFormField(
-            controller: forgotPasswordController.emailMobileController,
-            keyboardType: TextInputType.text,
-            hintText: LocaleKeys.phoneNumberEmail,
-            textInputAction: TextInputAction.done,
-            prefixIcon: SvgPicture.asset(
-              ImageConstanst.phoneEmailIcon,
-              color: AppColors.primaryColor,
-            ),
-            onSubmitted: (term) {
-              forgotPasswordController.generateOTP(widget.from, widget.frm,language);
-            },
-            borderColor: Color(0xFFDDDDDD),
-            suffixIcon: IconButton(
-                onPressed: () {
-                  forgotPasswordController.emailMobileController.clear();
-                },
-                icon: Icon(
-                  CupertinoIcons.clear_circled_solid,
-                  color: Color(0xFFC7C7C7),
-                  size: 24,
-                )),
-            validator: (value) {
-              if (value!.isEmpty) {
-                return LocaleKeys
-                    .emptyPhoneNumberEmail.tr;
-              }
-              return null;
-            }),
-        10.heightBox,
-        CustomButton(
-            text: 'Continue',
-            fontSize: 16,
-            onPressed: () {
-              forgotPasswordController.generateOTP(widget.from, widget.frm,language);
-            }),
-        Visibility(
-          visible: forgotPasswordController.loading,
-          child: CircularProgressBar(),
-        ),
-        20.heightBox,
-        Text(
-          'Has your email address or mobile phone number changed?',
-          style: TextStyle(
-              fontSize: 14,
-              color: Color(0xFF575757),
-              fontWeight: FontWeight.bold),
-        ),
-        10.heightBox,
-        RichText(
-            textAlign: TextAlign.start,
-            text: TextSpan(
-                text:
-                    'If you no longer use the e-mail address associated with your Tmween account, you may contact ',
-                style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF0727272)),
-                children: <InlineSpan>[
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            5.heightBox,
+            RichText(
+                text: TextSpan(
+                    text: 'Enter the ',
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Color(0xFF0727272),
+                        fontWeight: FontWeight.bold),
+                    children: [
                   TextSpan(
-                      text: '${LocaleKeys.customerService.tr} ',
-                      style: TextStyle(
+                    text: 'EMAIL ADDRESS ',
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(
+                    text: 'or ',
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Color(0xFF0727272),
+                        fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(
+                    text: 'MOBILE PHONE NUMBER ',
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(
+                    text: 'associated with your Tmween account.',
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Color(0xFF0727272),
+                        fontWeight: FontWeight.bold),
+                  ),
+                ])),
+            10.heightBox,
+            CustomBoxTextFormField(
+                controller: forgotPasswordController.emailMobileController,
+                keyboardType: TextInputType.text,
+                hintText: LocaleKeys.phoneNumberEmail,
+                textInputAction: TextInputAction.done,
+                prefixIcon: SvgPicture.asset(
+                  ImageConstanst.phoneEmailIcon,
+                  color: AppColors.primaryColor,
+                ),
+                onSubmitted: (term) {
+                  if (widget.from == AppConstants.individual) {
+                    forgotPasswordController.generateOTP(
+                        widget.from, widget.frm, language);
+                  } else {
+                    forgotPasswordController.submit(
+                        widget.from, widget.frm, '');
+                  }
+                },
+                borderColor: Color(0xFFDDDDDD),
+                suffixIcon: IconButton(
+                    onPressed: () {
+                      forgotPasswordController.emailMobileController.clear();
+                    },
+                    icon: Icon(
+                      CupertinoIcons.clear_circled_solid,
+                      color: Color(0xFFC7C7C7),
+                      size: 24,
+                    )),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return LocaleKeys.emptyPhoneNumberEmail.tr;
+                  }
+                  return null;
+                }),
+            10.heightBox,
+            CustomButton(
+                text: 'Continue',
+                fontSize: 16,
+                onPressed: () {
+                  if (widget.from == AppConstants.individual) {
+                    forgotPasswordController.generateOTP(
+                        widget.from, widget.frm, language);
+                  } else {
+                    forgotPasswordController.submit(
+                        widget.from, widget.frm, '');
+                  }
+                }),
+            Visibility(
+              visible: forgotPasswordController.loading,
+              child: CircularProgressBar(),
+            ),
+            20.heightBox,
+            Text(
+              'Has your email address or mobile phone number changed?',
+              style: TextStyle(
+                  fontSize: 14,
+                  color: Color(0xFF575757),
+                  fontWeight: FontWeight.bold),
+            ),
+            10.heightBox,
+            RichText(
+                textAlign: TextAlign.start,
+                text: TextSpan(
+                    text:
+                        'If you no longer use the e-mail address associated with your Tmween account, you may contact ',
+                    style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF61ABD1),
-                      )),
-                  TextSpan(
-                    text: 'for help restoring access to your account.',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF0727272),
-                    ),
-                  )
-                ])),
-      ],
-    ));
+                        color: Color(0xFF0727272)),
+                    children: <InlineSpan>[
+                      TextSpan(
+                          text: '${LocaleKeys.customerService.tr} ',
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF61ABD1),
+                          )),
+                      TextSpan(
+                        text: 'for help restoring access to your account.',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF0727272),
+                        ),
+                      )
+                    ])),
+          ],
+        ));
   }
 
   Widget topView(ForgotPasswordController forgotPasswordController) {

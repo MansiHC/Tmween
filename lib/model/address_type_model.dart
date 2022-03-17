@@ -1,5 +1,5 @@
 class AddressTypeModel {
-  const AddressTypeModel({required this.id,required this.name});
+  const AddressTypeModel({required this.id, required this.name});
 
   final String name;
   final String id;

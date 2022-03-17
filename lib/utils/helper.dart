@@ -14,7 +14,7 @@ class Helper {
         fontSize: 14.0);
   }
 
-  static void showSnackBar(BuildContext context, String message) {
+  /*static void showSnackBar(BuildContext context, String message) {
     var snackBar = SnackBar(
       animation: null,
       content: Text(
@@ -30,7 +30,10 @@ class Helper {
 
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-  }
+  }*/
+
+  static bool isIndividual = true;
+
   static void showGetSnackBar(String message) {
     /*var snackBar = SnackBar(
       animation: null,

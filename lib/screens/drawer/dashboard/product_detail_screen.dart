@@ -327,7 +327,10 @@ class ProductDetailScreen extends StatelessWidget {
                   textAlign: TextAlign.start,
                   text: TextSpan(
                       text: 'Price: ',
-                      style: TextStyle(color: Color(0xFF636363), fontSize: 14),
+                      style: TextStyle(
+                          color: Color(0xFF636363),
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold),
                       children: <InlineSpan>[
                         TextSpan(
                           text: 'SAR ',
@@ -355,7 +358,8 @@ class ProductDetailScreen extends StatelessWidget {
                           decoration: TextDecoration.lineThrough,
                           decorationThickness: 2,
                           color: Color(0xFF727272),
-                          fontSize: 14),
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold),
                       children: <InlineSpan>[
                         TextSpan(
                           text: 'SAR ',
@@ -381,7 +385,10 @@ class ProductDetailScreen extends StatelessWidget {
                   textAlign: TextAlign.start,
                   text: TextSpan(
                       text: 'You Save: ',
-                      style: TextStyle(color: Color(0xFF636363), fontSize: 14),
+                      style: TextStyle(
+                          color: Color(0xFF636363),
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold),
                       children: <InlineSpan>[
                         TextSpan(
                           text: 'SAR 6,996.00 (22%)',
@@ -462,7 +469,10 @@ class ProductDetailScreen extends StatelessWidget {
                   textAlign: TextAlign.start,
                   text: TextSpan(
                       text: 'Style name: ',
-                      style: TextStyle(color: Color(0xFF636363), fontSize: 14),
+                      style: TextStyle(
+                          color: Color(0xFF636363),
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold),
                       children: <InlineSpan>[
                         TextSpan(
                           text: 'Body + 18-55mm Lens',
@@ -489,7 +499,7 @@ class ProductDetailScreen extends StatelessWidget {
                   text: TextSpan(
                       text: 'Color : ',
                       style: TextStyle(
-                          color: Color(0xFF293341),
+                          color: Color(0xFF636363),
                           fontSize: 14,
                           fontWeight: FontWeight.bold),
                       children: <InlineSpan>[
@@ -726,9 +736,10 @@ class ProductDetailScreen extends StatelessWidget {
                     productDetailController.navigateTo(ReviewProductScreen());
                   },
                   child: Container(
-                    height: 35,
-                    color: AppColors.primaryColor,
-                    width: 120,
+                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+                    decoration: BoxDecoration(
+                        color: AppColors.primaryColor,
+                        borderRadius: BorderRadius.circular(4)),
                     child: Center(
                         child: Text(
                       'Rate Product',
@@ -752,42 +763,48 @@ class ProductDetailScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               10.heightBox,
-                              Container(
-                                  padding: EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                      color: Colors.lightGreen,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(4))),
-                                  child: Wrap(
-                                    alignment: WrapAlignment.start,
-                                    crossAxisAlignment:
-                                        WrapCrossAlignment.center,
-                                    children: [
-                                      Text(
-                                          productDetailController
-                                              .reviews[index].rating,
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold)),
-                                      5.widthBox,
-                                      Icon(
-                                        Icons.star,
-                                        color: Colors.white,
-                                        size: 12,
-                                      )
-                                    ],
-                                  )),
-                              5.heightBox,
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SvgPicture.asset(
-                                    ImageConstanst.user,
-                                    height: 35,
-                                    width: 35,
+                                  Column(
+                                    children: [
+                                      SvgPicture.asset(
+                                        ImageConstanst.user,
+                                        height: 35,
+                                        width: 35,
+                                      ),
+                                      5.heightBox,
+                                      Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 3, vertical: 2),
+                                          decoration: BoxDecoration(
+                                              color: Colors.lightGreen,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(4))),
+                                          child: Wrap(
+                                            alignment: WrapAlignment.start,
+                                            crossAxisAlignment:
+                                                WrapCrossAlignment.center,
+                                            children: [
+                                              Text(
+                                                  productDetailController
+                                                      .reviews[index].rating,
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 11,
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                              2.widthBox,
+                                              Icon(
+                                                Icons.star,
+                                                color: Colors.white,
+                                                size: 12,
+                                              )
+                                            ],
+                                          )),
+                                    ],
                                   ),
                                   10.widthBox,
                                   Expanded(
@@ -1161,6 +1178,7 @@ class ProductDetailScreen extends StatelessWidget {
             ]),
             width: double.maxFinite,
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 10.widthBox,
                 SvgPicture.asset(
@@ -1349,7 +1367,7 @@ class ProductDetailScreen extends StatelessWidget {
                                   fontWeight: FontWeight.bold),
                             )),
                         Text(
-                          "Products",
+                          "\nProducts",
                           textAlign: TextAlign.center,
                           style:
                               TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
@@ -1384,7 +1402,7 @@ class ProductDetailScreen extends StatelessWidget {
                                   fontWeight: FontWeight.bold),
                             )),
                         Text(
-                          "PAYMENTS",
+                          "\nPAYMENTS",
                           textAlign: TextAlign.center,
                           style:
                               TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
@@ -1418,7 +1436,7 @@ class ProductDetailScreen extends StatelessWidget {
                                   fontWeight: FontWeight.bold),
                             )),
                         Text(
-                          "PROTECTION",
+                          "\nPROTECTION",
                           textAlign: TextAlign.center,
                           style:
                               TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),

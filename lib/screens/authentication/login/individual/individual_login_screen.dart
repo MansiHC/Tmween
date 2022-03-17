@@ -10,6 +10,8 @@ import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_button.dart';
 import 'package:tmween/utils/views/custom_text_form_field.dart';
 
+import '../../../../utils/views/circular_progress_bar.dart';
+
 class IndividualLoginScreen extends StatelessWidget {
   var language;
   final loginController = Get.put(LoginController());
@@ -136,16 +138,10 @@ class IndividualLoginScreen extends StatelessWidget {
             onPressed: () {
               loginController.individuaLogin();
             }),
-        Visibility(visible: loginController.loading, child: 5.heightBox),
         Visibility(
           visible: loginController.loading,
-          child: Align(
-              alignment: Alignment.topCenter,
-              child: CircularProgressIndicator(
-                backgroundColor: AppColors.primaryColor,
-              )),
+          child: CircularProgressBar(),
         ),
-        Visibility(visible: loginController.loading, child: 5.heightBox),
         10.heightBox,
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,

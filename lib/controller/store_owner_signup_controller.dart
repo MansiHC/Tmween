@@ -30,7 +30,6 @@ class StoreOwnerSignUpController extends GetxController {
     update();
     await api
         .request(
-            context,
             firstNameController.text,
             lastNameController.text,
             passwordController.text,
@@ -42,7 +41,7 @@ class StoreOwnerSignUpController extends GetxController {
       loading = false;
       update();
       print('value....${value.toString()}');
-      Helper.showSnackBar(context, value.message!);
+      Helper.showGetSnackBar(value.message!);
       /* if(value.message==AppConstants.success) {
         navigateToOtpScreen();
       }*/
@@ -92,6 +91,7 @@ class StoreOwnerSignUpController extends GetxController {
     // if (formKey.currentState!.validate()) {
     // if (agree) {
     //doRequest();
+    Helper.isIndividual = false;
     navigateToOtpScreen();
     //} else {
     // Helper.showSnackBar(context, LocaleKeys.emptyAgreeTerms.tr);

@@ -159,12 +159,10 @@ class CustomBoxTextFormField extends StatelessWidget {
           isDense: true,
           contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           border: OutlineInputBorder(
-            borderSide:
-                BorderSide(color: borderColor ?? AppColors.lightGrayColor),
+            borderSide: BorderSide(color: borderColor ?? Colors.grey[200]!),
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide:
-                BorderSide(color: borderColor ?? AppColors.lightGrayColor),
+            borderSide: BorderSide(color: borderColor ?? Colors.grey[200]!),
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: AppColors.primaryColor),

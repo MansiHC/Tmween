@@ -12,7 +12,6 @@ import 'package:tmween/model/get_customer_address_list_model.dart';
 import 'package:tmween/model/get_customer_data_model.dart';
 import 'package:tmween/model/login_model.dart';
 import 'package:tmween/model/login_using_otp_model.dart';
-import 'package:tmween/model/reset_password_model.dart';
 import 'package:tmween/model/signup_model.dart';
 import 'package:tmween/model/sold_by_tmween_model.dart';
 import 'package:tmween/model/state_model.dart';
@@ -28,7 +27,7 @@ import 'app_exception.dart';
 class Api {
   ///Customer
   Future<SuccessModel> register(
-      context, name, password, email, phone, agreeTerms, langCode) async {
+      name, password, email, phone, agreeTerms, langCode) async {
     late SuccessModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.register),
@@ -54,13 +53,13 @@ class Api {
       print('never reached ${e.toString()}');
     }*/
     on SocketException {
-      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }
     return result;
   }
 
-  Future<SignupModel> request(context, fName, lName, password, email, phone,
-      agreeTerms, langCode) async {
+  Future<SignupModel> request(
+      fName, lName, password, email, phone, agreeTerms, langCode) async {
     late SignupModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.request),
@@ -86,12 +85,12 @@ class Api {
       print('never reached ${e.toString()}');
     }*/
     on SocketException {
-      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }
     return result;
   }
 
-  Future<LoginModel> login(context, email, password, uuid, deviceNo, deviceName,
+  Future<LoginModel> login(email, password, uuid, deviceNo, deviceName,
       platform, model, version, langCode) async {
     late LoginModel result;
     try {
@@ -117,13 +116,13 @@ class Api {
       var responseJson = _returnResponse(response);
       result = LoginModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showSnackBar(context, 'No Internet connection');
+      Helper.showGetSnackBar('No Internet connection');
     }
     return result;
   }
 
-  Future<SignupModel> generateMobileOtp(context, email, uuid, deviceNo,
-      deviceName, platform, model, version, langCode) async {
+  Future<SignupModel> generateMobileOtp(email, uuid, deviceNo, deviceName,
+      platform, model, version, langCode) async {
     late SignupModel result;
     try {
       final response =
@@ -148,12 +147,12 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SignupModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showSnackBar(context, 'No Internet connection');
+      Helper.showGetSnackBar('No Internet connection');
     }
     return result;
   }
 
-  Future<LoginUsingOtpModel> verifyLoginOTP(context, email, otp, uuid, deviceNo,
+  Future<LoginUsingOtpModel> verifyLoginOTP(email, otp, uuid, deviceNo,
       deviceName, platform, model, version, langCode) async {
     late LoginUsingOtpModel result;
     try {
@@ -179,7 +178,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = LoginUsingOtpModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showSnackBar(context, 'No Internet connection');
+      Helper.showGetSnackBar('No Internet connection');
     }
     return result;
   }
@@ -209,7 +208,7 @@ class Api {
     return result;
   }
 
-  Future<VerifyOtpModel> verifyOTP(context, phone, otp) async {
+  Future<VerifyOtpModel> verifyOTP(phone, otp) async {
     late VerifyOtpModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.verifyOTP),
@@ -227,12 +226,12 @@ class Api {
       var responseJson = _returnResponse(response);
       result = VerifyOtpModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }
     return result;
   }
 
-  Future<SignupModel> resendOTP(context, phone) async {
+  Future<SignupModel> resendOTP(phone) async {
     late SignupModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.resendOTP),
@@ -249,12 +248,12 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SignupModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }
     return result;
   }
 
-  Future<SignupModel> resendLoginOTP(context, phone) async {
+  Future<SignupModel> resendLoginOTP(phone) async {
     late SignupModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.resendLoginOTP),
@@ -271,89 +270,116 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SignupModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }
     return result;
   }
 
-  Future<SignupModel> generateForgotPasswordOTP(context, email, langCode) async {
+  Future<SignupModel> generateForgotPasswordOTP(email, langCode) async {
     late SignupModel result;
     try {
-      final response = await http.post(Uri.parse(UrlConstants.generateForgotPasswordOTP),
-          headers: {
-            HttpHeaders.contentTypeHeader: "application/json",
-            HttpHeaders.authorizationHeader:
-                "Bearer ${AppConstants.customer_token}"
-          },
-          body: json.encode({
-            "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": AppConstants.device_type,
-            "email": email,
-            "lang_code": langCode
-          }));
+      final response =
+          await http.post(Uri.parse(UrlConstants.generateForgotPasswordOTP),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "email": email,
+                "lang_code": langCode
+              }));
       var responseJson = _returnResponse(response);
       result = SignupModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }
     return result;
   }
 
-Future<VerifyForgotPasswordMobileOTP> verifyForgotPasswordOTP(context,otp, email, uuid, deviceNo, deviceName,
-    platform, model, version, langCode) async {
+  Future<SignupModel> generateMobileOTP(email, langCode) async {
+    late SignupModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.generateForgotPasswordOTP),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "email": email,
+                "lang_code": langCode
+              }));
+      var responseJson = _returnResponse(response);
+      result = SignupModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<VerifyForgotPasswordMobileOTP> verifyForgotPasswordOTP(otp, email,
+      uuid, deviceNo, deviceName, platform, model, version, langCode) async {
     late VerifyForgotPasswordMobileOTP result;
     try {
-      final response = await http.post(Uri.parse(UrlConstants.verifyForgotPasswordOTP),
-          headers: {
-            HttpHeaders.contentTypeHeader: "application/json",
-            HttpHeaders.authorizationHeader:
-                "Bearer ${AppConstants.customer_token}"
-          },
-          body: json.encode({
-            "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": AppConstants.device_type,
-            "email": email,
-            "otp": otp,
-            "device_uuid": uuid,
-            "device_no": deviceNo,
-            "device_name": deviceName,
-            "device_platform": platform,
-            "device_model": model,
-            "device_version": version,
-            "lang_code": langCode
-          }));
+      final response =
+          await http.post(Uri.parse(UrlConstants.verifyForgotPasswordOTP),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "email": email,
+                "otp": otp,
+                "device_uuid": uuid,
+                "device_no": deviceNo,
+                "device_name": deviceName,
+                "device_platform": platform,
+                "device_model": model,
+                "device_version": version,
+                "lang_code": langCode
+              }));
       var responseJson = _returnResponse(response);
       result = VerifyForgotPasswordMobileOTP.fromJson(responseJson);
     } on SocketException {
-      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
-    }
-    return result;
-  }
-Future<SignupModel> resendForgotPasswordOTP(context, phone, langCode) async {
-    late SignupModel result;
-    try {
-      final response = await http.post(Uri.parse(UrlConstants.resendForgotPasswordOTP),
-          headers: {
-            HttpHeaders.contentTypeHeader: "application/json",
-            HttpHeaders.authorizationHeader:
-                "Bearer ${AppConstants.customer_token}"
-          },
-          body: json.encode({
-            "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": AppConstants.device_type,
-            "phone": phone,
-            "lang_code": langCode
-          }));
-      var responseJson = _returnResponse(response);
-      result = SignupModel.fromJson(responseJson);
-    } on SocketException {
-      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }
     return result;
   }
 
-  Future<SuccessModel> resetPassword(
-       email, password, token, langCode) async {
+  Future<SignupModel> resendForgotPasswordOTP(phone, langCode) async {
+    late SignupModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.resendForgotPasswordOTP),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "phone": phone,
+                "lang_code": langCode
+              }));
+      var responseJson = _returnResponse(response);
+      result = SignupModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<SuccessModel> resetPassword(email, password, langCode) async {
     late SuccessModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.resetPassword),
@@ -366,20 +392,18 @@ Future<SignupModel> resendForgotPasswordOTP(context, phone, langCode) async {
             "entity_type_id": AppConstants.entity_type_id_customer,
             "device_type": AppConstants.device_type,
             "email": email,
-            "token": token,
             "password": password,
             "lang_code": langCode
           }));
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar( LocaleKeys.noInternet.tr);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }
     return result;
   }
 
-  Future<GetCustomerDataModel> getCustomerData(
-      token, userId, langCode) async {
+  Future<GetCustomerDataModel> getCustomerData(token, userId, langCode) async {
     late GetCustomerDataModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.getCustomerData),
@@ -396,15 +420,15 @@ Future<SignupModel> resendForgotPasswordOTP(context, phone, langCode) async {
             "lang_code": langCode
           }));
       var responseJson = _returnResponse(response);
+
       result = GetCustomerDataModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar( LocaleKeys.noInternet.tr);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }
     return result;
   }
 
-
- Future<SuccessModel> editProfile(
+  Future<SuccessModel> editProfile(
       token, userId, email, firstName, lastName, langCode) async {
     late SuccessModel result;
     try {
@@ -427,7 +451,7 @@ Future<SignupModel> resendForgotPasswordOTP(context, phone, langCode) async {
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar( LocaleKeys.noInternet.tr);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }
     return result;
   }
@@ -482,7 +506,7 @@ Future<SignupModel> resendForgotPasswordOTP(context, phone, langCode) async {
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar( LocaleKeys.noInternet.tr);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }
     return result;
   }
@@ -542,12 +566,12 @@ Future<SignupModel> resendForgotPasswordOTP(context, phone, langCode) async {
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar( LocaleKeys.noInternet.tr);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }
     return result;
   }
 
-  Future<SuccessModel>  addCustomerAddress(
+  Future<SuccessModel> addCustomerAddress(
       token,
       userId,
       customerId,
@@ -606,7 +630,7 @@ Future<SignupModel> resendForgotPasswordOTP(context, phone, langCode) async {
   }
 
   Future<SuccessModel> changePassword(
-      context, userId, newPassword, confirmPassword, langCode) async {
+      userId, newPassword, confirmPassword, langCode) async {
     late SuccessModel result;
     try {
       final response =
@@ -627,13 +651,13 @@ Future<SignupModel> resendForgotPasswordOTP(context, phone, langCode) async {
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }
     return result;
   }
 
   ///E-Commerce
-  Future<DealsOfTheDayModel> getDealsOfTheDay(context, langCode) async {
+  Future<DealsOfTheDayModel> getDealsOfTheDay(langCode) async {
     late DealsOfTheDayModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.dealOfTheDay),
@@ -650,7 +674,7 @@ Future<SignupModel> resendForgotPasswordOTP(context, phone, langCode) async {
       var responseJson = _returnResponse(response);
       result = DealsOfTheDayModel.fromJson(responseJson)!;
     } on SocketException {
-      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }
     return result;
   }
@@ -721,7 +745,7 @@ Future<SignupModel> resendForgotPasswordOTP(context, phone, langCode) async {
     return result;
   }
 
-  Future<SoldByTmweenModel> getSoldByTmween(context, langCode) async {
+  Future<SoldByTmweenModel> getSoldByTmween(langCode) async {
     late SoldByTmweenModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.soldByTmween),
@@ -738,13 +762,12 @@ Future<SignupModel> resendForgotPasswordOTP(context, phone, langCode) async {
       var responseJson = _returnResponse(response);
       result = SoldByTmweenModel.fromJson(responseJson)!;
     } on SocketException {
-      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }
     return result;
   }
 
-  Future<TopSelectionModel> getTopSelection(
-      context, isTopSelection, langCode) async {
+  Future<TopSelectionModel> getTopSelection(isTopSelection, langCode) async {
     late TopSelectionModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.topSelection),
@@ -762,12 +785,12 @@ Future<SignupModel> resendForgotPasswordOTP(context, phone, langCode) async {
       var responseJson = _returnResponse(response);
       result = TopSelectionModel.fromJson(responseJson)!;
     } on SocketException {
-      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }
     return result;
   }
 
-  Future<BannerModel> getBanner(context, isBestSeller, langCode) async {
+  Future<BannerModel> getBanner(isBestSeller, langCode) async {
     late BannerModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.banner),
@@ -785,7 +808,7 @@ Future<SignupModel> resendForgotPasswordOTP(context, phone, langCode) async {
       var responseJson = _returnResponse(response);
       result = BannerModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showSnackBar(context, LocaleKeys.noInternet.tr);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }
     return result;
   }
@@ -799,6 +822,9 @@ Future<SignupModel> resendForgotPasswordOTP(context, phone, langCode) async {
       case 400:
         throw BadRequestException(response.body.toString());
       case 401:
+        var responseJson = json.decode(response.body.toString());
+        print(responseJson);
+        return responseJson;
       case 403:
         throw UnauthorisedException(response.body.toString());
       case 422:

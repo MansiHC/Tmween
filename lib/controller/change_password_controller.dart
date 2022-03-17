@@ -8,9 +8,20 @@ class ChangePasswordController extends GetxController {
   TextEditingController retypePasswordController = TextEditingController();
   TextEditingController otpController = TextEditingController();
   String currentText = "";
+  bool visiblePassword = true, visibleConfirmPassword = true;
 
   void exitScreen() {
     Navigator.of(context).pop();
+  }
+
+  void visiblePasswordIcon() {
+    visiblePassword = !visiblePassword;
+    update();
+  }
+
+  void visibleConfirmPasswordIcon() {
+    visibleConfirmPassword = !visibleConfirmPassword;
+    update();
   }
 
   void save() {}

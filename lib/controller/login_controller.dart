@@ -180,22 +180,21 @@ class LoginController extends GetxController {
       loading = true;
       update();
       await api
-          .login(context, phoneEmailController.text, passwordController.text,
-              uuid, deviceNo, deviceName, platform, model, version, language)
+          .login(phoneEmailController.text, passwordController.text, uuid,
+              deviceNo, deviceName, platform, model, version, language)
           .then((value) {
-
         if (value.statusCode == 200) {
-
           MySharedPreferences.instance.addIntToSF(
               SharedPreferencesKeys.loginLogId, value.data!.loginLogId);
           print('dfdfn........${value.data!.token}');
+          Helper.isIndividual = true;
           MySharedPreferences.instance
               .addStringToSF(SharedPreferencesKeys.token, value.data!.token);
           MySharedPreferences.instance.addIntToSF(
               SharedPreferencesKeys.userId, value.data!.customerData!.id);
           navigateToDrawerScreen();
         } else {
-          Helper.showSnackBar(context, value.message!);
+          Helper.showGetSnackBar(value.message!);
         }
         loading = false;
         update();
@@ -215,15 +214,13 @@ class LoginController extends GetxController {
     loading = true;
     update();
     await api
-        .generateMobileOtp(context, phoneEmailController.text, uuid, deviceNo,
+        .generateMobileOtp(phoneEmailController.text, uuid, deviceNo,
             deviceName, platform, model, version, language)
         .then((value) {
-
       if (value.statusCode == 200) {
-
         navigateToOTPScreen(value.data!.otp.toString(), from, frm);
       } else {
-        Helper.showSnackBar(context, value.message!);
+        Helper.showGetSnackBar(value.message!);
       }
       loading = false;
       update();
@@ -236,6 +233,7 @@ class LoginController extends GetxController {
 
   doLoginWithPassword(language) {
     // FocusScope.of(context).unfocus();
+    Helper.isIndividual = false;
     navigateToDrawerScreen();
     //if (formKey.currentState!.validate()) {
     //doLogin(language);
@@ -257,18 +255,17 @@ class LoginController extends GetxController {
     // Get.delete<LoginController>();
     //Navigator.of(context).pop();
     var phoneEmail;
-if(from==AppConstants
-    .individual){
-  phoneEmail = phoneEmailController.text;
-}else if(from == AppConstants.store){
-  phoneEmail = storePhoneEmailController.text;
-}
+    if (from == AppConstants.individual) {
+      phoneEmail = phoneEmailController.text;
+    } else if (from == AppConstants.store) {
+      phoneEmail = storePhoneEmailController.text;
+    }
 
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
             builder: (context) => ForgotPasswordScreen(
-              mobile:phoneEmail,
+                  mobile: phoneEmail,
                   from: from,
                   frm: frm,
                 )));

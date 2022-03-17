@@ -7,6 +7,7 @@ import 'package:tmween/utils/extensions.dart';
 import '../../../../controller/login_controller.dart';
 import '../../../../lang/locale_keys.g.dart';
 import '../../../../utils/global.dart';
+import '../../../../utils/views/circular_progress_bar.dart';
 import '../../../../utils/views/custom_button.dart';
 import '../../../../utils/views/custom_text_form_field.dart';
 
@@ -128,16 +129,10 @@ class StoreOwnerLoginScreen extends StatelessWidget {
             onPressed: () {
               loginController.storeLogin();
             }),
-        Visibility(visible: loginController.storeLoading, child: 5.heightBox),
         Visibility(
-          visible: loginController.storeLoading,
-          child: Align(
-              alignment: Alignment.topCenter,
-              child: CircularProgressIndicator(
-                backgroundColor: AppColors.primaryColor,
-              )),
+          visible: loginController.loading,
+          child: CircularProgressBar(),
         ),
-        Visibility(visible: loginController.storeLoading, child: 5.heightBox),
         10.heightBox,
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,

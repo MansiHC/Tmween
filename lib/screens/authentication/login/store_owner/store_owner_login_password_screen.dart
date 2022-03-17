@@ -10,6 +10,8 @@ import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_button.dart';
 import 'package:tmween/utils/views/custom_text_form_field.dart';
 
+import '../../../../utils/views/circular_progress_bar.dart';
+
 class StoreOwnerLoginPasswordScreen extends StatelessWidget {
   var language;
   final loginController = Get.put(LoginController());
@@ -110,9 +112,9 @@ class StoreOwnerLoginPasswordScreen extends StatelessWidget {
                                                 }),
                                             hintText: LocaleKeys.yourPassword,
                                             onSubmitted: (term) {
-                                              loginController
+                                            /*  loginController
                                                   .doLoginWithPassword(
-                                                      language);
+                                                      language);*/
                                             },
                                             validator: (value) {
                                               if (value!.isEmpty) {
@@ -218,18 +220,12 @@ class StoreOwnerLoginPasswordScreen extends StatelessWidget {
         CustomButton(
             text: LocaleKeys.login,
             onPressed: () {
-              loginController.doLoginWithPassword(language);
+            //  loginController.doLoginWithPassword(language);
             }),
-        Visibility(visible: loginController.storeLoading, child: 5.heightBox),
         Visibility(
-          visible: loginController.storeLoading,
-          child: Align(
-              alignment: Alignment.topCenter,
-              child: CircularProgressIndicator(
-                backgroundColor: AppColors.primaryColor,
-              )),
+          visible: loginController.loading,
+          child: CircularProgressBar(),
         ),
-        Visibility(visible: loginController.storeLoading, child: 5.heightBox),
         10.heightBox,
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,

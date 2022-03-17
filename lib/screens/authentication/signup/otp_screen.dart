@@ -8,6 +8,8 @@ import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
+import '../../../utils/helper.dart';
+import '../../../utils/views/circular_progress_bar.dart';
 import '../../../utils/views/otp_text_field.dart';
 
 class OtpScreen extends StatefulWidget {
@@ -125,7 +127,7 @@ class OtpScreenState extends State<OtpScreen> {
           style: TextStyle(fontSize: 16, color: Colors.black),
         ),
         10.heightBox,
-        buildTimer(),
+        Container().buildTimer(30),
         40.heightBox,
         Padding(
             padding: EdgeInsets.symmetric(
@@ -154,7 +156,11 @@ class OtpScreenState extends State<OtpScreen> {
               textStyle: TextStyle(color: Colors.white),
               controller: otpController.otpController,
               onCompleted: (v) {
-                otpController.verifyOTP();
+                if (Helper.isIndividual == true) {
+                  otpController.verifyOTP();
+                } else {
+                  otpController.navigateToDrawerScreen();
+                }
               },
               onChanged: (value) {
                 debugPrint(value);
@@ -166,16 +172,10 @@ class OtpScreenState extends State<OtpScreen> {
               },
               appContext: otpController.context,
             )),
-        Visibility(visible: otpController.loading, child: 5.heightBox),
         Visibility(
           visible: otpController.loading,
-          child: Align(
-              alignment: Alignment.topCenter,
-              child: CircularProgressIndicator(
-                backgroundColor: AppColors.primaryColor,
-              )),
+          child: CircularProgressBar(),
         ),
-        Visibility(visible: otpController.loading, child: 5.heightBox),
         30.heightBox,
         Text(
           LocaleKeys.notReceivedOtp.tr,
@@ -184,50 +184,14 @@ class OtpScreenState extends State<OtpScreen> {
         5.heightBox,
         InkWell(
             onTap: () {
-              otpController.resendOTP(widget.phone);
+              if (Helper.isIndividual == true) {
+                otpController.resendOTP(widget.phone);
+              }
             },
             child: Text(
               LocaleKeys.resendCode.tr,
               style: TextStyle(fontSize: 16, color: AppColors.primaryColor),
             )),
-      ],
-    );
-  }
-
-  Row buildTimer() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Text(
-          LocaleKeys.otpExpire.tr,
-          style: TextStyle(fontSize: 16, color: Colors.black),
-        ),
-        /*TweenAnimationBuilder(
-          tween: Tween(begin: 60.0, end: 0.0),
-          duration: Duration(seconds: 60),
-          builder: (_, value, child) => Text(
-            "00:${value!.toInt()}",
-            style: TextStyle(color: AppColors.primaryColor,fontSize: 16),
-          ),
-        ),*/
-        TweenAnimationBuilder<Duration>(
-            duration: Duration(minutes: 1),
-            tween: Tween(begin: Duration(minutes: 1), end: Duration.zero),
-            onEnd: () {
-              print('Timer ended');
-            },
-            builder: (BuildContext context, Duration value, Widget? child) {
-              final minutes = value.inMinutes;
-              final seconds = value.inSeconds % 60;
-              return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Text('$minutes:$seconds',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 22)));
-            }),
       ],
     );
   }

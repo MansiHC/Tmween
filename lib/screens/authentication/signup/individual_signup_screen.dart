@@ -239,12 +239,25 @@ class IndividualSignUpScreen extends StatelessWidget {
                                                                 .notifyCheckBox();
                                                           }))),
                                               10.widthBox,
-                                              Text(
-                                                LocaleKeys.agreeTerms.tr,
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.grey),
-                                              )
+                                              RichText(
+                                                  textAlign: TextAlign.center,
+                                                  text: TextSpan(
+                                                      text: 'I agree to the ',
+                                                      style: TextStyle(
+                                                          fontSize: 15,
+                                                          color: Colors.grey),
+                                                      children: [
+                                                        TextSpan(
+                                                          text: 'terms of use ',
+                                                          style: TextStyle(
+                                                            fontSize: 15,
+                                                            color: AppColors
+                                                                .primaryColor,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                        )
+                                                      ]))
                                             ])),
                                     15.heightBox,
                                     CustomButton(
