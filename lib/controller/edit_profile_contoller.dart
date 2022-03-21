@@ -41,10 +41,11 @@ class EditProfileController extends GetxController {
   int userId = 0;
   int loginLogId = 0;
   String token = '';
-  ProfileData? profileData;
+  late String  otpValue;
 
   final api = Api();
   bool loading = false;
+  bool loadingImageName = false;
 
   @override
   void onInit() {
@@ -58,7 +59,6 @@ class EditProfileController extends GetxController {
             .getIntValuesSF(SharedPreferencesKeys.userId)
             .then((value) async {
           userId = value!;
-          getCustomerData(Get.locale!.languageCode);
           MySharedPreferences.instance
               .getIntValuesSF(SharedPreferencesKeys.loginLogId)
               .then((value) async {
@@ -69,22 +69,22 @@ class EditProfileController extends GetxController {
     super.onInit();
   }
 
-  Future<void> getCustomerData(language) async {
+  void navigateTo(Widget route) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => route));
+  }
+
+  generateOTP(emailMobile,language) async {
+    FocusScope.of(context).unfocus();
+    // navigateToDrawerScreen();
+
+    update();
     loading = true;
     update();
-    await api.getCustomerData(token, userId, language).then((value) {
+    await api
+        .generateMobileOtp(emailMobile,  language)
+        .then((value) {
       if (value.statusCode == 200) {
-        profileData = value.data![0];
-        nameController.text = profileData!.yourName!.split(' ')[0];
-        lastNameController.text = profileData!.yourName!.split(' ')[0];
-        mobileNumberController.text = profileData!.phone!;
-        mobileNumberController.text = profileData!.email!;
-      } else if (value.statusCode == 401) {
-        MySharedPreferences.instance
-            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-        Get.delete<EditProfileController>();
-        Get.delete<DrawerControllers>();
-        Get.offAll(DrawerScreen());
+        Helper.showGetSnackBar(value.message!);
       } else {
         Helper.showGetSnackBar(value.message!);
       }
@@ -97,12 +97,63 @@ class EditProfileController extends GetxController {
     });
   }
 
-  void navigateTo(Widget route) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => route));
+  resendOTP(emailMobile) async {
+    loading = true;
+    update();
+    await api.resendLoginOTP(emailMobile).then((value) {
+      if (value.statusCode == 200) {
+        otpValue = value.data!.otp.toString();
+      }
+      Helper.showGetSnackBar(value.message!);
+      loading = false;
+      update();
+    }).catchError((error) {
+      loading = false;
+      update();
+      print('error....$error');
+    });
   }
 
-  void updateNameImage() {
+  Future<void> updateNameImage(oldImage,language) async{
+    loadingImageName = true;
     FocusScope.of(context).unfocus();
+    update();
+    MySharedPreferences.instance
+        .getStringValuesSF(SharedPreferencesKeys.token)
+        .then((value) async {
+      token = value!;
+      print('dhsh.....$token');
+      MySharedPreferences.instance
+          .getIntValuesSF(SharedPreferencesKeys.userId)
+          .then((value) async {
+        userId = value!;
+
+          await api.updateProfileMobile(token, userId,
+              '${nameController.text} ${lastNameController.text}',
+              oldImage,
+              finalImage, language).then((value) {
+            if (value.statusCode == 200) {
+              Helper.showGetSnackBar(value.message!);
+              exitScreen();
+            } else if (value.statusCode == 401) {
+              MySharedPreferences.instance
+                  .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+              Get.delete<EditProfileController>();
+              Get.delete<DrawerControllers>();
+              Get.offAll(DrawerScreen());
+            } else {
+              Helper.showGetSnackBar(value.message!);
+            }
+            loadingImageName = false;
+            update();
+          }).catchError((error) {
+            loadingImageName = false;
+            update();
+            print('error....$error');
+          });
+    });
+    });
+
   }
 
   void getProfileDetails() {
@@ -117,17 +168,42 @@ class EditProfileController extends GetxController {
     update();
   }
 
-  void updateMobileNumber() {
+  Future<void> updateMobileNumber(mobile,langCode) async {
+    loading = true;
+    update();
+    await api.updateMobile(token,mobile,userId,langCode).then((value) {
+      if (value.statusCode == 200) {
+        Helper.showGetSnackBar(value.message!);
+      }
+      Helper.showGetSnackBar(value.message!);
+      loading = false;
+      update();
+    }).catchError((error) {
+      loading = false;
+      update();
+      print('error....$error');
+    });
     // pop();
   }
 
-  void updateEmail() {
+  Future<void> updateEmail(email,langCode) async {
+    loading = true;
+    update();
+    await api.updateEmail(token,email,userId,langCode).then((value) {
+      if (value.statusCode == 200) {
+        Helper.showGetSnackBar(value.message!);
+      }
+      Helper.showGetSnackBar(value.message!);
+      loading = false;
+      update();
+    }).catchError((error) {
+      loading = false;
+      update();
+      print('error....$error');
+    });
     // pop();
   }
 
-  void resendEmailOTP() {}
-
-  void resendMobileNumberOTP() {}
 
   void enableEmailAddress() {
     enableEmail = false;
@@ -136,7 +212,7 @@ class EditProfileController extends GetxController {
 
   void exitScreen() {
     Get.delete<EditProfileController>();
-    Navigator.of(context).pop();
+    Navigator.of(context).pop(true);
   }
 
   void pop() {

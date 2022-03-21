@@ -32,7 +32,7 @@ class Helper {
 
   }*/
 
-  static bool isIndividual = true;
+  static bool isIndividual = false;
 
   static void showGetSnackBar(String message) {
     /*var snackBar = SnackBar(

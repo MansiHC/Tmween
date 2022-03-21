@@ -125,7 +125,7 @@ class AddAddressController extends GetxController {
         name: LocaleKeys.officeAddress.tr,
       ),
     ];
-    if (Helper.isIndividual) {
+  //  if (Helper.isIndividual) {
       this.address = address;
       MySharedPreferences.instance
           .getStringValuesSF(SharedPreferencesKeys.token)
@@ -170,7 +170,7 @@ class AddAddressController extends GetxController {
             ? address.deliveryInstruction!
             : '';
       }
-    }
+   // }
     super.onInit();
   }
 
@@ -236,7 +236,7 @@ class AddAddressController extends GetxController {
   get defaultValue => isDefault ? 1 : 0;
 
   Future<void> addAddress(language) async {
-    if (Helper.isIndividual) {
+   // if (Helper.isIndividual) {
       if (countryValue == null) {
         Helper.showGetSnackBar('Please Select Country');
       } else if (formKey.currentState!.validate()) {
@@ -253,7 +253,6 @@ class AddAddressController extends GetxController {
               .addCustomerAddress(
                   token,
                   userId,
-                  '36',
                   fullNameController.text,
                   houseNoController.text,
                   areaStreetController.text,
@@ -288,11 +287,11 @@ class AddAddressController extends GetxController {
           });
         }
       }
-    }
+   // }
   }
 
   Future<void> editAddress(id, language) async {
-    if (Helper.isIndividual) {
+   // if (Helper.isIndividual) {
       if (countryValue == null) {
         Helper.showGetSnackBar('Please Select Country');
       } else if (formKey.currentState!.validate()) {
@@ -310,7 +309,6 @@ class AddAddressController extends GetxController {
                   token,
                   id,
                   userId,
-                  '36',
                   fullNameController.text,
                   houseNoController.text,
                   areaStreetController.text,
@@ -345,7 +343,7 @@ class AddAddressController extends GetxController {
           });
         }
       }
-    }
+   // }
   }
 
   void updateCountry(Country? value, String language) {

@@ -64,7 +64,7 @@ class AddressController extends GetxController {
     loading = true;
     update();
     await api
-        .getCustomerAddressList(token, userId, '36', language)
+        .getCustomerAddressList(token, userId, language)
         .then((value) {
       if (value.statusCode == 200) {
         addressList = value.data!;
@@ -91,7 +91,7 @@ class AddressController extends GetxController {
       loading = true;
       update();
       await api
-          .deleteCustomerAddress(token, id, userId, '36', language)
+          .deleteCustomerAddress(token, id, userId, language)
           .then((value) {
         if (value.statusCode == 200) {
           getAddressList(Get.locale!.languageCode);

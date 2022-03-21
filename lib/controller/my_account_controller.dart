@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/model/get_customer_data_model.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
+import 'package:tmween/screens/drawer/profile/update_profile_screen.dart';
 
 import '../service/api.dart';
 import '../utils/global.dart';
@@ -25,7 +26,7 @@ class MyAccountController extends GetxController {
 
   @override
   void onInit() {
-    if (Helper.isIndividual)
+  //  if (Helper.isIndividual)
       MySharedPreferences.instance
           .getStringValuesSF(SharedPreferencesKeys.token)
           .then((value) async {
@@ -35,7 +36,7 @@ class MyAccountController extends GetxController {
             .getIntValuesSF(SharedPreferencesKeys.userId)
             .then((value) async {
           userId = value!;
-          getCustomerData(Get.locale!.languageCode);
+         getCustomerData(Get.locale!.languageCode);
           MySharedPreferences.instance
               .getIntValuesSF(SharedPreferencesKeys.loginLogId)
               .then((value) async {
@@ -73,6 +74,7 @@ class MyAccountController extends GetxController {
   void doLogout(language) async {
     loading = true;
     update();
+    print('.......$userId....$loginLogId');
     await api.logout(token, userId, loginLogId, language).then((value) {
       loading = false;
       update();
@@ -80,7 +82,7 @@ class MyAccountController extends GetxController {
       if (value.statusCode == 401 && value.statusCode == 200) {
         navigateToDashBoardScreen();
       } else {
-        Helper.showGetSnackBar(value.message!);
+      //  Helper.showGetSnackBar(value.message!);
       }
       navigateToDashBoardScreen();
     }).catchError((error) {
@@ -114,5 +116,13 @@ class MyAccountController extends GetxController {
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
+  }
+
+  void navigateToUpdateProfileScreen() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateProfileScreen(profileData:profileData))).then((value) {
+      if(value){
+        getCustomerData(Get.locale!.languageCode);
+      }
+    });
   }
 }

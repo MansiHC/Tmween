@@ -40,9 +40,10 @@ abstract class AppConstants {
 }
 
 abstract class UrlConstants {
-  static const String baseUrl2 =
+  static const String baseUrl =
       'http://192.168.32.160/tmween/panel/public/api/v1';
-  static const String baseUrl = 'http://admin.tmween.com/api/v1';
+
+  static const String baseUrl2 = 'http://admin.tmween.com/api/v1';
 
   //customer
   static const String request = '$baseUrl/customer/request';
@@ -65,7 +66,10 @@ abstract class UrlConstants {
       '$baseUrl/customer/resend-forgot-password-mobile-otp';
   static const String resetPassword = '$baseUrl/customer/reset-forgot-password';
   static const String editProfile = '$baseUrl/customer/edit-profile';
-  static const String getCustomerData = '$baseUrl/customer/get-customer-data';
+  static const String getCustomerData = '$baseUrl/customer/get-customer-data-mobile';
+  static const String updateEmail = '$baseUrl/customer/update-email';
+  static const String updateMobile = '$baseUrl/customer/update-mobile';
+  static const String updateProfileMobile = '$baseUrl/customer/update-profile-mobile';
   static const String getCustomerAddressList =
       '$baseUrl/customer/get-customer-address-list-csc';
   static const String deleteCustomerAddress =
@@ -77,6 +81,7 @@ abstract class UrlConstants {
 
   //e-commerce
   static const String getMasterData = '$baseUrl/get-master-data';
+  static const String getHomePageMobileData = '$baseUrl/get-home-page-mobile-data';
   static const String dealOfTheDay = '$baseUrl/get-dailydeal-list';
   static const String soldByTmween = '$baseUrl/get-soldby-system-product-list';
   static const String topSelection = '$baseUrl/get-top-selected-product';

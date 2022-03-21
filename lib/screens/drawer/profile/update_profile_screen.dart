@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +14,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tmween/controller/edit_profile_contoller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
+import 'package:tmween/model/get_customer_data_model.dart';
 import 'package:tmween/screens/drawer/profile/change_password_screen.dart';
 import 'package:tmween/screens/drawer/profile/deactivate_account_screen.dart';
 import 'package:tmween/utils/extensions.dart';
@@ -24,15 +26,38 @@ import '../../../utils/helper.dart';
 import '../../../utils/views/circular_progress_bar.dart';
 import '../../../utils/views/custom_text_form_field.dart';
 
-class UpdateProfileScreen extends StatelessWidget {
-  late String language;
+class UpdateProfileScreen extends StatefulWidget {
+  final ProfileData? profileData;
 
+  UpdateProfileScreen({Key? key, this.profileData}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return UpdateProfileScreenState();
+  }
+
+
+}
+class UpdateProfileScreenState extends State<UpdateProfileScreen> {
+  late String language;
   final editAccountController = Get.put(EditProfileController());
 
+  @override
+  void initState() {
+    editAccountController.nameController.text = widget.profileData!.yourName!.split(' ')[0];
+    editAccountController.lastNameController.text = widget.profileData!.yourName!.split(' ')[1];
+    editAccountController.mobileNumberController.text = widget.profileData!.phone!;
+    if(widget.profileData!.email!=null) {
+      editAccountController.emailController.text = widget.profileData!.email!;
+    }super.initState();
+  }
   Future<bool> _onWillPop(EditProfileController editAccountController) async {
     editAccountController.exitScreen();
     return true;
   }
+
+
+
   @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
@@ -171,12 +196,34 @@ class UpdateProfileScreen extends StatelessWidget {
                 child: Stack(
                   children: [
                     editAccountController.finalImage == null
-                        ? editAccountController
-                                .profileData!.largeImageUrl!.isNotEmpty
+                        ? widget.profileData!.largeImageUrl!.isNotEmpty
                             ? CircleAvatar(
                                 radius: 40,
-                                backgroundImage: NetworkImage(
-                                    'http://i.imgur.com/QSev0hg.jpg'))
+                                /*backgroundImage: NetworkImage(
+                                    widget.profileData!.image!)*/
+                      foregroundColor: Colors.transparent,
+                      backgroundColor: Colors.grey,
+                      child: CachedNetworkImage(
+                        imageUrl: widget
+                            .profileData!.largeImageUrl!,
+                        placeholder: (context, url) =>
+                            CupertinoActivityIndicator(),
+                        imageBuilder: (context, image) =>
+                            CircleAvatar(
+                              backgroundImage: image,
+                              radius: 40,
+                            ),
+                        errorWidget: (context, url, error) =>
+                            CircleAvatar(
+                              backgroundColor: Colors.grey,
+                              child: SvgPicture.asset(
+                                ImageConstanst.user,
+                                height: 80,
+                                width: 80,
+                              ),
+                              radius: 40,
+                            ),
+                      ))
                             : SvgPicture.asset(
                                 ImageConstanst.user,
                                 height: 80,
@@ -265,7 +312,7 @@ class UpdateProfileScreen extends StatelessWidget {
                 hintText: LocaleKeys.lastName,
                 textInputAction: TextInputAction.done,
                 onSubmitted: (term) {
-                  editAccountController.updateNameImage();
+                  FocusScope.of(editAccountController.context).unfocus();
                 },
                 prefixIcon: SvgPicture.asset(
                   ImageConstanst.userIcon,
@@ -278,8 +325,12 @@ class UpdateProfileScreen extends StatelessWidget {
                 text: LocaleKeys.update,
                 fontSize: 14,
                 onPressed: () {
-                  editAccountController.updateNameImage();
+                  editAccountController.updateNameImage(widget.profileData!.image,language);
                 }),
+            Visibility(
+              visible: editAccountController.loadingImageName,
+              child:CircularProgressBar(),
+            ),
             20.heightBox,
             Text(
               LocaleKeys.mobileNumber.tr,
@@ -290,7 +341,6 @@ class UpdateProfileScreen extends StatelessWidget {
             ),
             10.heightBox,
             CustomBoxTextFormField(
-                readOnly: true,
                 controller: editAccountController.mobileNumberController,
                 keyboardType: TextInputType.phone,
                 hintText: LocaleKeys.mobileNumber,
@@ -301,9 +351,10 @@ class UpdateProfileScreen extends StatelessWidget {
                 ),
                 suffixIcon: InkWell(
                     onTap: () {
+                      editAccountController.generateOTP(widget.profileData!.phone,language);
                       _showOtpVerificationDialog(
                           editAccountController,
-                          '+249 9822114455',
+                          widget.profileData!.phone!,
                           language == 'ar' ? 340 : 320,
                           false);
                     },
@@ -328,7 +379,6 @@ class UpdateProfileScreen extends StatelessWidget {
             ),
             10.heightBox,
             CustomBoxTextFormField(
-                readOnly: true,
                 controller: editAccountController.emailController,
                 keyboardType: TextInputType.emailAddress,
                 hintText: LocaleKeys.email,
@@ -339,9 +389,10 @@ class UpdateProfileScreen extends StatelessWidget {
                 textInputAction: TextInputAction.done,
                 suffixIcon: InkWell(
                     onTap: () {
+                      editAccountController.generateOTP(widget.profileData!.email,language);
                       _showOtpVerificationDialog(
                           editAccountController,
-                          'sali.akka@tmween.com',
+                          widget.profileData!.email!,
                           language == 'ar' ? 340 : 320,
                           true);
                     },
@@ -539,9 +590,9 @@ class UpdateProfileScreen extends StatelessWidget {
                         : editProfileController.mobileOTPController,
                     onCompleted: (v) {
                       if (isEmail) {
-                        editProfileController.updateEmail();
+                        editProfileController.updateEmail(text,language);
                       } else {
-                        editProfileController.updateMobileNumber();
+                        editProfileController.updateMobileNumber(text,language);
                       }
                     },
                     onChanged: (value) {
@@ -562,11 +613,8 @@ class UpdateProfileScreen extends StatelessWidget {
                   5.heightBox,
                   InkWell(
                       onTap: () {
-                        if (isEmail) {
-                          editProfileController.resendEmailOTP();
-                        } else {
-                          editProfileController.resendMobileNumberOTP();
-                        }
+                        editAccountController.resendOTP(
+                            text);
                       },
                       child: Text(
                         LocaleKeys.resendCode.tr,

@@ -7,6 +7,7 @@ import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/banner_model.dart';
 import 'package:tmween/model/city_model.dart';
 import 'package:tmween/model/country_model.dart';
+import 'package:tmween/model/dashboard_model.dart';
 import 'package:tmween/model/deals_of_the_day_model.dart';
 import 'package:tmween/model/get_customer_address_list_model.dart';
 import 'package:tmween/model/get_customer_data_model.dart';
@@ -121,8 +122,7 @@ class Api {
     return result;
   }
 
-  Future<SignupModel> generateMobileOtp(email, uuid, deviceNo, deviceName,
-      platform, model, version, langCode) async {
+  Future<SignupModel> generateMobileOtp(email,  langCode) async {
     late SignupModel result;
     try {
       final response =
@@ -136,12 +136,12 @@ class Api {
                 "entity_type_id": AppConstants.entity_type_id_customer,
                 "device_type": AppConstants.device_type,
                 "email": email,
-                "device_uuid": uuid,
+                /*"device_uuid": uuid,
                 "device_no": deviceNo,
                 "device_name": deviceName,
                 "device_platform": platform,
                 "device_model": model,
-                "device_version": version,
+                "device_version": version,*/
                 "lang_code": langCode
               }));
       var responseJson = _returnResponse(response);
@@ -428,6 +428,134 @@ class Api {
     return result;
   }
 
+  Future<SuccessModel> updateEmail(token, userId,email, langCode) async {
+    late SuccessModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.updateEmail),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            'username': token,
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "user_id": userId,
+            "email": email,
+            "lang_code": langCode
+          }));
+      var responseJson = _returnResponse(response);
+
+      result = SuccessModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+ Future<SuccessModel> updateMobile(token, userId,phone, langCode) async {
+    late SuccessModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.updateMobile),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            'username': token,
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "user_id": userId,
+            "phone": phone,
+            "lang_code": langCode
+          }));
+      var responseJson = _returnResponse(response);
+
+      result = SuccessModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<GetCustomerDataModel> updateProfileMobileImage(
+      token, userId, name, oldImage, image, langCode) async {
+    late GetCustomerDataModel result;
+    try {
+      Map<String, String> headers = {
+        HttpHeaders.contentTypeHeader: "application/json",
+        'username': token,
+        HttpHeaders.authorizationHeader: "Bearer ${AppConstants.customer_token}"
+      };
+      http.MultipartRequest request = http.MultipartRequest(
+          'POST', Uri.parse(UrlConstants.updateProfileMobile));
+      request.headers.addAll(headers);
+      request.fields['entity_type_id'] = AppConstants.entity_type_id_customer;
+      request.fields['device_type'] = AppConstants.device_type;
+      request.fields['user_id'] = userId.toString();
+      request.fields['old_image'] = oldImage;
+      request.fields['your_name'] = name;
+      request.fields['lang_code'] = langCode;
+
+      // request.files.add(await http.MultipartFile.fromPath('image', image.path));
+      request.files.add(http.MultipartFile('image',
+          File(image).readAsBytes().asStream(), File(image).lengthSync(),
+          filename: image.split("/").last));
+      /*request.files.add(
+        http.MultipartFile.fromBytes(
+            'image',
+            image.readAsBytesSync(),
+            filename: image.path.split("/").last
+        )
+    );*/
+      http.StreamedResponse response = await request.send();
+      var responseBytes = await response.stream.toBytes();
+      var responseString = utf8.decode(responseBytes);
+
+      print(responseString);
+      var responseJson = json.decode(responseString);
+      result = GetCustomerDataModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<SuccessModel> updateProfileMobile(
+      token, userId, name, oldImage, image, langCode) async {
+    late SuccessModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.updateProfileMobile),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                'username': token,
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "user_id": userId,
+                "old_image": oldImage.split("/").last,
+                "image": image != null
+                    ? 'data:image/jpeg;base64,${base64Encode(image.readAsBytesSync())}'
+                    : '',
+                "your_name": name,
+                "lang_code": langCode
+              }));
+
+      var responseJson = _returnResponse(response);
+      result = SuccessModel.fromJson(responseJson);
+
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
   Future<SuccessModel> editProfile(
       token, userId, email, firstName, lastName, langCode) async {
     late SuccessModel result;
@@ -457,7 +585,7 @@ class Api {
   }
 
   Future<GetCustomerAddressListModel> getCustomerAddressList(
-      token, userId, customerId, langCode) async {
+      token, userId, langCode) async {
     late GetCustomerAddressListModel result;
     try {
       final response =
@@ -472,7 +600,7 @@ class Api {
                 "entity_type_id": AppConstants.entity_type_id_customer,
                 "device_type": AppConstants.device_type,
                 "user_id": userId,
-                "customer_id": customerId,
+                "customer_id": userId,
                 "lang_code": langCode
               }));
       var responseJson = _returnResponse(response);
@@ -484,7 +612,7 @@ class Api {
   }
 
   Future<SuccessModel> deleteCustomerAddress(
-      token, id, userId, customerId, langCode) async {
+      token, id, userId, langCode) async {
     late SuccessModel result;
     try {
       final response =
@@ -499,7 +627,7 @@ class Api {
                 "entity_type_id": AppConstants.entity_type_id_customer,
                 "device_type": AppConstants.device_type,
                 "user_id": userId,
-                "customer_id": customerId,
+                "customer_id": userId,
                 "id": id,
                 "lang_code": langCode
               }));
@@ -515,7 +643,6 @@ class Api {
       token,
       id,
       userId,
-      customerId,
       fullName,
       address1,
       address2,
@@ -544,7 +671,7 @@ class Api {
                 "entity_type_id": AppConstants.entity_type_id_customer,
                 "device_type": AppConstants.device_type,
                 "user_id": userId,
-                "customer_id": customerId,
+                "customer_id": userId,
                 "fullname": fullName,
                 "address1": address1,
                 "address2": address2,
@@ -574,7 +701,6 @@ class Api {
   Future<SuccessModel> addCustomerAddress(
       token,
       userId,
-      customerId,
       fullName,
       address1,
       address2,
@@ -602,7 +728,7 @@ class Api {
                 "entity_type_id": AppConstants.entity_type_id_customer,
                 "device_type": AppConstants.device_type,
                 "user_id": userId,
-                "customer_id": customerId,
+                "customer_id": userId,
                 "fullname": fullName,
                 "address1": address1,
                 "address2": address2,
@@ -657,6 +783,31 @@ class Api {
   }
 
   ///E-Commerce
+  Future<DashboardModel> getHomePageMobileData(langCode) async {
+    late DashboardModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.getHomePageMobileData),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "lang_code": langCode,
+                "pagination": "1",
+                "page": "HOME"
+              }));
+      var responseJson = _returnResponse(response);
+      result = DashboardModel.fromJson(responseJson)!;
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
   Future<DealsOfTheDayModel> getDealsOfTheDay(langCode) async {
     late DealsOfTheDayModel result;
     try {

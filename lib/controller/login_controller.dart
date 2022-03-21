@@ -214,8 +214,7 @@ class LoginController extends GetxController {
     loading = true;
     update();
     await api
-        .generateMobileOtp(phoneEmailController.text, uuid, deviceNo,
-            deviceName, platform, model, version, language)
+        .generateMobileOtp(phoneEmailController.text,  language)
         .then((value) {
       if (value.statusCode == 200) {
         navigateToOTPScreen(value.data!.otp.toString(), from, frm);

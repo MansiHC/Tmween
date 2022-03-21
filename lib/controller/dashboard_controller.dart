@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/model/best_seller_model.dart';
 import 'package:tmween/model/deals_of_the_day_model.dart';
@@ -9,6 +10,12 @@ import 'package:tmween/model/sold_by_tmween_model.dart';
 import 'package:tmween/model/top_selection_model.dart';
 
 import '../model/select_category_model.dart';
+import '../screens/drawer/drawer_screen.dart';
+import '../service/api.dart';
+import '../utils/global.dart';
+import '../utils/helper.dart';
+import '../utils/my_shared_preferences.dart';
+import 'drawer_controller.dart';
 
 class DashboardController extends GetxController {
   late BuildContext context;
@@ -258,6 +265,34 @@ class DashboardController extends GetxController {
         beforePrice: '7000',
         image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
   ];
+
+  final api = Api();
+  bool loading = false;
+
+  @override
+  void onInit() {
+  // getDashboardData(Get.locale!.languageCode);
+    super.onInit();
+  }
+
+  Future<void> getDashboardData(language) async {
+    loading = true;
+    update();
+    await api.getHomePageMobileData( language).then((value) {
+      if (value.statusCode == 200) {
+
+      }  else {
+        Helper.showGetSnackBar(value.message!);
+      }
+      loading = false;
+      update();
+    }).catchError((error) {
+      loading = false;
+      update();
+      print('error....$error');
+    });
+  }
+
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
