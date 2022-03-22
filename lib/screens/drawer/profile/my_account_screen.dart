@@ -79,7 +79,7 @@ class MyAccountScreen extends StatelessWidget {
                               Container(
                                 width: 80,
                                 child: myAccountController
-                                        .profileData!.image!.isNotEmpty
+                                        .profileData!.largeImageUrl!.isNotEmpty
                                     ? CircleAvatar(
                                         radius: 40,
                                         /*backgroundImage: NetworkImage(
@@ -218,7 +218,7 @@ class MyAccountScreen extends StatelessWidget {
                           InkWell(
                               onTap: () {
                                 myAccountController
-                                    .navigateTo(YourAddressesScreen());
+                                    .navigateToAddressScreen();
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -271,7 +271,7 @@ class MyAccountScreen extends StatelessWidget {
         CustomListTile(
             title: LocaleKeys.yourAddresses,
             onTap: () {
-              myAccountController.navigateTo(YourAddressesScreen());
+              myAccountController.navigateToAddressScreen();
             },
             leadingIcon: ImageConstanst.yourAddressesIcon),
         Padding(

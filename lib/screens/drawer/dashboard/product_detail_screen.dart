@@ -15,14 +15,22 @@ import 'package:tmween/utils/views/custom_button.dart';
 import '../../../controller/full_image_controller.dart';
 import '../../../controller/product_detail_controller.dart';
 import '../../../lang/locale_keys.g.dart';
+import '../../../model/get_customer_address_list_model.dart';
+import '../../../utils/views/circular_progress_bar.dart';
 import '../../../utils/views/expandable_text.dart';
 import '../address_container.dart';
 import '../cart_screen.dart';
 import '../profile/add_address_screen.dart';
+import '../profile/your_addresses_screen.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   late String language;
   final productDetailController = Get.put(ProductDetailController());
+
+  Future<bool> _onWillPop(ProductDetailController productDetailController) async {
+    productDetailController.exitScreen();
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +39,9 @@ class ProductDetailScreen extends StatelessWidget {
         init: ProductDetailController(),
         builder: (contet) {
           productDetailController.context = context;
-          return Scaffold(
+          return WillPopScope(
+              onWillPop: () => _onWillPop(productDetailController),
+          child:Scaffold(
               body: Container(
                   color: Colors.white,
                   child: Column(
@@ -45,6 +55,7 @@ class ProductDetailScreen extends StatelessWidget {
                           child: topView(productDetailController)),
                       InkWell(
                           onTap: () {
+                            productDetailController.getAddressList(language);
                             showModalBottomSheet<void>(
                                 context: context,
                                 builder: (BuildContext context) {
@@ -81,7 +92,7 @@ class ProductDetailScreen extends StatelessWidget {
                               ))),
                       _bottomView(productDetailController),
                     ],
-                  )));
+                  ))));
         });
   }
 
@@ -1818,60 +1829,111 @@ class ProductDetailScreen extends StatelessWidget {
   }
 
   _bottomSheetView(ProductDetailController productDetailController) {
-    return Container(
-        height: 310,
-        padding: EdgeInsets.all(15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            10.heightBox,
-            Text(
-              LocaleKeys.chooseLocation.tr,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold),
-            ),
-            10.heightBox,
-            Text(
-              LocaleKeys.chooseLocationText.tr,
-              style: TextStyle(color: Color(0xFF666666), fontSize: 16),
-            ),
-            20.heightBox,
-            Container(
-                height: 160,
-                child: ListView.builder(
-                    itemCount: productDetailController.addresses.length + 1,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return (index != productDetailController.addresses.length)
-                          ? AddressContainer(
-                              address: productDetailController.addresses[index])
-                          : InkWell(
-                              onTap: () {
-                                productDetailController
-                                    .navigateTo(AddAddressScreen());
-                              },
-                              child: Container(
-                                  width: 150,
-                                  padding: EdgeInsets.all(10),
-                                  margin: EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border.all(
-                                          color: AppColors.lightBlue),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(2))),
-                                  child: Center(
-                                      child: Text(LocaleKeys.addAddressText.tr,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: AppColors.primaryColor,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold)))));
-                    }))
-          ],
-        ));
+    return GetBuilder<ProductDetailController>(
+        init: ProductDetailController(),
+        builder: (contet) {
+          return Container(
+              height: 310,
+              padding: EdgeInsets.all(15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  10.heightBox,
+                  Text(
+                    LocaleKeys.chooseLocation.tr,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  10.heightBox,
+                  Text(
+                    LocaleKeys.chooseLocationText.tr,
+                    style: TextStyle(color: Color(0xFF666666), fontSize: 16),
+                  ),
+                  20.heightBox,
+                  Visibility(
+                    visible: productDetailController.loading,
+                    child: CircularProgressBar(),
+                  ),
+                  Visibility(
+                    visible: !productDetailController.loading &&
+                        productDetailController.addressList.length == 0,
+                    child: InkWell(
+                        onTap: () {
+                          productDetailController.navigateTo(YourAddressesScreen());
+                        },
+                        child: Container(
+                            width: 150,
+                            padding: EdgeInsets.all(10),
+                            margin: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(color: AppColors.lightBlue),
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(2))),
+                            child: Center(
+                                child: Text(LocaleKeys.addAddressText.tr,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: AppColors.primaryColor,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold))))),
+                  ),
+          Visibility(
+          visible: !productDetailController.loading &&
+          productDetailController.addressList.length > 0,
+          child:Container(
+                      height: 170,
+                      child: ListView.builder(
+                          itemCount:
+                              productDetailController.addresses.length + 1,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            return (index !=
+                                    productDetailController.addressList.length)
+                                ? InkWell(
+                                onTap:(){
+                                  Address address = productDetailController.addressList[index];
+                                  productDetailController.editAddress(address.id,address.fullname,
+                                      address.address1,address.address2,address.landmark,address.countryCode,
+                                      address.stateCode,address.cityCode,address.zip,address.mobile1,address.addressType,
+                                      address.deliveryInstruction,
+                                      '1',
+                                      language);
+                                },
+                                child:AddressContainer(
+                                    address: productDetailController
+                                        .addressList[index]))
+                                : InkWell(
+                                    onTap: () {
+                                      productDetailController
+                                          .navigateTo(YourAddressesScreen());
+                                    },
+                                    child: Container(
+                                        width: 150,
+                                        padding: EdgeInsets.all(10),
+                                        margin: EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            border: Border.all(
+                                                color: AppColors.lightBlue),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(2))),
+                                        child: Center(
+                                            child: Text(
+                                                LocaleKeys.addAddressText.tr,
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    color:
+                                                        AppColors.primaryColor,
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.bold)))));
+                          })))
+                ],
+              ));
+        });
   }
 
   void _showDialog(ProductDetailController productDetailController) async {

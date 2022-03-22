@@ -157,8 +157,6 @@ class AddAddressController extends GetxController {
             break;
           }
         }
-        print(
-            'sdhddhs........${address.addressType}.....${address.defaultAddress}');
         fullNameController.text = address.fullname!;
         mobileNumberController.text = address.mobile1!;
         pincodeController.text = address.zip!;
@@ -292,6 +290,7 @@ class AddAddressController extends GetxController {
 
   Future<void> editAddress(id, language) async {
    // if (Helper.isIndividual) {
+
       if (countryValue == null) {
         Helper.showGetSnackBar('Please Select Country');
       } else if (formKey.currentState!.validate()) {

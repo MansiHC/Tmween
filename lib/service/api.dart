@@ -428,7 +428,84 @@ class Api {
     return result;
   }
 
-  Future<SuccessModel> updateEmail(token, userId,email, langCode) async {
+  Future<SignupModel> generateSendOtp(token, userId, langCode) async {
+    late SignupModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.generateSendOtp),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            'username': token,
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "user_id": userId,
+            "lang_code": langCode
+          }));
+      var responseJson = _returnResponse(response);
+
+      result = SignupModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+Future<SignupModel> resendMobileOtp(token, userId, langCode) async {
+    late SignupModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.resendMobileOtp),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            'username': token,
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "user_id": userId,
+            "lang_code": langCode
+          }));
+      var responseJson = _returnResponse(response);
+
+      result = SignupModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+Future<SuccessModel> verifyMobileChangePassword(token, userId, otp,password,langCode) async {
+    late SuccessModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.verifyMobileChangePassword),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            'username': token,
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "user_id": userId,
+          "otp":otp,
+          "new_password": password,
+          "confirm_password": password,
+            "lang_code": langCode
+          }));
+      var responseJson = _returnResponse(response);
+
+      result = SuccessModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<SuccessModel> updateEmail(token, userId,email,otp, langCode) async {
     late SuccessModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.updateEmail),
@@ -443,6 +520,7 @@ class Api {
             "device_type": AppConstants.device_type,
             "user_id": userId,
             "email": email,
+            "otp": otp,
             "lang_code": langCode
           }));
       var responseJson = _returnResponse(response);
@@ -454,7 +532,7 @@ class Api {
     return result;
   }
 
- Future<SuccessModel> updateMobile(token, userId,phone, langCode) async {
+ Future<SuccessModel> updateMobile(token, userId,phone,otp, langCode) async {
     late SuccessModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.updateMobile),
@@ -469,6 +547,7 @@ class Api {
             "device_type": AppConstants.device_type,
             "user_id": userId,
             "phone": phone,
+            "otp": otp,
             "lang_code": langCode
           }));
       var responseJson = _returnResponse(response);
@@ -671,6 +750,7 @@ class Api {
                 "entity_type_id": AppConstants.entity_type_id_customer,
                 "device_type": AppConstants.device_type,
                 "user_id": userId,
+                "id": id,
                 "customer_id": userId,
                 "fullname": fullName,
                 "address1": address1,
@@ -683,7 +763,6 @@ class Api {
                 "zip": zipCode,
                 "mobile1": mobile,
                 "status": "1",
-                "address_type": addressType,
                 "delivery_instruction": deliveryInstruction,
                 "default_address": isDefault,
                 "is_default_shipping": 0,
@@ -725,6 +804,7 @@ class Api {
                     "Bearer ${AppConstants.customer_token}"
               },
               body: json.encode({
+
                 "entity_type_id": AppConstants.entity_type_id_customer,
                 "device_type": AppConstants.device_type,
                 "user_id": userId,
@@ -740,7 +820,6 @@ class Api {
                 "zip": zipCode,
                 "mobile1": mobile,
                 "status": "1",
-                "address_type": addressType,
                 "delivery_instruction": deliveryInstruction,
                 "default_address": isDefault,
                 "is_default_shipping": 0,

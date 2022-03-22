@@ -3,28 +3,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
-import 'package:tmween/model/address_model.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
+import '../../model/get_customer_address_list_model.dart';
+
 class AddressContainer extends StatelessWidget {
   AddressContainer({Key? key, required this.address}) : super(key: key);
-  final AddressModel address;
+  final Address address;
   var language;
 
   @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
     return Container(
-      width: 150,
+      width: 160,
       padding: EdgeInsets.all(10),
       margin: EdgeInsets.all(5),
       decoration: BoxDecoration(
-          color:
-              address.isDefault ? AppColors.lightBlueBackground : Colors.white,
+          color: address.defaultAddress == 1
+              ? AppColors.lightBlueBackground
+              : Colors.white,
           border: Border.all(color: AppColors.lightBlue),
           boxShadow: [
-            if (address.isDefault)
+            if (address.defaultAddress == 1)
               BoxShadow(
                 color: AppColors.lightBlue,
                 blurRadius: 4.0,
@@ -39,45 +41,53 @@ class AddressContainer extends StatelessWidget {
             Align(
                 alignment:
                     language == 'ar' ? Alignment.topRight : Alignment.topLeft,
-                child: Text(address.name,
+                child: Text(address.fullname!,
                     textAlign: TextAlign.start,
                     style: TextStyle(
                         color: Color(0xFF33383C),
                         fontSize: 15,
                         fontWeight: FontWeight.bold))),
             5.heightBox,
-            Text(address.addressLine1,
+            Text(address.address1!,
                 textAlign: TextAlign.start,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(color: Color(0xFF626E7A), fontSize: 15)),
-            if (address.addressLine2.isNotEmpty)
-              Text(address.addressLine2,
+            if (address.address2!.isNotEmpty)
+              Text(address.address2!,
                   textAlign: TextAlign.start,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(color: Color(0xFF626E7A), fontSize: 15)),
-            Row(
-              children: [
-                Text('${address.city},',
-                    textAlign: TextAlign.start,
-                    maxLines: 2,
-                    style: TextStyle(color: Color(0xFF626E7A), fontSize: 15)),
-                5.widthBox,
-                Text('${address.state},',
-                    textAlign: TextAlign.start,
-                    maxLines: 2,
-                    style: TextStyle(color: Color(0xFF626E7A), fontSize: 15))
-              ],
-            ),
-            Text(address.country,
+
+            RichText(
                 textAlign: TextAlign.start,
-                maxLines: 2,
-                style: TextStyle(color: Color(0xFF626E7A), fontSize: 15)),
-            Expanded(
-                child: Text(address.pincode,
-                    textAlign: TextAlign.start,
-                    maxLines: 2,
-                    style: TextStyle(color: Color(0xFF626E7A), fontSize: 13))),
-            10.heightBox,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                text: TextSpan(
+                    text: '${address.cityName}, ',
+                    style: TextStyle(color: Color(0xFF626E7A), fontSize: 15),
+                    children: [
+                      TextSpan(
+                          text: '${address.zip},',
+                          style:
+                              TextStyle(color: Color(0xFF626E7A), fontSize: 15))
+                    ])), RichText(
+                textAlign: TextAlign.start,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                text: TextSpan(
+                    text: '${address.stateName}, ',
+                    style: TextStyle(color: Color(0xFF626E7A), fontSize: 15),
+                    children: [
+                      TextSpan(
+                          text: '${address.countryName},',
+                          style:
+                              TextStyle(color: Color(0xFF626E7A), fontSize: 15))
+                    ])),
+      10.heightBox,
             Visibility(
-                visible: address.isDefault,
+                visible: address.defaultAddress == 1,
                 child: Align(
                     alignment: language == 'ar'
                         ? Alignment.bottomRight

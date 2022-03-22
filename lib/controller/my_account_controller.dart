@@ -5,6 +5,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/model/get_customer_data_model.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 import 'package:tmween/screens/drawer/profile/update_profile_screen.dart';
+import 'package:tmween/screens/drawer/profile/your_addresses_screen.dart';
 
 import '../service/api.dart';
 import '../utils/global.dart';
@@ -120,6 +121,14 @@ class MyAccountController extends GetxController {
 
   void navigateToUpdateProfileScreen() {
     Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateProfileScreen(profileData:profileData))).then((value) {
+      if(value){
+        getCustomerData(Get.locale!.languageCode);
+      }
+    });
+  }
+
+  void navigateToAddressScreen() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => YourAddressesScreen())).then((value) {
       if(value){
         getCustomerData(Get.locale!.languageCode);
       }

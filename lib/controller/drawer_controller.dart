@@ -13,8 +13,12 @@ import 'package:tmween/screens/drawer/search_screen.dart';
 import 'package:tmween/screens/drawer/wishlist_screen.dart';
 
 import '../lang/locale_keys.g.dart';
+import '../model/get_customer_address_list_model.dart';
 import '../screens/drawer/cart_screen.dart';
+import '../screens/drawer/drawer_screen.dart';
+import '../service/api.dart';
 import '../utils/global.dart';
+import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
 
 class DrawerControllers extends GetxController {
@@ -49,6 +53,13 @@ class DrawerControllers extends GetxController {
     )
   ];
 
+  int userId = 0;
+  String token = '';
+  int loginLogId = 0;
+  final api = Api();
+  bool loading = false;
+  List<Address> addressList = [];
+
   final pages = [
     DashboardScreen(),
     CategoriesScreen(),
@@ -77,8 +88,103 @@ class DrawerControllers extends GetxController {
       LanguageModel(name: LocaleKeys.spanish.tr, locale: Locale('es', 'ES')),
     ];
     languageValue = languages[0];
-
+    MySharedPreferences.instance
+        .getStringValuesSF(SharedPreferencesKeys.token)
+        .then((value) async {
+      token = value!;
+      print('dhsh.....$token');
+      MySharedPreferences.instance
+          .getIntValuesSF(SharedPreferencesKeys.userId)
+          .then((value) async {
+        userId = value!;
+        MySharedPreferences.instance
+            .getIntValuesSF(SharedPreferencesKeys.loginLogId)
+            .then((value) async {
+          loginLogId = value!;
+        });
+      });
+    });
     super.onInit();
+  }
+
+  Future<void> getAddressList(language) async {
+    addressList = [];
+    loading = true;
+    update();
+    await api.getCustomerAddressList(token, userId, language).then((value) {
+      if (value.statusCode == 200) {
+        addressList = value.data!;
+      } else if (value.statusCode == 401) {
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        Get.delete<DrawerControllers>();
+        Get.offAll(DrawerScreen());
+      } else {
+        Helper.showGetSnackBar(value.message!);
+      }
+      loading = false;
+      update();
+    }).catchError((error) {
+      loading = false;
+      update();
+      print('error....$error');
+    });
+  }
+
+  Future<void> editAddress(
+      id,
+      fullName,
+      address1,
+      address2,
+      landmark,
+      country,
+      state,
+      city,
+      zip,
+      mobile,
+      addressType,
+      deliveryInstruction,
+      defaultValue,
+      language) async {
+
+    loading = true;
+    update();
+    await api
+        .editCustomerAddress(
+            token,
+            id,
+            userId,
+            fullName,
+            address1,
+            address2,
+            landmark,
+            country,
+            state,
+            city,
+            zip,
+            mobile,
+            addressType,
+            deliveryInstruction,
+            defaultValue,
+            language)
+        .then((value) {
+      loading = false;
+      update();
+      if (value.statusCode == 200) {
+        Get.delete<DrawerControllers>();
+        Get.offAll(DrawerScreen());
+      } else if (value.statusCode == 401) {
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        Get.delete<DrawerControllers>();
+        Get.offAll(DrawerScreen());
+      }
+      Helper.showGetSnackBar(value.message!);
+    }).catchError((error) {
+      loading = false;
+      update();
+      print('error....$error');
+    });
   }
 
   void changePage(int pageNo) {

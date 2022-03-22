@@ -67,6 +67,9 @@ abstract class UrlConstants {
   static const String resetPassword = '$baseUrl/customer/reset-forgot-password';
   static const String editProfile = '$baseUrl/customer/edit-profile';
   static const String getCustomerData = '$baseUrl/customer/get-customer-data-mobile';
+  static const String generateSendOtp = '$baseUrl/customer/generate-send-otp';
+  static const String resendMobileOtp = '$baseUrl/customer/resend-mobile-otp';
+  static const String verifyMobileChangePassword = '$baseUrl/customer/verify-mobile-change-password';
   static const String updateEmail = '$baseUrl/customer/update-email';
   static const String updateMobile = '$baseUrl/customer/update-mobile';
   static const String updateProfileMobile = '$baseUrl/customer/update-profile-mobile';

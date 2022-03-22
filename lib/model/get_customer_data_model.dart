@@ -11,11 +11,13 @@ class GetCustomerDataModel {
     statusCode = json['status_code'];
     statusMessage = json['status_message'];
     message = json['message'];
-    if (json['data'] != null) {
-      data = <ProfileData>[];
-      json['data'].forEach((v) {
-        data!.add(new ProfileData.fromJson(v));
-      });
+    if (statusCode == 200) {
+      if (json['data'] != null) {
+        data = <ProfileData>[];
+        json['data'].forEach((v) {
+          data!.add(new ProfileData.fromJson(v));
+        });
+      }
     }
   }
 
@@ -42,7 +44,7 @@ class ProfileData {
   String? address2;
   String? landmark;
   String? addressType;
-  String? defaultAddress;
+  int? defaultAddress;
   String? deliveryInstruction;
   String? phone1Isd;
   String? phone1;
@@ -52,8 +54,8 @@ class ProfileData {
   String? countryCode;
   String? stateCode;
   String? cityCode;
-  String? isDefaultShipping;
-  String? isDefaultBilling;
+  int? isDefaultShipping;
+  int? isDefaultBilling;
   String? yourName;
   String? phone;
   String? email;

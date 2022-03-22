@@ -6,11 +6,14 @@ import 'package:get/get.dart';
 import 'package:tmween/screens/drawer/dashboard/search_container.dart';
 import 'package:tmween/screens/drawer/filter_screen.dart';
 import 'package:tmween/screens/drawer/profile/add_address_screen.dart';
+import 'package:tmween/screens/drawer/profile/your_addresses_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 
 import '../../controller/search_controller.dart';
 import '../../lang/locale_keys.g.dart';
+import '../../model/get_customer_address_list_model.dart';
 import '../../utils/global.dart';
+import '../../utils/views/circular_progress_bar.dart';
 import '../../utils/views/custom_button.dart';
 import 'address_container.dart';
 import 'dashboard/product_detail_screen.dart';
@@ -22,6 +25,12 @@ class SearchScreen extends StatelessWidget {
 
   SearchScreen({Key? key, required this.from}) : super(key: key);
 
+
+  Future<bool> _onWillPop(SearchController searchController) async {
+    searchController.exitScreen();
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
@@ -29,7 +38,9 @@ class SearchScreen extends StatelessWidget {
         init: SearchController(),
         builder: (contet) {
           searchController.context = context;
-          return Scaffold(
+          return WillPopScope(
+              onWillPop: () => _onWillPop(searchController),
+          child:Scaffold(
               body: Form(
             key: searchController.formKey,
             child: Column(
@@ -115,7 +126,7 @@ class SearchScreen extends StatelessWidget {
                     child: _productList(searchController))
               ],
             ),
-          ));
+          )));
         });
   }
 
@@ -126,6 +137,7 @@ class SearchScreen extends StatelessWidget {
       child: ListView(children: <Widget>[
         InkWell(
             onTap: () {
+              searchController.getAddressList(language);
               showModalBottomSheet<void>(
                   context: searchController.context,
                   builder: (BuildContext context) {
@@ -401,59 +413,108 @@ class SearchScreen extends StatelessWidget {
   }
 
   _bottomSheetView(SearchController searchController) {
-    return Container(
-        height: 310,
-        padding: EdgeInsets.all(15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            10.heightBox,
-            Text(
-              LocaleKeys.chooseLocation.tr,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold),
-            ),
-            10.heightBox,
-            Text(
-              LocaleKeys.chooseLocationText.tr,
-              style: TextStyle(color: Color(0xFF666666), fontSize: 16),
-            ),
-            20.heightBox,
-            Container(
-                height: 160,
-                child: ListView.builder(
-                    itemCount: searchController.addresses.length + 1,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return (index != searchController.addresses.length)
-                          ? AddressContainer(
-                              address: searchController.addresses[index])
-                          : InkWell(
-                              onTap: () {
-                                searchController.navigateTo(AddAddressScreen());
-                              },
-                              child: Container(
-                                  width: 150,
-                                  padding: EdgeInsets.all(10),
-                                  margin: EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border.all(
-                                          color: AppColors.lightBlue),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(2))),
-                                  child: Center(
-                                      child: Text(LocaleKeys.addAddressText.tr,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: AppColors.primaryColor,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold)))));
-                    }))
-          ],
-        ));
+    return GetBuilder<SearchController>(
+        init: SearchController(),
+        builder: (contet) {
+          return Container(
+              height: 310,
+              padding: EdgeInsets.all(15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  10.heightBox,
+                  Text(
+                    LocaleKeys.chooseLocation.tr,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  10.heightBox,
+                  Text(
+                    LocaleKeys.chooseLocationText.tr,
+                    style: TextStyle(color: Color(0xFF666666), fontSize: 16),
+                  ),
+                  20.heightBox,
+                  Visibility(
+                    visible: searchController.loading,
+                    child: CircularProgressBar(),
+                  ),
+                  Visibility(
+                    visible: !searchController.loading &&
+                        searchController.addressList.length == 0,
+                    child: InkWell(
+                        onTap: () {
+                          searchController.navigateTo(YourAddressesScreen());
+                        },
+                        child: Container(
+                            width: 150,
+                            padding: EdgeInsets.all(10),
+                            margin: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(color: AppColors.lightBlue),
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(2))),
+                            child: Center(
+                                child: Text(LocaleKeys.addAddressText.tr,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: AppColors.primaryColor,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold))))),
+                  ),
+                  Visibility(
+                      visible: !searchController.loading &&
+                          searchController.addressList.length > 0,
+                      child: Container(
+                      height: 170,
+                      child: ListView.builder(
+                          itemCount: searchController.addresses.length + 1,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            return (index != searchController.addressList.length)
+                                ? InkWell(
+                                onTap:(){
+                                  Address address = searchController.addressList[index];
+                                  searchController.editAddress(address.id,address.fullname,
+                                      address.address1,address.address2,address.landmark,address.countryCode,
+                                      address.stateCode,address.cityCode,address.zip,address.mobile1,address.addressType,
+                                      address.deliveryInstruction,
+                                      '1',
+                                      language);
+                                },
+                                child:AddressContainer(
+                                    address: searchController.addressList[index]))
+                                : InkWell(
+                                    onTap: () {
+                                      searchController
+                                          .navigateTo(YourAddressesScreen());
+                                    },
+                                    child: Container(
+                                        width: 150,
+                                        padding: EdgeInsets.all(10),
+                                        margin: EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            border: Border.all(
+                                                color: AppColors.lightBlue),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(2))),
+                                        child: Center(
+                                            child: Text(
+                                                LocaleKeys.addAddressText.tr,
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    color:
+                                                        AppColors.primaryColor,
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.bold)))));
+                          })))
+                ],
+              ));
+        });
   }
 
   _bestMatchBottomSheetView() {

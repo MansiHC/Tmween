@@ -33,7 +33,7 @@ class AddressController extends GetxController {
 
   @override
   void onInit() {
-    if (Helper.isIndividual) {
+   // if (Helper.isIndividual) {
       MySharedPreferences.instance
           .getStringValuesSF(SharedPreferencesKeys.token)
           .then((value) async {
@@ -51,7 +51,7 @@ class AddressController extends GetxController {
           });
         });
       });
-    }
+   // }
     super.onInit();
   }
 
@@ -87,7 +87,7 @@ class AddressController extends GetxController {
   }
 
   Future<void> removeAddress(id, language) async {
-    if (Helper.isIndividual) {
+  //  if (Helper.isIndividual) {
       loading = true;
       update();
       await api
@@ -110,12 +110,12 @@ class AddressController extends GetxController {
         update();
         print('error....$error');
       });
-    }
+  //  }
   }
 
   void exitScreen() {
     Get.delete<AddressController>();
-    Navigator.of(context).pop();
+    Navigator.of(context).pop(true);
   }
 
   void pop() {

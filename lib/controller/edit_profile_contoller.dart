@@ -46,10 +46,11 @@ class EditProfileController extends GetxController {
   final api = Api();
   bool loading = false;
   bool loadingImageName = false;
+  bool loadingDialog = false;
 
   @override
   void onInit() {
-    if (Helper.isIndividual)
+   // if (Helper.isIndividual)
       MySharedPreferences.instance
           .getStringValuesSF(SharedPreferencesKeys.token)
           .then((value) async {
@@ -76,39 +77,39 @@ class EditProfileController extends GetxController {
   generateOTP(emailMobile,language) async {
     FocusScope.of(context).unfocus();
     // navigateToDrawerScreen();
-
     update();
-    loading = true;
+    loadingDialog = true;
     update();
     await api
         .generateMobileOtp(emailMobile,  language)
         .then((value) {
       if (value.statusCode == 200) {
-        Helper.showGetSnackBar(value.message!);
-      } else {
-        Helper.showGetSnackBar(value.message!);
+        otpValue = value.data!.otp.toString();
       }
-      loading = false;
+        Helper.showGetSnackBar(value.message!);
+
+      loadingDialog = false;
       update();
     }).catchError((error) {
-      loading = false;
+      loadingDialog = false;
       update();
       print('error....$error');
     });
   }
 
   resendOTP(emailMobile) async {
-    loading = true;
+    loadingDialog = true;
     update();
     await api.resendLoginOTP(emailMobile).then((value) {
       if (value.statusCode == 200) {
         otpValue = value.data!.otp.toString();
       }
-      Helper.showGetSnackBar(value.message!);
-      loading = false;
+        Helper.showGetSnackBar(value.message!);
+
+      loadingDialog = false;
       update();
     }).catchError((error) {
-      loading = false;
+      loadingDialog = false;
       update();
       print('error....$error');
     });
@@ -169,39 +170,41 @@ class EditProfileController extends GetxController {
   }
 
   Future<void> updateMobileNumber(mobile,langCode) async {
-    loading = true;
+    loadingDialog = true;
     update();
-    await api.updateMobile(token,mobile,userId,langCode).then((value) {
+    await api.updateMobile(token,userId,mobile,otpValue,langCode).then((value) {
       if (value.statusCode == 200) {
-        Helper.showGetSnackBar(value.message!);
+        pop();
+        exitScreen();
       }
       Helper.showGetSnackBar(value.message!);
-      loading = false;
+      loadingDialog = false;
       update();
     }).catchError((error) {
-      loading = false;
+      loadingDialog = false;
       update();
       print('error....$error');
     });
-    // pop();
+
   }
 
   Future<void> updateEmail(email,langCode) async {
-    loading = true;
+    loadingDialog = true;
     update();
-    await api.updateEmail(token,email,userId,langCode).then((value) {
+    await api.updateEmail(token,userId,email,otpValue,langCode).then((value) {
       if (value.statusCode == 200) {
-        Helper.showGetSnackBar(value.message!);
+        pop();
+        exitScreen();
       }
       Helper.showGetSnackBar(value.message!);
-      loading = false;
+      loadingDialog = false;
       update();
     }).catchError((error) {
-      loading = false;
+      loadingDialog = false;
       update();
       print('error....$error');
     });
-    // pop();
+
   }
 
 

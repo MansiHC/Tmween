@@ -35,25 +35,25 @@ class Helper {
   static bool isIndividual = false;
 
   static void showGetSnackBar(String message) {
-    /*var snackBar = SnackBar(
-      animation: null,
-      content: Text(
-        message,
-        textAlign: TextAlign.center,
-      ),
-      action: SnackBarAction(
-        onPressed: () {},
-        label: 'ok',
-        textColor: Colors.white,
-      ),
-    );
 
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-*/
     Get.snackbar(
       message,
       "",
       duration: 2.seconds,
+      snackPosition: SnackPosition.BOTTOM,
+      showProgressIndicator: false,
+      isDismissible: false,
+      backgroundColor: AppColors.appBarColor,
+      colorText: Colors.white,
+    );
+  }
+
+  static void showGetSnackBar2(String message) {
+
+    Get.snackbar(
+      message,
+      "",
+      duration: 6.seconds,
       snackPosition: SnackPosition.BOTTOM,
       showProgressIndicator: false,
       isDismissible: false,

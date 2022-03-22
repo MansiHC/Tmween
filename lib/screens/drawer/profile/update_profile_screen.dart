@@ -351,11 +351,11 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 ),
                 suffixIcon: InkWell(
                     onTap: () {
-                      editAccountController.generateOTP(widget.profileData!.phone,language);
+                        editAccountController.generateOTP(editAccountController.mobileNumberController.text,language);
                       _showOtpVerificationDialog(
                           editAccountController,
-                          widget.profileData!.phone!,
-                          language == 'ar' ? 340 : 320,
+                          editAccountController.mobileNumberController.text,
+                          language == 'ar' ? 340 : 360,
                           false);
                     },
                     child: Padding(
@@ -368,7 +368,25 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               fontSize: 13,
                               fontWeight: FontWeight.bold),
                         ))),
-                validator: (value) {}),
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(12),
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return LocaleKeys
+                        .emptyPhoneNumber.tr;
+                  } else if (editAccountController
+                      .mobileNumberController
+                      .value
+                      .text
+                      .length <
+                      10) {
+                    return LocaleKeys
+                        .validPhoneNumber.tr;
+                  }
+                  return null;
+                }),
             10.heightBox,
             Text(
               LocaleKeys.email.tr,
@@ -389,12 +407,15 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 textInputAction: TextInputAction.done,
                 suffixIcon: InkWell(
                     onTap: () {
-                      editAccountController.generateOTP(widget.profileData!.email,language);
-                      _showOtpVerificationDialog(
-                          editAccountController,
-                          widget.profileData!.email!,
-                          language == 'ar' ? 340 : 320,
-                          true);
+
+                        editAccountController.generateOTP(
+                            editAccountController.emailController.text,
+                            language);
+                        _showOtpVerificationDialog(
+                            editAccountController,
+                            editAccountController.emailController.text,
+                            language == 'ar' ? 340 : 370,
+                            true);
                     },
                     child: Padding(
                         padding:
@@ -406,7 +427,20 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               fontSize: 12,
                               fontWeight: FontWeight.bold),
                         ))),
-                validator: (value) {}),
+                inputFormatters: [
+                  FilteringTextInputFormatter.deny(
+                      RegExp(r'[/\\]')),
+                ],
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return LocaleKeys.emptyYourEmail.tr;
+                  } else if (!editAccountController
+                      .emailController.value.text
+                      .validateEmail()) {
+                    return LocaleKeys.validYourEmail.tr;
+                  }
+                  return null;
+                }),
             30.heightBox,
             Divider(
               thickness: 1,
@@ -530,11 +564,24 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
             contentPadding: EdgeInsets.symmetric(horizontal: 15),
             buttonPadding: EdgeInsets.zero,
             actions: [],
-            content: Container(
+            content:GetBuilder<EditProfileController>(
+                init: EditProfileController(),
+                builder: (contet) {
+                  return  Container(
               height: height,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  5.heightBox,
+                  if(!editProfileController.loadingDialog)
+                  Text(
+                    'Otp is : ${editProfileController.otpValue}',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF7C7C7C)),
+                  ),
                   15.heightBox,
                   Text(
                     LocaleKeys.otpVerification.tr,
@@ -605,7 +652,12 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     },
                     appContext: editProfileController.context,
                   ),
+                  Visibility(
+                    visible: editProfileController.loadingDialog,
+                    child: CircularProgressBar(),
+                  ),
                   10.heightBox,
+
                   Text(
                     LocaleKeys.notReceivedOtp.tr,
                     style: TextStyle(fontSize: 13, color: Colors.black),
@@ -656,7 +708,9 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   ),
                 ],
               ),
-            )));
+            );}))
+
+                  );
   }
 
   void _shopImagePickerDialog(

@@ -11,6 +11,7 @@ import 'package:tmween/model/language_model.dart';
 import 'package:tmween/screens/drawer/categories_screen.dart';
 import 'package:tmween/screens/drawer/deal_of_the_day_screen.dart';
 import 'package:tmween/screens/drawer/profile/add_address_screen.dart';
+import 'package:tmween/screens/drawer/profile/your_addresses_screen.dart';
 import 'package:tmween/screens/drawer/search_screen.dart';
 import 'package:tmween/screens/drawer/sold_by_tmween_screen.dart';
 import 'package:tmween/utils/extensions.dart';
@@ -18,7 +19,10 @@ import 'package:tmween/utils/global.dart';
 
 import '../../controller/search_controller.dart';
 import '../../controller/signup_controller.dart';
+import '../../model/get_customer_address_list_model.dart';
 import '../../utils/my_shared_preferences.dart';
+import '../../utils/views/circular_progress_bar.dart';
+import '../../utils/views/custom_button.dart';
 import '../../utils/views/custom_text_form_field.dart';
 import '../authentication/login/login_screen.dart';
 import 'address_container.dart';
@@ -63,6 +67,9 @@ class DrawerScreen extends StatelessWidget {
                     title: drawerController.pageIndex == 0
                         ? InkWell(
                             onTap: () {
+                              if(drawerController.isLogin) {
+                                drawerController.getAddressList(language);
+                              }
                               showModalBottomSheet<void>(
                                   context: context,
                                   builder: (BuildContext context) {
@@ -74,7 +81,7 @@ class DrawerScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'East delivery in 1 day*',
+                                    'Earliest delivery in 1 day*',
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 12),
                                   ),
@@ -89,7 +96,7 @@ class DrawerScreen extends StatelessWidget {
                                       ),
                                       3.widthBox,
                                       Text(
-                                        'Alabama - 35004',
+                                        drawerController.isLogin?'Alabama - 35004':'Select Delivery Address',
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 12),
                                       ),
@@ -237,59 +244,124 @@ class DrawerScreen extends StatelessWidget {
   }
 
   _bottomSheetView(DrawerControllers drawerController) {
-    return Container(
-        height: 310,
-        padding: EdgeInsets.all(15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            10.heightBox,
-            Text(
-              LocaleKeys.chooseLocation.tr,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold),
-            ),
-            10.heightBox,
-            Text(
-              LocaleKeys.chooseLocationText.tr,
-              style: TextStyle(color: Color(0xFF666666), fontSize: 16),
-            ),
-            20.heightBox,
-            Container(
-                height: 160,
-                child: ListView.builder(
-                    itemCount: drawerController.addresses.length + 1,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return (index != drawerController.addresses.length)
-                          ? AddressContainer(
-                              address: drawerController.addresses[index])
-                          : InkWell(
-                              onTap: () {
-                                drawerController.navigateTo(AddAddressScreen());
-                              },
-                              child: Container(
-                                  width: 150,
-                                  padding: EdgeInsets.all(10),
-                                  margin: EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border.all(
-                                          color: AppColors.lightBlue),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(2))),
-                                  child: Center(
-                                      child: Text(LocaleKeys.addAddressText.tr,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: AppColors.primaryColor,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold)))));
-                    }))
-          ],
-        ));
+    return GetBuilder<DrawerControllers>(
+        init: DrawerControllers(),
+        builder: (contet) {
+          return Container(
+              height: drawerController.isLogin?310:200,
+              padding: EdgeInsets.all(15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  10.heightBox,
+                  Text(
+                    LocaleKeys.chooseLocation.tr,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  10.heightBox,
+                  Text(
+                    LocaleKeys.chooseLocationText.tr,
+                    style: TextStyle(color: Color(0xFF666666), fontSize: 16),
+                  ),
+                  20.heightBox,
+                  drawerController.isLogin?Column(children: [
+                  Visibility(
+                    visible: drawerController.loading,
+                    child: CircularProgressBar(),
+                  ),
+                  Visibility(
+                    visible: !drawerController.loading &&
+                        drawerController.addressList.length == 0,
+                    child: InkWell(
+                        onTap: () {
+                          drawerController.navigateTo(YourAddressesScreen());
+                        },
+                        child: Container(
+                            width: 150,
+                            padding: EdgeInsets.all(10),
+                            margin: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(color: AppColors.lightBlue),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(2))),
+                            child: Center(
+                                child: Text(LocaleKeys.addAddressText.tr,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: AppColors.primaryColor,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold))))),
+                  ),
+                  Visibility(
+                      visible: !drawerController.loading &&
+                          drawerController.addressList.length > 0,
+                      child: Container(
+                        height: 170,
+                          child: ListView.builder(
+                              itemCount: drawerController.addressList.length + 1,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return (index !=
+                                        drawerController.addressList.length)
+                                    ? InkWell(
+                                    onTap:(){
+                                      Address address = drawerController.addressList[index];
+                                      drawerController.editAddress(address.id,address.fullname,
+                                      address.address1,address.address2,address.landmark,address.countryCode,
+                                      address.stateCode,address.cityCode,address.zip,address.mobile1,address.addressType,
+                                          address.deliveryInstruction,
+                                     '1',
+                                      language);
+                                    },
+                                    child:AddressContainer(
+                                        address:
+                                            drawerController.addressList[index]))
+                                    : InkWell(
+                                        onTap: () {
+                                          drawerController.pop();
+                                          drawerController
+                                              .navigateTo(YourAddressesScreen());
+                                        },
+                                        child: Container(
+                                            width: 150,
+                                            padding: EdgeInsets.all(10),
+                                            margin: EdgeInsets.all(5),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                border: Border.all(
+                                                    color: AppColors.lightBlue),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(2))),
+                                            child: Center(
+                                                child: Text(
+                                                    LocaleKeys
+                                                        .addAddressText.tr,
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: AppColors
+                                                            .primaryColor,
+                                                        fontSize: 15,
+                                                        fontWeight: FontWeight
+                                                            .bold)))));
+                              })))],):
+                  CustomButton(
+                      text: 'Sign in to see your Addresses',
+                      fontSize: 16,
+                      onPressed: () {
+                        Get.delete<DrawerControllers>();
+                        Get.delete<LoginController>();
+                        Get.delete<OtpController>();
+                        Get.delete<SignUpController>();
+                        drawerController.navigateTo(
+                            LoginScreen(from: SharedPreferencesKeys.isDrawer));
+                      }),
+                ],
+              ));
+        });
   }
 
   _buildBottomNavBar(DrawerControllers drawerController) {
