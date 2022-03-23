@@ -25,6 +25,7 @@ class OtpController extends GetxController {
   String currentText = "";
   final api = Api();
   bool loading = false;
+  bool otpExpired = false;
   late String phone, otp, otpValue;
 
   verifyOTP() async {
@@ -166,6 +167,7 @@ class OtpController extends GetxController {
   resendOTP(String phone) async {
     print('hdf.....$phone');
     loading = true;
+    otpExpired =false;
     update();
     await api.resendOTP(phone).then((value) {
       if (value.statusCode == 200) {
@@ -185,6 +187,7 @@ class OtpController extends GetxController {
   individualLoginResendOTP(String phone) async {
     print('hdf.....$phone');
     loading = true;
+    otpExpired = false;
     update();
     await api.resendLoginOTP(phone).then((value) {
       if (value.statusCode == 200) {

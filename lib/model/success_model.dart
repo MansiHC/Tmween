@@ -9,7 +9,7 @@ class SuccessModel {
     return SuccessModel(
       statusCode: json['status_code'],
       statusMessage: json['status_message'],
-      message: json['message'].toString().replaceAll('[', '').replaceAll(']','') ?? "",
+      message: json['message'].toString().replaceAll('[', '').replaceAll(']',''),
     );
   }
 }

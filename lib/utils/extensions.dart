@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -33,6 +34,15 @@ extension StringExtension on String {
   bool validatePassword() =>
       RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
           .hasMatch(this);
+
+  setNetworkImage()=>CachedNetworkImage(
+    imageUrl: toString(),
+    placeholder: (context, url) =>
+        Center(child:CupertinoActivityIndicator()
+        )
+    ,
+    errorWidget: (context, url, error) => Icon(Icons.image_not_supported,color: Colors.grey,),
+  );
 }
 
 extension IterableExtensions<E> on Iterable<E> {

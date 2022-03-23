@@ -37,6 +37,8 @@ abstract class AppConstants {
   static String bottomBar = 'bottomBar';
   static String individual = 'individual';
   static String store = 'store';
+  static int timer = 30;
+  static int cardsPerPage = 6;
 }
 
 abstract class UrlConstants {
@@ -84,7 +86,7 @@ abstract class UrlConstants {
 
   //e-commerce
   static const String getMasterData = '$baseUrl/get-master-data';
-  static const String getHomePageMobileData = '$baseUrl/get-home-page-mobile-data';
+  static const String getHomePageMobileData = '$baseUrl2/get-home-page-mobile-data';
   static const String dealOfTheDay = '$baseUrl/get-dailydeal-list';
   static const String soldByTmween = '$baseUrl/get-soldby-system-product-list';
   static const String topSelection = '$baseUrl/get-top-selected-product';
@@ -173,6 +175,8 @@ abstract class SharedPreferencesKeys {
   static const String isDarkTheme = 'isDarkTheme';
   static const String homeCountryDetails = 'homeCountry';
   static const isLogin = "isLogin";
+  static const address = "address";
+  static const image = "image";
   static const isDashboard = "isDashboard";
   static const isDrawer = "isDrawer";
   static const isSplash = "isSplash";

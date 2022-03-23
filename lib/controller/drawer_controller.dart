@@ -16,6 +16,7 @@ import '../lang/locale_keys.g.dart';
 import '../model/get_customer_address_list_model.dart';
 import '../screens/drawer/cart_screen.dart';
 import '../screens/drawer/drawer_screen.dart';
+import '../screens/drawer/profile/my_account_screen.dart';
 import '../service/api.dart';
 import '../utils/global.dart';
 import '../utils/helper.dart';
@@ -29,6 +30,7 @@ class DrawerControllers extends GetxController {
   late List<LanguageModel> languages;
   late LanguageModel languageValue;
   bool isLogin = true;
+  String image="", address="";
 
   ListQueue<int> navigationQueue = ListQueue();
 
@@ -78,6 +80,16 @@ class DrawerControllers extends GetxController {
         .getBoolValuesSF(SharedPreferencesKeys.isLogin)
         .then((value) async {
       isLogin = value!;
+      update();
+    });MySharedPreferences.instance
+        .getStringValuesSF(SharedPreferencesKeys.address)
+        .then((value) async {
+      address = value!;
+      update();
+    });MySharedPreferences.instance
+        .getStringValuesSF(SharedPreferencesKeys.image)
+        .then((value) async {
+      image = value!;
       update();
     });
     MySharedPreferences.instance
@@ -171,6 +183,7 @@ class DrawerControllers extends GetxController {
       loading = false;
       update();
       if (value.statusCode == 200) {
+
         Get.delete<DrawerControllers>();
         Get.offAll(DrawerScreen());
       } else if (value.statusCode == 401) {
@@ -194,6 +207,24 @@ class DrawerControllers extends GetxController {
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
+  }
+void navigateToProfileScreen() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => MyAccountScreen())).then((value) {
+      if(value){
+        MySharedPreferences.instance
+            .getStringValuesSF(SharedPreferencesKeys.address)
+            .then((value) async {
+          address = value!;
+          update();
+        });
+        MySharedPreferences.instance
+            .getStringValuesSF(SharedPreferencesKeys.image)
+            .then((value) async {
+          image = value!;
+          update();
+        });
+      }
+    });
   }
 
   void closeDrawer() {

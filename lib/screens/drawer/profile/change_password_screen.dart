@@ -8,6 +8,7 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
 import '../../../controller/change_password_controller.dart';
+import '../../../utils/views/circular_progress_bar.dart';
 import '../../../utils/views/custom_button.dart';
 import '../../../utils/views/custom_text_form_field.dart';
 import '../../../utils/views/otp_text_field.dart';
@@ -16,6 +17,18 @@ class ChangePasswordScreen extends StatelessWidget {
   late String language;
   final changePasswordController = Get.put(ChangePasswordController());
 
+  final String? email;
+  final String? mobile;
+
+  ChangePasswordScreen({Key? key, this.email,this.mobile}) : super(key: key);
+
+
+  Future<bool> _onWillPop(ChangePasswordController changePasswordController) async {
+    changePasswordController.exitScreen();
+    return true;
+  }
+
+
   @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
@@ -23,7 +36,9 @@ class ChangePasswordScreen extends StatelessWidget {
         init: ChangePasswordController(),
         builder: (contet) {
           changePasswordController.context = context;
-          return Scaffold(
+          return WillPopScope(
+              onWillPop: () => _onWillPop(changePasswordController),
+          child: Scaffold(
               body: Container(
                   color: Colors.white,
                   child: Column(
@@ -37,7 +52,7 @@ class ChangePasswordScreen extends StatelessWidget {
                           child: topView(changePasswordController)),
                       _bottomView(changePasswordController),
                     ],
-                  )));
+                  ))));
         });
   }
 
@@ -49,6 +64,11 @@ class ChangePasswordScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    if(!changePasswordController.loading)
+                    Text(
+                      'Otp is : ${changePasswordController.otpValue         }',
+                      style: TextStyle(fontSize: 14, color: Colors.black54),
+                    ),
                     15.heightBox,
                     Text(
                       LocaleKeys.email.tr,
@@ -56,7 +76,7 @@ class ChangePasswordScreen extends StatelessWidget {
                     ),
                     5.heightBox,
                     Text(
-                      'salim.akka@tmween.com',
+                      email!,
                       style: TextStyle(
                           fontSize: 16,
                           color: Colors.black54,
@@ -69,7 +89,7 @@ class ChangePasswordScreen extends StatelessWidget {
                     ),
                     5.heightBox,
                     Text(
-                      '+249 9822114455',
+                      mobile!,
                       style: TextStyle(
                           fontSize: 16,
                           color: Colors.black54,
@@ -157,7 +177,7 @@ class ChangePasswordScreen extends StatelessWidget {
                                 fontWeight: FontWeight.bold),
                             children: [
                           TextSpan(
-                            text: 'salim.akka@tmween.com',
+                            text: email!,
                             style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.black,
@@ -165,7 +185,41 @@ class ChangePasswordScreen extends StatelessWidget {
                           )
                         ])),
                     15.heightBox,
-                    Container().buildTimer(30),
+                    if(!changePasswordController.loading && !changePasswordController.otpExpired)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          LocaleKeys.otpExpire.tr,
+                          style: TextStyle(fontSize:  16, color: Colors.black),
+                        ),
+                        5.widthBox,
+                        TweenAnimationBuilder<Duration>(
+                            duration: Duration(seconds: AppConstants.timer),
+                            tween: Tween(begin: Duration(seconds: AppConstants.timer), end: Duration.zero),
+                            onEnd: () {
+                            changePasswordController.otpExpired = true;
+                            changePasswordController.update();
+                            },
+                            builder: (BuildContext context, Duration value, Widget? child) {
+                              final minutes = value.inMinutes;
+                              final seconds = value.inSeconds % 60;
+                              return Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 5),
+                                  child: Text('$minutes:$seconds',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: AppColors.primaryColor,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20)));
+                            }),
+                      ],
+                    ),
+    if(changePasswordController.otpExpired)
+      Text(
+        'Please Resend the Otp.',
+        style: TextStyle(fontSize:  16, color: Colors.black),
+      ),
                     10.heightBox,
                     Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40),
@@ -195,7 +249,7 @@ class ChangePasswordScreen extends StatelessWidget {
                           textStyle: TextStyle(color: Colors.white),
                           controller: changePasswordController.otpController,
                           onCompleted: (v) {
-                            changePasswordController.save();
+                            
                           },
                           onChanged: (value) {
                             debugPrint(value);
@@ -215,13 +269,17 @@ class ChangePasswordScreen extends StatelessWidget {
                     5.heightBox,
                     InkWell(
                         onTap: () {
-                          changePasswordController.resend();
+                          changePasswordController.resendOtp(language);
                         },
                         child: Text(
                           LocaleKeys.resendCode.tr,
                           style: TextStyle(
                               fontSize: 15, color: AppColors.primaryColor),
                         )),
+                    Visibility(
+                      visible: changePasswordController.loading,
+                      child: CircularProgressBar(),
+                    ),
                     15.heightBox,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -242,7 +300,7 @@ class ChangePasswordScreen extends StatelessWidget {
                             text: LocaleKeys.save,
                             fontSize: 16,
                             onPressed: () {
-                              changePasswordController.save();
+                              changePasswordController.changePassword(language);
                             }),
                       ],
                     ),

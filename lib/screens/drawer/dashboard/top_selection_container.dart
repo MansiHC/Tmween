@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
+import 'package:tmween/model/dashboard_model.dart';
 import 'package:tmween/model/top_selection_model.dart';
 import 'package:tmween/utils/extensions.dart';
 
@@ -15,7 +16,7 @@ class TopSelectionContainer extends StatelessWidget {
       this.from = SharedPreferencesKeys.isDrawer})
       : super(key: key);
   final String from;
-  final TopSelectionModel topSelection;
+  final TopSelectionData topSelection;
   var language;
 
   @override
@@ -54,7 +55,7 @@ class TopSelectionContainer extends StatelessWidget {
                         alignment: WrapAlignment.center,
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
-                          Text(topSelection.rating,
+                          Text(/*topSelection.rating*/'4.1',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 11,
@@ -66,6 +67,7 @@ class TopSelectionContainer extends StatelessWidget {
                           )
                         ],
                       )),
+                  if(topSelection.discountPer!=0)
                   Container(
                       padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                       decoration: BoxDecoration(
@@ -73,7 +75,7 @@ class TopSelectionContainer extends StatelessWidget {
                           borderRadius: BorderRadius.all(Radius.circular(4))),
                       child: Row(
                         children: [
-                          Text('${topSelection.offer}%',
+                          Text('${topSelection.discountPer}%',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 11,
@@ -89,19 +91,17 @@ class TopSelectionContainer extends StatelessWidget {
         Expanded(
             child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),
-                child: Image.asset(
-                  topSelection.image,
-                  fit: BoxFit.contain,
-                ))),
+                child: topSelection.largeImageUrl!.setNetworkImage())),
         5.heightBox,
-        Padding(
+          Align(alignment: Alignment.centerLeft,child: Padding(
             padding: EdgeInsets.only(left: 5, right: 15),
-            child: Text(topSelection.title,
+            child: Text(topSelection.productName!,
                 textAlign: TextAlign.start,
-                maxLines: 2,
-                style: TextStyle(color: Color(0xFF333333), fontSize: 13))),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: Color(0xFF333333), fontSize: 13)))),
         5.heightBox,
-        if (topSelection.fulfilled)
+        if (true)
           Padding(
               padding: EdgeInsets.only(left: 5, right: 15),
               child: Align(
@@ -136,22 +136,22 @@ class TopSelectionContainer extends StatelessWidget {
                   bottomRight: Radius.circular(4))),
           child: Row(
             children: [
-              Text('${LocaleKeys.sar.tr} ${topSelection.price}',
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      color: Color(0xFF000000),
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold)),
-              2.widthBox,
               Expanded(
-                  child: Text(
-                      '${LocaleKeys.sar.tr} ${topSelection.beforePrice!}',
+                  child:Wrap(children:[ Text('${topSelection.finalPriceDisp!}',
                       textAlign: TextAlign.start,
                       style: TextStyle(
-                          decoration: TextDecoration.lineThrough,
-                          decorationThickness: 3,
-                          color: Color(0xFF7B7B7B),
-                          fontSize: 10))),
+                          color: Color(0xFF000000),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold)),
+                    2.widthBox,
+                    Text('${topSelection.retailPriceDisp!}',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            decoration: TextDecoration.lineThrough,
+                            decorationThickness: 3,
+                            color: Color(0xFF7B7B7B),
+                            fontSize: 10))])),
+              2.widthBox,
               Align(
                 alignment: Alignment.topRight,
                 child: Container(

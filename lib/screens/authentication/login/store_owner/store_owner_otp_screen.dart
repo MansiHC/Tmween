@@ -137,7 +137,41 @@ class StoreOwnerOtpScreen extends StatelessWidget {
           style: TextStyle(fontSize: 16, color: Colors.black),
         ),
         10.heightBox,
-        Container().buildTimer(30),
+        if(!otpController.loading && !otpController.otpExpired)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                LocaleKeys.otpExpire.tr,
+                style: TextStyle(fontSize:  16, color: Colors.black),
+              ),
+              5.widthBox,
+              TweenAnimationBuilder<Duration>(
+                  duration: Duration(seconds: AppConstants.timer),
+                  tween: Tween(begin: Duration(seconds: AppConstants.timer), end: Duration.zero),
+                  onEnd: () {
+                    otpController.otpExpired = true;
+                    otpController.update();
+                  },
+                  builder: (BuildContext context, Duration value, Widget? child) {
+                    final minutes = value.inMinutes;
+                    final seconds = value.inSeconds % 60;
+                    return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: Text('$minutes:$seconds',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: AppColors.primaryColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20)));
+                  }),
+            ],
+          ),
+        if(otpController.otpExpired)
+          Text(
+            'Please Resend the Otp.',
+            style: TextStyle(fontSize:  16, color: Colors.black),
+          ),
         40.heightBox,
         Padding(
             padding: EdgeInsets.symmetric(

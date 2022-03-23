@@ -9,13 +9,10 @@ import 'package:tmween/model/recently_viewed_model.dart';
 import 'package:tmween/model/sold_by_tmween_model.dart';
 import 'package:tmween/model/top_selection_model.dart';
 
+import '../model/dashboard_model.dart';
 import '../model/select_category_model.dart';
-import '../screens/drawer/drawer_screen.dart';
 import '../service/api.dart';
-import '../utils/global.dart';
 import '../utils/helper.dart';
-import '../utils/my_shared_preferences.dart';
-import 'drawer_controller.dart';
 
 class DashboardController extends GetxController {
   late BuildContext context;
@@ -268,20 +265,36 @@ class DashboardController extends GetxController {
 
   final api = Api();
   bool loading = false;
+  List<SoldByTmweenProductData>? soldByTmweenProductData = [];
+  List<TopSelectionData>? topSelectionData = [];
+  List<BestSellerData>? bestSellerData = [];
+  List<DailyDealsData>? dailyDealsData = [];
+  List<RecentlyViewProduct>? recentlyViewProduct = [];
+  List<ShopByCategory>? shopByCategory = [];
 
   @override
   void onInit() {
-  // getDashboardData(Get.locale!.languageCode);
+    getDashboardData();
     super.onInit();
   }
 
-  Future<void> getDashboardData(language) async {
+  Future<void> getDashboardData() async {
     loading = true;
     update();
-    await api.getHomePageMobileData( language).then((value) {
+    await api.getHomePageMobileData().then((value) {
       if (value.statusCode == 200) {
 
-      }  else {
+
+
+        recentlyViewProduct = value.data!.recentlyViewProduct;
+        topSelectionData = value.data!.topSelectionData;
+        soldByTmweenProductData = value.data!.soldByTmweenProductData;
+        bestSellerData = value.data!.bestSellerData;
+        dailyDealsData = value.data!.dailyDealsData;
+        shopByCategory = value.data!.shopByCategory;
+
+        update();
+      } else {
         Helper.showGetSnackBar(value.message!);
       }
       loading = false;
@@ -292,7 +305,6 @@ class DashboardController extends GetxController {
       print('error....$error');
     });
   }
-
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));

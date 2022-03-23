@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,7 +11,6 @@ import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/language_model.dart';
 import 'package:tmween/screens/drawer/categories_screen.dart';
 import 'package:tmween/screens/drawer/deal_of_the_day_screen.dart';
-import 'package:tmween/screens/drawer/profile/add_address_screen.dart';
 import 'package:tmween/screens/drawer/profile/your_addresses_screen.dart';
 import 'package:tmween/screens/drawer/search_screen.dart';
 import 'package:tmween/screens/drawer/sold_by_tmween_screen.dart';
@@ -67,7 +67,7 @@ class DrawerScreen extends StatelessWidget {
                     title: drawerController.pageIndex == 0
                         ? InkWell(
                             onTap: () {
-                              if(drawerController.isLogin) {
+                              if (drawerController.isLogin) {
                                 drawerController.getAddressList(language);
                               }
                               showModalBottomSheet<void>(
@@ -96,7 +96,9 @@ class DrawerScreen extends StatelessWidget {
                                       ),
                                       3.widthBox,
                                       Text(
-                                        drawerController.isLogin?'Alabama - 35004':'Select Delivery Address',
+                                        drawerController.isLogin
+                                            ? drawerController.address
+                                            : 'Select Delivery Address',
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 12),
                                       ),
@@ -147,11 +149,37 @@ class DrawerScreen extends StatelessWidget {
                               child: Container(
                                 width: 45,
                                 child: drawerController.isLogin
-                                    ? CircleAvatar(
-                                        radius: 45,
-                                        backgroundImage: NetworkImage(
-                                            'http://i.imgur.com/QSev0hg.jpg'),
-                                      )
+                                    ? drawerController.image.isNotEmpty
+                                        ? CircleAvatar(
+                                            radius: 45,
+                                            foregroundColor: Colors.transparent,
+                                            backgroundColor: Colors.grey,
+                                            child: CachedNetworkImage(
+                                              imageUrl: drawerController.image,
+                                              placeholder: (context, url) =>
+                                                  CupertinoActivityIndicator(),
+                                              imageBuilder: (context, image) =>
+                                                  CircleAvatar(
+                                                backgroundImage: image,
+                                                radius: 45,
+                                              ),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      CircleAvatar(
+                                                child: SvgPicture.asset(
+                                                  ImageConstanst.user,
+                                                  height: 45,
+                                                  width: 45,
+                                                ),
+                                                radius: 45,
+                                              ),
+                                            ),
+                                          )
+                                        : SvgPicture.asset(
+                                            ImageConstanst.user,
+                                            height: 42,
+                                            width: 42,
+                                          )
                                     : SvgPicture.asset(
                                         ImageConstanst.user,
                                         height: 42,
@@ -248,7 +276,7 @@ class DrawerScreen extends StatelessWidget {
         init: DrawerControllers(),
         builder: (contet) {
           return Container(
-              height: drawerController.isLogin?310:200,
+              height: drawerController.isLogin ? 310 : 200,
               padding: EdgeInsets.all(15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -267,98 +295,123 @@ class DrawerScreen extends StatelessWidget {
                     style: TextStyle(color: Color(0xFF666666), fontSize: 16),
                   ),
                   20.heightBox,
-                  drawerController.isLogin?Column(children: [
-                  Visibility(
-                    visible: drawerController.loading,
-                    child: CircularProgressBar(),
-                  ),
-                  Visibility(
-                    visible: !drawerController.loading &&
-                        drawerController.addressList.length == 0,
-                    child: InkWell(
-                        onTap: () {
-                          drawerController.navigateTo(YourAddressesScreen());
-                        },
-                        child: Container(
-                            width: 150,
-                            padding: EdgeInsets.all(10),
-                            margin: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(color: AppColors.lightBlue),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(2))),
-                            child: Center(
-                                child: Text(LocaleKeys.addAddressText.tr,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: AppColors.primaryColor,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold))))),
-                  ),
-                  Visibility(
-                      visible: !drawerController.loading &&
-                          drawerController.addressList.length > 0,
-                      child: Container(
-                        height: 170,
-                          child: ListView.builder(
-                              itemCount: drawerController.addressList.length + 1,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                return (index !=
-                                        drawerController.addressList.length)
-                                    ? InkWell(
-                                    onTap:(){
-                                      Address address = drawerController.addressList[index];
-                                      drawerController.editAddress(address.id,address.fullname,
-                                      address.address1,address.address2,address.landmark,address.countryCode,
-                                      address.stateCode,address.cityCode,address.zip,address.mobile1,address.addressType,
-                                          address.deliveryInstruction,
-                                     '1',
-                                      language);
-                                    },
-                                    child:AddressContainer(
-                                        address:
-                                            drawerController.addressList[index]))
-                                    : InkWell(
-                                        onTap: () {
-                                          drawerController.pop();
-                                          drawerController
-                                              .navigateTo(YourAddressesScreen());
-                                        },
-                                        child: Container(
-                                            width: 150,
-                                            padding: EdgeInsets.all(10),
-                                            margin: EdgeInsets.all(5),
-                                            decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                border: Border.all(
-                                                    color: AppColors.lightBlue),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(2))),
-                                            child: Center(
-                                                child: Text(
-                                                    LocaleKeys
-                                                        .addAddressText.tr,
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: AppColors
-                                                            .primaryColor,
-                                                        fontSize: 15,
-                                                        fontWeight: FontWeight
-                                                            .bold)))));
-                              })))],):
-                  CustomButton(
-                      text: 'Sign in to see your Addresses',
-                      fontSize: 16,
-                      onPressed: () {
-                        Get.delete<DrawerControllers>();
-                        Get.delete<LoginController>();
-                        Get.delete<OtpController>();
-                        Get.delete<SignUpController>();
-                        drawerController.navigateTo(
-                            LoginScreen(from: SharedPreferencesKeys.isDrawer));
-                      }),
+                  drawerController.isLogin
+                      ? Column(
+                          children: [
+                            Visibility(
+                              visible: drawerController.loading,
+                              child: CircularProgressBar(),
+                            ),
+                            Visibility(
+                              visible: !drawerController.loading &&
+                                  drawerController.addressList.length == 0,
+                              child: InkWell(
+                                  onTap: () {
+                                    drawerController
+                                        .navigateTo(YourAddressesScreen());
+                                  },
+                                  child: Container(
+                                      width: 150,
+                                      padding: EdgeInsets.all(10),
+                                      margin: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              color: AppColors.lightBlue),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(2))),
+                                      child: Center(
+                                          child: Text(
+                                              LocaleKeys.addAddressText.tr,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: AppColors.primaryColor,
+                                                  fontSize: 15,
+                                                  fontWeight:
+                                                      FontWeight.bold))))),
+                            ),
+                            Visibility(
+                                visible: !drawerController.loading &&
+                                    drawerController.addressList.length > 0,
+                                child: Container(
+                                    height: 170,
+                                    child: ListView.builder(
+                                        itemCount: drawerController
+                                                .addressList.length +
+                                            1,
+                                        scrollDirection: Axis.horizontal,
+                                        itemBuilder: (context, index) {
+                                          return (index !=
+                                                  drawerController
+                                                      .addressList.length)
+                                              ? InkWell(
+                                                  onTap: () {
+
+                                                    Address address =
+                                                        drawerController
+                                                            .addressList[index];
+                                                    MySharedPreferences.instance
+                                                        .addStringToSF(SharedPreferencesKeys.address, "${address.cityName} - ${address.zip}");
+
+                                                    drawerController.editAddress(
+                                                        address.id,
+                                                        address.fullname,
+                                                        address.address1,
+                                                        address.address2,
+                                                        address.landmark,
+                                                        address.countryCode,
+                                                        address.stateCode,
+                                                        address.cityCode,
+                                                        address.zip,
+                                                        address.mobile1,
+                                                        address.addressType,
+                                                        address
+                                                            .deliveryInstruction,
+                                                        '1',
+                                                        language);
+                                                  },
+                                                  child: AddressContainer(
+                                                      address: drawerController
+                                                          .addressList[index]))
+                                              : InkWell(
+                                                  onTap: () {
+                                                    drawerController.pop();
+                                                    drawerController.navigateTo(
+                                                        YourAddressesScreen());
+                                                  },
+                                                  child: Container(
+                                                      width: 150,
+                                                      padding:
+                                                          EdgeInsets.all(10),
+                                                      margin: EdgeInsets.all(5),
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.white,
+                                                          border: Border.all(
+                                                              color: AppColors
+                                                                  .lightBlue),
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius.circular(
+                                                                      2))),
+                                                      child: Center(
+                                                          child: Text(
+                                                              LocaleKeys.addAddressText.tr,
+                                                              textAlign: TextAlign.center,
+                                                              style: TextStyle(color: AppColors.primaryColor, fontSize: 15, fontWeight: FontWeight.bold)))));
+                                        })))
+                          ],
+                        )
+                      : CustomButton(
+                          text: 'Sign in to see your Addresses',
+                          fontSize: 16,
+                          onPressed: () {
+                            Get.delete<DrawerControllers>();
+                            Get.delete<LoginController>();
+                            Get.delete<OtpController>();
+                            Get.delete<SignUpController>();
+                            drawerController.navigateTo(LoginScreen(
+                                from: SharedPreferencesKeys.isDrawer));
+                          }),
                 ],
               ));
         });

@@ -17,6 +17,7 @@ class StoreOtpController extends GetxController {
   String currentText = "";
   final api = Api();
   bool loading = false;
+  bool otpExpired = false;
   late String phone, otp;
 
   verifyOTP(String name, String email, String phone, String password,
@@ -71,6 +72,7 @@ class StoreOtpController extends GetxController {
   }
 
   resendOTP() async {
+    otpExpired = false;
     /* loading = true;
     update();
 

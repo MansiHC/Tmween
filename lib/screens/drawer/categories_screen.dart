@@ -86,7 +86,7 @@ class CategoriesScreen extends StatelessWidget {
                                     validator: (value) {
                                       return null;
                                     })))),
-                    Container(
+                    /*Container(
                         margin: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           color: AppColors.lightGrayColor,
@@ -109,7 +109,7 @@ class CategoriesScreen extends StatelessWidget {
                                     categoriesController.categories[index],
                                 offerVisible: false,
                               );
-                            })))
+                            })))*/
                   ],
                 ),
               ));

@@ -79,7 +79,7 @@ class SoldByTmweenScreen extends StatelessWidget {
                                 validator: (value) {
                                   return null;
                                 }))),
-                    Container(
+                    /*Container(
                         margin: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -106,7 +106,7 @@ class SoldByTmweenScreen extends StatelessWidget {
                                         .soldByTmweens[index],
                                     from: SharedPreferencesKeys.isDashboard,
                                   ));
-                            })))
+                            })))*/
                   ],
                 ),
               ));

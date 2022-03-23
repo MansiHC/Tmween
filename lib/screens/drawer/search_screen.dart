@@ -218,6 +218,7 @@ class SearchScreen extends StatelessWidget {
                         onTap: () {
                           showModalBottomSheet<void>(
                               context: searchController.context,
+
                               builder: (BuildContext context) {
                                 return _bestMatchBottomSheetView();
                               });
@@ -522,9 +523,9 @@ class SearchScreen extends StatelessWidget {
         init: SearchController(),
         builder: (contet) {
           return Container(
-              height: 290,
               padding: EdgeInsets.all(15),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   10.heightBox,
@@ -560,7 +561,7 @@ class SearchScreen extends StatelessWidget {
                       searchController.update();
                     },
                     title: Text(
-                      LocaleKeys.relevance.tr,
+                      'Product Name',
                       style: TextStyle(color: Colors.black87, fontSize: 14),
                     ),
                   ),
@@ -575,7 +576,7 @@ class SearchScreen extends StatelessWidget {
                       searchController.update();
                     },
                     title: Text(
-                      LocaleKeys.popularity.tr,
+                      LocaleKeys.lowToHigh.tr,
                       style: TextStyle(color: Colors.black87, fontSize: 14),
                     ),
                   ),
@@ -590,7 +591,7 @@ class SearchScreen extends StatelessWidget {
                       searchController.update();
                     },
                     title: Text(
-                      LocaleKeys.lowToHigh.tr,
+                      LocaleKeys.highToLow.tr,
                       style: TextStyle(color: Colors.black87, fontSize: 14),
                     ),
                   ),
@@ -605,7 +606,21 @@ class SearchScreen extends StatelessWidget {
                       searchController.update();
                     },
                     title: Text(
-                      LocaleKeys.highToLow.tr,
+                      'Avg. Customer Review',
+                      style: TextStyle(color: Colors.black87, fontSize: 14),
+                    ),
+                  ), RadioListTile(
+                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                    value: 4,
+                    activeColor: Color(0xFF1992CE),
+                    groupValue: searchController.val,
+                    onChanged: (int? value) {
+                      searchController.val = value!;
+                      searchController.update();
+                    },
+                    title: Text(
+                      'Newest Arrival',
                       style: TextStyle(color: Colors.black87, fontSize: 14),
                     ),
                   ),

@@ -618,7 +618,7 @@ Future<SuccessModel> verifyMobileChangePassword(token, userId, otp,password,lang
                 "entity_type_id": AppConstants.entity_type_id_customer,
                 "device_type": AppConstants.device_type,
                 "user_id": userId,
-                "old_image": oldImage.split("/").last,
+                "old_image": oldImage!=null?oldImage.split("/").last:'',
                 "image": image != null
                     ? 'data:image/jpeg;base64,${base64Encode(image.readAsBytesSync())}'
                     : '',
@@ -862,7 +862,7 @@ Future<SuccessModel> verifyMobileChangePassword(token, userId, otp,password,lang
   }
 
   ///E-Commerce
-  Future<DashboardModel> getHomePageMobileData(langCode) async {
+  Future<DashboardModel> getHomePageMobileData() async {
     late DashboardModel result;
     try {
       final response =
@@ -875,12 +875,12 @@ Future<SuccessModel> verifyMobileChangePassword(token, userId, otp,password,lang
               body: json.encode({
                 "entity_type_id": AppConstants.entity_type_id_customer,
                 "device_type": AppConstants.device_type,
-                "lang_code": langCode,
+                "lang_code": 'en',
                 "pagination": "1",
-                "page": "HOME"
+                "page": "MOBILE-HOME"
               }));
       var responseJson = _returnResponse(response);
-      result = DashboardModel.fromJson(responseJson)!;
+      result = DashboardModel.fromJson(responseJson);
     } on SocketException {
       Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
+import 'package:tmween/model/dashboard_model.dart';
 import 'package:tmween/model/recently_viewed_model.dart';
 import 'package:tmween/utils/extensions.dart';
 
@@ -15,7 +16,7 @@ class RecentlyViewedContainer extends StatelessWidget {
       this.from = SharedPreferencesKeys.isDrawer})
       : super(key: key);
   final String from;
-  final RecentlyViewedModel recentlyViewed;
+  final RecentlyViewProduct recentlyViewed;
 
   var language;
 
@@ -55,7 +56,7 @@ class RecentlyViewedContainer extends StatelessWidget {
                         alignment: WrapAlignment.center,
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
-                          Text(recentlyViewed.rating,
+                          Text(/*recentlyViewed.rating*/'4.1',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 11,
@@ -67,6 +68,7 @@ class RecentlyViewedContainer extends StatelessWidget {
                           )
                         ],
                       )),
+                  if(recentlyViewed.discountPer!=0)
                   Container(
                       padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                       decoration: BoxDecoration(
@@ -74,7 +76,7 @@ class RecentlyViewedContainer extends StatelessWidget {
                           borderRadius: BorderRadius.all(Radius.circular(4))),
                       child: Row(
                         children: [
-                          Text('${recentlyViewed.offer}%',
+                          Text('${recentlyViewed.discountPer}%',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 11,
@@ -90,19 +92,18 @@ class RecentlyViewedContainer extends StatelessWidget {
         Expanded(
             child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),
-                child: Image.asset(
-                  recentlyViewed.image,
-                  fit: BoxFit.contain,
-                ))),
+                child: recentlyViewed.largeImageUrl!.setNetworkImage()
+                    )),
         5.heightBox,
-        Padding(
+          Align(alignment: Alignment.centerLeft,child: Padding(
             padding: EdgeInsets.only(left: 5, right: 15),
-            child: Text(recentlyViewed.title,
+            child: Text(recentlyViewed.productName!,
                 textAlign: TextAlign.start,
-                maxLines: 2,
-                style: TextStyle(color: Color(0xFF333333), fontSize: 13))),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: Color(0xFF333333), fontSize: 13)))),
         5.heightBox,
-        if (recentlyViewed.fulfilled)
+        if (true)
           Padding(
               padding: EdgeInsets.only(left: 5, right: 15),
               child: Align(
@@ -137,22 +138,22 @@ class RecentlyViewedContainer extends StatelessWidget {
                   bottomRight: Radius.circular(4))),
           child: Row(
             children: [
-              Text('${LocaleKeys.sar.tr} ${recentlyViewed.price}',
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      color: Color(0xFF000000),
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold)),
-              2.widthBox,
               Expanded(
-                  child: Text(
-                      '${LocaleKeys.sar.tr} ${recentlyViewed.beforePrice!}',
+                  child:Wrap(children:[ Text('${recentlyViewed.finalPriceDisp!}',
                       textAlign: TextAlign.start,
                       style: TextStyle(
-                          decoration: TextDecoration.lineThrough,
-                          decorationThickness: 3,
-                          color: Color(0xFF7B7B7B),
-                          fontSize: 10))),
+                          color: Color(0xFF000000),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold)),
+                    2.widthBox,
+                    Text('${recentlyViewed.retailPriceDisp!}',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            decoration: TextDecoration.lineThrough,
+                            decorationThickness: 3,
+                            color: Color(0xFF7B7B7B),
+                            fontSize: 10))])),
+              2.widthBox,
               Align(
                 alignment: Alignment.topRight,
                 child: Container(

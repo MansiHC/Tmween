@@ -4,8 +4,7 @@ class DashboardModel {
   String? message;
   Data? data;
 
-  DashboardModel(
-      {this.statusCode, this.statusMessage, this.message, this.data});
+  DashboardModel({this.statusCode, this.statusMessage, this.message, this.data});
 
   DashboardModel.fromJson(Map<String, dynamic> json) {
     statusCode = json['status_code'];
@@ -27,96 +26,83 @@ class DashboardModel {
 }
 
 class Data {
-  List<SoldByTmweenProductData>? soldByTmweenProductData;
+
+
+
+  List<RecentlyViewProduct>? recentlyViewProduct;
   List<TopSelectionData>? topSelectionData;
+  List<SoldByTmweenProductData>? soldByTmweenProductData;
   List<BestSellerData>? bestSellerData;
   List<DailyDealsData>? dailyDealsData;
-  List<RecentlyViewProduct>? recentlyViewProduct;
   List<ShopByCategory>? shopByCategory;
-  List<Null>? banners;
+//  Banners? banners;
 
-  Data(
-      {this.soldByTmweenProductData,
-        this.topSelectionData,
-        this.bestSellerData,
-        this.dailyDealsData,
-        this.recentlyViewProduct,
-        this.shopByCategory,
-        this.banners});
+  Data({this.shopByCategory,this.dailyDealsData,this.bestSellerData,this.soldByTmweenProductData,this.topSelectionData,    this.recentlyViewProduct, /*, this.banners*/});
 
   Data.fromJson(Map<String, dynamic> json) {
-    if (json['sold_by_tmween_product_data'] != null) {
-      soldByTmweenProductData = <SoldByTmweenProductData>[];
-      json['sold_by_tmween_product_data'].forEach((v) {
-        soldByTmweenProductData!.add(new SoldByTmweenProductData.fromJson(v));
-      });
-    }
-    if (json['top_selection_data'] != null) {
-      topSelectionData = <TopSelectionData>[];
-      json['top_selection_data'].forEach((v) {
-        topSelectionData!.add(new TopSelectionData.fromJson(v));
-      });
-    }
-    if (json['best_seller_data'] != null) {
-      bestSellerData = <BestSellerData>[];
-      json['best_seller_data'].forEach((v) {
-        bestSellerData!.add(new BestSellerData.fromJson(v));
-      });
-    }
-    if (json['daily_deals_data'] != null) {
-      dailyDealsData = <DailyDealsData>[];
-      json['daily_deals_data'].forEach((v) {
-        dailyDealsData!.add(new DailyDealsData.fromJson(v));
-      });
-    }
+
+
+
     if (json['recently_view_product'] != null) {
       recentlyViewProduct = <RecentlyViewProduct>[];
-      json['recently_view_product'].forEach((v) {
-        recentlyViewProduct!.add(new RecentlyViewProduct.fromJson(v));
-      });
+      json['recently_view_product'].forEach((v) { recentlyViewProduct!.add(new RecentlyViewProduct.fromJson(v)); });
+    }
+
+    if (json['top_selection_data'] != null) {
+      topSelectionData = <TopSelectionData>[];
+      json['top_selection_data'].forEach((v) { topSelectionData!.add(new TopSelectionData.fromJson(v)); });
+    }
+
+    if (json['sold_by_tmween_product_data'] != null) {
+      soldByTmweenProductData = <SoldByTmweenProductData>[];
+      json['sold_by_tmween_product_data'].forEach((v) { soldByTmweenProductData!.add(new SoldByTmweenProductData.fromJson(v)); });
+    }
+
+    if (json['best_seller_data'] != null) {
+      bestSellerData = <BestSellerData>[];
+      json['best_seller_data'].forEach((v) { bestSellerData!.add(new BestSellerData.fromJson(v)); });
+    }
+
+    if (json['daily_deals_data'] != null) {
+      dailyDealsData = <DailyDealsData>[];
+      json['daily_deals_data'].forEach((v) { dailyDealsData!.add(new DailyDealsData.fromJson(v)); });
     }
     if (json['shop_by_category'] != null) {
       shopByCategory = <ShopByCategory>[];
-      json['shop_by_category'].forEach((v) {
-        shopByCategory!.add(new ShopByCategory.fromJson(v));
-      });
+      json['shop_by_category'].forEach((v) { shopByCategory!.add(new ShopByCategory.fromJson(v)); });
     }
-   /* if (json['banners'] != null) {
-      banners = <Null>[];
-      json['banners'].forEach((v) {
-        banners!.add(new Null.fromJson(v));
-      });
-    }*/
+ //   banners = json['banners'] != null ? new Banners.fromJson(json['banners']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.soldByTmweenProductData != null) {
-      data['sold_by_tmween_product_data'] =
-          this.soldByTmweenProductData!.map((v) => v.toJson()).toList();
-    }
-    if (this.topSelectionData != null) {
-      data['top_selection_data'] =
-          this.topSelectionData!.map((v) => v.toJson()).toList();
-    }
-    if (this.bestSellerData != null) {
-      data['best_seller_data'] =
-          this.bestSellerData!.map((v) => v.toJson()).toList();
-    }
-    if (this.dailyDealsData != null) {
-      data['daily_deals_data'] =
-          this.dailyDealsData!.map((v) => v.toJson()).toList();
-    }
+
+
     if (this.recentlyViewProduct != null) {
-      data['recently_view_product'] =
-          this.recentlyViewProduct!.map((v) => v.toJson()).toList();
+      data['recently_view_product'] = this.recentlyViewProduct!.map((v) => v.toJson()).toList();
+    }
+
+    if (this.topSelectionData != null) {
+      data['top_selection_data'] = this.topSelectionData!.map((v) => v.toJson()).toList();
+    }
+
+
+    if (this.soldByTmweenProductData != null) {
+      data['sold_by_tmween_product_data'] = this.soldByTmweenProductData!.map((v) => v.toJson()).toList();
+    }
+
+    if (this.bestSellerData != null) {
+      data['best_seller_data'] = this.bestSellerData!.map((v) => v.toJson()).toList();
+    }
+
+    if (this.dailyDealsData != null) {
+      data['daily_deals_data'] = this.dailyDealsData!.map((v) => v.toJson()).toList();
     }
     if (this.shopByCategory != null) {
-      data['shop_by_category'] =
-          this.shopByCategory!.map((v) => v.toJson()).toList();
+      data['shop_by_category'] = this.shopByCategory!.map((v) => v.toJson()).toList();
     }
-    /*if (this.banners != null) {
-      data['banners'] = this.banners!.map((v) => v.toJson()).toList();
+   /* if (this.banners != null) {
+      data['banners'] = this.banners!.toJson();
     }*/
     return data;
   }
@@ -124,51 +110,6 @@ class Data {
 
 class SoldByTmweenProductData {
   int? id;
-  String? supplierName;
-  String? supplierActivityTypeId;
-  String? companyName;
-  String? registrationNumber;
-  int? regNo;
-  String? contactName;
-  String? photo;
-  String? mobile1Isd;
-  String? mobile1;
-  String? mobile2Isd;
-  String? mobile2;
-  String? phone1Isd;
-  String? phone1;
-  String? phone2Isd;
-  String? phone2;
-  String? address1;
-  String? address2;
-  String? area;
-  String? countryCode;
-  String? stateCode;
-  String? cityCode;
-  String? zoneCode;
-  String? zip;
-  int? noOfBranches;
-  int? noOfServiceActivityType;
-  int? deliveryService;
-  int? priority;
-  String? email;
-  String? password;
-  String? orderEmail;
-  String? technicalEmail;
-  String? ip;
-  int? supplierPakageId;
-  int? supplierPakagePlanId;
-  String? subscriptionStartDate;
-  String? subscriptionEndDate;
-  int? isAutoSubscriptionUpgrade;
-  int? referenceId;
-  int? addedUserId;
-  String? latitude;
-  String? longitude;
-  String? defaultLangCode;
-  int? status;
-  String? createdAt;
-  String? updatedAt;
   int? attributeSetId;
   int? productCategoryId;
   String? upc;
@@ -179,13 +120,15 @@ class SoldByTmweenProductData {
   int? stock;
   int? inStock;
   int? isCombinationAvailable;
-  Null? reviewsAvg;
+  double? reviewsAvg;
   int? brandId;
   String? manufacturerNumber;
+  String? countryCode;
   String? vehicleTypeCode;
   int? taxClass;
   String? shortDescription;
   String? longDescription;
+  String? specification;
   String? image;
   int? isBestSellers;
   int? isTopSelection;
@@ -208,6 +151,9 @@ class SoldByTmweenProductData {
   int? packProductWeight;
   int? productInOnePack;
   int? expirable;
+  int? status;
+  String? createdAt;
+  String? updatedAt;
   String? productSlug;
   String? startDate;
   String? endDate;
@@ -221,154 +167,13 @@ class SoldByTmweenProductData {
   String? retailPriceDisp;
   String? finalPriceDisp;
   List<TopLeftCaptionArr>? topLeftCaptionArr;
+  List<TopRightCaptionArr>? topRightCaptionArr;
+  List<BottomLeftCaptionArr>? bottomLeftCaptionArr;
 
-  SoldByTmweenProductData(
-      {this.id,
-        this.supplierName,
-        this.supplierActivityTypeId,
-        this.companyName,
-        this.registrationNumber,
-        this.regNo,
-        this.contactName,
-        this.photo,
-        this.mobile1Isd,
-        this.mobile1,
-        this.mobile2Isd,
-        this.mobile2,
-        this.phone1Isd,
-        this.phone1,
-        this.phone2Isd,
-        this.phone2,
-        this.address1,
-        this.address2,
-        this.area,
-        this.countryCode,
-        this.stateCode,
-        this.cityCode,
-        this.zoneCode,
-        this.zip,
-        this.noOfBranches,
-        this.noOfServiceActivityType,
-        this.deliveryService,
-        this.priority,
-        this.email,
-        this.password,
-        this.orderEmail,
-        this.technicalEmail,
-        this.ip,
-        this.supplierPakageId,
-        this.supplierPakagePlanId,
-        this.subscriptionStartDate,
-        this.subscriptionEndDate,
-        this.isAutoSubscriptionUpgrade,
-        this.referenceId,
-        this.addedUserId,
-        this.latitude,
-        this.longitude,
-        this.defaultLangCode,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.attributeSetId,
-        this.productCategoryId,
-        this.upc,
-        this.sku,
-        this.productName,
-        this.finalPrice,
-        this.retailPrice,
-        this.stock,
-        this.inStock,
-        this.isCombinationAvailable,
-        this.reviewsAvg,
-        this.brandId,
-        this.manufacturerNumber,
-        this.vehicleTypeCode,
-        this.taxClass,
-        this.shortDescription,
-        this.longDescription,
-        this.image,
-        this.isBestSellers,
-        this.isTopSelection,
-        this.autogenerateSeo,
-        this.metaTitle,
-        this.metaKeywords,
-        this.metaDescription,
-        this.specialTransportId,
-        this.weightUnitId,
-        this.singleProductWeight,
-        this.singleProductDimensionsUnitId,
-        this.singleProductHeight,
-        this.singleProductWidth,
-        this.singleProductLength,
-        this.packProductDimensionsUnitId,
-        this.packProductHeight,
-        this.packProductWidth,
-        this.packProductLength,
-        this.packProductWeightUnitId,
-        this.packProductWeight,
-        this.productInOnePack,
-        this.expirable,
-        this.productSlug,
-        this.startDate,
-        this.endDate,
-        this.smallImageUrl,
-        this.largeImageUrl,
-        this.prodImage,
-        this.discountPerDisp,
-        this.discountPer,
-        this.discountValue,
-        this.discountValueDisp,
-        this.retailPriceDisp,
-        this.finalPriceDisp,
-        this.topLeftCaptionArr});
+  SoldByTmweenProductData({this.id, this.attributeSetId, this.productCategoryId, this.upc, this.sku, this.productName, this.finalPrice, this.retailPrice, this.stock, this.inStock, this.isCombinationAvailable, this.reviewsAvg, this.brandId, this.manufacturerNumber, this.countryCode, this.vehicleTypeCode, this.taxClass, this.shortDescription, this.longDescription, this.specification, this.image, this.isBestSellers, this.isTopSelection, this.autogenerateSeo, this.metaTitle, this.metaKeywords, this.metaDescription, this.specialTransportId, this.weightUnitId, this.singleProductWeight, this.singleProductDimensionsUnitId, this.singleProductHeight, this.singleProductWidth, this.singleProductLength, this.packProductDimensionsUnitId, this.packProductHeight, this.packProductWidth, this.packProductLength, this.packProductWeightUnitId, this.packProductWeight, this.productInOnePack, this.expirable, this.status, this.createdAt, this.updatedAt, this.productSlug, this.startDate, this.endDate, this.smallImageUrl, this.largeImageUrl, this.prodImage, this.discountPerDisp, this.discountPer, this.discountValue, this.discountValueDisp, this.retailPriceDisp, this.finalPriceDisp, this.topLeftCaptionArr, this.topRightCaptionArr, this.bottomLeftCaptionArr});
 
   SoldByTmweenProductData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    supplierName = json['supplier_name'];
-    supplierActivityTypeId = json['supplier_activity_type_id'];
-    companyName = json['company_name'];
-    registrationNumber = json['registration_number'];
-    regNo = json['reg_no'];
-    contactName = json['contact_name'];
-    photo = json['photo'];
-    mobile1Isd = json['mobile1_isd'];
-    mobile1 = json['mobile1'];
-    mobile2Isd = json['mobile2_isd'];
-    mobile2 = json['mobile2'];
-    phone1Isd = json['phone1_isd'];
-    phone1 = json['phone1'];
-    phone2Isd = json['phone2_isd'];
-    phone2 = json['phone2'];
-    address1 = json['address1'];
-    address2 = json['address2'];
-    area = json['area'];
-    countryCode = json['country_code'];
-    stateCode = json['state_code'];
-    cityCode = json['city_code'];
-    zoneCode = json['zone_code'];
-    zip = json['zip'];
-    noOfBranches = json['no_of_branches'];
-    noOfServiceActivityType = json['no_of_service_activity_type'];
-    deliveryService = json['delivery_service'];
-    priority = json['priority'];
-    email = json['email'];
-    password = json['password'];
-    orderEmail = json['order_email'];
-    technicalEmail = json['technical_email'];
-    ip = json['ip'];
-    supplierPakageId = json['supplier_pakage_id'];
-    supplierPakagePlanId = json['supplier_pakage_plan_id'];
-    subscriptionStartDate = json['subscription_start_date'];
-    subscriptionEndDate = json['subscription_end_date'];
-    isAutoSubscriptionUpgrade = json['is_auto_subscription_upgrade'];
-    referenceId = json['reference_id'];
-    addedUserId = json['added_user_id'];
-    latitude = json['latitude'];
-    longitude = json['longitude'];
-    defaultLangCode = json['default_lang_code'];
-    status = json['status'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
     attributeSetId = json['attribute_set_id'];
     productCategoryId = json['product_category_id'];
     upc = json['upc'];
@@ -382,10 +187,12 @@ class SoldByTmweenProductData {
     reviewsAvg = json['reviews_avg'];
     brandId = json['brand_id'];
     manufacturerNumber = json['manufacturer_number'];
+    countryCode = json['country_code'];
     vehicleTypeCode = json['vehicle_type_code'];
     taxClass = json['tax_class'];
     shortDescription = json['short_description'];
     longDescription = json['long_description'];
+    specification = json['specification'];
     image = json['image'];
     isBestSellers = json['is_best_sellers'];
     isTopSelection = json['is_top_selection'];
@@ -408,6 +215,9 @@ class SoldByTmweenProductData {
     packProductWeight = json['pack_product_weight'];
     productInOnePack = json['product_in_one_pack'];
     expirable = json['expirable'];
+    status = json['status'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
     productSlug = json['product_slug'];
     startDate = json['start_date'];
     endDate = json['end_date'];
@@ -422,60 +232,21 @@ class SoldByTmweenProductData {
     finalPriceDisp = json['final_price_disp'];
     if (json['topLeftCaptionArr'] != null) {
       topLeftCaptionArr = <TopLeftCaptionArr>[];
-      json['topLeftCaptionArr'].forEach((v) {
-        topLeftCaptionArr!.add(new TopLeftCaptionArr.fromJson(v));
-      });
+      json['topLeftCaptionArr'].forEach((v) { topLeftCaptionArr!.add(new TopLeftCaptionArr.fromJson(v)); });
+    }
+    if (json['topRightCaptionArr'] != null) {
+      topRightCaptionArr = <TopRightCaptionArr>[];
+      json['topRightCaptionArr'].forEach((v) { topRightCaptionArr!.add(new TopRightCaptionArr.fromJson(v)); });
+    }
+    if (json['bottomLeftCaptionArr'] != null) {
+      bottomLeftCaptionArr = <BottomLeftCaptionArr>[];
+      json['bottomLeftCaptionArr'].forEach((v) { bottomLeftCaptionArr!.add(new BottomLeftCaptionArr.fromJson(v)); });
     }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['supplier_name'] = this.supplierName;
-    data['supplier_activity_type_id'] = this.supplierActivityTypeId;
-    data['company_name'] = this.companyName;
-    data['registration_number'] = this.registrationNumber;
-    data['reg_no'] = this.regNo;
-    data['contact_name'] = this.contactName;
-    data['photo'] = this.photo;
-    data['mobile1_isd'] = this.mobile1Isd;
-    data['mobile1'] = this.mobile1;
-    data['mobile2_isd'] = this.mobile2Isd;
-    data['mobile2'] = this.mobile2;
-    data['phone1_isd'] = this.phone1Isd;
-    data['phone1'] = this.phone1;
-    data['phone2_isd'] = this.phone2Isd;
-    data['phone2'] = this.phone2;
-    data['address1'] = this.address1;
-    data['address2'] = this.address2;
-    data['area'] = this.area;
-    data['country_code'] = this.countryCode;
-    data['state_code'] = this.stateCode;
-    data['city_code'] = this.cityCode;
-    data['zone_code'] = this.zoneCode;
-    data['zip'] = this.zip;
-    data['no_of_branches'] = this.noOfBranches;
-    data['no_of_service_activity_type'] = this.noOfServiceActivityType;
-    data['delivery_service'] = this.deliveryService;
-    data['priority'] = this.priority;
-    data['email'] = this.email;
-    data['password'] = this.password;
-    data['order_email'] = this.orderEmail;
-    data['technical_email'] = this.technicalEmail;
-    data['ip'] = this.ip;
-    data['supplier_pakage_id'] = this.supplierPakageId;
-    data['supplier_pakage_plan_id'] = this.supplierPakagePlanId;
-    data['subscription_start_date'] = this.subscriptionStartDate;
-    data['subscription_end_date'] = this.subscriptionEndDate;
-    data['is_auto_subscription_upgrade'] = this.isAutoSubscriptionUpgrade;
-    data['reference_id'] = this.referenceId;
-    data['added_user_id'] = this.addedUserId;
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
-    data['default_lang_code'] = this.defaultLangCode;
-    data['status'] = this.status;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
     data['attribute_set_id'] = this.attributeSetId;
     data['product_category_id'] = this.productCategoryId;
     data['upc'] = this.upc;
@@ -489,10 +260,12 @@ class SoldByTmweenProductData {
     data['reviews_avg'] = this.reviewsAvg;
     data['brand_id'] = this.brandId;
     data['manufacturer_number'] = this.manufacturerNumber;
+    data['country_code'] = this.countryCode;
     data['vehicle_type_code'] = this.vehicleTypeCode;
     data['tax_class'] = this.taxClass;
     data['short_description'] = this.shortDescription;
     data['long_description'] = this.longDescription;
+    data['specification'] = this.specification;
     data['image'] = this.image;
     data['is_best_sellers'] = this.isBestSellers;
     data['is_top_selection'] = this.isTopSelection;
@@ -503,8 +276,7 @@ class SoldByTmweenProductData {
     data['special_transport_id'] = this.specialTransportId;
     data['weight_unit_id'] = this.weightUnitId;
     data['single_product_weight'] = this.singleProductWeight;
-    data['single_product_dimensions_unit_id'] =
-        this.singleProductDimensionsUnitId;
+    data['single_product_dimensions_unit_id'] = this.singleProductDimensionsUnitId;
     data['single_product_height'] = this.singleProductHeight;
     data['single_product_width'] = this.singleProductWidth;
     data['single_product_length'] = this.singleProductLength;
@@ -516,6 +288,9 @@ class SoldByTmweenProductData {
     data['pack_product_weight'] = this.packProductWeight;
     data['product_in_one_pack'] = this.productInOnePack;
     data['expirable'] = this.expirable;
+    data['status'] = this.status;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
     data['product_slug'] = this.productSlug;
     data['start_date'] = this.startDate;
     data['end_date'] = this.endDate;
@@ -529,8 +304,13 @@ class SoldByTmweenProductData {
     data['retail_price_disp'] = this.retailPriceDisp;
     data['final_price_disp'] = this.finalPriceDisp;
     if (this.topLeftCaptionArr != null) {
-      data['topLeftCaptionArr'] =
-          this.topLeftCaptionArr!.map((v) => v.toJson()).toList();
+      data['topLeftCaptionArr'] = this.topLeftCaptionArr!.map((v) => v.toJson()).toList();
+    }
+    if (this.topRightCaptionArr != null) {
+      data['topRightCaptionArr'] = this.topRightCaptionArr!.map((v) => v.toJson()).toList();
+    }
+    if (this.bottomLeftCaptionArr != null) {
+      data['bottomLeftCaptionArr'] = this.bottomLeftCaptionArr!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -545,14 +325,7 @@ class TopLeftCaptionArr {
   String? createdAt;
   String? updatedAt;
 
-  TopLeftCaptionArr(
-      {this.id,
-        this.productId,
-        this.caption,
-        this.position,
-        this.color,
-        this.createdAt,
-        this.updatedAt});
+  TopLeftCaptionArr({this.id, this.productId, this.caption, this.position, this.color, this.createdAt, this.updatedAt});
 
   TopLeftCaptionArr.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -585,16 +358,75 @@ class TopRightCaptionArr {
   String? createdAt;
   String? updatedAt;
 
-  TopRightCaptionArr(
-      {this.id,
-        this.productId,
-        this.caption,
-        this.position,
-        this.color,
-        this.createdAt,
-        this.updatedAt});
+  TopRightCaptionArr({this.id, this.productId, this.caption, this.position, this.color, this.createdAt, this.updatedAt});
 
   TopRightCaptionArr.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    productId = json['product_id'];
+    caption = json['caption'];
+    position = json['position'];
+    color = json['color'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['product_id'] = this.productId;
+    data['caption'] = this.caption;
+    data['position'] = this.position;
+    data['color'] = this.color;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    return data;
+  }
+}
+class BottomLeftCaptionArr {
+  int? id;
+  int? productId;
+  String? caption;
+  int? position;
+  String? color;
+  String? createdAt;
+  String? updatedAt;
+
+  BottomLeftCaptionArr({this.id, this.productId, this.caption, this.position, this.color, this.createdAt, this.updatedAt});
+
+  BottomLeftCaptionArr.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    productId = json['product_id'];
+    caption = json['caption'];
+    position = json['position'];
+    color = json['color'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['product_id'] = this.productId;
+    data['caption'] = this.caption;
+    data['position'] = this.position;
+    data['color'] = this.color;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    return data;
+  }
+}
+class BottomRightCaptionArr {
+  int? id;
+  int? productId;
+  String? caption;
+  int? position;
+  String? color;
+  String? createdAt;
+  String? updatedAt;
+
+  BottomRightCaptionArr({this.id, this.productId, this.caption, this.position, this.color, this.createdAt, this.updatedAt});
+
+  BottomRightCaptionArr.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     productId = json['product_id'];
     caption = json['caption'];
@@ -629,7 +461,7 @@ class TopSelectionData {
   int? stock;
   int? inStock;
   int? isCombinationAvailable;
-  Null? reviewsAvg;
+  int? reviewsAvg;
   int? brandId;
   String? manufacturerNumber;
   String? countryCode;
@@ -637,6 +469,7 @@ class TopSelectionData {
   int? taxClass;
   String? shortDescription;
   String? longDescription;
+  String? specification;
   String? image;
   int? isBestSellers;
   int? isTopSelection;
@@ -674,68 +507,12 @@ class TopSelectionData {
   String? discountValueDisp;
   String? retailPriceDisp;
   String? finalPriceDisp;
-  List<TopLeftCaptionArr>? topLeftCaptionArr;
   List<TopRightCaptionArr>? topRightCaptionArr;
+  List<BottomLeftCaptionArr>? bottomLeftCaptionArr;
+  List<TopLeftCaptionArr>? topLeftCaptionArr;
+  List<BottomRightCaptionArr>? bottomRightCaptionArr;
 
-  TopSelectionData(
-      {this.id,
-        this.attributeSetId,
-        this.productCategoryId,
-        this.upc,
-        this.sku,
-        this.productName,
-        this.finalPrice,
-        this.retailPrice,
-        this.stock,
-        this.inStock,
-        this.isCombinationAvailable,
-        this.reviewsAvg,
-        this.brandId,
-        this.manufacturerNumber,
-        this.countryCode,
-        this.vehicleTypeCode,
-        this.taxClass,
-        this.shortDescription,
-        this.longDescription,
-        this.image,
-        this.isBestSellers,
-        this.isTopSelection,
-        this.autogenerateSeo,
-        this.metaTitle,
-        this.metaKeywords,
-        this.metaDescription,
-        this.specialTransportId,
-        this.weightUnitId,
-        this.singleProductWeight,
-        this.singleProductDimensionsUnitId,
-        this.singleProductHeight,
-        this.singleProductWidth,
-        this.singleProductLength,
-        this.packProductDimensionsUnitId,
-        this.packProductHeight,
-        this.packProductWidth,
-        this.packProductLength,
-        this.packProductWeightUnitId,
-        this.packProductWeight,
-        this.productInOnePack,
-        this.expirable,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.attributeSetName,
-        this.categoryName,
-        this.productSlug,
-        this.smallImageUrl,
-        this.largeImageUrl,
-        this.prodImage,
-        this.discountPerDisp,
-        this.discountPer,
-        this.discountValue,
-        this.discountValueDisp,
-        this.retailPriceDisp,
-        this.finalPriceDisp,
-        this.topLeftCaptionArr,
-        this.topRightCaptionArr});
+  TopSelectionData({this.id, this.attributeSetId, this.productCategoryId, this.upc, this.sku, this.productName, this.finalPrice, this.retailPrice, this.stock, this.inStock, this.isCombinationAvailable, this.reviewsAvg, this.brandId, this.manufacturerNumber, this.countryCode, this.vehicleTypeCode, this.taxClass, this.shortDescription, this.longDescription, this.specification, this.image, this.isBestSellers, this.isTopSelection, this.autogenerateSeo, this.metaTitle, this.metaKeywords, this.metaDescription, this.specialTransportId, this.weightUnitId, this.singleProductWeight, this.singleProductDimensionsUnitId, this.singleProductHeight, this.singleProductWidth, this.singleProductLength, this.packProductDimensionsUnitId, this.packProductHeight, this.packProductWidth, this.packProductLength, this.packProductWeightUnitId, this.packProductWeight, this.productInOnePack, this.expirable, this.status, this.createdAt, this.updatedAt, this.attributeSetName, this.categoryName, this.productSlug, this.smallImageUrl, this.largeImageUrl, this.prodImage, this.discountPerDisp, this.discountPer, this.discountValue, this.discountValueDisp, this.retailPriceDisp, this.finalPriceDisp, this.topRightCaptionArr, this.bottomLeftCaptionArr, this.topLeftCaptionArr, this.bottomRightCaptionArr});
 
   TopSelectionData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -757,6 +534,7 @@ class TopSelectionData {
     taxClass = json['tax_class'];
     shortDescription = json['short_description'];
     longDescription = json['long_description'];
+    specification = json['specification'];
     image = json['image'];
     isBestSellers = json['is_best_sellers'];
     isTopSelection = json['is_top_selection'];
@@ -794,17 +572,21 @@ class TopSelectionData {
     discountValueDisp = json['discount_value_disp'];
     retailPriceDisp = json['retail_price_disp'];
     finalPriceDisp = json['final_price_disp'];
-    if (json['topLeftCaptionArr'] != null) {
-      topLeftCaptionArr = <TopLeftCaptionArr>[];
-      json['topLeftCaptionArr'].forEach((v) {
-        topLeftCaptionArr!.add(new TopLeftCaptionArr.fromJson(v));
-      });
-    }
     if (json['topRightCaptionArr'] != null) {
       topRightCaptionArr = <TopRightCaptionArr>[];
-      json['topRightCaptionArr'].forEach((v) {
-        topRightCaptionArr!.add(new TopRightCaptionArr.fromJson(v));
-      });
+      json['topRightCaptionArr'].forEach((v) { topRightCaptionArr!.add(new TopRightCaptionArr.fromJson(v)); });
+    }
+    if (json['bottomLeftCaptionArr'] != null) {
+      bottomLeftCaptionArr = <BottomLeftCaptionArr>[];
+      json['bottomLeftCaptionArr'].forEach((v) { bottomLeftCaptionArr!.add(new BottomLeftCaptionArr.fromJson(v)); });
+    }
+    if (json['topLeftCaptionArr'] != null) {
+      topLeftCaptionArr = <TopLeftCaptionArr>[];
+      json['topLeftCaptionArr'].forEach((v) { topLeftCaptionArr!.add(new TopLeftCaptionArr.fromJson(v)); });
+    }
+    if (json['bottomRightCaptionArr'] != null) {
+      bottomRightCaptionArr = <BottomRightCaptionArr>[];
+      json['bottomRightCaptionArr'].forEach((v) { bottomRightCaptionArr!.add(new BottomRightCaptionArr.fromJson(v)); });
     }
   }
 
@@ -829,6 +611,7 @@ class TopSelectionData {
     data['tax_class'] = this.taxClass;
     data['short_description'] = this.shortDescription;
     data['long_description'] = this.longDescription;
+    data['specification'] = this.specification;
     data['image'] = this.image;
     data['is_best_sellers'] = this.isBestSellers;
     data['is_top_selection'] = this.isTopSelection;
@@ -839,8 +622,7 @@ class TopSelectionData {
     data['special_transport_id'] = this.specialTransportId;
     data['weight_unit_id'] = this.weightUnitId;
     data['single_product_weight'] = this.singleProductWeight;
-    data['single_product_dimensions_unit_id'] =
-        this.singleProductDimensionsUnitId;
+    data['single_product_dimensions_unit_id'] = this.singleProductDimensionsUnitId;
     data['single_product_height'] = this.singleProductHeight;
     data['single_product_width'] = this.singleProductWidth;
     data['single_product_length'] = this.singleProductLength;
@@ -867,13 +649,17 @@ class TopSelectionData {
     data['discount_value_disp'] = this.discountValueDisp;
     data['retail_price_disp'] = this.retailPriceDisp;
     data['final_price_disp'] = this.finalPriceDisp;
-    if (this.topLeftCaptionArr != null) {
-      data['topLeftCaptionArr'] =
-          this.topLeftCaptionArr!.map((v) => v.toJson()).toList();
-    }
     if (this.topRightCaptionArr != null) {
-      data['topRightCaptionArr'] =
-          this.topRightCaptionArr!.map((v) => v.toJson()).toList();
+      data['topRightCaptionArr'] = this.topRightCaptionArr!.map((v) => v.toJson()).toList();
+    }
+    if (this.bottomLeftCaptionArr != null) {
+      data['bottomLeftCaptionArr'] = this.bottomLeftCaptionArr!.map((v) => v.toJson()).toList();
+    }
+    if (this.topLeftCaptionArr != null) {
+      data['topLeftCaptionArr'] = this.topLeftCaptionArr!.map((v) => v.toJson()).toList();
+    }
+    if (this.bottomRightCaptionArr != null) {
+      data['bottomRightCaptionArr'] = this.bottomRightCaptionArr!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -891,7 +677,7 @@ class BestSellerData {
   int? stock;
   int? inStock;
   int? isCombinationAvailable;
-  Null? reviewsAvg;
+  int? reviewsAvg;
   int? brandId;
   String? manufacturerNumber;
   String? countryCode;
@@ -899,6 +685,7 @@ class BestSellerData {
   int? taxClass;
   String? shortDescription;
   String? longDescription;
+  String? specification;
   String? image;
   int? isBestSellers;
   int? isTopSelection;
@@ -936,68 +723,12 @@ class BestSellerData {
   String? discountValueDisp;
   String? retailPriceDisp;
   String? finalPriceDisp;
-  List<TopLeftCaptionArr>? topLeftCaptionArr;
   List<TopRightCaptionArr>? topRightCaptionArr;
+  List<BottomLeftCaptionArr>? bottomLeftCaptionArr;
+  List<TopLeftCaptionArr>? topLeftCaptionArr;
+  List<BottomRightCaptionArr>? bottomRightCaptionArr;
 
-  BestSellerData(
-      {this.id,
-        this.attributeSetId,
-        this.productCategoryId,
-        this.upc,
-        this.sku,
-        this.productName,
-        this.finalPrice,
-        this.retailPrice,
-        this.stock,
-        this.inStock,
-        this.isCombinationAvailable,
-        this.reviewsAvg,
-        this.brandId,
-        this.manufacturerNumber,
-        this.countryCode,
-        this.vehicleTypeCode,
-        this.taxClass,
-        this.shortDescription,
-        this.longDescription,
-        this.image,
-        this.isBestSellers,
-        this.isTopSelection,
-        this.autogenerateSeo,
-        this.metaTitle,
-        this.metaKeywords,
-        this.metaDescription,
-        this.specialTransportId,
-        this.weightUnitId,
-        this.singleProductWeight,
-        this.singleProductDimensionsUnitId,
-        this.singleProductHeight,
-        this.singleProductWidth,
-        this.singleProductLength,
-        this.packProductDimensionsUnitId,
-        this.packProductHeight,
-        this.packProductWidth,
-        this.packProductLength,
-        this.packProductWeightUnitId,
-        this.packProductWeight,
-        this.productInOnePack,
-        this.expirable,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.attributeSetName,
-        this.categoryName,
-        this.productSlug,
-        this.smallImageUrl,
-        this.largeImageUrl,
-        this.prodImage,
-        this.discountPerDisp,
-        this.discountPer,
-        this.discountValue,
-        this.discountValueDisp,
-        this.retailPriceDisp,
-        this.finalPriceDisp,
-        this.topLeftCaptionArr,
-        this.topRightCaptionArr});
+  BestSellerData({this.id, this.attributeSetId, this.productCategoryId, this.upc, this.sku, this.productName, this.finalPrice, this.retailPrice, this.stock, this.inStock, this.isCombinationAvailable, this.reviewsAvg, this.brandId, this.manufacturerNumber, this.countryCode, this.vehicleTypeCode, this.taxClass, this.shortDescription, this.longDescription, this.specification, this.image, this.isBestSellers, this.isTopSelection, this.autogenerateSeo, this.metaTitle, this.metaKeywords, this.metaDescription, this.specialTransportId, this.weightUnitId, this.singleProductWeight, this.singleProductDimensionsUnitId, this.singleProductHeight, this.singleProductWidth, this.singleProductLength, this.packProductDimensionsUnitId, this.packProductHeight, this.packProductWidth, this.packProductLength, this.packProductWeightUnitId, this.packProductWeight, this.productInOnePack, this.expirable, this.status, this.createdAt, this.updatedAt, this.attributeSetName, this.categoryName, this.productSlug, this.smallImageUrl, this.largeImageUrl, this.prodImage, this.discountPerDisp, this.discountPer, this.discountValue, this.discountValueDisp, this.retailPriceDisp, this.finalPriceDisp, this.topRightCaptionArr, this.bottomLeftCaptionArr, this.topLeftCaptionArr, this.bottomRightCaptionArr});
 
   BestSellerData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -1019,6 +750,7 @@ class BestSellerData {
     taxClass = json['tax_class'];
     shortDescription = json['short_description'];
     longDescription = json['long_description'];
+    specification = json['specification'];
     image = json['image'];
     isBestSellers = json['is_best_sellers'];
     isTopSelection = json['is_top_selection'];
@@ -1056,17 +788,21 @@ class BestSellerData {
     discountValueDisp = json['discount_value_disp'];
     retailPriceDisp = json['retail_price_disp'];
     finalPriceDisp = json['final_price_disp'];
-    if (json['topLeftCaptionArr'] != null) {
-      topLeftCaptionArr = <TopLeftCaptionArr>[];
-      json['topLeftCaptionArr'].forEach((v) {
-        topLeftCaptionArr!.add(new TopLeftCaptionArr.fromJson(v));
-      });
-    }
     if (json['topRightCaptionArr'] != null) {
       topRightCaptionArr = <TopRightCaptionArr>[];
-      json['topRightCaptionArr'].forEach((v) {
-        topRightCaptionArr!.add(new TopRightCaptionArr.fromJson(v));
-      });
+      json['topRightCaptionArr'].forEach((v) { topRightCaptionArr!.add(new TopRightCaptionArr.fromJson(v)); });
+    }
+    if (json['bottomLeftCaptionArr'] != null) {
+      bottomLeftCaptionArr = <BottomLeftCaptionArr>[];
+      json['bottomLeftCaptionArr'].forEach((v) { bottomLeftCaptionArr!.add(new BottomLeftCaptionArr.fromJson(v)); });
+    }
+    if (json['topLeftCaptionArr'] != null) {
+      topLeftCaptionArr = <TopLeftCaptionArr>[];
+      json['topLeftCaptionArr'].forEach((v) { topLeftCaptionArr!.add(new TopLeftCaptionArr.fromJson(v)); });
+    }
+    if (json['bottomRightCaptionArr'] != null) {
+      bottomRightCaptionArr = <BottomRightCaptionArr>[];
+      json['bottomRightCaptionArr'].forEach((v) { bottomRightCaptionArr!.add(new BottomRightCaptionArr.fromJson(v)); });
     }
   }
 
@@ -1091,6 +827,7 @@ class BestSellerData {
     data['tax_class'] = this.taxClass;
     data['short_description'] = this.shortDescription;
     data['long_description'] = this.longDescription;
+    data['specification'] = this.specification;
     data['image'] = this.image;
     data['is_best_sellers'] = this.isBestSellers;
     data['is_top_selection'] = this.isTopSelection;
@@ -1101,8 +838,7 @@ class BestSellerData {
     data['special_transport_id'] = this.specialTransportId;
     data['weight_unit_id'] = this.weightUnitId;
     data['single_product_weight'] = this.singleProductWeight;
-    data['single_product_dimensions_unit_id'] =
-        this.singleProductDimensionsUnitId;
+    data['single_product_dimensions_unit_id'] = this.singleProductDimensionsUnitId;
     data['single_product_height'] = this.singleProductHeight;
     data['single_product_width'] = this.singleProductWidth;
     data['single_product_length'] = this.singleProductLength;
@@ -1129,13 +865,17 @@ class BestSellerData {
     data['discount_value_disp'] = this.discountValueDisp;
     data['retail_price_disp'] = this.retailPriceDisp;
     data['final_price_disp'] = this.finalPriceDisp;
-    if (this.topLeftCaptionArr != null) {
-      data['topLeftCaptionArr'] =
-          this.topLeftCaptionArr!.map((v) => v.toJson()).toList();
-    }
     if (this.topRightCaptionArr != null) {
-      data['topRightCaptionArr'] =
-          this.topRightCaptionArr!.map((v) => v.toJson()).toList();
+      data['topRightCaptionArr'] = this.topRightCaptionArr!.map((v) => v.toJson()).toList();
+    }
+    if (this.bottomLeftCaptionArr != null) {
+      data['bottomLeftCaptionArr'] = this.bottomLeftCaptionArr!.map((v) => v.toJson()).toList();
+    }
+    if (this.topLeftCaptionArr != null) {
+      data['topLeftCaptionArr'] = this.topLeftCaptionArr!.map((v) => v.toJson()).toList();
+    }
+    if (this.bottomRightCaptionArr != null) {
+      data['bottomRightCaptionArr'] = this.bottomRightCaptionArr!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -1167,6 +907,7 @@ class DailyDealsData {
   int? taxClass;
   String? shortDescription;
   String? longDescription;
+  String? specification;
   String? image;
   int? isBestSellers;
   int? isTopSelection;
@@ -1201,67 +942,12 @@ class DailyDealsData {
   String? discountValueDisp;
   String? retailPriceDisp;
   String? finalPriceDisp;
+  List<TopRightCaptionArr>? topRightCaptionArr;
+  List<BottomLeftCaptionArr>? bottomLeftCaptionArr;
+  List<TopLeftCaptionArr>? topLeftCaptionArr;
+  List<BottomRightCaptionArr>? bottomRightCaptionArr;
 
-  DailyDealsData(
-      {this.id,
-        this.productId,
-        this.productItemId,
-        this.discountPercentage,
-        this.startDate,
-        this.endDate,
-        this.status,
-        this.attributeSetId,
-        this.productCategoryId,
-        this.upc,
-        this.sku,
-        this.productName,
-        this.finalPrice,
-        this.retailPrice,
-        this.stock,
-        this.inStock,
-        this.isCombinationAvailable,
-        this.reviewsAvg,
-        this.brandId,
-        this.manufacturerNumber,
-        this.countryCode,
-        this.vehicleTypeCode,
-        this.taxClass,
-        this.shortDescription,
-        this.longDescription,
-        this.image,
-        this.isBestSellers,
-        this.isTopSelection,
-        this.autogenerateSeo,
-        this.metaTitle,
-        this.metaKeywords,
-        this.metaDescription,
-        this.specialTransportId,
-        this.weightUnitId,
-        this.singleProductWeight,
-        this.singleProductDimensionsUnitId,
-        this.singleProductHeight,
-        this.singleProductWidth,
-        this.singleProductLength,
-        this.packProductDimensionsUnitId,
-        this.packProductHeight,
-        this.packProductWidth,
-        this.packProductLength,
-        this.packProductWeightUnitId,
-        this.packProductWeight,
-        this.productInOnePack,
-        this.expirable,
-        this.createdAt,
-        this.updatedAt,
-        this.productSlug,
-        this.smallImageUrl,
-        this.largeImageUrl,
-        this.prodImage,
-        this.discountPerDisp,
-        this.discountPer,
-        this.discountValue,
-        this.discountValueDisp,
-        this.retailPriceDisp,
-        this.finalPriceDisp});
+  DailyDealsData({this.id, this.productId, this.productItemId, this.discountPercentage, this.startDate, this.endDate, this.status, this.attributeSetId, this.productCategoryId, this.upc, this.sku, this.productName, this.finalPrice, this.retailPrice, this.stock, this.inStock, this.isCombinationAvailable, this.reviewsAvg, this.brandId, this.manufacturerNumber, this.countryCode, this.vehicleTypeCode, this.taxClass, this.shortDescription, this.longDescription, this.specification, this.image, this.isBestSellers, this.isTopSelection, this.autogenerateSeo, this.metaTitle, this.metaKeywords, this.metaDescription, this.specialTransportId, this.weightUnitId, this.singleProductWeight, this.singleProductDimensionsUnitId, this.singleProductHeight, this.singleProductWidth, this.singleProductLength, this.packProductDimensionsUnitId, this.packProductHeight, this.packProductWidth, this.packProductLength, this.packProductWeightUnitId, this.packProductWeight, this.productInOnePack, this.expirable, this.createdAt, this.updatedAt, this.productSlug, this.smallImageUrl, this.largeImageUrl, this.prodImage, this.discountPerDisp, this.discountPer, this.discountValue, this.discountValueDisp, this.retailPriceDisp, this.finalPriceDisp, this.topRightCaptionArr, this.bottomLeftCaptionArr, this.topLeftCaptionArr, this.bottomRightCaptionArr});
 
   DailyDealsData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -1289,6 +975,7 @@ class DailyDealsData {
     taxClass = json['tax_class'];
     shortDescription = json['short_description'];
     longDescription = json['long_description'];
+    specification = json['specification'];
     image = json['image'];
     isBestSellers = json['is_best_sellers'];
     isTopSelection = json['is_top_selection'];
@@ -1323,6 +1010,22 @@ class DailyDealsData {
     discountValueDisp = json['discount_value_disp'];
     retailPriceDisp = json['retail_price_disp'];
     finalPriceDisp = json['final_price_disp'];
+    if (json['topRightCaptionArr'] != null) {
+      topRightCaptionArr = <TopRightCaptionArr>[];
+      json['topRightCaptionArr'].forEach((v) { topRightCaptionArr!.add(new TopRightCaptionArr.fromJson(v)); });
+    }
+    if (json['bottomLeftCaptionArr'] != null) {
+      bottomLeftCaptionArr = <BottomLeftCaptionArr>[];
+      json['bottomLeftCaptionArr'].forEach((v) { bottomLeftCaptionArr!.add(new BottomLeftCaptionArr.fromJson(v)); });
+    }
+    if (json['topLeftCaptionArr'] != null) {
+      topLeftCaptionArr = <TopLeftCaptionArr>[];
+      json['topLeftCaptionArr'].forEach((v) { topLeftCaptionArr!.add(new TopLeftCaptionArr.fromJson(v)); });
+    }
+    if (json['bottomRightCaptionArr'] != null) {
+      bottomRightCaptionArr = <BottomRightCaptionArr>[];
+      json['bottomRightCaptionArr'].forEach((v) { bottomRightCaptionArr!.add(new BottomRightCaptionArr.fromJson(v)); });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -1352,6 +1055,7 @@ class DailyDealsData {
     data['tax_class'] = this.taxClass;
     data['short_description'] = this.shortDescription;
     data['long_description'] = this.longDescription;
+    data['specification'] = this.specification;
     data['image'] = this.image;
     data['is_best_sellers'] = this.isBestSellers;
     data['is_top_selection'] = this.isTopSelection;
@@ -1362,8 +1066,7 @@ class DailyDealsData {
     data['special_transport_id'] = this.specialTransportId;
     data['weight_unit_id'] = this.weightUnitId;
     data['single_product_weight'] = this.singleProductWeight;
-    data['single_product_dimensions_unit_id'] =
-        this.singleProductDimensionsUnitId;
+    data['single_product_dimensions_unit_id'] = this.singleProductDimensionsUnitId;
     data['single_product_height'] = this.singleProductHeight;
     data['single_product_width'] = this.singleProductWidth;
     data['single_product_length'] = this.singleProductLength;
@@ -1387,6 +1090,18 @@ class DailyDealsData {
     data['discount_value_disp'] = this.discountValueDisp;
     data['retail_price_disp'] = this.retailPriceDisp;
     data['final_price_disp'] = this.finalPriceDisp;
+    if (this.topRightCaptionArr != null) {
+      data['topRightCaptionArr'] = this.topRightCaptionArr!.map((v) => v.toJson()).toList();
+    }
+    if (this.bottomLeftCaptionArr != null) {
+      data['bottomLeftCaptionArr'] = this.bottomLeftCaptionArr!.map((v) => v.toJson()).toList();
+    }
+    if (this.topLeftCaptionArr != null) {
+      data['topLeftCaptionArr'] = this.topLeftCaptionArr!.map((v) => v.toJson()).toList();
+    }
+    if (this.bottomRightCaptionArr != null) {
+      data['bottomRightCaptionArr'] = this.bottomRightCaptionArr!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
@@ -1403,7 +1118,7 @@ class RecentlyViewProduct {
   int? stock;
   int? inStock;
   int? isCombinationAvailable;
-  Null? reviewsAvg;
+  int? reviewsAvg;
   int? brandId;
   String? manufacturerNumber;
   String? countryCode;
@@ -1411,6 +1126,7 @@ class RecentlyViewProduct {
   int? taxClass;
   String? shortDescription;
   String? longDescription;
+  String? specification;
   String? image;
   int? isBestSellers;
   int? isTopSelection;
@@ -1450,64 +1166,7 @@ class RecentlyViewProduct {
   int? isWishlist;
   String? discountPerDisp;
 
-  RecentlyViewProduct(
-      {this.id,
-        this.attributeSetId,
-        this.productCategoryId,
-        this.upc,
-        this.sku,
-        this.productName,
-        this.finalPrice,
-        this.retailPrice,
-        this.stock,
-        this.inStock,
-        this.isCombinationAvailable,
-        this.reviewsAvg,
-        this.brandId,
-        this.manufacturerNumber,
-        this.countryCode,
-        this.vehicleTypeCode,
-        this.taxClass,
-        this.shortDescription,
-        this.longDescription,
-        this.image,
-        this.isBestSellers,
-        this.isTopSelection,
-        this.autogenerateSeo,
-        this.metaTitle,
-        this.metaKeywords,
-        this.metaDescription,
-        this.specialTransportId,
-        this.weightUnitId,
-        this.singleProductWeight,
-        this.singleProductDimensionsUnitId,
-        this.singleProductHeight,
-        this.singleProductWidth,
-        this.singleProductLength,
-        this.packProductDimensionsUnitId,
-        this.packProductHeight,
-        this.packProductWidth,
-        this.packProductLength,
-        this.packProductWeightUnitId,
-        this.packProductWeight,
-        this.productInOnePack,
-        this.expirable,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.productId,
-        this.customerId,
-        this.productSlug,
-        this.smallImageUrl,
-        this.largeImageUrl,
-        this.discountValuePercentage,
-        this.discountPer,
-        this.discountValue,
-        this.discountValueDisp,
-        this.retailPriceDisp,
-        this.finalPriceDisp,
-        this.isWishlist,
-        this.discountPerDisp});
+  RecentlyViewProduct({this.id, this.attributeSetId, this.productCategoryId, this.upc, this.sku, this.productName, this.finalPrice, this.retailPrice, this.stock, this.inStock, this.isCombinationAvailable, this.reviewsAvg, this.brandId, this.manufacturerNumber, this.countryCode, this.vehicleTypeCode, this.taxClass, this.shortDescription, this.longDescription, this.specification, this.image, this.isBestSellers, this.isTopSelection, this.autogenerateSeo, this.metaTitle, this.metaKeywords, this.metaDescription, this.specialTransportId, this.weightUnitId, this.singleProductWeight, this.singleProductDimensionsUnitId, this.singleProductHeight, this.singleProductWidth, this.singleProductLength, this.packProductDimensionsUnitId, this.packProductHeight, this.packProductWidth, this.packProductLength, this.packProductWeightUnitId, this.packProductWeight, this.productInOnePack, this.expirable, this.status, this.createdAt, this.updatedAt, this.productId, this.customerId, this.productSlug, this.smallImageUrl, this.largeImageUrl, this.discountValuePercentage, this.discountPer, this.discountValue, this.discountValueDisp, this.retailPriceDisp, this.finalPriceDisp, this.isWishlist, this.discountPerDisp});
 
   RecentlyViewProduct.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -1529,6 +1188,7 @@ class RecentlyViewProduct {
     taxClass = json['tax_class'];
     shortDescription = json['short_description'];
     longDescription = json['long_description'];
+    specification = json['specification'];
     image = json['image'];
     isBestSellers = json['is_best_sellers'];
     isTopSelection = json['is_top_selection'];
@@ -1590,6 +1250,7 @@ class RecentlyViewProduct {
     data['tax_class'] = this.taxClass;
     data['short_description'] = this.shortDescription;
     data['long_description'] = this.longDescription;
+    data['specification'] = this.specification;
     data['image'] = this.image;
     data['is_best_sellers'] = this.isBestSellers;
     data['is_top_selection'] = this.isTopSelection;
@@ -1600,8 +1261,7 @@ class RecentlyViewProduct {
     data['special_transport_id'] = this.specialTransportId;
     data['weight_unit_id'] = this.weightUnitId;
     data['single_product_weight'] = this.singleProductWeight;
-    data['single_product_dimensions_unit_id'] =
-        this.singleProductDimensionsUnitId;
+    data['single_product_dimensions_unit_id'] = this.singleProductDimensionsUnitId;
     data['single_product_height'] = this.singleProductHeight;
     data['single_product_width'] = this.singleProductWidth;
     data['single_product_length'] = this.singleProductLength;
@@ -1642,14 +1302,7 @@ class ShopByCategory {
   String? slugName;
   String? smallImageUrl;
 
-  ShopByCategory(
-      {this.id,
-        this.categoryName,
-        this.parentId,
-        this.showInTopMenu,
-        this.image,
-        this.slugName,
-        this.smallImageUrl});
+  ShopByCategory({this.id, this.categoryName, this.parentId, this.showInTopMenu, this.image, this.slugName, this.smallImageUrl});
 
   ShopByCategory.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -1673,3 +1326,103 @@ class ShopByCategory {
     return data;
   }
 }
+
+/*class Banners {
+  TOP? tOP;
+  CENTER? cENTER;
+
+  Banners({this.tOP, this.cENTER});
+
+  Banners.fromJson(Map<String, dynamic> json) {
+    tOP = json['TOP'] != null ? new TOP.fromJson(json['TOP']) : null;
+    cENTER = json['CENTER'] != null ? new CENTER.fromJson(json['CENTER']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.tOP != null) {
+      data['TOP'] = this.tOP!.toJson();
+    }
+    if (this.cENTER != null) {
+      data['CENTER'] = this.cENTER!.toJson();
+    }
+    return data;
+  }
+}
+
+class TOP {
+  Name1? name11;
+
+  TOP({this.name11});
+
+  TOP.fromJson(Map<String, dynamic> json) {
+  name11 = json['1'] != null ? new Name1.fromJson(json['1']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+  final Map<String, dynamic> data = new Map<String, dynamic>();
+  if (this.name11 != null) {
+  data['1'] = this.name11!.toJson();
+  }
+  return data;
+  }
+}
+
+class Name1 {
+int? id;
+String? title;
+String? bannerUrl;
+String? image;
+String? imgUrl;
+String? largeImageUrl;
+
+Name1({this.id, this.title, this.bannerUrl, this.image, this.imgUrl, this.largeImageUrl});
+
+Name1.fromJson(Map<String, dynamic> json) {
+id = json['id'];
+title = json['title'];
+bannerUrl = json['banner_url'];
+image = json['image'];
+imgUrl = json['img_url'];
+largeImageUrl = json['large_image_url'];
+}
+
+Map<String, dynamic> toJson() {
+final Map<String, dynamic> data = new Map<String, dynamic>();
+data['id'] = this.id;
+data['title'] = this.title;
+data['banner_url'] = this.bannerUrl;
+data['image'] = this.image;
+data['img_url'] = this.imgUrl;
+data['large_image_url'] = this.largeImageUrl;
+return data;
+}
+}
+
+class CENTER {
+  Name1? name12;
+  Name1? name13;
+  Name1? name14;
+
+CENTER({this.name12, this.name13, this.name14});
+
+CENTER.fromJson(Map<String, dynamic> json) {
+name12 = json['2'] != null ? new Name1.fromJson(json['2']) : null;
+name13 = json['3'] != null ? new Name1.fromJson(json['3']) : null;
+name14 = json['4'] != null ? new Name1.fromJson(json['4']) : null;
+}
+
+Map<String, dynamic> toJson() {
+final Map<String, dynamic> data = new Map<String, dynamic>();
+if (this.name12 != null) {
+data['2'] = this.name12!.toJson();
+}
+if (this.name13 != null) {
+data['3'] = this.name13!.toJson();
+}
+if (this.name14 != null) {
+data['4'] = this.name14!.toJson();
+}
+return data;
+}
+}*/

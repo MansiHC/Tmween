@@ -78,7 +78,7 @@ class RecentlyViewedScreen extends StatelessWidget {
                                 validator: (value) {
                                   return null;
                                 }))),
-                    Container(
+                   /* Container(
                         margin: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -105,7 +105,7 @@ class RecentlyViewedScreen extends StatelessWidget {
                                     recentlyViewed: recentlyProviderController
                                         .recentlVieweds[index],
                                   ));
-                            })))
+                            })))*/
                   ],
                 ),
               ));

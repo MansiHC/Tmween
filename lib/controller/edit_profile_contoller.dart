@@ -47,6 +47,7 @@ class EditProfileController extends GetxController {
   bool loading = false;
   bool loadingImageName = false;
   bool loadingDialog = false;
+  bool otpExpired = false;
 
   @override
   void onInit() {
@@ -74,6 +75,8 @@ class EditProfileController extends GetxController {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
   }
 
+
+
   generateOTP(emailMobile,language) async {
     FocusScope.of(context).unfocus();
     // navigateToDrawerScreen();
@@ -99,6 +102,7 @@ class EditProfileController extends GetxController {
 
   resendOTP(emailMobile) async {
     loadingDialog = true;
+    otpExpired = false;
     update();
     await api.resendLoginOTP(emailMobile).then((value) {
       if (value.statusCode == 200) {

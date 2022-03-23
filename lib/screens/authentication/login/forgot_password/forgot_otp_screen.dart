@@ -6,6 +6,7 @@ import 'package:tmween/controller/forgot_otp_controller.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
+import '../../../../lang/locale_keys.g.dart';
 import '../../../../utils/views/circular_progress_bar.dart';
 import '../../../../utils/views/custom_button.dart';
 import '../../../../utils/views/otp_text_field.dart';
@@ -116,7 +117,41 @@ class ForgotOtpScreenState extends State<ForgotOtpScreen> {
                       fontWeight: FontWeight.bold)),
             ])),
         10.heightBox,
-        Container().buildTimer(30),
+        if(!forgotOtpController.loading && !forgotOtpController.otpExpired)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                LocaleKeys.otpExpire.tr,
+                style: TextStyle(fontSize:  16, color: Colors.black),
+              ),
+              5.widthBox,
+              TweenAnimationBuilder<Duration>(
+                  duration: Duration(seconds: AppConstants.timer),
+                  tween: Tween(begin: Duration(seconds: AppConstants.timer), end: Duration.zero),
+                  onEnd: () {
+                    forgotOtpController.otpExpired = true;
+                    forgotOtpController.update();
+                  },
+                  builder: (BuildContext context, Duration value, Widget? child) {
+                    final minutes = value.inMinutes;
+                    final seconds = value.inSeconds % 60;
+                    return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: Text('$minutes:$seconds',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: AppColors.primaryColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20)));
+                  }),
+            ],
+          ),
+        if(forgotOtpController.otpExpired)
+          Text(
+            'Please Resend the Otp.',
+            style: TextStyle(fontSize:  16, color: Colors.black),
+          ),
         10.heightBox,
         Padding(
             padding: EdgeInsets.symmetric(

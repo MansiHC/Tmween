@@ -79,7 +79,7 @@ class DealsOfTheDayScreen extends StatelessWidget {
                                 validator: (value) {
                                   return null;
                                 }))),
-                    Container(
+                   /* Container(
                         margin: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -104,7 +104,7 @@ class DealsOfTheDayScreen extends StatelessWidget {
                                     deal: dealOfTheDayController.deals[index],
                                     from: SharedPreferencesKeys.isDashboard,
                                   ));
-                            })))
+                            })))*/
                   ],
                 ),
               ));

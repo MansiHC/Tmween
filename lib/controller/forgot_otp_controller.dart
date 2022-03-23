@@ -20,6 +20,7 @@ class ForgotOtpController extends GetxController {
 
   final api = Api();
   bool loading = false;
+  bool otpExpired = false;
   late String phone, otp, otpValue;
   String? uuid, deviceNo, deviceName, platform, model, version;
   final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
@@ -140,6 +141,7 @@ class ForgotOtpController extends GetxController {
 
   resendOTP(from, frm, language, email) async {
     FocusScope.of(context).unfocus();
+    otpExpired = false;
     loading = true;
     update();
     await api.resendForgotPasswordOTP(email, language).then((value) {

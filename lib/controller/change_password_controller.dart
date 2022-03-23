@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:tmween/controller/my_account_controller.dart';
 
 import '../screens/drawer/drawer_screen.dart';
 import '../service/api.dart';
@@ -22,9 +23,11 @@ class ChangePasswordController extends GetxController {
   String token = '';
   final api = Api();
   bool loading = false;
+  bool otpExpired = false;
   late String  otpValue;
 
   void exitScreen() {
+    Get.delete<ChangePasswordController>();
     Navigator.of(context).pop();
   }
 
@@ -82,7 +85,7 @@ class ChangePasswordController extends GetxController {
   }
 
 Future<void> resendOtp(language) async {
-
+otpExpired = false;
         loading = true;
         update();
         await api.resendMobileOtp(
@@ -111,7 +114,16 @@ Future<void> resendOtp(language) async {
 
 
   }
-
+  void navigateToDashBoardScreen() {
+    MySharedPreferences.instance
+        .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+    Get.deleteAll();
+    Get.offAll(DrawerScreen());
+    /*
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => DrawerScreen()),
+        (Route<dynamic> route) => false);*/
+  }
   Future<void> changePassword(language) async {
 
         loading = true;
@@ -126,7 +138,7 @@ Future<void> resendOtp(language) async {
           loading = false;
           update();
           if (value.statusCode == 200) {
-
+navigateToDashBoardScreen();
           } else if (value.statusCode == 401) {
             MySharedPreferences.instance
                 .addBoolToSF(SharedPreferencesKeys.isLogin, false);
@@ -155,7 +167,4 @@ Future<void> resendOtp(language) async {
     update();
   }
 
-  void save() {}
-
-  void resend() {}
 }

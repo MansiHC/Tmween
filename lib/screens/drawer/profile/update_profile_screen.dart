@@ -215,7 +215,6 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             ),
                         errorWidget: (context, url, error) =>
                             CircleAvatar(
-                              backgroundColor: Colors.grey,
                               child: SvgPicture.asset(
                                 ImageConstanst.user,
                                 height: 80,
@@ -452,8 +451,12 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 text: LocaleKeys.changePassword,
                 fontSize: 15,
                 onPressed: () {
-                  Helper.showToast(LocaleKeys.otpSentSuccessfully.tr);
-                  editAccountController.navigateTo(ChangePasswordScreen());
+                  //Helper.showToast(LocaleKeys.otpSentSuccessfully.tr);
+                  editAccountController.navigateTo(ChangePasswordScreen(email:
+                  editAccountController
+                      .emailController.text,mobile:editAccountController
+                    .mobileNumberController
+                      .text));
                 }),
             /*InkWell(
                 onTap: () {
@@ -610,6 +613,41 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   ),
                   10.heightBox,
                   Container().buildTimer(30, 13.0),
+                  if(!editProfileController.loadingDialog && !editProfileController.otpExpired)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          LocaleKeys.otpExpire.tr,
+                          style: TextStyle(fontSize:  13, color: Colors.black),
+                        ),
+                        5.widthBox,
+                        TweenAnimationBuilder<Duration>(
+                            duration: Duration(seconds: AppConstants.timer),
+                            tween: Tween(begin: Duration(seconds: AppConstants.timer), end: Duration.zero),
+                            onEnd: () {
+                              editProfileController.otpExpired = true;
+                              editProfileController.update();
+                            },
+                            builder: (BuildContext context, Duration value, Widget? child) {
+                              final minutes = value.inMinutes;
+                              final seconds = value.inSeconds % 60;
+                              return Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 5),
+                                  child: Text('$minutes:$seconds',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: AppColors.primaryColor,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 17)));
+                            }),
+                      ],
+                    ),
+                  if(editProfileController.otpExpired)
+                    Text(
+                      'Please Resend the Otp.',
+                      style: TextStyle(fontSize:  13, color: Colors.black),
+                    ),
                   10.heightBox,
                   OtpTextField(
                     length: 4,

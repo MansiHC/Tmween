@@ -54,6 +54,11 @@ class MyAccountController extends GetxController {
     await api.getCustomerData(token, userId, language).then((value) {
       if (value.statusCode == 200) {
         profileData = value.data![0];
+
+        MySharedPreferences.instance
+            .addStringToSF(SharedPreferencesKeys.address, "${profileData!.cityName} - ${profileData!.zip}");
+        MySharedPreferences.instance
+            .addStringToSF(SharedPreferencesKeys.image, profileData!.largeImageUrl);
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);

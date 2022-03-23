@@ -14,12 +14,15 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_list_tile.dart';
 
+import '../../../controller/drawer_controller.dart';
 import '../../../utils/views/circular_progress_bar.dart';
 import 'my_wallet_screen.dart';
 
 class MyAccountScreen extends StatelessWidget {
   late String language;
   final myAccountController = Get.put(MyAccountController());
+  final drawerController = Get.put(DrawerControllers());
+
 
   Future<bool> _onWillPop(MyAccountController myAccountController) async {
     myAccountController.exitScreen();
@@ -99,7 +102,6 @@ class MyAccountScreen extends StatelessWidget {
                                           ),
                                           errorWidget: (context, url, error) =>
                                               CircleAvatar(
-                                            backgroundColor: Colors.grey,
                                             child: SvgPicture.asset(
                                               ImageConstanst.user,
                                               height: 80,
