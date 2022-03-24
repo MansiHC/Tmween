@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:tmween/controller/dashboard_controller.dart';
 import 'package:tmween/model/address_model.dart';
 import 'package:tmween/model/language_model.dart';
 import 'package:tmween/screens/drawer/categories_screen.dart';
@@ -30,7 +31,7 @@ class DrawerControllers extends GetxController {
   late List<LanguageModel> languages;
   late LanguageModel languageValue;
   bool isLogin = true;
-  String image="", address="";
+  String image = "", address = "";
 
   ListQueue<int> navigationQueue = ListQueue();
 
@@ -81,12 +82,14 @@ class DrawerControllers extends GetxController {
         .then((value) async {
       isLogin = value!;
       update();
-    });MySharedPreferences.instance
+    });
+    MySharedPreferences.instance
         .getStringValuesSF(SharedPreferencesKeys.address)
         .then((value) async {
       address = value!;
       update();
-    });MySharedPreferences.instance
+    });
+    MySharedPreferences.instance
         .getStringValuesSF(SharedPreferencesKeys.image)
         .then((value) async {
       image = value!;
@@ -130,6 +133,7 @@ class DrawerControllers extends GetxController {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.delete<DrawerControllers>();
+        Get.delete<DashboardController>();
         Get.offAll(DrawerScreen());
       } else {
         Helper.showGetSnackBar(value.message!);
@@ -158,7 +162,6 @@ class DrawerControllers extends GetxController {
       deliveryInstruction,
       defaultValue,
       language) async {
-
     loading = true;
     update();
     await api
@@ -183,13 +186,14 @@ class DrawerControllers extends GetxController {
       loading = false;
       update();
       if (value.statusCode == 200) {
-
         Get.delete<DrawerControllers>();
+        Get.delete<DashboardController>();
         Get.offAll(DrawerScreen());
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.delete<DrawerControllers>();
+        Get.delete<DashboardController>();
         Get.offAll(DrawerScreen());
       }
       Helper.showGetSnackBar(value.message!);
@@ -208,9 +212,12 @@ class DrawerControllers extends GetxController {
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
   }
-void navigateToProfileScreen() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => MyAccountScreen())).then((value) {
-      if(value){
+
+  void navigateToProfileScreen() {
+    Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MyAccountScreen()))
+        .then((value) {
+      if (value) {
         MySharedPreferences.instance
             .getStringValuesSF(SharedPreferencesKeys.address)
             .then((value) async {

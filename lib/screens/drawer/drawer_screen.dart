@@ -547,10 +547,7 @@ class DrawerScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 16, color: Colors.black54),
                   ),
                   onPressed: () {
-                    Get.delete<DrawerControllers>();
-                    Get.delete<LoginController>();
-                    Get.delete<OtpController>();
-                    Get.delete<SignUpController>();
+                    Get.deleteAll();
                     drawerController.navigateTo(
                         LoginScreen(from: SharedPreferencesKeys.isDrawer));
                   },

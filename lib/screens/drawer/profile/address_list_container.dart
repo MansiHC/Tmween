@@ -26,7 +26,28 @@ class AddressListContainer extends StatelessWidget {
         init: AddressController(),
         builder: (contet) {
           addressController.context = context;
-          return Container(
+          return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+            15.heightBox,
+            if(address.addressType=="1")
+              Text(
+              LocaleKeys.personalAddress.tr,
+              style: TextStyle(
+                  color: Color(0xFF414141),
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold),
+            ),
+            if(address.addressType=="2")
+              Text(
+              LocaleKeys.officeAddress.tr,
+              style: TextStyle(
+                  color: Color(0xFF414141),
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold),
+            ),
+            5.heightBox,
+            Container(
             padding: EdgeInsets.all(10),
             margin: EdgeInsets.all(3),
             decoration: BoxDecoration(
@@ -48,6 +69,7 @@ class AddressListContainer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
+
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -167,7 +189,7 @@ class AddressListContainer extends StatelessWidget {
                   ),
                   10.heightBox
                 ]),
-          );
+          )]);
         });
   }
 }

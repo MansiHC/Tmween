@@ -13,6 +13,7 @@ import '../service/api.dart';
 import '../utils/global.dart';
 import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
+import 'dashboard_controller.dart';
 import 'drawer_controller.dart';
 
 class EditProfileController extends GetxController {
@@ -77,14 +78,14 @@ class EditProfileController extends GetxController {
 
 
 
-  generateOTP(emailMobile,language) async {
+  generateOTP(emailMobile,language,isMobile) async {
     FocusScope.of(context).unfocus();
     // navigateToDrawerScreen();
     update();
     loadingDialog = true;
     update();
     await api
-        .generateMobileOtp(emailMobile,  language)
+        .generateMobileOtp(emailMobile,userId,isMobile,  language)
         .then((value) {
       if (value.statusCode == 200) {
         otpValue = value.data!.otp.toString();
@@ -100,11 +101,11 @@ class EditProfileController extends GetxController {
     });
   }
 
-  resendOTP(emailMobile) async {
+  resendOTP(emailMobile,isMobile) async {
     loadingDialog = true;
     otpExpired = false;
     update();
-    await api.resendLoginOTP(emailMobile).then((value) {
+    await api.resendLoginOTP(userId,emailMobile,isMobile).then((value) {
       if (value.statusCode == 200) {
         otpValue = value.data!.otp.toString();
       }
@@ -145,6 +146,7 @@ class EditProfileController extends GetxController {
                   .addBoolToSF(SharedPreferencesKeys.isLogin, false);
               Get.delete<EditProfileController>();
               Get.delete<DrawerControllers>();
+              Get.delete<DashboardController>();
               Get.offAll(DrawerScreen());
             } else {
               Helper.showGetSnackBar(value.message!);
@@ -180,6 +182,8 @@ class EditProfileController extends GetxController {
       if (value.statusCode == 200) {
         pop();
         exitScreen();
+      }else{
+        pop();
       }
       Helper.showGetSnackBar(value.message!);
       loadingDialog = false;
@@ -199,6 +203,8 @@ class EditProfileController extends GetxController {
       if (value.statusCode == 200) {
         pop();
         exitScreen();
+      }else{
+        pop();
       }
       Helper.showGetSnackBar(value.message!);
       loadingDialog = false;

@@ -10,6 +10,7 @@ import '../service/api.dart';
 import '../utils/global.dart';
 import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
+import 'dashboard_controller.dart';
 import 'drawer_controller.dart';
 
 class AddressController extends GetxController {
@@ -68,11 +69,16 @@ class AddressController extends GetxController {
         .then((value) {
       if (value.statusCode == 200) {
         addressList = value.data!;
+        addressList.sort((a, b) {
+
+          return addressList[0].defaultAddress==1?0:a.addressType!.compareTo(b.addressType!);
+        });
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.delete<AddressController>();
         Get.delete<DrawerControllers>();
+        Get.delete<DashboardController>();
         Get.offAll(DrawerScreen());
       } else {
         Helper.showGetSnackBar(value.message!);
@@ -100,6 +106,7 @@ class AddressController extends GetxController {
               .addBoolToSF(SharedPreferencesKeys.isLogin, false);
           Get.delete<AddressController>();
           Get.delete<DrawerControllers>();
+          Get.delete<DashboardController>();
           Get.offAll(DrawerScreen());
         }
         Helper.showGetSnackBar(value.message!);

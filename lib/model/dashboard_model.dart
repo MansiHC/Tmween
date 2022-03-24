@@ -35,9 +35,9 @@ class Data {
   List<BestSellerData>? bestSellerData;
   List<DailyDealsData>? dailyDealsData;
   List<ShopByCategory>? shopByCategory;
-//  Banners? banners;
+  Banners? banners;
 
-  Data({this.shopByCategory,this.dailyDealsData,this.bestSellerData,this.soldByTmweenProductData,this.topSelectionData,    this.recentlyViewProduct, /*, this.banners*/});
+  Data({this.shopByCategory,this.dailyDealsData,this.bestSellerData,this.soldByTmweenProductData,this.topSelectionData,    this.recentlyViewProduct,  this.banners});
 
   Data.fromJson(Map<String, dynamic> json) {
 
@@ -71,7 +71,7 @@ class Data {
       shopByCategory = <ShopByCategory>[];
       json['shop_by_category'].forEach((v) { shopByCategory!.add(new ShopByCategory.fromJson(v)); });
     }
- //   banners = json['banners'] != null ? new Banners.fromJson(json['banners']) : null;
+   banners = json['banners'] != null ? new Banners.fromJson(json['banners']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -101,9 +101,9 @@ class Data {
     if (this.shopByCategory != null) {
       data['shop_by_category'] = this.shopByCategory!.map((v) => v.toJson()).toList();
     }
-   /* if (this.banners != null) {
+    if (this.banners != null) {
       data['banners'] = this.banners!.toJson();
-    }*/
+    }
     return data;
   }
 }
@@ -120,7 +120,7 @@ class SoldByTmweenProductData {
   int? stock;
   int? inStock;
   int? isCombinationAvailable;
-  double? reviewsAvg;
+  int? reviewsAvg;
   int? brandId;
   String? manufacturerNumber;
   String? countryCode;
@@ -136,7 +136,7 @@ class SoldByTmweenProductData {
   String? metaTitle;
   String? metaKeywords;
   String? metaDescription;
-  Null? specialTransportId;
+  int? specialTransportId;
   int? weightUnitId;
   int? singleProductWeight;
   int? singleProductDimensionsUnitId;
@@ -477,7 +477,7 @@ class TopSelectionData {
   String? metaTitle;
   String? metaKeywords;
   String? metaDescription;
-  Null? specialTransportId;
+  int? specialTransportId;
   int? weightUnitId;
   int? singleProductWeight;
   int? singleProductDimensionsUnitId;
@@ -693,7 +693,7 @@ class BestSellerData {
   String? metaTitle;
   String? metaKeywords;
   String? metaDescription;
-  Null? specialTransportId;
+  int? specialTransportId;
   int? weightUnitId;
   int? singleProductWeight;
   int? singleProductDimensionsUnitId;
@@ -899,7 +899,7 @@ class DailyDealsData {
   int? stock;
   int? inStock;
   int? isCombinationAvailable;
-  Null? reviewsAvg;
+  int? reviewsAvg;
   int? brandId;
   String? manufacturerNumber;
   String? countryCode;
@@ -915,7 +915,7 @@ class DailyDealsData {
   String? metaTitle;
   String? metaKeywords;
   String? metaDescription;
-  Null? specialTransportId;
+  int? specialTransportId;
   int? weightUnitId;
   int? singleProductWeight;
   int? singleProductDimensionsUnitId;
@@ -1134,7 +1134,7 @@ class RecentlyViewProduct {
   String? metaTitle;
   String? metaKeywords;
   String? metaDescription;
-  Null? specialTransportId;
+  int? specialTransportId;
   int? weightUnitId;
   int? singleProductWeight;
   int? singleProductDimensionsUnitId;
@@ -1327,102 +1327,200 @@ class ShopByCategory {
   }
 }
 
-/*class Banners {
-  TOP? tOP;
-  CENTER? cENTER;
+class Banners {
+  List<TOP>? tOP;
+  List<CENTER>? cENTER;
+  List<CENTERUP>? cENTERUP;
+  List<CENTERDOWN>? cENTERDOWN;
 
-  Banners({this.tOP, this.cENTER});
+  Banners({this.tOP, this.cENTER, this.cENTERUP, this.cENTERDOWN});
 
   Banners.fromJson(Map<String, dynamic> json) {
-    tOP = json['TOP'] != null ? new TOP.fromJson(json['TOP']) : null;
-    cENTER = json['CENTER'] != null ? new CENTER.fromJson(json['CENTER']) : null;
+    if (json['TOP'] != null) {
+      tOP = <TOP>[];
+      json['TOP'].forEach((v) {
+        tOP!.add(new TOP.fromJson(v));
+      });
+    }
+    if (json['CENTER'] != null) {
+      cENTER = <CENTER>[];
+      json['CENTER'].forEach((v) {
+        cENTER!.add(new CENTER.fromJson(v));
+      });
+    }
+    if (json['CENTER-UP'] != null) {
+      cENTERUP = <CENTERUP>[];
+      json['CENTER-UP'].forEach((v) {
+        cENTERUP!.add(new CENTERUP.fromJson(v));
+      });
+    }
+    if (json['CENTER-DOWN'] != null) {
+      cENTERDOWN = <CENTERDOWN>[];
+      json['CENTER-DOWN'].forEach((v) {
+        cENTERDOWN!.add(new CENTERDOWN.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.tOP != null) {
-      data['TOP'] = this.tOP!.toJson();
+      data['TOP'] = this.tOP!.map((v) => v.toJson()).toList();
     }
     if (this.cENTER != null) {
-      data['CENTER'] = this.cENTER!.toJson();
+      data['CENTER'] = this.cENTER!.map((v) => v.toJson()).toList();
+    }
+    if (this.cENTERUP != null) {
+      data['CENTER-UP'] = this.cENTERUP!.map((v) => v.toJson()).toList();
+    }
+    if (this.cENTERDOWN != null) {
+      data['CENTER-DOWN'] = this.cENTERDOWN!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class TOP {
-  Name1? name11;
+  int? id;
+  String? title;
+  String? bannerUrl;
+  String? image;
+  String? imgUrl;
+  String? largeImageUrl;
 
-  TOP({this.name11});
+  TOP(
+      {this.id,
+        this.title,
+        this.bannerUrl,
+        this.image,
+        this.imgUrl,
+        this.largeImageUrl});
 
   TOP.fromJson(Map<String, dynamic> json) {
-  name11 = json['1'] != null ? new Name1.fromJson(json['1']) : null;
+    id = json['id'];
+    title = json['title'];
+    bannerUrl = json['banner_url'];
+    image = json['image'];
+    imgUrl = json['img_url'];
+    largeImageUrl = json['large_image_url'];
   }
 
   Map<String, dynamic> toJson() {
-  final Map<String, dynamic> data = new Map<String, dynamic>();
-  if (this.name11 != null) {
-  data['1'] = this.name11!.toJson();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['title'] = this.title;
+    data['banner_url'] = this.bannerUrl;
+    data['image'] = this.image;
+    data['img_url'] = this.imgUrl;
+    data['large_image_url'] = this.largeImageUrl;
+    return data;
   }
-  return data;
-  }
 }
-
-class Name1 {
-int? id;
-String? title;
-String? bannerUrl;
-String? image;
-String? imgUrl;
-String? largeImageUrl;
-
-Name1({this.id, this.title, this.bannerUrl, this.image, this.imgUrl, this.largeImageUrl});
-
-Name1.fromJson(Map<String, dynamic> json) {
-id = json['id'];
-title = json['title'];
-bannerUrl = json['banner_url'];
-image = json['image'];
-imgUrl = json['img_url'];
-largeImageUrl = json['large_image_url'];
-}
-
-Map<String, dynamic> toJson() {
-final Map<String, dynamic> data = new Map<String, dynamic>();
-data['id'] = this.id;
-data['title'] = this.title;
-data['banner_url'] = this.bannerUrl;
-data['image'] = this.image;
-data['img_url'] = this.imgUrl;
-data['large_image_url'] = this.largeImageUrl;
-return data;
-}
-}
-
 class CENTER {
-  Name1? name12;
-  Name1? name13;
-  Name1? name14;
+  int? id;
+  String? title;
+  String? bannerUrl;
+  String? image;
+  String? imgUrl;
+  String? largeImageUrl;
 
-CENTER({this.name12, this.name13, this.name14});
+  CENTER(
+      {this.id,
+        this.title,
+        this.bannerUrl,
+        this.image,
+        this.imgUrl,
+        this.largeImageUrl});
 
-CENTER.fromJson(Map<String, dynamic> json) {
-name12 = json['2'] != null ? new Name1.fromJson(json['2']) : null;
-name13 = json['3'] != null ? new Name1.fromJson(json['3']) : null;
-name14 = json['4'] != null ? new Name1.fromJson(json['4']) : null;
-}
+  CENTER.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+    bannerUrl = json['banner_url'];
+    image = json['image'];
+    imgUrl = json['img_url'];
+    largeImageUrl = json['large_image_url'];
+  }
 
-Map<String, dynamic> toJson() {
-final Map<String, dynamic> data = new Map<String, dynamic>();
-if (this.name12 != null) {
-data['2'] = this.name12!.toJson();
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['title'] = this.title;
+    data['banner_url'] = this.bannerUrl;
+    data['image'] = this.image;
+    data['img_url'] = this.imgUrl;
+    data['large_image_url'] = this.largeImageUrl;
+    return data;
+  }
 }
-if (this.name13 != null) {
-data['3'] = this.name13!.toJson();
+class CENTERUP {
+  int? id;
+  String? title;
+  String? bannerUrl;
+  String? image;
+  String? imgUrl;
+  String? largeImageUrl;
+
+  CENTERUP(
+      {this.id,
+        this.title,
+        this.bannerUrl,
+        this.image,
+        this.imgUrl,
+        this.largeImageUrl});
+
+  CENTERUP.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+    bannerUrl = json['banner_url'];
+    image = json['image'];
+    imgUrl = json['img_url'];
+    largeImageUrl = json['large_image_url'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['title'] = this.title;
+    data['banner_url'] = this.bannerUrl;
+    data['image'] = this.image;
+    data['img_url'] = this.imgUrl;
+    data['large_image_url'] = this.largeImageUrl;
+    return data;
+  }
 }
-if (this.name14 != null) {
-data['4'] = this.name14!.toJson();
+class CENTERDOWN {
+  int? id;
+  String? title;
+  String? bannerUrl;
+  String? image;
+  String? imgUrl;
+  String? largeImageUrl;
+
+  CENTERDOWN(
+      {this.id,
+        this.title,
+        this.bannerUrl,
+        this.image,
+        this.imgUrl,
+        this.largeImageUrl});
+
+  CENTERDOWN.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+    bannerUrl = json['banner_url'];
+    image = json['image'];
+    imgUrl = json['img_url'];
+    largeImageUrl = json['large_image_url'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['title'] = this.title;
+    data['banner_url'] = this.bannerUrl;
+    data['image'] = this.image;
+    data['img_url'] = this.imgUrl;
+    data['large_image_url'] = this.largeImageUrl;
+    return data;
+  }
 }
-return data;
-}
-}*/

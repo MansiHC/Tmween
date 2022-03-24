@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:tmween/controller/dashboard_controller.dart';
 import 'package:tmween/controller/product_detail_controller.dart';
 import 'package:tmween/model/address_model.dart';
 import 'package:tmween/screens/drawer/search_screen.dart';
@@ -145,6 +146,7 @@ class SearchController extends GetxController {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.delete<DrawerControllers>();
+        Get.delete<DashboardController>();
         Get.offAll(DrawerScreen());
       } else {
         Helper.showGetSnackBar(value.message!);
@@ -205,6 +207,7 @@ class SearchController extends GetxController {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.delete<DrawerControllers>();
+        Get.delete<DashboardController>();
         Get.offAll(DrawerScreen());
       }
       Helper.showGetSnackBar(value.message!);

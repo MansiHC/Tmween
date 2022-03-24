@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tmween/model/best_seller_model.dart';
 import 'package:tmween/model/deals_of_the_day_model.dart';
 import 'package:tmween/model/recently_viewed_model.dart';
@@ -17,21 +18,22 @@ import '../utils/helper.dart';
 class DashboardController extends GetxController {
   late BuildContext context;
 
-  bool isLoading = false;
+  RefreshController refreshController =
+  RefreshController(initialRefresh: false);
+
 
   int current = 0;
-  final CarouselController controller = CarouselController();
+  final CarouselController topBannerController = CarouselController();
+  final CarouselController centerBannerController = CarouselController();
+  final CarouselController centerUpBannerController = CarouselController();
+  final CarouselController centerDownBannerController = CarouselController();
 
   void changPage(int index) {
     current = index;
     update();
   }
 
-  late final List<Widget> imageSliders = imgList
-      .map((item) => Container(
-            child: Image.asset(item, fit: BoxFit.fill, width: double.maxFinite),
-          ))
-      .toList();
+
 
   final List<String> imgList = [
     'asset/image/home_page_slider_images/slider_1.jpg',
@@ -271,6 +273,10 @@ class DashboardController extends GetxController {
   List<DailyDealsData>? dailyDealsData = [];
   List<RecentlyViewProduct>? recentlyViewProduct = [];
   List<ShopByCategory>? shopByCategory = [];
+  List<TOP>? topBanners = [];
+  List<CENTER>? centerBanners = [];
+  List<CENTERUP>? centerUpBanners = [];
+  List<CENTERDOWN>? centerDownBanners = [];
 
   @override
   void onInit() {
@@ -278,22 +284,47 @@ class DashboardController extends GetxController {
     super.onInit();
   }
 
-  Future<void> getDashboardData() async {
-    loading = true;
-    update();
+
+  void onRefresh(DashboardController dashboardController) async{
+
     await api.getHomePageMobileData().then((value) {
       if (value.statusCode == 200) {
-
-
-
         recentlyViewProduct = value.data!.recentlyViewProduct;
         topSelectionData = value.data!.topSelectionData;
         soldByTmweenProductData = value.data!.soldByTmweenProductData;
         bestSellerData = value.data!.bestSellerData;
         dailyDealsData = value.data!.dailyDealsData;
         shopByCategory = value.data!.shopByCategory;
-
+        topBanners = value.data!.banners!.tOP;
+        centerBanners = value.data!.banners!.cENTER;
+        centerUpBanners = value.data!.banners!.cENTERUP;
+        centerDownBanners = value.data!.banners!.cENTERDOWN;
+        refreshController.refreshCompleted();
         update();
+      }
+
+    }).catchError((error) {
+
+      print('error....$error');
+    });
+  }
+  Future<void> getDashboardData() async {
+    loading = true;
+    update();
+    await api.getHomePageMobileData().then((value) {
+      if (value.statusCode == 200) {
+        recentlyViewProduct = value.data!.recentlyViewProduct;
+        topSelectionData = value.data!.topSelectionData;
+        soldByTmweenProductData = value.data!.soldByTmweenProductData;
+        bestSellerData = value.data!.bestSellerData;
+        dailyDealsData = value.data!.dailyDealsData;
+        shopByCategory = value.data!.shopByCategory;
+        topBanners = value.data!.banners!.tOP;
+        centerBanners = value.data!.banners!.cENTER;
+        centerUpBanners = value.data!.banners!.cENTERUP;
+        centerDownBanners = value.data!.banners!.cENTERDOWN;
+        update();
+
       } else {
         Helper.showGetSnackBar(value.message!);
       }

@@ -14,6 +14,7 @@ import '../service/api.dart';
 import '../utils/global.dart';
 import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
+import 'dashboard_controller.dart';
 import 'drawer_controller.dart';
 
 class CountryModel2 {
@@ -235,6 +236,7 @@ class AddAddressController extends GetxController {
 
   Future<void> addAddress(language) async {
    // if (Helper.isIndividual) {
+    print('gdhgdhgh.......');
       if (countryValue == null) {
         Helper.showGetSnackBar('Please Select Country');
       } else if (formKey.currentState!.validate()) {
@@ -274,6 +276,7 @@ class AddAddressController extends GetxController {
               MySharedPreferences.instance
                   .addBoolToSF(SharedPreferencesKeys.isLogin, false);
               Get.delete<AddAddressController>();
+              Get.delete<DashboardController>();
               Get.delete<DrawerControllers>();
               Get.offAll(DrawerScreen());
             }
@@ -331,6 +334,7 @@ class AddAddressController extends GetxController {
               MySharedPreferences.instance
                   .addBoolToSF(SharedPreferencesKeys.isLogin, false);
               Get.delete<AddAddressController>();
+              Get.delete<DashboardController>();
               Get.delete<DrawerControllers>();
               Get.offAll(DrawerScreen());
             }

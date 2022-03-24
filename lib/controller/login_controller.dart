@@ -186,12 +186,19 @@ class LoginController extends GetxController {
         if (value.statusCode == 200) {
           MySharedPreferences.instance.addIntToSF(
               SharedPreferencesKeys.loginLogId, value.data!.loginLogId);
-          print('dfdfn........${value.data!.token}');
+
           Helper.isIndividual = true;
           MySharedPreferences.instance
               .addStringToSF(SharedPreferencesKeys.token, value.data!.token);
           MySharedPreferences.instance.addIntToSF(
               SharedPreferencesKeys.userId, value.data!.customerData!.id);
+          MySharedPreferences.instance
+              .addStringToSF(SharedPreferencesKeys.image, value.data!.customerData!.largeImageUrl);
+          if(value.data!.customerAddressData!=null)
+            if(value.data!.customerAddressData!.length>0)
+          MySharedPreferences.instance
+              .addStringToSF(SharedPreferencesKeys.address, "${value.data!.customerAddressData![0].cityName} - ${value.data!.customerAddressData![0].zip}");
+
           navigateToDrawerScreen();
         } else {
           Helper.showGetSnackBar(value.message!);
@@ -214,7 +221,7 @@ class LoginController extends GetxController {
     loading = true;
     update();
     await api
-        .generateMobileOtp(phoneEmailController.text,  language)
+        .generateMobileOtpLogin(phoneEmailController.text,  language)
         .then((value) {
       if (value.statusCode == 200) {
         navigateToOTPScreen(value.data!.otp.toString(), from, frm);

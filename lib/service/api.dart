@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:tmween/lang/locale_keys.g.dart';
+import 'package:tmween/model/UserDataModel.dart';
 import 'package:tmween/model/banner_model.dart';
 import 'package:tmween/model/city_model.dart';
 import 'package:tmween/model/country_model.dart';
@@ -91,9 +92,9 @@ class Api {
     return result;
   }
 
-  Future<LoginModel> login(email, password, uuid, deviceNo, deviceName,
+  Future<UserDataModel> login(email, password, uuid, deviceNo, deviceName,
       platform, model, version, langCode) async {
-    late LoginModel result;
+    late UserDataModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.login),
           headers: {
@@ -115,18 +116,18 @@ class Api {
             "lang_code": langCode
           }));
       var responseJson = _returnResponse(response);
-      result = LoginModel.fromJson(responseJson);
+      result = UserDataModel.fromJson(responseJson);
     } on SocketException {
       Helper.showGetSnackBar('No Internet connection');
     }
     return result;
   }
 
-  Future<SignupModel> generateMobileOtp(email,  langCode) async {
+  Future<SignupModel> generateMobileOtpLogin(email,  langCode) async {
     late SignupModel result;
     try {
       final response =
-          await http.post(Uri.parse(UrlConstants.generateMobileOtp),
+          await http.post(Uri.parse(UrlConstants.generateMobileOtpLogin),
               headers: {
                 HttpHeaders.contentTypeHeader: "application/json",
                 HttpHeaders.authorizationHeader:
@@ -152,9 +153,41 @@ class Api {
     return result;
   }
 
-  Future<LoginUsingOtpModel> verifyLoginOTP(email, otp, uuid, deviceNo,
+  Future<SignupModel> generateMobileOtp(email,userid, isMobile, langCode) async {
+    late SignupModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.generateMobileOtp),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "user_id": userid,
+                "email": !isMobile?email:"",
+                "phone": isMobile?email:"",
+                /*"device_uuid": uuid,
+                "device_no": deviceNo,
+                "device_name": deviceName,
+                "device_platform": platform,
+                "device_model": model,
+                "device_version": version,*/
+                "lang_code": langCode
+              }));
+      var responseJson = _returnResponse(response);
+      result = SignupModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar('No Internet connection');
+    }
+    return result;
+  }
+
+  Future<UserDataModel> verifyLoginOTP(email, otp, uuid, deviceNo,
       deviceName, platform, model, version, langCode) async {
-    late LoginUsingOtpModel result;
+    late UserDataModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.verifyLoginOTP),
           headers: {
@@ -176,7 +209,7 @@ class Api {
             "lang_code": langCode
           }));
       var responseJson = _returnResponse(response);
-      result = LoginUsingOtpModel.fromJson(responseJson);
+      result = UserDataModel.fromJson(responseJson);
     } on SocketException {
       Helper.showGetSnackBar('No Internet connection');
     }
@@ -208,8 +241,8 @@ class Api {
     return result;
   }
 
-  Future<VerifyOtpModel> verifyOTP(phone, otp) async {
-    late VerifyOtpModel result;
+  Future<UserDataModel> verifyOTP(phone, otp) async {
+    late UserDataModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.verifyOTP),
           headers: {
@@ -224,7 +257,7 @@ class Api {
             "otp": otp,
           }));
       var responseJson = _returnResponse(response);
-      result = VerifyOtpModel.fromJson(responseJson);
+      result = UserDataModel.fromJson(responseJson);
     } on SocketException {
       Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }
@@ -253,7 +286,7 @@ class Api {
     return result;
   }
 
-  Future<SignupModel> resendLoginOTP(phone) async {
+  Future<SignupModel> resendLoginOTPLogin(phone) async {
     late SignupModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.resendLoginOTP),
@@ -266,6 +299,29 @@ class Api {
             "entity_type_id": AppConstants.entity_type_id_customer,
             "device_type": AppConstants.device_type,
             "phone": phone,
+          }));
+      var responseJson = _returnResponse(response);
+      result = SignupModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+  Future<SignupModel> resendLoginOTP(userId,phone,isMobile) async {
+    late SignupModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.resendLoginOTP),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "phone": isMobile?phone:"",
+            "email": !isMobile?phone:"",
+            "user_id":userId
           }));
       var responseJson = _returnResponse(response);
       result = SignupModel.fromJson(responseJson);

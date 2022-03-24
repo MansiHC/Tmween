@@ -11,6 +11,7 @@ import '../service/api.dart';
 import '../utils/global.dart';
 import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
+import 'dashboard_controller.dart';
 import 'drawer_controller.dart';
 
 class MyAccountController extends GetxController {
@@ -64,6 +65,7 @@ class MyAccountController extends GetxController {
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.delete<MyAccountController>();
         Get.delete<DrawerControllers>();
+        Get.delete<DashboardController>();
         Get.offAll(DrawerScreen());
       } else {
         Helper.showGetSnackBar(value.message!);
@@ -113,6 +115,7 @@ class MyAccountController extends GetxController {
         .addBoolToSF(SharedPreferencesKeys.isLogin, false);
     Get.delete<MyAccountController>();
     Get.delete<DrawerControllers>();
+    Get.delete<DashboardController>();
     Get.offAll(DrawerScreen());
     /*
     Navigator.of(context).pushAndRemoveUntil(

@@ -21,7 +21,6 @@ import 'my_wallet_screen.dart';
 class MyAccountScreen extends StatelessWidget {
   late String language;
   final myAccountController = Get.put(MyAccountController());
-  final drawerController = Get.put(DrawerControllers());
 
 
   Future<bool> _onWillPop(MyAccountController myAccountController) async {
@@ -57,6 +56,7 @@ class MyAccountScreen extends StatelessWidget {
   }
 
   Widget _bottomView(MyAccountController myAccountController) {
+
     return Expanded(
         child: SingleChildScrollView(
             child: Column(

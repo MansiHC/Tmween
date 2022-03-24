@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 import 'package:tmween/screens/splash_screen.dart';
@@ -97,6 +98,10 @@ class MyApp extends StatelessWidget {
       locale: currentLocale,
       debugShowCheckedModeBanner: false,
       title: LocaleKeys.appTitle,
+      localizationsDelegates: [
+        // this line is important
+        RefreshLocalizations.delegate,
+      ],
       theme: ThemeData(
           primarySwatch: Colors.blue,
           primaryColor: AppColors.primaryColor,

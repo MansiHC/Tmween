@@ -9,6 +9,7 @@ import '../service/api.dart';
 import '../utils/global.dart';
 import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
+import 'dashboard_controller.dart';
 import 'drawer_controller.dart';
 
 class ChangePasswordController extends GetxController {
@@ -72,6 +73,7 @@ class ChangePasswordController extends GetxController {
                 .addBoolToSF(SharedPreferencesKeys.isLogin, false);
             Get.delete<ChangePasswordController>();
             Get.delete<DrawerControllers>();
+            Get.delete<DashboardController>();
             Get.offAll(DrawerScreen());
           }
           Helper.showGetSnackBar(value.message!);
@@ -103,6 +105,7 @@ otpExpired = false;
                 .addBoolToSF(SharedPreferencesKeys.isLogin, false);
             Get.delete<ChangePasswordController>();
             Get.delete<DrawerControllers>();
+            Get.delete<DashboardController>();
             Get.offAll(DrawerScreen());
           }
           Helper.showGetSnackBar(value.message!);
@@ -144,6 +147,7 @@ navigateToDashBoardScreen();
                 .addBoolToSF(SharedPreferencesKeys.isLogin, false);
             Get.delete<ChangePasswordController>();
             Get.delete<DrawerControllers>();
+            Get.delete<DashboardController>();
             Get.offAll(DrawerScreen());
           }
           Helper.showGetSnackBar(value.message!);

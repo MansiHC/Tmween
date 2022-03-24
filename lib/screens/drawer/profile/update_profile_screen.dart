@@ -36,7 +36,6 @@ class UpdateProfileScreen extends StatefulWidget {
     return UpdateProfileScreenState();
   }
 
-
 }
 class UpdateProfileScreenState extends State<UpdateProfileScreen> {
   late String language;
@@ -350,11 +349,11 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 ),
                 suffixIcon: InkWell(
                     onTap: () {
-                        editAccountController.generateOTP(editAccountController.mobileNumberController.text,language);
+                        editAccountController.generateOTP(editAccountController.mobileNumberController.text,language,true);
                       _showOtpVerificationDialog(
                           editAccountController,
                           editAccountController.mobileNumberController.text,
-                          language == 'ar' ? 340 : 360,
+                          language == 'ar' ? 340 : 350,
                           false);
                     },
                     child: Padding(
@@ -409,11 +408,11 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
                         editAccountController.generateOTP(
                             editAccountController.emailController.text,
-                            language);
+                            language,false);
                         _showOtpVerificationDialog(
                             editAccountController,
                             editAccountController.emailController.text,
-                            language == 'ar' ? 340 : 370,
+                            language == 'ar' ? 340 : 350,
                             true);
                     },
                     child: Padding(
@@ -581,7 +580,7 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     'Otp is : ${editProfileController.otpValue}',
                     textAlign: TextAlign.start,
                     style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF7C7C7C)),
                   ),
@@ -612,7 +611,6 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         ]),
                   ),
                   10.heightBox,
-                  Container().buildTimer(30, 13.0),
                   if(!editProfileController.loadingDialog && !editProfileController.otpExpired)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -704,7 +702,7 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   InkWell(
                       onTap: () {
                         editAccountController.resendOTP(
-                            text);
+                            text,!isEmail);
                       },
                       child: Text(
                         LocaleKeys.resendCode.tr,

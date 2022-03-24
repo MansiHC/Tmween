@@ -37,7 +37,20 @@ class OtpController extends GetxController {
     await api.verifyOTP(phone, otp).then((value) {
       if (value.statusCode == 200) {
         MySharedPreferences.instance.addIntToSF(
+            SharedPreferencesKeys.loginLogId, value.data!.loginLogId);
+        Helper.isIndividual = true;
+        MySharedPreferences.instance
+            .addStringToSF(SharedPreferencesKeys.token, value.data!.token);
+        MySharedPreferences.instance.addIntToSF(
             SharedPreferencesKeys.userId, value.data!.customerData!.id);
+        MySharedPreferences.instance
+            .addStringToSF(SharedPreferencesKeys.image, value.data!.customerData!.largeImageUrl);
+        if(value.data!.customerAddressData!=null)
+          if(value.data!.customerAddressData!.length>0)
+          MySharedPreferences.instance
+              .addStringToSF(SharedPreferencesKeys.address, "${value.data!.customerAddressData![0].cityName} - ${value.data!.customerAddressData![0].zip}");
+
+
         navigateToDrawerScreen();
       } else {
         Helper.showGetSnackBar(value.statusMessage!);
@@ -147,9 +160,16 @@ class OtpController extends GetxController {
         MySharedPreferences.instance.addIntToSF(
             SharedPreferencesKeys.loginLogId, value.data!.loginLogId);
         MySharedPreferences.instance
-            .addIntToSF(SharedPreferencesKeys.token, value.data!.token);
+            .addStringToSF(SharedPreferencesKeys.token, value.data!.token);
+        MySharedPreferences.instance.addIntToSF(
+            SharedPreferencesKeys.userId, value.data!.customerData!.id);
         MySharedPreferences.instance
-            .addIntToSF(SharedPreferencesKeys.userId, value.data!.customerId);
+            .addStringToSF(SharedPreferencesKeys.image, value.data!.customerData!.largeImageUrl);
+        if(value.data!.customerAddressData!=null)
+          if(value.data!.customerAddressData!.length>0)
+          MySharedPreferences.instance
+              .addStringToSF(SharedPreferencesKeys.address, "${value.data!.customerAddressData![0].cityName} - ${value.data!.customerAddressData![0].zip}");
+
         Helper.isIndividual = true;
         navigateToDrawerScreen();
       } else {
@@ -189,7 +209,7 @@ class OtpController extends GetxController {
     loading = true;
     otpExpired = false;
     update();
-    await api.resendLoginOTP(phone).then((value) {
+    await api.resendLoginOTPLogin(phone).then((value) {
       if (value.statusCode == 200) {
         otpValue = value.data!.otp.toString();
       }

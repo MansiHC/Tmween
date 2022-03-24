@@ -1,8 +1,10 @@
 ///with api
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tmween/controller/dashboard_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/select_category_model.dart';
@@ -18,6 +20,7 @@ import 'package:tmween/screens/drawer/deal_of_the_day_screen.dart';
 import 'package:tmween/screens/drawer/sold_by_tmween_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
+import 'package:tmween/utils/views/circular_progress_bar.dart';
 
 import '../best_seller_screen.dart';
 import '../recently_viewed_screen.dart';
@@ -26,6 +29,7 @@ import '../top_selection_screen.dart';
 class DashboardScreen extends StatelessWidget {
   final dashboardController = Get.put(DashboardController());
 
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<DashboardController>(
@@ -33,44 +37,32 @@ class DashboardScreen extends StatelessWidget {
         builder: (contet) {
           dashboardController.context = context;
 
-          return SingleChildScrollView(
+          return SmartRefresher(
+              enablePullDown: true,
+              enablePullUp: false,
+              header: ClassicHeader(),
+          controller: dashboardController.refreshController,
+          onRefresh: (){
+                dashboardController.onRefresh(dashboardController);
+          },
+
+          child:dashboardController.loading
+              ?Center(child:CircularProgressBar())
+              :SingleChildScrollView(
               child: Column(
                 children: [
-                  dashboardController.isLoading
-                      ? Center(
-                      child: CircularProgressIndicator(
-                        backgroundColor: AppColors.primaryColor,
-                      ))
-                      : _topBanner(dashboardController),
+                   _topBanner(dashboardController),
                   Padding(
                       padding: EdgeInsets.symmetric(horizontal: 15),
                       child: _shopByCategory(dashboardController)),
                   20.heightBox,
                   _dealsOfTheDay(dashboardController),
-                  SizedBox(
-                      height: 200,
-                      width: MediaQuery.of(context).size.width,
-                      child: Image.asset(
-                        'asset/image/home_page_banner_images/home_banner_1.jpg',
-                        fit: BoxFit.fill,
-                      )),
+                  _centerBanner(dashboardController),
                   _bestSeller(dashboardController),
                   _soldByTmween(dashboardController),
-                  SizedBox(
-                      height: 200,
-                      width: MediaQuery.of(context).size.width,
-                      child: Image.asset(
-                        'asset/image/home_page_banner_images/home_banner_2.jpg',
-                        fit: BoxFit.fill,
-                      )),
+                  _centerUpBanner(dashboardController),
                   _topSelection(dashboardController),
-                  SizedBox(
-                      height: 200,
-                      width: MediaQuery.of(context).size.width,
-                      child: Image.asset(
-                        'asset/image/home_page_banner_images/home_banner_3.jpg',
-                        fit: BoxFit.fill,
-                      )),
+                  _centerDownBanner(dashboardController),
                   _recentlyViewed(dashboardController),
                   10.heightBox,
                   Text(
@@ -80,7 +72,7 @@ class DashboardScreen extends StatelessWidget {
                   ),
                   10.heightBox
                 ],
-              ));
+              )));
         });
   }
 
@@ -88,8 +80,23 @@ class DashboardScreen extends StatelessWidget {
     return Stack(
       children: [
         CarouselSlider(
-          items: dashboardController.imageSliders,
-          carouselController: dashboardController.controller,
+          items: dashboardController.
+              topBanners!.map((item) => Container(
+            child: CachedNetworkImage(
+              imageUrl: item.largeImageUrl!,
+              width: double.maxFinite,
+              height: double.maxFinite,
+              fit: BoxFit.fill,
+              placeholder: (context, url) =>
+                  Center(child:CupertinoActivityIndicator()
+                  )
+              ,
+              errorWidget: (context, url, error) => Icon(Icons.image_not_supported,color: Colors.grey,),
+            )
+            ,
+          ))
+              .toList(),
+          carouselController: dashboardController.topBannerController,
           options: CarouselOptions(
               autoPlay: true,
               enableInfiniteScroll: false,
@@ -100,6 +107,7 @@ class DashboardScreen extends StatelessWidget {
                 dashboardController.changPage(index);
               }),
         ),
+        if( dashboardController.topBanners!.length>1)
         Positioned(
             bottom: 0.0,
             left: 0.0,
@@ -107,10 +115,190 @@ class DashboardScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children:
-              dashboardController.imgList.asMap().entries.map((entry) {
+              dashboardController.topBanners!.asMap().entries.map((entry) {
                 return GestureDetector(
                   onTap: () =>
-                      dashboardController.controller.animateToPage(entry.key),
+                      dashboardController.topBannerController.animateToPage(entry.key),
+                  child: Container(
+                    width: 8.0,
+                    height: 8.0,
+                    margin:
+                    EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: dashboardController.current == entry.key
+                            ? AppColors.primaryColor
+                            : Colors.white),
+                  ),
+                );
+              }).toList(),
+            )),
+      ],
+    );
+  }
+  _centerBanner(DashboardController dashboardController) {
+    return Stack(
+      children: [
+        CarouselSlider(
+          items: dashboardController.
+              centerBanners!.map((item) => Container(
+            child: CachedNetworkImage(
+              imageUrl: item.largeImageUrl!,
+              width: double.maxFinite,
+              height: double.maxFinite,
+              fit: BoxFit.fill,
+              placeholder: (context, url) =>
+                  Center(child:CupertinoActivityIndicator()
+                  )
+              ,
+              errorWidget: (context, url, error) => Icon(Icons.image_not_supported,color: Colors.grey,),
+            )
+            ,
+          ))
+              .toList(),
+          carouselController: dashboardController.centerBannerController,
+          options: CarouselOptions(
+              autoPlay: true,
+              enableInfiniteScroll: false,
+              enlargeCenterPage: false,
+              viewportFraction: 1,
+              aspectRatio: 1.6,
+              onPageChanged: (index, reason) {
+                dashboardController.changPage(index);
+              }),
+        ),
+        if( dashboardController.centerBanners!.length>1)
+        Positioned(
+            bottom: 0.0,
+            left: 0.0,
+            right: 0.0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children:
+              dashboardController.centerBanners!.asMap().entries.map((entry) {
+                return GestureDetector(
+                  onTap: () =>
+                      dashboardController.centerBannerController.animateToPage(entry.key),
+                  child: Container(
+                    width: 8.0,
+                    height: 8.0,
+                    margin:
+                    EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: dashboardController.current == entry.key
+                            ? AppColors.primaryColor
+                            : Colors.white),
+                  ),
+                );
+              }).toList(),
+            )),
+      ],
+    );
+  }
+  _centerUpBanner(DashboardController dashboardController) {
+    return Stack(
+      children: [
+        CarouselSlider(
+          items: dashboardController.
+              centerUpBanners!.map((item) => Container(
+            child: CachedNetworkImage(
+              imageUrl: item.largeImageUrl!,
+              width: double.maxFinite,
+              height: double.maxFinite,
+              fit: BoxFit.fill,
+              placeholder: (context, url) =>
+                  Center(child:CupertinoActivityIndicator()
+                  )
+              ,
+              errorWidget: (context, url, error) => Icon(Icons.image_not_supported,color: Colors.grey,),
+            )
+            ,
+          ))
+              .toList(),
+          carouselController: dashboardController.centerUpBannerController,
+          options: CarouselOptions(
+              autoPlay: true,
+              enableInfiniteScroll: false,
+              enlargeCenterPage: false,
+              viewportFraction: 1,
+              aspectRatio: 1.6,
+              onPageChanged: (index, reason) {
+                dashboardController.changPage(index);
+              }),
+        ),
+        if( dashboardController.centerUpBanners!.length>1)
+        Positioned(
+            bottom: 0.0,
+            left: 0.0,
+            right: 0.0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children:
+              dashboardController.centerUpBanners!.asMap().entries.map((entry) {
+                return GestureDetector(
+                  onTap: () =>
+                      dashboardController.centerUpBannerController.animateToPage(entry.key),
+                  child: Container(
+                    width: 8.0,
+                    height: 8.0,
+                    margin:
+                    EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: dashboardController.current == entry.key
+                            ? AppColors.primaryColor
+                            : Colors.white),
+                  ),
+                );
+              }).toList(),
+            )),
+      ],
+    );
+  }
+  _centerDownBanner(DashboardController dashboardController) {
+    return Stack(
+      children: [
+        CarouselSlider(
+          items: dashboardController.
+              centerDownBanners!.map((item) => Container(
+            child: CachedNetworkImage(
+              imageUrl: item.largeImageUrl!,
+              width: double.maxFinite,
+              height: double.maxFinite,
+              fit: BoxFit.fill,
+              placeholder: (context, url) =>
+                  Center(child:CupertinoActivityIndicator()
+                  )
+              ,
+              errorWidget: (context, url, error) => Icon(Icons.image_not_supported,color: Colors.grey,),
+            )
+            ,
+          ))
+              .toList(),
+          carouselController: dashboardController.centerDownBannerController,
+          options: CarouselOptions(
+              autoPlay: true,
+              enableInfiniteScroll: false,
+              enlargeCenterPage: false,
+              viewportFraction: 1,
+              aspectRatio: 1.6,
+              onPageChanged: (index, reason) {
+                dashboardController.changPage(index);
+              }),
+        ),
+        if( dashboardController.centerDownBanners!.length>1)
+        Positioned(
+            bottom: 0.0,
+            left: 0.0,
+            right: 0.0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children:
+              dashboardController.centerDownBanners!.asMap().entries.map((entry) {
+                return GestureDetector(
+                  onTap: () =>
+                      dashboardController.centerDownBannerController.animateToPage(entry.key),
                   child: Container(
                     width: 8.0,
                     height: 8.0,

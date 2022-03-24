@@ -43,7 +43,6 @@ class FilterScreen extends StatelessWidget {
                     _brands(filterController),
                     _seller(filterController),
                     _searchByPrice(filterController),
-                    _collection(filterController),
                     20.heightBox,
                   ],
                 )))
@@ -331,36 +330,6 @@ class FilterScreen extends StatelessWidget {
         ]);
   }
 
-  _collection(FilterController filterController) {
-    return ExpansionTile(
-      trailing: filterController.isCollectionExpanded
-          ? SvgPicture.asset(
-              ImageConstanst.minusIcon,
-              height: 16,
-              width: 16,
-            )
-          : SvgPicture.asset(
-              ImageConstanst.plusIcon,
-              height: 16,
-              width: 16,
-            ),
-      onExpansionChanged: (isExapanded) {
-        filterController.updateCollectionExpanded();
-      },
-      initiallyExpanded: true,
-      key: PageStorageKey<String>(LocaleKeys.searchByCollectionCap.tr),
-      title: Text(LocaleKeys.searchByCollectionCap.tr,
-          style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF5A5A5A))),
-      children: filterController.collectionList
-          .map<Widget>(
-            (map) => _checkBoxTile(filterController, map),
-          )
-          .toList(),
-    );
-  }
 
   _checkBoxTile(FilterController filterController, Map map) {
     return InkWell(

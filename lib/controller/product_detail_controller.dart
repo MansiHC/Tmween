@@ -16,6 +16,7 @@ import '../model/recently_viewed_model.dart';
 import '../service/api.dart';
 import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
+import 'dashboard_controller.dart';
 import 'drawer_controller.dart';
 
 class ProductDetailController extends GetxController {
@@ -114,6 +115,7 @@ class ProductDetailController extends GetxController {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.delete<DrawerControllers>();
+        Get.delete<DashboardController>();
         Get.offAll(DrawerScreen());
       } else {
         Helper.showGetSnackBar(value.message!);
@@ -176,6 +178,7 @@ class ProductDetailController extends GetxController {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.delete<DrawerControllers>();
+        Get.delete<DashboardController>();
         Get.offAll(DrawerScreen());
       }
       Helper.showGetSnackBar(value.message!);

@@ -63,7 +63,7 @@ class SelectCategoryContainer extends StatelessWidget {
             5.heightBox,
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),
-                child: CachedNetworkImage(
+                child: category.smallImageUrl!.isNotEmpty?CachedNetworkImage(
                   imageUrl: category.smallImageUrl!,
                   height: 80,
                   width: 80,
@@ -72,7 +72,8 @@ class SelectCategoryContainer extends StatelessWidget {
                   errorWidget:
                       (context, url, error) =>
                           Icon(Icons.image_not_supported,color: Colors.grey,),
-                )),
+                ): Container(height: 80,
+                    width: 80,child:Icon(Icons.image_not_supported,color: Colors.grey,))),
             5.heightBox
           ]),
     );
