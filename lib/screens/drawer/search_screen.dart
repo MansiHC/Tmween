@@ -450,6 +450,7 @@ class SearchScreen extends StatelessWidget {
                         },
                         child: Container(
                             width: 150,
+                            height: 160,
                             padding: EdgeInsets.all(10),
                             margin: EdgeInsets.all(5),
                             decoration: BoxDecoration(

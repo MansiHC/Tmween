@@ -12,6 +12,7 @@ import 'package:tmween/model/dashboard_model.dart';
 import 'package:tmween/model/deals_of_the_day_model.dart';
 import 'package:tmween/model/get_customer_address_list_model.dart';
 import 'package:tmween/model/get_customer_data_model.dart';
+import 'package:tmween/model/get_wishlist_details_model.dart';
 import 'package:tmween/model/login_model.dart';
 import 'package:tmween/model/login_using_otp_model.dart';
 import 'package:tmween/model/signup_model.dart';
@@ -241,8 +242,8 @@ class Api {
     return result;
   }
 
-  Future<UserDataModel> verifyOTP(phone, otp) async {
-    late UserDataModel result;
+  Future<VerifyOtpModel> verifyOTP(phone, otp) async {
+    late VerifyOtpModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.verifyOTP),
           headers: {
@@ -257,7 +258,7 @@ class Api {
             "otp": otp,
           }));
       var responseJson = _returnResponse(response);
-      result = UserDataModel.fromJson(responseJson);
+      result = VerifyOtpModel.fromJson(responseJson);
     } on SocketException {
       Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }
@@ -713,6 +714,84 @@ Future<SuccessModel> verifyMobileChangePassword(token, userId, otp,password,lang
           }));
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<SuccessModel> addDataToWishlist(
+      token, userId,  productId, langCode) async {
+    late SuccessModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.addDataToWishList),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            'username': token,
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "user_id": userId,
+            "customer_id": userId,
+            "product_id": productId,
+            "lang_code": langCode
+          }));
+      var responseJson = _returnResponse(response);
+      result = SuccessModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<SuccessModel> deleteWishListDetails(
+      token, id,  userId, langCode) async {
+    late SuccessModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.deleteWishListDetails),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            'username': token,
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "user_id": userId,
+            "id": id,
+            "lang_code": langCode
+          }));
+      var responseJson = _returnResponse(response);
+      result = SuccessModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<GetWishlistDetailsModel> getWishListDetails(
+      token, userId, langCode) async {
+    late GetWishlistDetailsModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.getWishListDetails),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            'username': token,
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "user_id": userId,
+            "lang_code": langCode
+          }));
+      var responseJson = _returnResponse(response);
+      result = GetWishlistDetailsModel.fromJson(responseJson);
     } on SocketException {
       Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }

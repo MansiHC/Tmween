@@ -6,39 +6,85 @@ import 'package:tmween/screens/drawer/wishlist_container.dart';
 
 import '../../lang/locale_keys.g.dart';
 import '../../utils/global.dart';
+import '../../utils/views/circular_progress_bar.dart';
 import 'dashboard/product_detail_screen.dart';
 
-class WishlistScreen extends StatelessWidget {
+class WishlistScreen extends StatefulWidget {
   final bool fromProfile;
   late String language;
 
   WishlistScreen({Key? key, this.fromProfile = false}) : super(key: key);
 
+  @override
+  State<StatefulWidget> createState() {
+    return WishlistScreenState();
+  }
+
+}
+class WishlistScreenState extends State<WishlistScreen> {
+  late String language;
+
+
   final wishlistController = Get.put(WishlistController());
+
+  Future<bool> _onWillPop(WishlistController wishlistController) async {
+    wishlistController.exitScreen();
+    return true;
+  }
+
+  @override
+  void initState() {
+   wishlistController.getWishListData('en');
+   wishlistController.update();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
+
     return GetBuilder<WishlistController>(
         init: WishlistController(),
         builder: (contet) {
           wishlistController.context = context;
-
-          return Scaffold(
+          return WillPopScope(
+              onWillPop: () => _onWillPop(wishlistController),
+          child:Scaffold(
               body: Container(
             color: Colors.white,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Visibility(
-                    visible: fromProfile,
+                    visible: widget.fromProfile,
                     child: Container(
                         constraints: BoxConstraints(
                             minWidth: double.infinity, maxHeight: 90),
                         color: AppColors.appBarColor,
                         padding: EdgeInsets.only(top: 20),
                         child: topView(wishlistController))),
-                Expanded(
+if(wishlistController.loading)
+                Expanded(child:CircularProgressBar(),
+                ),
+                Visibility(
+                  visible: !wishlistController.loading &&
+                      wishlistController.wishListData.length == 0,
+                  child: Expanded(
+                    child: Center(
+                        child: Text(
+                          'No Records',
+                          style: TextStyle(
+                              color: Color(0xFF414141),
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold),
+                        )),
+                  ),
+                ),
+                Visibility(
+                  visible: !wishlistController.loading &&
+                      wishlistController.wishListData.length > 0,
+                  child:
+                  Expanded(
                     child: Container(
                         color: Colors.white,
                         child: Container(
@@ -58,21 +104,22 @@ class WishlistScreen extends StatelessWidget {
                                 childAspectRatio: 0.66,
                                 physics: ScrollPhysics(),
                                 children: List.generate(
-                                    wishlistController.soldByTmweens.length,
+                                    wishlistController.wishListData.length,
                                     (index) {
+                                      print('..........fdhj.........${wishlistController.wishListData.length}');
                                   return InkWell(
                                       onTap: () {
                                         wishlistController
-                                            .navigateTo(ProductDetailScreen());
+                                            .navigateTo(ProductDetailScreen(productId: wishlistController.wishListData[0].id,));
                                       },
                                       child: WishlistContainer(
-                                        soldByTmween: wishlistController
-                                            .soldByTmweens[index],
+                                        wishlistData: wishlistController
+                                            .wishListData[index],
                                       ));
-                                })))))
+                                }))))))
               ],
             ),
-          ));
+          )));
         });
   }
 

@@ -196,6 +196,7 @@ class LoginController extends GetxController {
               .addStringToSF(SharedPreferencesKeys.image, value.data!.customerData!.largeImageUrl);
           if(value.data!.customerAddressData!=null)
             if(value.data!.customerAddressData!.length>0)
+            if(value.data!.customerAddressData![0].cityName!=null)
           MySharedPreferences.instance
               .addStringToSF(SharedPreferencesKeys.address, "${value.data!.customerAddressData![0].cityName} - ${value.data!.customerAddressData![0].zip}");
 

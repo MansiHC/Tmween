@@ -29,6 +29,7 @@ class ProductDetailController extends GetxController {
   bool descTextShowFlag = false;
 
   int current = 0;
+  int productId = 0;
   final CarouselController controller = CarouselController();
   final List<Map> colors = [
     {
@@ -54,11 +55,19 @@ class ProductDetailController extends GetxController {
   int loginLogId = 0;
   final api = Api();
   bool loading = false;
+
   List<Address> addressList = [];
+  bool isLogin = true;
 
   @override
   void onInit() {
     selectedColor = colors[1];
+    MySharedPreferences.instance
+        .getBoolValuesSF(SharedPreferencesKeys.isLogin)
+        .then((value) async {
+
+      isLogin = value!;
+    });
     MySharedPreferences.instance
         .getStringValuesSF(SharedPreferencesKeys.token)
         .then((value) async {
@@ -104,6 +113,25 @@ class ProductDetailController extends GetxController {
     update();
   }
 
+  Future<void> addToWishlist(language) async {
+    addressList = [];
+    await api.addDataToWishlist(token, userId, productId,language).then((value) {
+      if (value.statusCode == 200) {
+        isLiked = true;
+        update();
+        Helper.showGetSnackBar(value.message!);
+      } else if (value.statusCode == 401) {
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        Get.deleteAll();
+        Get.offAll(DrawerScreen());
+      }
+
+    }).catchError((error) {
+      print('error....$error');
+    });
+  }
+
   Future<void> getAddressList(language) async {
     addressList = [];
     loading = true;
@@ -111,14 +139,12 @@ class ProductDetailController extends GetxController {
     await api.getCustomerAddressList(token, userId, language).then((value) {
       if (value.statusCode == 200) {
         addressList = value.data!;
+
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-        Get.delete<DrawerControllers>();
-        Get.delete<DashboardController>();
+        Get.deleteAll();
         Get.offAll(DrawerScreen());
-      } else {
-        Helper.showGetSnackBar(value.message!);
       }
       loading = false;
       update();
@@ -177,11 +203,10 @@ class ProductDetailController extends GetxController {
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-        Get.delete<DrawerControllers>();
-        Get.delete<DashboardController>();
+        Get.deleteAll();
         Get.offAll(DrawerScreen());
       }
-      Helper.showGetSnackBar(value.message!);
+
     }).catchError((error) {
       loading = false;
       update();

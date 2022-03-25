@@ -144,9 +144,7 @@ class EditProfileController extends GetxController {
             } else if (value.statusCode == 401) {
               MySharedPreferences.instance
                   .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-              Get.delete<EditProfileController>();
-              Get.delete<DrawerControllers>();
-              Get.delete<DashboardController>();
+              Get.deleteAll();
               Get.offAll(DrawerScreen());
             } else {
               Helper.showGetSnackBar(value.message!);

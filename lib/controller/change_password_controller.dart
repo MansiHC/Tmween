@@ -71,9 +71,7 @@ class ChangePasswordController extends GetxController {
           } else if (value.statusCode == 401) {
             MySharedPreferences.instance
                 .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-            Get.delete<ChangePasswordController>();
-            Get.delete<DrawerControllers>();
-            Get.delete<DashboardController>();
+            Get.deleteAll();
             Get.offAll(DrawerScreen());
           }
           Helper.showGetSnackBar(value.message!);
@@ -103,9 +101,7 @@ otpExpired = false;
           } else if (value.statusCode == 401) {
             MySharedPreferences.instance
                 .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-            Get.delete<ChangePasswordController>();
-            Get.delete<DrawerControllers>();
-            Get.delete<DashboardController>();
+            Get.deleteAll();
             Get.offAll(DrawerScreen());
           }
           Helper.showGetSnackBar(value.message!);
@@ -145,9 +141,7 @@ navigateToDashBoardScreen();
           } else if (value.statusCode == 401) {
             MySharedPreferences.instance
                 .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-            Get.delete<ChangePasswordController>();
-            Get.delete<DrawerControllers>();
-            Get.delete<DashboardController>();
+            Get.deleteAll();
             Get.offAll(DrawerScreen());
           }
           Helper.showGetSnackBar(value.message!);

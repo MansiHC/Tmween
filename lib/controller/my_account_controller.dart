@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:tmween/controller/wishlist_controller.dart';
 import 'package:tmween/model/get_customer_data_model.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 import 'package:tmween/screens/drawer/profile/update_profile_screen.dart';
@@ -28,24 +29,25 @@ class MyAccountController extends GetxController {
 
   @override
   void onInit() {
-  //  if (Helper.isIndividual)
+    //  if (Helper.isIndividual)
+    Get.delete<WishlistController>();
+    MySharedPreferences.instance
+        .getStringValuesSF(SharedPreferencesKeys.token)
+        .then((value) async {
+      token = value!;
+      print('dhsh.....$token');
       MySharedPreferences.instance
-          .getStringValuesSF(SharedPreferencesKeys.token)
+          .getIntValuesSF(SharedPreferencesKeys.userId)
           .then((value) async {
-        token = value!;
-        print('dhsh.....$token');
+        userId = value!;
+        getCustomerData(Get.locale!.languageCode);
         MySharedPreferences.instance
-            .getIntValuesSF(SharedPreferencesKeys.userId)
+            .getIntValuesSF(SharedPreferencesKeys.loginLogId)
             .then((value) async {
-          userId = value!;
-         getCustomerData(Get.locale!.languageCode);
-          MySharedPreferences.instance
-              .getIntValuesSF(SharedPreferencesKeys.loginLogId)
-              .then((value) async {
-            loginLogId = value!;
-          });
+          loginLogId = value!;
         });
       });
+    });
     super.onInit();
   }
 
@@ -56,16 +58,16 @@ class MyAccountController extends GetxController {
       if (value.statusCode == 200) {
         profileData = value.data![0];
 
-        MySharedPreferences.instance
-            .addStringToSF(SharedPreferencesKeys.address, "${profileData!.cityName} - ${profileData!.zip}");
-        MySharedPreferences.instance
-            .addStringToSF(SharedPreferencesKeys.image, profileData!.largeImageUrl);
+        if (profileData!.cityName != null)
+          MySharedPreferences.instance.addStringToSF(
+              SharedPreferencesKeys.address,
+              "${profileData!.cityName} - ${profileData!.zip}");
+        MySharedPreferences.instance.addStringToSF(
+            SharedPreferencesKeys.image, profileData!.largeImageUrl);
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-        Get.delete<MyAccountController>();
-        Get.delete<DrawerControllers>();
-        Get.delete<DashboardController>();
+        Get.deleteAll();
         Get.offAll(DrawerScreen());
       } else {
         Helper.showGetSnackBar(value.message!);
@@ -90,7 +92,7 @@ class MyAccountController extends GetxController {
       if (value.statusCode == 401 && value.statusCode == 200) {
         navigateToDashBoardScreen();
       } else {
-      //  Helper.showGetSnackBar(value.message!);
+        //  Helper.showGetSnackBar(value.message!);
       }
       navigateToDashBoardScreen();
     }).catchError((error) {
@@ -102,7 +104,7 @@ class MyAccountController extends GetxController {
 
   void exitScreen() {
     Get.delete<MyAccountController>();
-    Navigator.of(context).pop();
+    Navigator.of(context).pop(true);
   }
 
   void pop() {
@@ -111,11 +113,14 @@ class MyAccountController extends GetxController {
   }
 
   void navigateToDashBoardScreen() {
+    MySharedPreferences.instance.addStringToSF(
+        SharedPreferencesKeys.address,
+        "");
+    MySharedPreferences.instance.addStringToSF(
+        SharedPreferencesKeys.image,"");
     MySharedPreferences.instance
         .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-    Get.delete<MyAccountController>();
-    Get.delete<DrawerControllers>();
-    Get.delete<DashboardController>();
+    Get.deleteAll();
     Get.offAll(DrawerScreen());
     /*
     Navigator.of(context).pushAndRemoveUntil(
@@ -128,16 +133,22 @@ class MyAccountController extends GetxController {
   }
 
   void navigateToUpdateProfileScreen() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateProfileScreen(profileData:profileData))).then((value) {
-      if(value){
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                UpdateProfileScreen(profileData: profileData))).then((value) {
+      if (value) {
         getCustomerData(Get.locale!.languageCode);
       }
     });
   }
 
   void navigateToAddressScreen() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => YourAddressesScreen())).then((value) {
-      if(value){
+    Navigator.push(context,
+            MaterialPageRoute(builder: (context) => YourAddressesScreen()))
+        .then((value) {
+      if (value) {
         getCustomerData(Get.locale!.languageCode);
       }
     });

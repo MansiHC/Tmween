@@ -44,8 +44,11 @@ class TopSelectionContainer extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 5),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
+                  topSelection.reviewsAvg==0?
+                      Container(width: 10,)
+                      :
                   Container(
                       padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                       decoration: BoxDecoration(
@@ -55,7 +58,7 @@ class TopSelectionContainer extends StatelessWidget {
                         alignment: WrapAlignment.center,
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
-                          Text(/*topSelection.rating*/'4.1',
+                          Text(topSelection.reviewsAvg.toString(),
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 11,
@@ -101,7 +104,7 @@ class TopSelectionContainer extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(color: Color(0xFF333333), fontSize: 13)))),
         5.heightBox,
-        if (true)
+        if (topSelection.bottomLeftCaptionArr!=null)
           Padding(
               padding: EdgeInsets.only(left: 5, right: 15),
               child: Align(

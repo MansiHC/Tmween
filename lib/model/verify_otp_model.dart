@@ -54,7 +54,7 @@ class CustomerData {
   int? confirmation;
   int? status;
   int? isVerified;
-  Null? email;
+  String? email;
   String? dob;
   String? createdAt;
   String? updatedAt;

@@ -37,21 +37,9 @@ class OtpController extends GetxController {
     await api.verifyOTP(phone, otp).then((value) {
       if (value.statusCode == 200) {
         MySharedPreferences.instance.addIntToSF(
-            SharedPreferencesKeys.loginLogId, value.data!.loginLogId);
-        Helper.isIndividual = true;
-        MySharedPreferences.instance
-            .addStringToSF(SharedPreferencesKeys.token, value.data!.token);
-        MySharedPreferences.instance.addIntToSF(
             SharedPreferencesKeys.userId, value.data!.customerData!.id);
-        MySharedPreferences.instance
-            .addStringToSF(SharedPreferencesKeys.image, value.data!.customerData!.largeImageUrl);
-        if(value.data!.customerAddressData!=null)
-          if(value.data!.customerAddressData!.length>0)
-          MySharedPreferences.instance
-              .addStringToSF(SharedPreferencesKeys.address, "${value.data!.customerAddressData![0].cityName} - ${value.data!.customerAddressData![0].zip}");
-
-
-        navigateToDrawerScreen();
+        exitScreen();
+      //  navigateToDrawerScreen();
       } else {
         Helper.showGetSnackBar(value.statusMessage!);
       }
@@ -167,6 +155,7 @@ class OtpController extends GetxController {
             .addStringToSF(SharedPreferencesKeys.image, value.data!.customerData!.largeImageUrl);
         if(value.data!.customerAddressData!=null)
           if(value.data!.customerAddressData!.length>0)
+            if (value.data!.customerAddressData![0].cityName != null)
           MySharedPreferences.instance
               .addStringToSF(SharedPreferencesKeys.address, "${value.data!.customerAddressData![0].cityName} - ${value.data!.customerAddressData![0].zip}");
 

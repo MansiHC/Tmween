@@ -86,7 +86,8 @@ class DrawerControllers extends GetxController {
     MySharedPreferences.instance
         .getStringValuesSF(SharedPreferencesKeys.address)
         .then((value) async {
-      address = value!;
+        if(value!=null)
+      address = value;
       update();
     });
     MySharedPreferences.instance
@@ -132,8 +133,7 @@ class DrawerControllers extends GetxController {
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-        Get.delete<DrawerControllers>();
-        Get.delete<DashboardController>();
+       Get.deleteAll();
         Get.offAll(DrawerScreen());
       } else {
         Helper.showGetSnackBar(value.message!);
@@ -192,8 +192,7 @@ class DrawerControllers extends GetxController {
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-        Get.delete<DrawerControllers>();
-        Get.delete<DashboardController>();
+        Get.deleteAll();
         Get.offAll(DrawerScreen());
       }
       Helper.showGetSnackBar(value.message!);

@@ -46,6 +46,9 @@ class SoldByTmweenContainer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  soldByTmween.reviewsAvg==0?
+                  Container(width: 10,)
+                      :
                   Container(
                       padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                       decoration: BoxDecoration(
@@ -55,7 +58,7 @@ class SoldByTmweenContainer extends StatelessWidget {
                         alignment: WrapAlignment.center,
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
-                          Text(/*soldByTmween.rating*/'4.1',
+                          Text(soldByTmween.reviewsAvg.toString(),
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 11,
@@ -100,7 +103,7 @@ class SoldByTmweenContainer extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(color: Color(0xFF333333), fontSize: 13)))),
         5.heightBox,
-        if (true)
+        if (soldByTmween.bottomLeftCaptionArr!=null)
           Padding(
               padding: EdgeInsets.only(left: 5, right: 15),
               child: Align(

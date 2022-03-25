@@ -16,16 +16,35 @@ import '../../../controller/full_image_controller.dart';
 import '../../../controller/product_detail_controller.dart';
 import '../../../lang/locale_keys.g.dart';
 import '../../../model/get_customer_address_list_model.dart';
+import '../../../utils/my_shared_preferences.dart';
 import '../../../utils/views/circular_progress_bar.dart';
 import '../../../utils/views/expandable_text.dart';
+import '../../authentication/login/login_screen.dart';
 import '../address_container.dart';
 import '../cart_screen.dart';
 import '../profile/add_address_screen.dart';
 import '../profile/your_addresses_screen.dart';
 
-class ProductDetailScreen extends StatelessWidget {
+class ProductDetailScreen extends StatefulWidget {
+  final int? productId;
+
+  ProductDetailScreen({Key? key, this.productId}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return ProductDetailScreenState();
+  }
+
+}
+class ProductDetailScreenState extends State<ProductDetailScreen> {
   late String language;
   final productDetailController = Get.put(ProductDetailController());
+
+  @override
+  void initState() {
+    productDetailController.productId = widget.productId!;
+    super.initState();
+  }
 
   Future<bool> _onWillPop(ProductDetailController productDetailController) async {
     productDetailController.exitScreen();
@@ -95,6 +114,42 @@ class ProductDetailScreen extends StatelessWidget {
                   ))));
         });
   }
+  void _loginFirstDialog(ProductDetailController productDetailController) async {
+    await showDialog(
+        context: productDetailController.context,
+        builder: (_) => AlertDialog(
+          title: Text(
+            'Please Login First',
+            style: TextStyle(
+              fontSize: 16,
+            ),
+          ),
+          actions: [
+            TextButton(
+              style: TextButton.styleFrom(padding: EdgeInsets.zero),
+              child: Text(
+                LocaleKeys.no.tr,
+                style: TextStyle(fontSize: 16, color: Colors.black54),
+              ),
+              onPressed: () {
+                productDetailController.pop();
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(padding: EdgeInsets.zero),
+              child: Text(
+                LocaleKeys.yes.tr,
+                style: TextStyle(fontSize: 16, color: Colors.black54),
+              ),
+              onPressed: () {
+                Get.deleteAll();
+                productDetailController.navigateTo(
+                    LoginScreen(from: SharedPreferencesKeys.isDrawer));
+              },
+            ),
+          ],
+        ));
+  }
 
   Widget _imagePriceView(ProductDetailController productDetailController) {
     return Column(
@@ -134,9 +189,16 @@ class ProductDetailScreen extends StatelessWidget {
                             children: [
                               InkWell(
                                   onTap: () {
-                                    productDetailController.isLiked =
-                                        !productDetailController.isLiked;
-                                    productDetailController.update();
+    MySharedPreferences.instance
+        .getBoolValuesSF(
+    SharedPreferencesKeys.isLogin)
+        .then((value) async {
+    bool isLogin = value!;
+    if (!isLogin) {
+    _loginFirstDialog(productDetailController);
+    } else {
+    productDetailController.addToWishlist(language);
+    }});
                                   },
                                   child: SvgPicture.asset(
                                     productDetailController.isLiked
@@ -1865,6 +1927,7 @@ class ProductDetailScreen extends StatelessWidget {
                         },
                         child: Container(
                             width: 150,
+                            height: 160,
                             padding: EdgeInsets.all(10),
                             margin: EdgeInsets.all(5),
                             decoration: BoxDecoration(

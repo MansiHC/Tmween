@@ -71,6 +71,9 @@ abstract class UrlConstants {
       '$baseUrl/customer/resend-forgot-password-mobile-otp';
   static const String resetPassword = '$baseUrl/customer/reset-forgot-password';
   static const String editProfile = '$baseUrl/customer/edit-profile';
+  static const String addDataToWishList = '$baseUrl/customer/add-data-to-whishlist';
+  static const String deleteWishListDetails = '$baseUrl/customer/delete-wishlist-details';
+  static const String getWishListDetails = '$baseUrl/customer/get-wishlist-details';
   static const String getCustomerData = '$baseUrl/customer/get-customer-data-mobile';
   static const String generateSendOtp = '$baseUrl/customer/generate-send-otp';
   static const String resendMobileOtp = '$baseUrl/customer/resend-mobile-otp';

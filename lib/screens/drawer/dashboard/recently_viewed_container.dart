@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/dashboard_model.dart';
-import 'package:tmween/model/recently_viewed_model.dart';
 import 'package:tmween/utils/extensions.dart';
 
 import '../../../utils/global.dart';
@@ -47,61 +46,69 @@ class RecentlyViewedContainer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                      decoration: BoxDecoration(
-                          color: AppColors.offerGreen,
-                          borderRadius: BorderRadius.all(Radius.circular(4))),
-                      child: Wrap(
-                        alignment: WrapAlignment.center,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          Text(/*recentlyViewed.rating*/'4.1',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold)),
-                          Icon(
-                            Icons.star,
-                            color: Colors.white,
-                            size: 11,
-                          )
-                        ],
-                      )),
-                  if(recentlyViewed.discountPer!=0)
-                  Container(
-                      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                      decoration: BoxDecoration(
-                          color: Color(0xFFFF9529),
-                          borderRadius: BorderRadius.all(Radius.circular(4))),
-                      child: Row(
-                        children: [
-                          Text('${recentlyViewed.discountPer}%',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold)),
-                          2.widthBox,
-                          Text(LocaleKeys.off.tr,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 11)),
-                        ],
-                      )),
+                  recentlyViewed.reviewsAvg == 0
+                      ? Container(
+                          width: 10,
+                        )
+                      : Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                          decoration: BoxDecoration(
+                              color: AppColors.offerGreen,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4))),
+                          child: Wrap(
+                            alignment: WrapAlignment.center,
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              Text(recentlyViewed.reviewsAvg.toString(),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold)),
+                              Icon(
+                                Icons.star,
+                                color: Colors.white,
+                                size: 11,
+                              )
+                            ],
+                          )),
+                  if (recentlyViewed.discountPer != 0)
+                    Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                        decoration: BoxDecoration(
+                            color: Color(0xFFFF9529),
+                            borderRadius: BorderRadius.all(Radius.circular(4))),
+                        child: Row(
+                          children: [
+                            Text('${recentlyViewed.discountPer}%',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold)),
+                            2.widthBox,
+                            Text(LocaleKeys.off.tr,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 11)),
+                          ],
+                        )),
                 ])),
         5.heightBox,
         Expanded(
             child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),
-                child: recentlyViewed.largeImageUrl!.setNetworkImage()
-                    )),
+                child: recentlyViewed.largeImageUrl!.setNetworkImage())),
         5.heightBox,
-          Align(alignment: Alignment.centerLeft,child: Padding(
-            padding: EdgeInsets.only(left: 5, right: 15),
-            child: Text(recentlyViewed.productName!,
-                textAlign: TextAlign.start,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(color: Color(0xFF333333), fontSize: 13)))),
+        Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+                padding: EdgeInsets.only(left: 5, right: 15),
+                child: Text(recentlyViewed.productName!,
+                    textAlign: TextAlign.start,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: Color(0xFF333333), fontSize: 13)))),
         5.heightBox,
         if (true)
           Padding(
@@ -139,20 +146,22 @@ class RecentlyViewedContainer extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                  child:Wrap(children:[ Text('${recentlyViewed.finalPriceDisp!}',
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                          color: Color(0xFF000000),
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold)),
-                    2.widthBox,
-                    Text('${recentlyViewed.retailPriceDisp!}',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            decoration: TextDecoration.lineThrough,
-                            decorationThickness: 3,
-                            color: Color(0xFF7B7B7B),
-                            fontSize: 10))])),
+                  child: Wrap(children: [
+                Text('${recentlyViewed.finalPriceDisp!}',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                        color: Color(0xFF000000),
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold)),
+                2.widthBox,
+                Text('${recentlyViewed.retailPriceDisp!}',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                        decoration: TextDecoration.lineThrough,
+                        decorationThickness: 3,
+                        color: Color(0xFF7B7B7B),
+                        fontSize: 10))
+              ])),
               2.widthBox,
               Align(
                 alignment: Alignment.topRight,

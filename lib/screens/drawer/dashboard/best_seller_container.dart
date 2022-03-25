@@ -46,6 +46,9 @@ class BestSellerContainer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  bestSeller.reviewsAvg==0?
+                  Container(width: 10,)
+                      :
                   Container(
                       padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                       decoration: BoxDecoration(
@@ -55,7 +58,7 @@ class BestSellerContainer extends StatelessWidget {
                         alignment: WrapAlignment.center,
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
-                          Text(/*bestSeller.rating*/ '4.1',
+                          Text(bestSeller.reviewsAvg.toString(),
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 11,
@@ -106,7 +109,7 @@ class BestSellerContainer extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(color: Color(0xFF333333), fontSize: 13)))),
         5.heightBox,
-        if (true)
+        if (bestSeller.bottomLeftCaptionArr!=null)
           Padding(
               padding: EdgeInsets.only(left: 5, right: 15),
               child: Align(

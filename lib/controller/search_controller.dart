@@ -145,11 +145,6 @@ class SearchController extends GetxController {
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-        Get.delete<DrawerControllers>();
-        Get.delete<DashboardController>();
-        Get.offAll(DrawerScreen());
-      } else {
-        Helper.showGetSnackBar(value.message!);
       }
       loading = false;
       update();
@@ -206,11 +201,9 @@ class SearchController extends GetxController {
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-        Get.delete<DrawerControllers>();
-        Get.delete<DashboardController>();
+        Get.deleteAll();
         Get.offAll(DrawerScreen());
       }
-      Helper.showGetSnackBar(value.message!);
     }).catchError((error) {
       loading = false;
       update();

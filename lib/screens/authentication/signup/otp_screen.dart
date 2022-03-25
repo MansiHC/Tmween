@@ -193,7 +193,7 @@ class OtpScreenState extends State<OtpScreen> {
                 if (Helper.isIndividual == true) {
                   otpController.verifyOTP();
                 } else {
-                  otpController.navigateToDrawerScreen();
+                  //otpController.navigateToDrawerScreen();
                 }
               },
               onChanged: (value) {

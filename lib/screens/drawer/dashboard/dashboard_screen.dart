@@ -470,7 +470,7 @@ class DashboardScreen extends StatelessWidget {
                 List.generate(dashboardController.dailyDealsData!.length>4?4:dashboardController.dailyDealsData!.length, (index) {
                   return InkWell(
                       onTap: () {
-                        dashboardController.navigateTo(ProductDetailScreen());
+                        dashboardController.navigateTo(ProductDetailScreen(productId: dashboardController.dailyDealsData![0].productId,));
                       },
                       child: DealsOfTheDayContainer(
                           deal: dashboardController.dailyDealsData![index]));
@@ -531,13 +531,13 @@ class DashboardScreen extends StatelessWidget {
             Container(
                 height: 244,
                 child: ListView.builder(
-                    itemCount: dashboardController.bestSellerData!.length>AppConstants.cardsPerPage?AppConstants.cardsPerPage:dashboardController.bestSellerData!.length,
+                    itemCount:dashboardController.bestSellerData!.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return InkWell(
                           onTap: () {
                             dashboardController
-                                .navigateTo(ProductDetailScreen());
+                                .navigateTo(ProductDetailScreen(productId: dashboardController.bestSellerData![0].id,));
                           },
                           child: BestSellerContainer(
                               bestSeller:
@@ -605,7 +605,7 @@ class DashboardScreen extends StatelessWidget {
                       return InkWell(
                           onTap: () {
                             dashboardController
-                                .navigateTo(ProductDetailScreen());
+                                .navigateTo(ProductDetailScreen(productId: dashboardController.soldByTmweenProductData![0].id,));
                           },
                           child: SoldByTmweenContainer(
                               soldByTmween:
@@ -673,7 +673,7 @@ class DashboardScreen extends StatelessWidget {
                       return InkWell(
                           onTap: () {
                             dashboardController
-                                .navigateTo(ProductDetailScreen());
+                                .navigateTo(ProductDetailScreen(productId: dashboardController.topSelectionData![0].id,));
                           },
                           child: TopSelectionContainer(
                               topSelection:
@@ -742,7 +742,7 @@ class DashboardScreen extends StatelessWidget {
                       return InkWell(
                           onTap: () {
                             dashboardController
-                                .navigateTo(ProductDetailScreen());
+                                .navigateTo(ProductDetailScreen(productId: dashboardController.recentlyViewProduct![0].productId,));
                           },
                           child: RecentlyViewedContainer(
                               recentlyViewed:

@@ -275,9 +275,7 @@ class AddAddressController extends GetxController {
             } else if (value.statusCode == 401) {
               MySharedPreferences.instance
                   .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-              Get.delete<AddAddressController>();
-              Get.delete<DashboardController>();
-              Get.delete<DrawerControllers>();
+              Get.deleteAll();
               Get.offAll(DrawerScreen());
             }
             Helper.showGetSnackBar(value.message!);
@@ -333,9 +331,7 @@ class AddAddressController extends GetxController {
             } else if (value.statusCode == 401) {
               MySharedPreferences.instance
                   .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-              Get.delete<AddAddressController>();
-              Get.delete<DashboardController>();
-              Get.delete<DrawerControllers>();
+              Get.deleteAll();
               Get.offAll(DrawerScreen());
             }
             Helper.showGetSnackBar(value.message!);

@@ -110,7 +110,7 @@ class SignUpController extends GetxController {
   }
 
   void navigateToOtpScreen(int? otp) {
-    Navigator.push(
+    Navigator.pushReplacement(
         context,
         MaterialPageRoute(
             builder: (context) => OtpScreen(

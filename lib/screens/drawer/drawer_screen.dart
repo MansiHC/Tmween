@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:tmween/controller/cart_controller.dart';
 import 'package:tmween/controller/drawer_controller.dart';
 import 'package:tmween/controller/login_controller.dart';
 import 'package:tmween/controller/otp_controller.dart';
@@ -19,6 +20,7 @@ import 'package:tmween/utils/global.dart';
 
 import '../../controller/search_controller.dart';
 import '../../controller/signup_controller.dart';
+import '../../controller/wishlist_controller.dart';
 import '../../model/get_customer_address_list_model.dart';
 import '../../utils/my_shared_preferences.dart';
 import '../../utils/views/circular_progress_bar.dart';
@@ -97,7 +99,10 @@ class DrawerScreen extends StatelessWidget {
                                       3.widthBox,
                                       Text(
                                         drawerController.isLogin
-                                            ? drawerController.address
+                                            ? drawerController
+                                                    .address.isNotEmpty
+                                                ? drawerController.address
+                                                : 'Select Delivery Address'
                                             : 'Select Delivery Address',
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 12),
@@ -142,7 +147,7 @@ class DrawerScreen extends StatelessWidget {
                                     _loginFirstDialog(drawerController);
                                   } else {
                                     drawerController
-                                        .navigateTo(MyAccountScreen());
+                                        .navigateToProfileScreen();
                                   }
                                 });
                               },
@@ -153,7 +158,6 @@ class DrawerScreen extends StatelessWidget {
                                         ? CircleAvatar(
                                             radius: 45,
                                             foregroundColor: Colors.transparent,
-                                            backgroundColor: Colors.grey,
                                             child: CachedNetworkImage(
                                               imageUrl: drawerController.image,
                                               placeholder: (context, url) =>
@@ -276,7 +280,7 @@ class DrawerScreen extends StatelessWidget {
         init: DrawerControllers(),
         builder: (contet) {
           return Container(
-              height: drawerController.isLogin ? 310 : 200,
+              height: 310,
               padding: EdgeInsets.all(15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -312,6 +316,7 @@ class DrawerScreen extends StatelessWidget {
                                   },
                                   child: Container(
                                       width: 150,
+                                      height: 160,
                                       padding: EdgeInsets.all(10),
                                       margin: EdgeInsets.all(5),
                                       decoration: BoxDecoration(
@@ -346,12 +351,14 @@ class DrawerScreen extends StatelessWidget {
                                                       .addressList.length)
                                               ? InkWell(
                                                   onTap: () {
-
                                                     Address address =
                                                         drawerController
                                                             .addressList[index];
                                                     MySharedPreferences.instance
-                                                        .addStringToSF(SharedPreferencesKeys.address, "${address.cityName} - ${address.zip}");
+                                                        .addStringToSF(
+                                                            SharedPreferencesKeys
+                                                                .address,
+                                                            "${address.cityName} - ${address.zip}");
 
                                                     drawerController.editAddress(
                                                         address.id,
@@ -405,10 +412,7 @@ class DrawerScreen extends StatelessWidget {
                           text: 'Sign in to see your Addresses',
                           fontSize: 16,
                           onPressed: () {
-                            Get.delete<DrawerControllers>();
-                            Get.delete<LoginController>();
-                            Get.delete<OtpController>();
-                            Get.delete<SignUpController>();
+                            Get.deleteAll();
                             drawerController.navigateTo(LoginScreen(
                                 from: SharedPreferencesKeys.isDrawer));
                           }),
@@ -425,17 +429,30 @@ class DrawerScreen extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       currentIndex: drawerController.pageIndex,
       onTap: (index) {
+
+
         if (index == 2) {
           drawerController.navigateTo(SearchScreen(
             from: AppConstants.bottomBar,
           ));
-        } else if (index != drawerController.pageIndex) {
+        } else if(index==3 && !drawerController.isLogin){
+          MySharedPreferences.instance
+              .getBoolValuesSF(
+              SharedPreferencesKeys.isLogin)
+              .then((value) async {
+            bool isLogin = value!;
+            if (!isLogin) {
+              _loginFirstDialog(drawerController);
+            } });
+        }else if (index != drawerController.pageIndex) {
+
           drawerController.navigationQueue
               .removeWhere((element) => element == index);
           drawerController.navigationQueue.addLast(index);
           drawerController.pageIndex = index;
           drawerController.update();
         }
+
       },
       items: [
         BottomNavigationBarItem(

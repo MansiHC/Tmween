@@ -201,7 +201,6 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                 /*backgroundImage: NetworkImage(
                                     widget.profileData!.image!)*/
                       foregroundColor: Colors.transparent,
-                      backgroundColor: Colors.grey,
                       child: CachedNetworkImage(
                         imageUrl: widget
                             .profileData!.largeImageUrl!,

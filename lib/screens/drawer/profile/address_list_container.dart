@@ -26,11 +26,16 @@ class AddressListContainer extends StatelessWidget {
         init: AddressController(),
         builder: (contet) {
           addressController.context = context;
+          if(address.addressType=="1") addressController.countPersonalAddress++;
+          if(address.addressType=="2") addressController.countOfficeAddress++;
+
           return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if(address.addressType=="1" && addressController.countPersonalAddress==1)
             15.heightBox,
-            if(address.addressType=="1")
+
+            if(address.addressType=="1" && addressController.countPersonalAddress==1)
               Text(
               LocaleKeys.personalAddress.tr,
               style: TextStyle(
@@ -38,7 +43,9 @@ class AddressListContainer extends StatelessWidget {
                   fontSize: 14,
                   fontWeight: FontWeight.bold),
             ),
-            if(address.addressType=="2")
+                if(address.addressType=="2" && addressController.countOfficeAddress==1)
+                  15.heightBox,
+            if(address.addressType=="2" && addressController.countOfficeAddress==1)
               Text(
               LocaleKeys.officeAddress.tr,
               style: TextStyle(

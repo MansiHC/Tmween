@@ -89,10 +89,10 @@ class MyAccountScreen extends StatelessWidget {
                                             myAccountController
                                                 .profileData!.largeImageUrl!),*/
                                         foregroundColor: Colors.transparent,
-                                        backgroundColor: Colors.grey,
                                         child: CachedNetworkImage(
                                           imageUrl: myAccountController
                                               .profileData!.largeImageUrl!,
+
                                           placeholder: (context, url) =>
                                               CupertinoActivityIndicator(),
                                           imageBuilder: (context, image) =>
@@ -301,7 +301,8 @@ class MyAccountScreen extends StatelessWidget {
         CustomListTile(
             title: LocaleKeys.accountSettings,
             onTap: () {
-              myAccountController.navigateTo(UpdateProfileScreen());
+              myAccountController
+                  .navigateToUpdateProfileScreen();
             },
             leadingIcon: ImageConstanst.accountSettingIcon),
         Padding(

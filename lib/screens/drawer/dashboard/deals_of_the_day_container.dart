@@ -46,6 +46,9 @@ class DealsOfTheDayContainer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  deal.reviewsAvg==0?
+                  Container(width: 10,)
+                      :
                   Container(
                       padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                       decoration: BoxDecoration(
@@ -55,7 +58,7 @@ class DealsOfTheDayContainer extends StatelessWidget {
                         alignment: WrapAlignment.center,
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
-                          Text(/*deal.rating*/'4.5',
+                          Text(deal.reviewsAvg.toString(),
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 11,
@@ -101,7 +104,7 @@ class DealsOfTheDayContainer extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(color: Color(0xFF333333), fontSize: 13)))),
         5.heightBox,
-        if (true)
+        if (deal.bottomLeftCaptionArr!=null)
           Padding(
               padding: EdgeInsets.only(left: 5, right: 15),
               child: Align(

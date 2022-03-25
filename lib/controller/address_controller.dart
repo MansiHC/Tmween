@@ -31,28 +31,32 @@ class AddressController extends GetxController {
   final api = Api();
   bool loading = false;
   List<Address> addressList = [];
+  int countPersonalAddress = 0;
+  int countOfficeAddress = 0;
 
   @override
   void onInit() {
-   // if (Helper.isIndividual) {
+    countPersonalAddress = 0;
+    countOfficeAddress = 0;
+    // if (Helper.isIndividual) {
+    MySharedPreferences.instance
+        .getStringValuesSF(SharedPreferencesKeys.token)
+        .then((value) async {
+      token = value!;
+      print('dhsh.....$token');
       MySharedPreferences.instance
-          .getStringValuesSF(SharedPreferencesKeys.token)
+          .getIntValuesSF(SharedPreferencesKeys.userId)
           .then((value) async {
-        token = value!;
-        print('dhsh.....$token');
+        userId = value!;
+        getAddressList(Get.locale!.languageCode);
         MySharedPreferences.instance
-            .getIntValuesSF(SharedPreferencesKeys.userId)
+            .getIntValuesSF(SharedPreferencesKeys.loginLogId)
             .then((value) async {
-          userId = value!;
-          getAddressList(Get.locale!.languageCode);
-          MySharedPreferences.instance
-              .getIntValuesSF(SharedPreferencesKeys.loginLogId)
-              .then((value) async {
-            loginLogId = value!;
-          });
+          loginLogId = value!;
         });
       });
-   // }
+    });
+    // }
     super.onInit();
   }
 
@@ -64,24 +68,27 @@ class AddressController extends GetxController {
     addressList = [];
     loading = true;
     update();
-    await api
-        .getCustomerAddressList(token, userId, language)
-        .then((value) {
+    await api.getCustomerAddressList(token, userId, language).then((value) {
       if (value.statusCode == 200) {
         addressList = value.data!;
-        addressList.sort((a, b) {
-
-          return addressList[0].defaultAddress==1?0:a.addressType!.compareTo(b.addressType!);
-        });
+        if(addressList.length>0) {
+          if (addressList[0].addressType == "1") {
+            addressList.sort((a, b) {
+              return int.parse(a.addressType!)
+                  .compareTo(int.parse(b.addressType!));
+            });
+          } else {
+            addressList
+              ..sort((a, b) =>
+                  int.parse(b.addressType!).compareTo(
+                      int.parse(a.addressType!)));
+          }
+        }
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-        Get.delete<AddressController>();
-        Get.delete<DrawerControllers>();
-        Get.delete<DashboardController>();
+        Get.deleteAll();
         Get.offAll(DrawerScreen());
-      } else {
-        Helper.showGetSnackBar(value.message!);
       }
       loading = false;
       update();
@@ -93,31 +100,29 @@ class AddressController extends GetxController {
   }
 
   Future<void> removeAddress(id, language) async {
-  //  if (Helper.isIndividual) {
-      loading = true;
+    //  if (Helper.isIndividual) {
+    loading = true;
+    countPersonalAddress = 0;
+    countOfficeAddress = 0;
+    update();
+    await api.deleteCustomerAddress(token, id, userId, language).then((value) {
+      if (value.statusCode == 200) {
+        getAddressList(Get.locale!.languageCode);
+      } else if (value.statusCode == 401) {
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        Get.deleteAll();
+        Get.offAll(DrawerScreen());
+      }
+      Helper.showGetSnackBar(value.message!);
+      loading = false;
       update();
-      await api
-          .deleteCustomerAddress(token, id, userId, language)
-          .then((value) {
-        if (value.statusCode == 200) {
-          getAddressList(Get.locale!.languageCode);
-        } else if (value.statusCode == 401) {
-          MySharedPreferences.instance
-              .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-          Get.delete<AddressController>();
-          Get.delete<DrawerControllers>();
-          Get.delete<DashboardController>();
-          Get.offAll(DrawerScreen());
-        }
-        Helper.showGetSnackBar(value.message!);
-        loading = false;
-        update();
-      }).catchError((error) {
-        loading = false;
-        update();
-        print('error....$error');
-      });
-  //  }
+    }).catchError((error) {
+      loading = false;
+      update();
+      print('error....$error');
+    });
+    //  }
   }
 
   void exitScreen() {
@@ -143,6 +148,8 @@ class AddressController extends GetxController {
                 builder: (context) => AddAddressScreen(address: address)))
         .then((value) {
       if (value) {
+        countPersonalAddress = 0;
+        countOfficeAddress = 0;
         getAddressList(Get.locale!.languageCode);
       }
     });
