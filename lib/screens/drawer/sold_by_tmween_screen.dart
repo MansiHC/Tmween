@@ -6,11 +6,17 @@ import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/drawer/dashboard/sold_by_tmween_container.dart';
 
 import '../../utils/global.dart';
+import '../../utils/views/circular_progress_bar.dart';
 import '../../utils/views/custom_text_form_field.dart';
 import 'dashboard/product_detail_screen.dart';
 
 class SoldByTmweenScreen extends StatelessWidget {
   final soldByTmweenController = Get.put(SoldByTmweenController());
+
+  Future<bool> _onWillPop(SoldByTmweenController soldByTmweenController) async {
+    soldByTmweenController.exitScreen();
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +25,9 @@ class SoldByTmweenScreen extends StatelessWidget {
         builder: (contet) {
           soldByTmweenController.context = context;
 
-          return Scaffold(
+          return WillPopScope(
+              onWillPop: () => _onWillPop(soldByTmweenController),
+          child:Scaffold(
               appBar: AppBar(
                 elevation: 0.0,
                 iconTheme: IconThemeData(color: Colors.white),
@@ -79,7 +87,10 @@ class SoldByTmweenScreen extends StatelessWidget {
                                 validator: (value) {
                                   return null;
                                 }))),
-                    /*Container(
+                    soldByTmweenController.loading
+                        ?Center(child:CircularProgressBar())
+                        :
+                    Container(
                         margin: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -94,7 +105,7 @@ class SoldByTmweenScreen extends StatelessWidget {
                             childAspectRatio: 0.66,
                             physics: ScrollPhysics(),
                             children: List.generate(
-                                soldByTmweenController.soldByTmweens.length,
+                                soldByTmweenController.soldByTmweenProductData!.length,
                                 (index) {
                               return InkWell(
                                   onTap: () {
@@ -103,13 +114,13 @@ class SoldByTmweenScreen extends StatelessWidget {
                                   },
                                   child: SoldByTmweenContainer(
                                     soldByTmween: soldByTmweenController
-                                        .soldByTmweens[index],
+                                        .soldByTmweenProductData![index],
                                     from: SharedPreferencesKeys.isDashboard,
                                   ));
-                            })))*/
+                            })))
                   ],
                 ),
-              ));
+              )));
         });
   }
 }

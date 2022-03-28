@@ -30,8 +30,8 @@ class GetWishlistDetailsModel {
 class Data {
   List<WishlistData>? wishlistData;
   int? totalPages;
-  String? next;
-  String? previous;
+  var next;
+  var previous;
   int? totalRecords;
 
   Data(
@@ -70,6 +70,7 @@ class Data {
 
 class WishlistData {
   int? whishlistId;
+
   int? id;
   int? attributeSetId;
   int? productCategoryId;
@@ -97,7 +98,7 @@ class WishlistData {
   String? metaTitle;
   String? metaKeywords;
   String? metaDescription;
-  Null? specialTransportId;
+  int? specialTransportId;
   int? weightUnitId;
   int? singleProductWeight;
   int? singleProductDimensionsUnitId;
@@ -172,6 +173,7 @@ class WishlistData {
 
   WishlistData.fromJson(Map<String, dynamic> json) {
     whishlistId = json['whishlist_id'];
+    print('$whishlistId');
     id = json['id'];
     attributeSetId = json['attribute_set_id'];
     productCategoryId = json['product_category_id'];

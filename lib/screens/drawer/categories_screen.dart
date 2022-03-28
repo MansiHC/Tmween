@@ -5,6 +5,7 @@ import 'package:tmween/lang/locale_keys.g.dart';
 
 import '../../controller/categories_controller.dart';
 import '../../utils/global.dart';
+import '../../utils/views/circular_progress_bar.dart';
 import '../../utils/views/custom_text_form_field.dart';
 import 'dashboard/select_category_container.dart';
 
@@ -14,6 +15,11 @@ class CategoriesScreen extends StatelessWidget {
   CategoriesScreen({Key? key, this.fromDrawer = false}) : super(key: key);
 
   final categoriesController = Get.put(CategoriesController());
+
+  Future<bool> _onWillPop(CategoriesController categoriesController) async {
+    categoriesController.exitScreen();
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +40,12 @@ class CategoriesScreen extends StatelessWidget {
                         LocaleKeys.shopByCategorySmall.tr,
                         style: TextStyle(color: Colors.white),
                       ),
+                leading: BackButton(onPressed: (){categoriesController.exitScreen();}),
                     )
                   : PreferredSize(child: Container(), preferredSize: Size.zero),
-              body: SingleChildScrollView(
+              body: WillPopScope(
+          onWillPop: () => _onWillPop(categoriesController),
+          child:SingleChildScrollView(
                 child: Column(
                   children: [
                     Visibility(
@@ -86,7 +95,10 @@ class CategoriesScreen extends StatelessWidget {
                                     validator: (value) {
                                       return null;
                                     })))),
-                    /*Container(
+                    categoriesController.loading
+                        ?Center(child:CircularProgressBar())
+                        :
+                    Container(
                         margin: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           color: AppColors.lightGrayColor,
@@ -102,17 +114,17 @@ class CategoriesScreen extends StatelessWidget {
                             childAspectRatio: 0.8,
                             physics: ScrollPhysics(),
                             children: List.generate(
-                                categoriesController.categories.length,
+                                categoriesController.shopByCategory!.length,
                                 (index) {
                               return SelectCategoryContainer(
                                 category:
-                                    categoriesController.categories[index],
+                                    categoriesController.shopByCategory![index],
                                 offerVisible: false,
                               );
-                            })))*/
+                            })))
                   ],
                 ),
-              ));
+              )));
         });
   }
 }

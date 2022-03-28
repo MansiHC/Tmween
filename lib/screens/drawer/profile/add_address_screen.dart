@@ -2,6 +2,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/address_type_model.dart';
@@ -73,7 +74,7 @@ class AddAddressScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        DropdownButtonHideUnderline(
+                      /*  DropdownButtonHideUnderline(
                           child: DropdownButton2(
                             buttonDecoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(2),
@@ -117,7 +118,70 @@ class AddAddressScreen extends StatelessWidget {
                             ),
                             offset: const Offset(0, 0),
                           ),
-                        ),
+                        ),*/
+                        Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(2),
+                                    border: Border.all(
+                                      color: Color(0xFFA7A7A7),
+                                    ),
+                                    color: Color(0xFFEEEEEE)),
+                                height: 40,
+                                child: TypeAheadFormField<Country>(
+                                  getImmediateSuggestions: true,
+                                  textFieldConfiguration: TextFieldConfiguration(
+                                    controller:  addressController.countrySearchController,
+                                    keyboardType: TextInputType.text,
+                                    textInputAction: TextInputAction.search,
+                                    onSubmitted: (term) {
+                                      FocusScope.of(addressController.context).unfocus();
+                                    },
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 10),
+                                      border: OutlineInputBorder(
+                                        borderSide:
+                                        BorderSide(color: AppColors.lightGrayColor),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                        BorderSide(color: AppColors.lightGrayColor),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide:
+                                        BorderSide(color: AppColors.lightGrayColor),
+                                      ),
+                                      isDense: true,
+                                      hintText: LocaleKeys.selectCountry.tr,
+                                      suffixIcon: IconButton(
+                                          onPressed: () {
+
+                                          },
+                                          icon: Icon(
+                                            Icons.keyboard_arrow_down,
+                                            color: Colors.black45,
+
+                                          )),
+                                    ),
+                                  ),
+                                  suggestionsCallback: (String pattern) async {
+                                    return addressController.countries
+                                        .where((item) => item.countryName!
+                                        .toLowerCase()
+                                        .startsWith(pattern.toLowerCase()))
+                                        .toList();
+                                  },
+                                  itemBuilder: (context, Country suggestion) {
+                                    return ListTile(
+                                      title: Text(suggestion.countryName!),
+                                    );
+                                  },
+                                  onSuggestionSelected: (Country value) {
+
+                                    addressController.updateCountry(value, language);
+                                  },
+                                )),
+
                         10.heightBox,
                         Text(
                           LocaleKeys.fullName.tr,
@@ -272,7 +336,7 @@ class AddAddressScreen extends StatelessWidget {
                               fontSize: 14),
                         ),
                         5.heightBox,
-                        DropdownButtonHideUnderline(
+                       /* DropdownButtonHideUnderline(
                           child: DropdownButton2(
                             buttonDecoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(2),
@@ -316,7 +380,68 @@ class AddAddressScreen extends StatelessWidget {
                             ),
                             offset: const Offset(0, 0),
                           ),
-                        ),
+                        ),*/
+                        Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(2),
+                                border: Border.all(
+                                  color: Color(0xFFA7A7A7),
+                                ),
+                                color: Color(0xFFEEEEEE)),
+                            height: 40,
+                            child: TypeAheadFormField<States>(
+                              getImmediateSuggestions: true,
+                              textFieldConfiguration: TextFieldConfiguration(
+                                controller:  addressController.stateSearchController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.search,
+                                onSubmitted: (term) {
+                                  FocusScope.of(addressController.context).unfocus();
+                                },
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 10),
+                                  border: OutlineInputBorder(
+                                    borderSide:
+                                    BorderSide(color: AppColors.lightGrayColor),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide:
+                                    BorderSide(color: AppColors.lightGrayColor),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide:
+                                    BorderSide(color: AppColors.lightGrayColor),
+                                  ),
+                                  isDense: true,
+                                  hintText: LocaleKeys.chooseState.tr,
+                                  suffixIcon: IconButton(
+                                      onPressed: () {
+
+                                      },
+                                      icon: Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color: Colors.black45,
+                                      )),
+                                ),
+                              ),
+                              suggestionsCallback: (String pattern) async {
+                                return addressController.states
+                                    .where((item) => item.stateName!
+                                    .toLowerCase()
+                                    .startsWith(pattern.toLowerCase()))
+                                    .toList();
+                              },
+                              itemBuilder: (context, States suggestion) {
+                                return ListTile(
+                                  title: Text(suggestion.stateName!),
+                                );
+                              },
+                              onSuggestionSelected: (States value) {
+
+                                addressController.updateState(value, language);
+                              },
+                            )),
                         10.heightBox,
                         Text(
                           LocaleKeys.townCity.tr,
@@ -326,7 +451,7 @@ class AddAddressScreen extends StatelessWidget {
                               fontSize: 14),
                         ),
                         5.heightBox,
-                        DropdownButtonHideUnderline(
+                        /*DropdownButtonHideUnderline(
                           child: DropdownButton2(
                             buttonDecoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(2),
@@ -370,7 +495,68 @@ class AddAddressScreen extends StatelessWidget {
                             ),
                             offset: const Offset(0, 0),
                           ),
-                        ),
+                        ),*/
+                        Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(2),
+                                border: Border.all(
+                                  color: Color(0xFFA7A7A7),
+                                ),
+                                color: Color(0xFFEEEEEE)),
+                            height: 40,
+                            child: TypeAheadFormField<City>(
+                              getImmediateSuggestions: true,
+                              textFieldConfiguration: TextFieldConfiguration(
+                                controller:  addressController.citySearchController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.search,
+                                onSubmitted: (term) {
+                                  FocusScope.of(addressController.context).unfocus();
+                                },
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 10),
+                                  border: OutlineInputBorder(
+                                    borderSide:
+                                    BorderSide(color: AppColors.lightGrayColor),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide:
+                                    BorderSide(color: AppColors.lightGrayColor),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide:
+                                    BorderSide(color: AppColors.lightGrayColor),
+                                  ),
+                                  isDense: true,
+                                  hintText: 'Choose a City',
+                                  suffixIcon: IconButton(
+                                      onPressed: () {
+
+                                      },
+                                      icon: Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color: Colors.black45,
+                                      )),
+                                ),
+                              ),
+                              suggestionsCallback: (String pattern) async {
+                                return addressController.cities
+                                    .where((item) => item.cityName!
+                                    .toLowerCase()
+                                    .startsWith(pattern.toLowerCase()))
+                                    .toList();
+                              },
+                              itemBuilder: (context, City suggestion) {
+                                return ListTile(
+                                  title: Text(suggestion.cityName!),
+                                );
+                              },
+                              onSuggestionSelected: (City value) {
+
+                                addressController.updateCity(value);
+                              },
+                            )),
                         TextButton(
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.zero,

@@ -252,6 +252,7 @@ class LoginOtpScreenState extends State<LoginOtpScreen> {
           style: TextStyle(fontSize: 16, color: Colors.black),
         ),
         5.heightBox,
+        if(otpController.otpExpired)
         InkWell(
             onTap: () {
               otpController.individualLoginResendOTP(widget.phoneEmail);

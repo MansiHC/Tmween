@@ -6,19 +6,25 @@ import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/drawer/dashboard/recently_viewed_container.dart';
 
 import '../../utils/global.dart';
+import '../../utils/views/circular_progress_bar.dart';
 import '../../utils/views/custom_text_form_field.dart';
 import 'dashboard/product_detail_screen.dart';
 
 class RecentlyViewedScreen extends StatelessWidget {
   final recentlyProviderController = Get.put(RecentlyViewedController());
-
+  Future<bool> _onWillPop(RecentlyViewedController recentlyViewedController) async {
+    recentlyProviderController.exitScreen();
+    return true;
+  }
   @override
   Widget build(BuildContext context) {
     return GetBuilder<RecentlyViewedController>(
         init: RecentlyViewedController(),
         builder: (contet) {
           recentlyProviderController.context = context;
-          return Scaffold(
+          return WillPopScope(
+              onWillPop: () => _onWillPop(recentlyProviderController),
+          child:Scaffold(
               appBar: AppBar(
                 elevation: 0.0,
                 iconTheme: IconThemeData(color: Colors.white),
@@ -78,7 +84,10 @@ class RecentlyViewedScreen extends StatelessWidget {
                                 validator: (value) {
                                   return null;
                                 }))),
-                   /* Container(
+                    recentlyProviderController.loading
+                        ?Center(child:CircularProgressBar())
+                        :
+                    Container(
                         margin: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -94,7 +103,7 @@ class RecentlyViewedScreen extends StatelessWidget {
                             physics: ScrollPhysics(),
                             children: List.generate(
                                 recentlyProviderController
-                                    .recentlVieweds.length, (index) {
+                                    .recentlyViewProduct!.length, (index) {
                               return InkWell(
                                   onTap: () {
                                     recentlyProviderController
@@ -103,12 +112,12 @@ class RecentlyViewedScreen extends StatelessWidget {
                                   child: RecentlyViewedContainer(
                                     from: SharedPreferencesKeys.isDashboard,
                                     recentlyViewed: recentlyProviderController
-                                        .recentlVieweds[index],
+                                        .recentlyViewProduct![index],
                                   ));
-                            })))*/
+                            })))
                   ],
                 ),
-              ));
+              )));
         });
   }
 }

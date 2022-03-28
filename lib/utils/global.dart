@@ -93,6 +93,7 @@ abstract class UrlConstants {
   //e-commerce
   static const String getMasterData = '$baseUrl/get-master-data';
   static const String getHomePageMobileData = '$baseUrl/get-home-page-mobile-data';
+  static const String getMobileMasterViewData = '$baseUrl2/get-mobile-master-view-data';
   static const String dealOfTheDay = '$baseUrl/get-dailydeal-list';
   static const String soldByTmween = '$baseUrl/get-soldby-system-product-list';
   static const String topSelection = '$baseUrl/get-top-selected-product';

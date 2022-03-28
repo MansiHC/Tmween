@@ -115,8 +115,8 @@ class SoldByTmweenProductData {
   String? upc;
   String? sku;
   String? productName;
-  int? finalPrice;
-  int? retailPrice;
+  var finalPrice;
+  var retailPrice;
   int? stock;
   int? inStock;
   int? isCombinationAvailable;
@@ -163,9 +163,9 @@ class SoldByTmweenProductData {
   int? discountPerDisp;
   int? discountPer;
   int? discountValue;
-  String? discountValueDisp;
-  String? retailPriceDisp;
-  String? finalPriceDisp;
+   var discountValueDisp;
+  var retailPriceDisp;
+  var finalPriceDisp;
   List<TopLeftCaptionArr>? topLeftCaptionArr;
   List<TopRightCaptionArr>? topRightCaptionArr;
   List<BottomLeftCaptionArr>? bottomLeftCaptionArr;
@@ -456,8 +456,8 @@ class TopSelectionData {
   String? upc;
   String? sku;
   String? productName;
-  int? finalPrice;
-  int? retailPrice;
+  var finalPrice;
+  var retailPrice;
   int? stock;
   int? inStock;
   int? isCombinationAvailable;
@@ -504,9 +504,9 @@ class TopSelectionData {
   int? discountPerDisp;
   int? discountPer;
   int? discountValue;
-  String? discountValueDisp;
-  String? retailPriceDisp;
-  String? finalPriceDisp;
+   var discountValueDisp;
+  var retailPriceDisp;
+  var finalPriceDisp;
   List<TopRightCaptionArr>? topRightCaptionArr;
   List<BottomLeftCaptionArr>? bottomLeftCaptionArr;
   List<TopLeftCaptionArr>? topLeftCaptionArr;
@@ -672,8 +672,8 @@ class BestSellerData {
   String? upc;
   String? sku;
   String? productName;
-  int? finalPrice;
-  int? retailPrice;
+  var finalPrice;
+  var retailPrice;
   int? stock;
   int? inStock;
   int? isCombinationAvailable;
@@ -720,9 +720,9 @@ class BestSellerData {
   int? discountPerDisp;
   int? discountPer;
   int? discountValue;
-  String? discountValueDisp;
-  String? retailPriceDisp;
-  String? finalPriceDisp;
+   var discountValueDisp;
+  var retailPriceDisp;
+  var finalPriceDisp;
   List<TopRightCaptionArr>? topRightCaptionArr;
   List<BottomLeftCaptionArr>? bottomLeftCaptionArr;
   List<TopLeftCaptionArr>? topLeftCaptionArr;
@@ -732,6 +732,7 @@ class BestSellerData {
 
   BestSellerData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    print('$id');
     attributeSetId = json['attribute_set_id'];
     productCategoryId = json['product_category_id'];
     upc = json['upc'];
@@ -894,8 +895,8 @@ class DailyDealsData {
   String? upc;
   String? sku;
   String? productName;
-  int? finalPrice;
-  int? retailPrice;
+  var finalPrice;
+  var retailPrice;
   int? stock;
   int? inStock;
   int? isCombinationAvailable;
@@ -939,9 +940,9 @@ class DailyDealsData {
   int? discountPerDisp;
   int? discountPer;
   int? discountValue;
-  String? discountValueDisp;
-  String? retailPriceDisp;
-  String? finalPriceDisp;
+   var discountValueDisp;
+  var retailPriceDisp;
+  var finalPriceDisp;
   List<TopRightCaptionArr>? topRightCaptionArr;
   List<BottomLeftCaptionArr>? bottomLeftCaptionArr;
   List<TopLeftCaptionArr>? topLeftCaptionArr;
@@ -1113,8 +1114,8 @@ class RecentlyViewProduct {
   String? upc;
   String? sku;
   String? productName;
-  int? finalPrice;
-  int? retailPrice;
+  var finalPrice;
+  var retailPrice;
   int? stock;
   int? inStock;
   int? isCombinationAvailable;
@@ -1160,9 +1161,9 @@ class RecentlyViewProduct {
   String? discountValuePercentage;
   int? discountPer;
   int? discountValue;
-  String? discountValueDisp;
-  String? retailPriceDisp;
-  String? finalPriceDisp;
+   var discountValueDisp;
+  var retailPriceDisp;
+  var finalPriceDisp;
   int? isWishlist;
   String? discountPerDisp;
 

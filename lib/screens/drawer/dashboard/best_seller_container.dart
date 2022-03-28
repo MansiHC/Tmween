@@ -92,7 +92,8 @@ class BestSellerContainer extends StatelessWidget {
                         )),
                 ])),
         5.heightBox,
-        Expanded(
+        SizedBox(
+          height: 100,
             child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),
                 child:

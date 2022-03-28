@@ -61,6 +61,7 @@ class ProductDetailController extends GetxController {
 
   @override
   void onInit() {
+    isLiked = false;
     selectedColor = colors[1];
     MySharedPreferences.instance
         .getBoolValuesSF(SharedPreferencesKeys.isLogin)
@@ -115,6 +116,7 @@ class ProductDetailController extends GetxController {
 
   Future<void> addToWishlist(language) async {
     addressList = [];
+    print('add......$productId');
     await api.addDataToWishlist(token, userId, productId,language).then((value) {
       if (value.statusCode == 200) {
         isLiked = true;
@@ -125,11 +127,37 @@ class ProductDetailController extends GetxController {
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
+      }else{
+        Helper.showGetSnackBar(value.message!);
       }
 
     }).catchError((error) {
       print('error....$error');
     });
+  }
+
+  Future<void> removeWishlistProduct( language) async {
+    //  if (Helper.isIndividual) {
+    print('remove......');
+    await api.deleteWishListDetails(token, productId, userId, language).then((value) {
+      if (value.statusCode == 200) {
+        isLiked = false;
+        update();
+        Helper.showGetSnackBar(value.message!);
+      } else if (value.statusCode == 401) {
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        Get.deleteAll();
+        Get.offAll(DrawerScreen());
+      }else{
+        Helper.showGetSnackBar(value.message!);
+      }
+      Helper.showGetSnackBar(value.message!);
+      update();
+    }).catchError((error) {
+      print('error....$error');
+    });
+    //  }
   }
 
   Future<void> getAddressList(language) async {
@@ -305,8 +333,8 @@ class ProductDetailController extends GetxController {
 
   int quntity = 1;
 
-  List<RecentlyViewedModel> recentlVieweds = const <RecentlyViewedModel>[
-    const RecentlyViewedModel(
+  List<RecentlyViewdModel> recentlVieweds = const <RecentlyViewdModel>[
+    const RecentlyViewdModel(
       title: 'WOW Raw Apple Cider Vinegar 750 ml',
       fulfilled: true,
       offer: '35',
@@ -315,7 +343,7 @@ class ProductDetailController extends GetxController {
       beforePrice: '7000',
       image: 'asset/image/product_detail_page_images/similar_product_img_1.jpg',
     ),
-    const RecentlyViewedModel(
+    const RecentlyViewdModel(
       title: 'WOW Raw Apple Cider Vinegar 750 ml',
       fulfilled: true,
       offer: '35',
@@ -324,7 +352,7 @@ class ProductDetailController extends GetxController {
       beforePrice: '7000',
       image: 'asset/image/product_detail_page_images/similar_product_img_2.jpg',
     ),
-    const RecentlyViewedModel(
+    const RecentlyViewdModel(
       title: 'WOW Raw Apple Cider Vinegar 750 ml',
       fulfilled: false,
       offer: '35',
@@ -333,7 +361,7 @@ class ProductDetailController extends GetxController {
       beforePrice: '7000',
       image: 'asset/image/product_detail_page_images/similar_product_img_1.jpg',
     ),
-    const RecentlyViewedModel(
+    const RecentlyViewdModel(
       title: 'WOW Raw Apple Cider Vinegar 750 ml',
       fulfilled: false,
       offer: '35',

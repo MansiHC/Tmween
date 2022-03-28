@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tmween/model/best_seller_model.dart';
 import 'package:tmween/model/deals_of_the_day_model.dart';
 import 'package:tmween/model/recently_viewed_model.dart';
@@ -17,9 +16,6 @@ import '../utils/helper.dart';
 
 class DashboardController extends GetxController {
   late BuildContext context;
-
-  RefreshController refreshController =
-  RefreshController(initialRefresh: false);
 
 
   int current = 0;
@@ -94,177 +90,6 @@ class DashboardController extends GetxController {
         image: 'asset/image/category_home_page_images/category_img_12.jpg'),
   ];
 
-  List<DealsOfTheDayModel> deals = const <DealsOfTheDayModel>[
-    const DealsOfTheDayModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: true,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
-    const DealsOfTheDayModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: false,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
-    const DealsOfTheDayModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: false,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
-    const DealsOfTheDayModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: true,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
-  ];
-  List<BestSellerModel> bestSellers = const <BestSellerModel>[
-    const BestSellerModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: true,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
-    const BestSellerModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: false,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
-    const BestSellerModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: false,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
-    const BestSellerModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: true,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
-  ];
-  List<SoldByTmweenModel> soldByTmweens = const <SoldByTmweenModel>[
-    const SoldByTmweenModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: true,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
-    const SoldByTmweenModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: false,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
-    const SoldByTmweenModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: false,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
-    const SoldByTmweenModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: true,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
-  ];
-  List<TopSelectionModel> topSelections = const <TopSelectionModel>[
-    const TopSelectionModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: false,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
-    const TopSelectionModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: true,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
-    const TopSelectionModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: false,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
-    const TopSelectionModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: true,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
-  ];
-  List<RecentlyViewedModel> recentlVieweds = const <RecentlyViewedModel>[
-    const RecentlyViewedModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: true,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
-    const RecentlyViewedModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: true,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
-    const RecentlyViewedModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: false,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
-    const RecentlyViewedModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: false,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image: 'asset/image/deals_of_the_day_home/deals_img.jpg'),
-  ];
-
   final api = Api();
   bool loading = false;
   List<SoldByTmweenProductData>? soldByTmweenProductData = [];
@@ -285,9 +110,9 @@ class DashboardController extends GetxController {
   }
 
 
-  void onRefresh(DashboardController dashboardController) async{
+  Future<void> onRefresh() async{
 
-    await api.getHomePageMobileData().then((value) {
+    await api.getHomePageMobileData('en').then((value) {
       if (value.statusCode == 200) {
         recentlyViewProduct = value.data!.recentlyViewProduct;
         topSelectionData = value.data!.topSelectionData;
@@ -299,7 +124,6 @@ class DashboardController extends GetxController {
         centerBanners = value.data!.banners!.cENTER;
         centerUpBanners = value.data!.banners!.cENTERUP;
         centerDownBanners = value.data!.banners!.cENTERDOWN;
-        refreshController.refreshCompleted();
         update();
       }
 
@@ -311,7 +135,7 @@ class DashboardController extends GetxController {
   Future<void> getDashboardData() async {
     loading = true;
     update();
-    await api.getHomePageMobileData().then((value) {
+    await api.getHomePageMobileData('en').then((value) {
       if (value.statusCode == 200) {
         recentlyViewProduct = value.data!.recentlyViewProduct;
         topSelectionData = value.data!.topSelectionData;

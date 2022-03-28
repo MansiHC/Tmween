@@ -6,12 +6,16 @@ import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/drawer/dashboard/top_selection_container.dart';
 
 import '../../utils/global.dart';
+import '../../utils/views/circular_progress_bar.dart';
 import '../../utils/views/custom_text_form_field.dart';
 import 'dashboard/product_detail_screen.dart';
 
 class TopSelectionScreen extends StatelessWidget {
   final topSelectionController = Get.put(TopSelectionController());
-
+  Future<bool> _onWillPop(TopSelectionController categoriesController) async {
+    categoriesController.exitScreen();
+    return true;
+  }
   @override
   Widget build(BuildContext context) {
     return GetBuilder<TopSelectionController>(
@@ -19,7 +23,9 @@ class TopSelectionScreen extends StatelessWidget {
         builder: (contet) {
           topSelectionController.context = context;
 
-          return Scaffold(
+          return WillPopScope(
+              onWillPop: () => _onWillPop(topSelectionController),
+          child:Scaffold(
               appBar: AppBar(
                 elevation: 0.0,
                 iconTheme: IconThemeData(color: Colors.white),
@@ -79,7 +85,10 @@ class TopSelectionScreen extends StatelessWidget {
                                 validator: (value) {
                                   return null;
                                 }))),
-                  /*  Container(
+                    topSelectionController.loading
+                        ?Center(child:CircularProgressBar())
+                        :
+                    Container(
                         margin: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -94,7 +103,7 @@ class TopSelectionScreen extends StatelessWidget {
                             childAspectRatio: 0.66,
                             physics: ScrollPhysics(),
                             children: List.generate(
-                                topSelectionController.topSelections.length,
+                                topSelectionController.topSelectionData!.length,
                                 (index) {
                               return InkWell(
                                   onTap: () {
@@ -103,13 +112,13 @@ class TopSelectionScreen extends StatelessWidget {
                                   },
                                   child: TopSelectionContainer(
                                     topSelection: topSelectionController
-                                        .topSelections[index],
+                                        .topSelectionData![index],
                                     from: SharedPreferencesKeys.isDashboard,
                                   ));
-                            })))*/
+                            })))
                   ],
                 ),
-              ));
+              )));
         });
   }
 }

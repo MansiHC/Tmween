@@ -311,6 +311,7 @@ class DrawerScreen extends StatelessWidget {
                                   drawerController.addressList.length == 0,
                               child: InkWell(
                                   onTap: () {
+                                    drawerController.pop();
                                     drawerController
                                         .navigateTo(YourAddressesScreen());
                                   },

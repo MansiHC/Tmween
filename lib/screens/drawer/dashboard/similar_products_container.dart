@@ -11,7 +11,7 @@ import '../../../utils/global.dart';
 class SimilarProductsContainer extends StatelessWidget {
   SimilarProductsContainer({Key? key, required this.products})
       : super(key: key);
-  final RecentlyViewedModel products;
+  final RecentlyViewdModel products;
   var language;
 
   @override

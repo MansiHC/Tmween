@@ -216,6 +216,7 @@ class OtpScreenState extends State<OtpScreen> {
           style: TextStyle(fontSize: 16, color: Colors.black),
         ),
         5.heightBox,
+        if(otpController.otpExpired)
         InkWell(
             onTap: () {
               if (Helper.isIndividual == true) {

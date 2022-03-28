@@ -222,6 +222,7 @@ class StoreOwnerOtpScreen extends StatelessWidget {
           style: TextStyle(fontSize: 16, color: Colors.black),
         ),
         5.heightBox,
+        if(otpController.otpExpired)
         InkWell(
             onTap: () {
               otpController.resendOTP();

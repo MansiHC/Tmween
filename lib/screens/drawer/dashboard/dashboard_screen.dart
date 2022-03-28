@@ -4,7 +4,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tmween/controller/dashboard_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/select_category_model.dart';
@@ -37,16 +36,11 @@ class DashboardScreen extends StatelessWidget {
         builder: (contet) {
           dashboardController.context = context;
 
-          return SmartRefresher(
-              enablePullDown: true,
-              enablePullUp: false,
-              header: ClassicHeader(),
-          controller: dashboardController.refreshController,
-          onRefresh: (){
-                dashboardController.onRefresh(dashboardController);
-          },
-
-          child:dashboardController.loading
+          return RefreshIndicator(
+              onRefresh:
+                dashboardController.onRefresh
+              ,
+               child:dashboardController.loading
               ?Center(child:CircularProgressBar())
               :SingleChildScrollView(
               child: Column(

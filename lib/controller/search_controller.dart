@@ -26,7 +26,7 @@ class SearchController extends GetxController {
   late bool visibleList = false;
   int val = 1;
 
-  final List<String> items = ['Sofa', 'Bed'];
+  final List<String> items = ['Sofa', 'Bed',];
 
   List<AddressModel> addresses = const <AddressModel>[
     const AddressModel(
@@ -68,8 +68,8 @@ class SearchController extends GetxController {
     'Computer and Gaming',
   ];
 
-  List<RecentlyViewedModel> recentlVieweds = const <RecentlyViewedModel>[
-    const RecentlyViewedModel(
+  List<RecentlyViewdModel> recentlVieweds = const <RecentlyViewdModel>[
+    const RecentlyViewdModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: true,
         offer: '35',
@@ -77,7 +77,7 @@ class SearchController extends GetxController {
         price: '2450',
         beforePrice: '7000',
         image: 'asset/image/category_home_page_images/category_img_1.jpg'),
-    const RecentlyViewedModel(
+    const RecentlyViewdModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: true,
         offer: '35',
@@ -85,7 +85,7 @@ class SearchController extends GetxController {
         price: '2450',
         beforePrice: '7000',
         image: 'asset/image/category_home_page_images/category_img_1.jpg'),
-    const RecentlyViewedModel(
+    const RecentlyViewdModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: false,
         offer: '35',
@@ -93,7 +93,7 @@ class SearchController extends GetxController {
         price: '2450',
         beforePrice: '7000',
         image: 'asset/image/category_home_page_images/category_img_1.jpg'),
-    const RecentlyViewedModel(
+    const RecentlyViewdModel(
         title: 'WOW Raw Apple Cider Vinegar 750 ml',
         fulfilled: false,
         offer: '35',

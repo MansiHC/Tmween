@@ -446,6 +446,7 @@ class SearchScreen extends StatelessWidget {
                         searchController.addressList.length == 0,
                     child: InkWell(
                         onTap: () {
+                          searchController.pop();
                           searchController.navigateTo(YourAddressesScreen());
                         },
                         child: Container(
@@ -490,6 +491,7 @@ class SearchScreen extends StatelessWidget {
                                     address: searchController.addressList[index]))
                                 : InkWell(
                                     onTap: () {
+                                      searchController.pop();
                                       searchController
                                           .navigateTo(YourAddressesScreen());
                                     },

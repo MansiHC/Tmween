@@ -65,8 +65,7 @@ class SelectCategoryContainer extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 5),
                 child: category.smallImageUrl!.isNotEmpty?CachedNetworkImage(
                   imageUrl: category.smallImageUrl!,
-                  height: 80,
-                  width: 80,
+                  height: MediaQuery.of(context).size.width/5.3,
                   placeholder: (context, url) =>
                       Center(child:CupertinoActivityIndicator()),
                   errorWidget:

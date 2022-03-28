@@ -22,7 +22,6 @@ import '../../../utils/views/expandable_text.dart';
 import '../../authentication/login/login_screen.dart';
 import '../address_container.dart';
 import '../cart_screen.dart';
-import '../profile/add_address_screen.dart';
 import '../profile/your_addresses_screen.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -34,8 +33,8 @@ class ProductDetailScreen extends StatefulWidget {
   State<StatefulWidget> createState() {
     return ProductDetailScreenState();
   }
-
 }
+
 class ProductDetailScreenState extends State<ProductDetailScreen> {
   late String language;
   final productDetailController = Get.put(ProductDetailController());
@@ -46,7 +45,8 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
     super.initState();
   }
 
-  Future<bool> _onWillPop(ProductDetailController productDetailController) async {
+  Future<bool> _onWillPop(
+      ProductDetailController productDetailController) async {
     productDetailController.exitScreen();
     return true;
   }
@@ -60,95 +60,98 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
           productDetailController.context = context;
           return WillPopScope(
               onWillPop: () => _onWillPop(productDetailController),
-          child:Scaffold(
-              body: Container(
-                  color: Colors.white,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                          constraints: BoxConstraints(
-                              minWidth: double.infinity, maxHeight: 90),
-                          color: AppColors.appBarColor,
-                          padding: EdgeInsets.only(top: 20),
-                          child: topView(productDetailController)),
-                      InkWell(
-                          onTap: () {
-                            productDetailController.getAddressList(language);
-                            showModalBottomSheet<void>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return _bottomSheetView(
-                                      productDetailController);
-                                });
-                          },
-                          child: Container(
-                              color: Colors.white,
-                              padding: EdgeInsets.symmetric(vertical: 5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset(
-                                    ImageConstanst.locationPinIcon,
-                                    color: Color(0xFF454545),
-                                    height: 16,
-                                    width: 16,
-                                  ),
-                                  3.widthBox,
-                                  Text(
-                                    'Alabama - 35004',
-                                    style: TextStyle(
+              child: Scaffold(
+                  body: Container(
+                      color: Colors.white,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              constraints: BoxConstraints(
+                                  minWidth: double.infinity, maxHeight: 90),
+                              color: AppColors.appBarColor,
+                              padding: EdgeInsets.only(top: 20),
+                              child: topView(productDetailController)),
+                          InkWell(
+                              onTap: () {
+                                productDetailController
+                                    .getAddressList(language);
+                                showModalBottomSheet<void>(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return _bottomSheetView(
+                                          productDetailController);
+                                    });
+                              },
+                              child: Container(
+                                  color: Colors.white,
+                                  padding: EdgeInsets.symmetric(vertical: 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(
+                                        ImageConstanst.locationPinIcon,
                                         color: Color(0xFF454545),
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Icon(
-                                    Icons.arrow_drop_down_sharp,
-                                    size: 16,
-                                  ),
-                                  5.widthBox
-                                ],
-                              ))),
-                      _bottomView(productDetailController),
-                    ],
-                  ))));
+                                        height: 16,
+                                        width: 16,
+                                      ),
+                                      3.widthBox,
+                                      Text(
+                                        'Alabama - 35004',
+                                        style: TextStyle(
+                                            color: Color(0xFF454545),
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Icon(
+                                        Icons.arrow_drop_down_sharp,
+                                        size: 16,
+                                      ),
+                                      5.widthBox
+                                    ],
+                                  ))),
+                          _bottomView(productDetailController),
+                        ],
+                      ))));
         });
   }
-  void _loginFirstDialog(ProductDetailController productDetailController) async {
+
+  void _loginFirstDialog(
+      ProductDetailController productDetailController) async {
     await showDialog(
         context: productDetailController.context,
         builder: (_) => AlertDialog(
-          title: Text(
-            'Please Login First',
-            style: TextStyle(
-              fontSize: 16,
-            ),
-          ),
-          actions: [
-            TextButton(
-              style: TextButton.styleFrom(padding: EdgeInsets.zero),
-              child: Text(
-                LocaleKeys.no.tr,
-                style: TextStyle(fontSize: 16, color: Colors.black54),
+              title: Text(
+                'Please Login First',
+                style: TextStyle(
+                  fontSize: 16,
+                ),
               ),
-              onPressed: () {
-                productDetailController.pop();
-              },
-            ),
-            TextButton(
-              style: TextButton.styleFrom(padding: EdgeInsets.zero),
-              child: Text(
-                LocaleKeys.yes.tr,
-                style: TextStyle(fontSize: 16, color: Colors.black54),
-              ),
-              onPressed: () {
-                Get.deleteAll();
-                productDetailController.navigateTo(
-                    LoginScreen(from: SharedPreferencesKeys.isDrawer));
-              },
-            ),
-          ],
-        ));
+              actions: [
+                TextButton(
+                  style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                  child: Text(
+                    LocaleKeys.no.tr,
+                    style: TextStyle(fontSize: 16, color: Colors.black54),
+                  ),
+                  onPressed: () {
+                    productDetailController.pop();
+                  },
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                  child: Text(
+                    LocaleKeys.yes.tr,
+                    style: TextStyle(fontSize: 16, color: Colors.black54),
+                  ),
+                  onPressed: () {
+                    Get.deleteAll();
+                    productDetailController.navigateTo(
+                        LoginScreen(from: SharedPreferencesKeys.isDrawer));
+                  },
+                ),
+              ],
+            ));
   }
 
   Widget _imagePriceView(ProductDetailController productDetailController) {
@@ -190,15 +193,20 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                               InkWell(
                                   onTap: () {
     MySharedPreferences.instance
-        .getBoolValuesSF(
-    SharedPreferencesKeys.isLogin)
+        .getBoolValuesSF(SharedPreferencesKeys.isLogin)
         .then((value) async {
-    bool isLogin = value!;
+var  isLogin = value!;
     if (!isLogin) {
-    _loginFirstDialog(productDetailController);
-    } else {
-    productDetailController.addToWishlist(language);
-    }});
+                                      _loginFirstDialog(
+                                          productDetailController);
+                                    } else if (!productDetailController
+                                        .isLiked) {
+                                      productDetailController
+                                          .addToWishlist(language);
+                                    } else {
+                                      productDetailController
+                                          .removeWishlistProduct(language);
+                                    }});
                                   },
                                   child: SvgPicture.asset(
                                     productDetailController.isLiked
@@ -927,12 +935,6 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                             height: 12,
                                             color: Color(0xFF333333),
                                           ),
-                                          5.widthBox,
-                                          Text('Comment',
-                                              style: TextStyle(
-                                                color: Color(0xFF333333),
-                                                fontSize: 12,
-                                              )),
                                           5.widthBox,
                                           Container(
                                             width: 1,
@@ -1923,7 +1925,9 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                         productDetailController.addressList.length == 0,
                     child: InkWell(
                         onTap: () {
-                          productDetailController.navigateTo(YourAddressesScreen());
+                          productDetailController.pop();
+                          productDetailController
+                              .navigateTo(YourAddressesScreen());
                         },
                         child: Container(
                             width: 150,
@@ -1934,7 +1938,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                 color: Colors.white,
                                 border: Border.all(color: AppColors.lightBlue),
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(2))),
+                                    BorderRadius.all(Radius.circular(2))),
                             child: Center(
                                 child: Text(LocaleKeys.addAddressText.tr,
                                     textAlign: TextAlign.center,
@@ -1943,57 +1947,71 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold))))),
                   ),
-          Visibility(
-          visible: !productDetailController.loading &&
-          productDetailController.addressList.length > 0,
-          child:Container(
-                      height: 170,
-                      child: ListView.builder(
-                          itemCount:
-                              productDetailController.addresses.length + 1,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return (index !=
-                                    productDetailController.addressList.length)
-                                ? InkWell(
-                                onTap:(){
-                                  Address address = productDetailController.addressList[index];
-                                  productDetailController.editAddress(address.id,address.fullname,
-                                      address.address1,address.address2,address.landmark,address.countryCode,
-                                      address.stateCode,address.cityCode,address.zip,address.mobile1,address.addressType,
-                                      address.deliveryInstruction,
-                                      '1',
-                                      language);
-                                },
-                                child:AddressContainer(
-                                    address: productDetailController
-                                        .addressList[index]))
-                                : InkWell(
-                                    onTap: () {
-                                      productDetailController
-                                          .navigateTo(YourAddressesScreen());
-                                    },
-                                    child: Container(
-                                        width: 150,
-                                        padding: EdgeInsets.all(10),
-                                        margin: EdgeInsets.all(5),
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            border: Border.all(
-                                                color: AppColors.lightBlue),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(2))),
-                                        child: Center(
-                                            child: Text(
-                                                LocaleKeys.addAddressText.tr,
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    color:
-                                                        AppColors.primaryColor,
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.bold)))));
-                          })))
+                  Visibility(
+                      visible: !productDetailController.loading &&
+                          productDetailController.addressList.length > 0,
+                      child: Container(
+                          height: 170,
+                          child: ListView.builder(
+                              itemCount:
+                                  productDetailController.addresses.length + 1,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return (index !=
+                                        productDetailController
+                                            .addressList.length)
+                                    ? InkWell(
+                                        onTap: () {
+                                          Address address =
+                                              productDetailController
+                                                  .addressList[index];
+                                          productDetailController.editAddress(
+                                              address.id,
+                                              address.fullname,
+                                              address.address1,
+                                              address.address2,
+                                              address.landmark,
+                                              address.countryCode,
+                                              address.stateCode,
+                                              address.cityCode,
+                                              address.zip,
+                                              address.mobile1,
+                                              address.addressType,
+                                              address.deliveryInstruction,
+                                              '1',
+                                              language);
+                                        },
+                                        child: AddressContainer(
+                                            address: productDetailController
+                                                .addressList[index]))
+                                    : InkWell(
+                                        onTap: () {
+                                          productDetailController.pop();
+                                          productDetailController.navigateTo(
+                                              YourAddressesScreen());
+                                        },
+                                        child: Container(
+                                            width: 150,
+                                            padding: EdgeInsets.all(10),
+                                            margin: EdgeInsets.all(5),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                border: Border.all(
+                                                    color: AppColors.lightBlue),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(2))),
+                                            child: Center(
+                                                child: Text(
+                                                    LocaleKeys
+                                                        .addAddressText.tr,
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: AppColors
+                                                            .primaryColor,
+                                                        fontSize: 15,
+                                                        fontWeight: FontWeight
+                                                            .bold)))));
+                              })))
                 ],
               ));
         });

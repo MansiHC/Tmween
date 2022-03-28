@@ -698,6 +698,7 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     style: TextStyle(fontSize: 13, color: Colors.black),
                   ),
                   5.heightBox,
+                  if(editProfileController.otpExpired)
                   InkWell(
                       onTap: () {
                         editAccountController.resendOTP(

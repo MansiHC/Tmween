@@ -6,12 +6,16 @@ import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/drawer/dashboard/deals_of_the_day_container.dart';
 
 import '../../utils/global.dart';
+import '../../utils/views/circular_progress_bar.dart';
 import '../../utils/views/custom_text_form_field.dart';
 import 'dashboard/product_detail_screen.dart';
 
 class DealsOfTheDayScreen extends StatelessWidget {
   final dealOfTheDayController = Get.put(DealsOfTheDayController());
-
+  Future<bool> _onWillPop(DealsOfTheDayController dealsOfTheDayController) async {
+    dealOfTheDayController.exitScreen();
+    return true;
+  }
   @override
   Widget build(BuildContext context) {
     return GetBuilder<DealsOfTheDayController>(
@@ -19,7 +23,9 @@ class DealsOfTheDayScreen extends StatelessWidget {
         builder: (contet) {
           dealOfTheDayController.context = context;
 
-          return Scaffold(
+          return WillPopScope(
+              onWillPop: () => _onWillPop(dealOfTheDayController),
+          child:Scaffold(
               appBar: AppBar(
                 elevation: 0.0,
                 iconTheme: IconThemeData(color: Colors.white),
@@ -79,7 +85,10 @@ class DealsOfTheDayScreen extends StatelessWidget {
                                 validator: (value) {
                                   return null;
                                 }))),
-                   /* Container(
+                    dealOfTheDayController.loading
+                        ?Center(child:CircularProgressBar())
+                        :
+                    Container(
                         margin: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -94,20 +103,20 @@ class DealsOfTheDayScreen extends StatelessWidget {
                             childAspectRatio: 0.66,
                             physics: ScrollPhysics(),
                             children: List.generate(
-                                dealOfTheDayController.deals.length, (index) {
+                                dealOfTheDayController.dailyDealsData!.length, (index) {
                               return InkWell(
                                   onTap: () {
                                     dealOfTheDayController
                                         .navigateTo(ProductDetailScreen());
                                   },
                                   child: DealsOfTheDayContainer(
-                                    deal: dealOfTheDayController.deals[index],
+                                    deal: dealOfTheDayController.dailyDealsData![index],
                                     from: SharedPreferencesKeys.isDashboard,
                                   ));
-                            })))*/
+                            })))
                   ],
                 ),
-              ));
+              )));
         });
   }
 }

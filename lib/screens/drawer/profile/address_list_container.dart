@@ -9,6 +9,7 @@ import 'package:tmween/utils/extensions.dart';
 
 import '../../../model/get_customer_address_list_model.dart';
 import '../../../utils/global.dart';
+import '../../../utils/views/circular_progress_bar.dart';
 
 class AddressListContainer extends StatelessWidget {
   AddressListContainer({Key? key, required this.address, required this.index})
@@ -181,8 +182,8 @@ class AddressListContainer extends StatelessWidget {
                               ],
                             ),
                             onPressed: () {
-                              addressController.removeAddress(
-                                  address.id, language);
+
+                             _removeAddress(addressController);
                             },
                             style: ButtonStyle(
                               backgroundColor:
@@ -198,5 +199,48 @@ class AddressListContainer extends StatelessWidget {
                 ]),
           )]);
         });
+  }
+
+  void _removeAddress(AddressController addressController) async {
+    await showDialog(
+        context: addressController.context,
+        builder: (_) => AlertDialog(
+          title: GetBuilder<AddressController>(
+        init: AddressController(),
+    builder: (contet) {
+  return   Column(children: [
+            Text(
+             'Are you sure you want to delete this address?',
+              style: TextStyle(
+                fontSize: 16,
+              ),
+            ),
+
+          ]);}),
+          actions: [
+            TextButton(
+              style: TextButton.styleFrom(padding: EdgeInsets.zero),
+              child: Text(
+                LocaleKeys.no.tr,
+                style: TextStyle(fontSize: 16, color: Colors.black54),
+              ),
+              onPressed: () {
+                addressController.pop();
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(padding: EdgeInsets.zero),
+              child: Text(
+                LocaleKeys.yes.tr,
+                style: TextStyle(fontSize: 16, color: Colors.black54),
+              ),
+              onPressed: () {
+                addressController.pop();
+                addressController.removeAddress(
+                    address.id, language);
+              },
+            ),
+          ],
+        ));
   }
 }

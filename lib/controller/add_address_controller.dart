@@ -50,6 +50,10 @@ class CityModel2 {
 class AddAddressController extends GetxController {
   late BuildContext context;
 
+  TextEditingController countrySearchController = TextEditingController();
+  TextEditingController stateSearchController = TextEditingController();
+  TextEditingController citySearchController = TextEditingController();
+
   int userId = 0;
   int loginLogId = 0;
   String token = '';
@@ -63,6 +67,7 @@ class AddAddressController extends GetxController {
   TextEditingController deliveryInstructionController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
+  final List<String> countryNames = [];
 
   late List<Country> countries = [];
   late List<CountryModel2> countries2 = [];
@@ -177,9 +182,11 @@ class AddAddressController extends GetxController {
     await api.getCountries(language).then((value) {
       countries = value.data!.country!;
       for (var i = 0; i < value.data!.country!.length; i++) {
+        countryNames.add(value.data!.country![i].countryName!);
         if (value.data!.country![i].countryName == address!.countryName &&
             value.data!.country![i].countryCode == address!.countryCode) {
           countryValue = value.data!.country![i];
+          countrySearchController.text = countryValue!.countryName!;
           getState(value.data!.country![i].countryCode, language);
           break;
         }
@@ -200,6 +207,7 @@ class AddAddressController extends GetxController {
             value.data!.state![i].stateCode == address!.stateCode &&
             value.data!.state![i].countryCode == address!.countryCode) {
           stateValue = value.data!.state![i];
+          stateSearchController.text = stateValue!.stateName!;
           getCity(value.data!.state![i].countryCode,
               value.data!.state![i].stateCode, language);
           break;
@@ -222,6 +230,7 @@ class AddAddressController extends GetxController {
             value.data!.city![i].stateCode == address!.stateCode &&
             value.data!.city![i].countryCode == address!.countryCode) {
           cityValue = value.data!.city![i];
+          citySearchController.text = cityValue!.cityName!;
           break;
         }
       }
@@ -350,6 +359,7 @@ class AddAddressController extends GetxController {
     states = [];
     stateValue = null;
     update();
+    countrySearchController.text = value.countryName!;
     getState(value.countryCode, language);
     update();
   }
@@ -359,12 +369,14 @@ class AddAddressController extends GetxController {
     cities = [];
     cityValue = null;
     update();
+    stateSearchController.text = value.stateName!;
     getCity(value.countryCode, value.stateCode, language);
     update();
   }
 
   void updateCity(City? value) {
     cityValue = value!;
+    citySearchController.text = value.cityName!;
     update();
   }
 

@@ -10,7 +10,7 @@ import '../../../utils/global.dart';
 
 class SearchContainer extends StatelessWidget {
   SearchContainer({Key? key, required this.recentlyViewed}) : super(key: key);
-  final RecentlyViewedModel recentlyViewed;
+  final RecentlyViewdModel recentlyViewed;
   var language;
 
   @override

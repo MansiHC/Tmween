@@ -216,6 +216,7 @@ class ForgotOtpScreenState extends State<ForgotOtpScreen> {
           child: CircularProgressBar(),
         ),
         20.heightBox,
+        if(forgotOtpController.otpExpired)
         InkWell(
             onTap: () {
               if (widget.from == AppConstants.individual) {

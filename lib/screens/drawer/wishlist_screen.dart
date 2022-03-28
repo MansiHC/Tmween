@@ -6,6 +6,7 @@ import 'package:tmween/screens/drawer/wishlist_container.dart';
 
 import '../../lang/locale_keys.g.dart';
 import '../../utils/global.dart';
+import '../../utils/my_shared_preferences.dart';
 import '../../utils/views/circular_progress_bar.dart';
 import 'dashboard/product_detail_screen.dart';
 
@@ -31,11 +32,29 @@ class WishlistScreenState extends State<WishlistScreen> {
     wishlistController.exitScreen();
     return true;
   }
+  int userId = 0;
+  String token = '';
+  int loginLogId = 0;
 
   @override
   void initState() {
-   wishlistController.getWishListData('en');
-   wishlistController.update();
+    MySharedPreferences.instance
+        .getStringValuesSF(SharedPreferencesKeys.token)
+        .then((value) async {
+      token = value!;
+      print('dhsh.....$token');
+      MySharedPreferences.instance
+          .getIntValuesSF(SharedPreferencesKeys.userId)
+          .then((value) async {
+        userId = value!;
+        wishlistController.getWishListData(Get.locale!.languageCode);
+        MySharedPreferences.instance
+            .getIntValuesSF(SharedPreferencesKeys.loginLogId)
+            .then((value) async {
+          loginLogId = value!;
+        });
+      });
+    });
     super.initState();
   }
 
@@ -106,7 +125,7 @@ if(wishlistController.loading)
                                 children: List.generate(
                                     wishlistController.wishListData.length,
                                     (index) {
-                                      print('..........fdhj.........${wishlistController.wishListData.length}');
+                                    //  print('..........fdhj.........${wishlistController.wishListData.length}');
                                   return InkWell(
                                       onTap: () {
                                         wishlistController
