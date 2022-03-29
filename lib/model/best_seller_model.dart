@@ -13,7 +13,7 @@ class BestSellerModel {
     statusCode = json['status_code'];
     statusMessage = json['status_message'];
     message = json['message'];
-    if(statusCode==200)
+    if (statusCode == 200)
       data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
 
@@ -36,11 +36,12 @@ class Data {
   var previous;
   int? totalRecords;
 
-  Data({this.bestSellerData,
-    this.totalPages,
-    this.next,
-    this.previous,
-    this.totalRecords});
+  Data(
+      {this.bestSellerData,
+      this.totalPages,
+      this.next,
+      this.previous,
+      this.totalRecords});
 
   Data.fromJson(Map<String, dynamic> json) {
     if (json['best_seller_data'] != null) {
@@ -68,4 +69,3 @@ class Data {
     return data;
   }
 }
-

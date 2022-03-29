@@ -1,3 +1,4 @@
+import 'package:alt_sms_autofill/alt_sms_autofill.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,20 +33,41 @@ class LoginOtpScreen extends StatefulWidget {
   }
 }
 
-class LoginOtpScreenState extends State<LoginOtpScreen> {
+class LoginOtpScreenState extends State<LoginOtpScreen>  {
   late String language;
   final otpController = Get.put(OtpController());
   final loginController = Get.put(LoginController());
 
+  Future<void> initSmsListener(OtpController otpController) async {
+    String comingSms;
+    try {
+      comingSms = (await AltSmsAutofill().listenForSms)!;
+    } on PlatformException {
+      comingSms = 'Failed to get Sms.';
+    }
+    if (!mounted) return;
+    if(comingSms.contains('Tmween')) {
+      otpController.comingSms = comingSms;
+      print("====>Message: ${otpController.comingSms}");
+      final intInStr = RegExp(r'\d+');
+      otpController.otpController.text =
+          intInStr.allMatches(otpController.comingSms).map((m) => m.group(0)).toString().replaceAll('(', '').replaceAll(')','');
+      otpController.update();
+    }
+  }
+
+
   @override
   void initState() {
     otpController.otpValue = widget.otp;
+   initSmsListener(otpController);
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    language = Get.locale!.languageCode;
+     language = Get.locale!.languageCode;
     return GetBuilder<OtpController>(
         init: OtpController(),
         builder: (contet) {
@@ -167,23 +189,26 @@ class LoginOtpScreenState extends State<LoginOtpScreen> {
           style: TextStyle(fontSize: 16, color: Colors.black),
         ),
         10.heightBox,
-        if(!otpController.loading && !otpController.otpExpired)
+        if (!otpController.loading && !otpController.otpExpired)
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
                 LocaleKeys.otpExpire.tr,
-                style: TextStyle(fontSize:  16, color: Colors.black),
+                style: TextStyle(fontSize: 16, color: Colors.black),
               ),
               5.widthBox,
               TweenAnimationBuilder<Duration>(
                   duration: Duration(seconds: AppConstants.timer),
-                  tween: Tween(begin: Duration(seconds: AppConstants.timer), end: Duration.zero),
+                  tween: Tween(
+                      begin: Duration(seconds: AppConstants.timer),
+                      end: Duration.zero),
                   onEnd: () {
                     otpController.otpExpired = true;
                     otpController.update();
                   },
-                  builder: (BuildContext context, Duration value, Widget? child) {
+                  builder:
+                      (BuildContext context, Duration value, Widget? child) {
                     final minutes = value.inMinutes;
                     final seconds = value.inSeconds % 60;
                     return Padding(
@@ -197,10 +222,10 @@ class LoginOtpScreenState extends State<LoginOtpScreen> {
                   }),
             ],
           ),
-        if(otpController.otpExpired)
+        if (otpController.otpExpired)
           Text(
             'Please Resend the Otp.',
-            style: TextStyle(fontSize:  16, color: Colors.black),
+            style: TextStyle(fontSize: 16, color: Colors.black),
           ),
         40.heightBox,
         Padding(
@@ -252,15 +277,15 @@ class LoginOtpScreenState extends State<LoginOtpScreen> {
           style: TextStyle(fontSize: 16, color: Colors.black),
         ),
         5.heightBox,
-        if(otpController.otpExpired)
-        InkWell(
-            onTap: () {
-              otpController.individualLoginResendOTP(widget.phoneEmail);
-            },
-            child: Text(
-              LocaleKeys.resendCode.tr,
-              style: TextStyle(fontSize: 16, color: AppColors.primaryColor),
-            )),
+        if (otpController.otpExpired)
+          InkWell(
+              onTap: () {
+                otpController.individualLoginResendOTP(widget.phoneEmail);
+              },
+              child: Text(
+                LocaleKeys.resendCode.tr,
+                style: TextStyle(fontSize: 16, color: AppColors.primaryColor),
+              )),
         10.heightBox,
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -358,4 +383,6 @@ class LoginOtpScreenState extends State<LoginOtpScreen> {
               ));
         });
   }
+
+
 }

@@ -14,6 +14,7 @@ import '../utils/helper.dart';
 
 class ForgotOtpController extends GetxController {
   late BuildContext context;
+  String comingSms = 'Unknown';
 
   TextEditingController otpController = TextEditingController();
   String currentText = "";

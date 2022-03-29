@@ -10,7 +10,7 @@ class UserDataModel {
     statusCode = json['status_code'];
     statusMessage = json['status_message'];
     message = json['message'];
-    if(statusCode==200) {
+    if (statusCode == 200) {
       data = json['data'] != null ? new Data.fromJson(json['data']) : null;
     }
   }
@@ -35,9 +35,9 @@ class Data {
 
   Data(
       {this.token,
-        this.loginLogId,
-        this.customerData,
-        this.customerAddressData});
+      this.loginLogId,
+      this.customerData,
+      this.customerAddressData});
 
   Data.fromJson(Map<String, dynamic> json) {
     token = json['token'];
@@ -97,30 +97,30 @@ class CustomerData {
 
   CustomerData(
       {this.id,
-        this.yourName,
-        this.phone,
-        this.email,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.createdFrom,
-        this.dob,
-        this.image,
-        this.password,
-        this.passwordHash,
-        this.defaultBilling,
-        this.defaultShipping,
-        this.taxvat,
-        this.accountVerificationToken,
-        this.confirmation,
-        this.isVerified,
-        this.gender,
-        this.resetPwdToken,
-        this.tokenExpiredAt,
-        this.otp,
-        this.expiredDate,
-        this.smallImageUrl,
-        this.largeImageUrl});
+      this.yourName,
+      this.phone,
+      this.email,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.createdFrom,
+      this.dob,
+      this.image,
+      this.password,
+      this.passwordHash,
+      this.defaultBilling,
+      this.defaultShipping,
+      this.taxvat,
+      this.accountVerificationToken,
+      this.confirmation,
+      this.isVerified,
+      this.gender,
+      this.resetPwdToken,
+      this.tokenExpiredAt,
+      this.otp,
+      this.expiredDate,
+      this.smallImageUrl,
+      this.largeImageUrl});
 
   CustomerData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -210,30 +210,30 @@ class CustomerAddressData {
 
   CustomerAddressData(
       {this.id,
-        this.customerId,
-        this.createdAt,
-        this.status,
-        this.updatedAt,
-        this.fullname,
-        this.address1,
-        this.address2,
-        this.landmark,
-        this.addressType,
-        this.defaultAddress,
-        this.deliveryInstruction,
-        this.phone1Isd,
-        this.phone1,
-        this.mobile1Isd,
-        this.mobile1,
-        this.zip,
-        this.countryCode,
-        this.stateCode,
-        this.cityCode,
-        this.countryName,
-        this.cityName,
-        this.stateName,
-        this.isDefaultShipping,
-        this.isDefaultBilling});
+      this.customerId,
+      this.createdAt,
+      this.status,
+      this.updatedAt,
+      this.fullname,
+      this.address1,
+      this.address2,
+      this.landmark,
+      this.addressType,
+      this.defaultAddress,
+      this.deliveryInstruction,
+      this.phone1Isd,
+      this.phone1,
+      this.mobile1Isd,
+      this.mobile1,
+      this.zip,
+      this.countryCode,
+      this.stateCode,
+      this.cityCode,
+      this.countryName,
+      this.cityName,
+      this.stateName,
+      this.isDefaultShipping,
+      this.isDefaultBilling});
 
   CustomerAddressData.fromJson(Map<String, dynamic> json) {
     id = json['id'];

@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/dashboard_model.dart';
-import 'package:tmween/model/top_selection_model.dart';
 import 'package:tmween/utils/extensions.dart';
 
 import '../../../utils/global.dart';
@@ -46,49 +45,53 @@ class TopSelectionContainer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  topSelection.reviewsAvg==0?
-                      Container(width: 10,)
-                      :
-                  Container(
-                      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                      decoration: BoxDecoration(
-                          color: AppColors.offerGreen,
-                          borderRadius: BorderRadius.all(Radius.circular(4))),
-                      child: Wrap(
-                        alignment: WrapAlignment.center,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          Text(topSelection.reviewsAvg.toString(),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold)),
-                          Icon(
-                            Icons.star,
-                            color: Colors.white,
-                            size: 11,
-                          )
-                        ],
-                      )),
-                  if(topSelection.discountPer!=0)
-                  Container(
-                      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                      decoration: BoxDecoration(
-                          color: Color(0xFFFF9529),
-                          borderRadius: BorderRadius.all(Radius.circular(4))),
-                      child: Row(
-                        children: [
-                          Text('${topSelection.discountPer}%',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold)),
-                          2.widthBox,
-                          Text(LocaleKeys.off.tr,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 12)),
-                        ],
-                      )),
+                  topSelection.reviewsAvg == 0
+                      ? Container(
+                          width: 10,
+                        )
+                      : Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                          decoration: BoxDecoration(
+                              color: AppColors.offerGreen,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4))),
+                          child: Wrap(
+                            alignment: WrapAlignment.center,
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              Text(topSelection.reviewsAvg.toString(),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold)),
+                              Icon(
+                                Icons.star,
+                                color: Colors.white,
+                                size: 11,
+                              )
+                            ],
+                          )),
+                  if (topSelection.discountPer != 0)
+                    Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                        decoration: BoxDecoration(
+                            color: Color(0xFFFF9529),
+                            borderRadius: BorderRadius.all(Radius.circular(4))),
+                        child: Row(
+                          children: [
+                            Text('${topSelection.discountPer}%',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold)),
+                            2.widthBox,
+                            Text(LocaleKeys.off.tr,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 12)),
+                          ],
+                        )),
                 ])),
         5.heightBox,
         Expanded(
@@ -96,15 +99,17 @@ class TopSelectionContainer extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 5),
                 child: topSelection.largeImageUrl!.setNetworkImage())),
         5.heightBox,
-          Align(alignment: Alignment.centerLeft,child: Padding(
-            padding: EdgeInsets.only(left: 5, right: 15),
-            child: Text(topSelection.productName!,
-                textAlign: TextAlign.start,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(color: Color(0xFF333333), fontSize: 13)))),
+        Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+                padding: EdgeInsets.only(left: 5, right: 15),
+                child: Text(topSelection.productName!,
+                    textAlign: TextAlign.start,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: Color(0xFF333333), fontSize: 13)))),
         5.heightBox,
-        if (topSelection.bottomLeftCaptionArr!=null)
+        if (topSelection.bottomLeftCaptionArr != null)
           Padding(
               padding: EdgeInsets.only(left: 5, right: 15),
               child: Align(
@@ -140,20 +145,22 @@ class TopSelectionContainer extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                  child:Wrap(children:[ Text('${topSelection.finalPriceDisp!}',
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                          color: Color(0xFF000000),
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold)),
-                    2.widthBox,
-                    Text('${topSelection.retailPriceDisp!}',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            decoration: TextDecoration.lineThrough,
-                            decorationThickness: 3,
-                            color: Color(0xFF7B7B7B),
-                            fontSize: 10))])),
+                  child: Wrap(children: [
+                Text('${topSelection.finalPriceDisp!}',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                        color: Color(0xFF000000),
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold)),
+                2.widthBox,
+                Text('${topSelection.retailPriceDisp!}',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                        decoration: TextDecoration.lineThrough,
+                        decorationThickness: 3,
+                        color: Color(0xFF7B7B7B),
+                        fontSize: 10))
+              ])),
               2.widthBox,
               Align(
                 alignment: Alignment.topRight,

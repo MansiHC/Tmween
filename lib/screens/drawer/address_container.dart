@@ -59,7 +59,6 @@ class AddressContainer extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(color: Color(0xFF626E7A), fontSize: 15)),
-
             RichText(
                 textAlign: TextAlign.start,
                 maxLines: 1,
@@ -72,7 +71,8 @@ class AddressContainer extends StatelessWidget {
                           text: '${address.zip},',
                           style:
                               TextStyle(color: Color(0xFF626E7A), fontSize: 15))
-                    ])), RichText(
+                    ])),
+            RichText(
                 textAlign: TextAlign.start,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -85,7 +85,7 @@ class AddressContainer extends StatelessWidget {
                           style:
                               TextStyle(color: Color(0xFF626E7A), fontSize: 15))
                     ])),
-      10.heightBox,
+            10.heightBox,
             Visibility(
                 visible: address.defaultAddress == 1,
                 child: Align(

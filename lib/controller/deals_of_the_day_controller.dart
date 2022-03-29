@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 import '../model/dashboard_model.dart';
-import '../model/deals_of_the_day_model.dart';
 import '../service/api.dart';
 import '../utils/helper.dart';
 
@@ -14,22 +13,31 @@ class DealsOfTheDayController extends GetxController {
   TextEditingController searchController = TextEditingController();
   final api = Api();
   bool loading = false;
-  List<DailyDealsData>? dailyDealsData;
+  List<DailyDealsData>? dailyDealsData = [];
+  int totalPages = 0;
+  int prev = 0;
+  int next = 0;
+  int totalRecords = 0;
+
   @override
   void onInit() {
-    getData();
+    getData(Get.locale!.languageCode);
     super.onInit();
   }
 
-  Future<void> getData() async {
+  Future<void> getData(language) async {
     loading = true;
     update();
-    await api.getDealsOfTheDay('en').then((value) {
+    await api.getDealsOfTheDay("1", language).then((value) {
       if (value.statusCode == 200) {
+        totalPages = value.data!.totalPages!;
+        prev =
+            value.data!.previous.runtimeType == int ? value.data!.previous : 0;
+        next = value.data!.next.runtimeType == int ? value.data!.next : 0;
+        totalRecords = value.data!.totalRecords!;
         dailyDealsData = value.data!.dailyDealsData;
 
         update();
-
       } else {
         Helper.showGetSnackBar(value.message!);
       }
@@ -40,6 +48,43 @@ class DealsOfTheDayController extends GetxController {
       update();
       print('error....$error');
     });
+  }
+  Future<void> onRefresh(language) async {
+    await api.getDealsOfTheDay("1", language).then((value) {
+      if (value.statusCode == 200) {
+        totalPages = value.data!.totalPages!;
+        prev =
+        value.data!.previous.runtimeType == int ? value.data!.previous : 0;
+        next = value.data!.next.runtimeType == int ? value.data!.next : 0;
+        totalRecords = value.data!.totalRecords!;
+        dailyDealsData = value.data!.dailyDealsData;
+        update();
+      }
+    }).catchError((error) {
+      print('error....$error');
+    });
+  }
+
+  Future<bool> loadMore(language) async {
+    update();
+    await api.getDealsOfTheDay(next, language).then((value) {
+      if (value.statusCode == 200) {
+        totalPages = value.data!.totalPages!;
+        prev =
+            value.data!.previous.runtimeType == int ? value.data!.previous : 0;
+        next = value.data!.next.runtimeType == int ? value.data!.next : 0;
+        totalRecords = value.data!.totalRecords!;
+        dailyDealsData?.addAll(value.data!.dailyDealsData!);
+        update();
+        return true;
+      }
+      update();
+    }).catchError((error) {
+      update();
+      print('error....$error');
+      return false;
+    });
+    return false;
   }
 
   void exitScreen() {

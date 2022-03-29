@@ -1,3 +1,4 @@
+import 'package:alt_sms_autofill/alt_sms_autofill.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,9 +36,28 @@ class ForgotOtpScreenState extends State<ForgotOtpScreen> {
   late String language;
   final forgotOtpController = Get.put(ForgotOtpController());
 
+  Future<void> initSmsListener(ForgotOtpController otpController) async {
+    String comingSms;
+    try {
+      comingSms = (await AltSmsAutofill().listenForSms)!;
+    } on PlatformException {
+      comingSms = 'Failed to get Sms.';
+    }
+    if (!mounted) return;
+    if(comingSms.contains('Tmween')) {
+      otpController.comingSms = comingSms;
+      print("====>Message: ${otpController.comingSms}");
+      final intInStr = RegExp(r'\d+');
+      otpController.otpController.text =
+          intInStr.allMatches(otpController.comingSms).map((m) => m.group(0)).toString().replaceAll('(', '').replaceAll(')','');
+      otpController.update();
+    }
+  }
+
   @override
   void initState() {
     forgotOtpController.otpValue = widget.otp;
+    initSmsListener(forgotOtpController);
     super.initState();
   }
 
@@ -117,23 +137,26 @@ class ForgotOtpScreenState extends State<ForgotOtpScreen> {
                       fontWeight: FontWeight.bold)),
             ])),
         10.heightBox,
-        if(!forgotOtpController.loading && !forgotOtpController.otpExpired)
+        if (!forgotOtpController.loading && !forgotOtpController.otpExpired)
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
                 LocaleKeys.otpExpire.tr,
-                style: TextStyle(fontSize:  16, color: Colors.black),
+                style: TextStyle(fontSize: 16, color: Colors.black),
               ),
               5.widthBox,
               TweenAnimationBuilder<Duration>(
                   duration: Duration(seconds: AppConstants.timer),
-                  tween: Tween(begin: Duration(seconds: AppConstants.timer), end: Duration.zero),
+                  tween: Tween(
+                      begin: Duration(seconds: AppConstants.timer),
+                      end: Duration.zero),
                   onEnd: () {
                     forgotOtpController.otpExpired = true;
                     forgotOtpController.update();
                   },
-                  builder: (BuildContext context, Duration value, Widget? child) {
+                  builder:
+                      (BuildContext context, Duration value, Widget? child) {
                     final minutes = value.inMinutes;
                     final seconds = value.inSeconds % 60;
                     return Padding(
@@ -147,10 +170,10 @@ class ForgotOtpScreenState extends State<ForgotOtpScreen> {
                   }),
             ],
           ),
-        if(forgotOtpController.otpExpired)
+        if (forgotOtpController.otpExpired)
           Text(
             'Please Resend the Otp.',
-            style: TextStyle(fontSize:  16, color: Colors.black),
+            style: TextStyle(fontSize: 16, color: Colors.black),
           ),
         10.heightBox,
         Padding(
@@ -216,23 +239,23 @@ class ForgotOtpScreenState extends State<ForgotOtpScreen> {
           child: CircularProgressBar(),
         ),
         20.heightBox,
-        if(forgotOtpController.otpExpired)
-        InkWell(
-            onTap: () {
-              if (widget.from == AppConstants.individual) {
-                forgotOtpController.resendOTP(
-                    widget.from, widget.frm, language, widget.email);
-              }
-            },
-            child: Align(
-                alignment: Alignment.topCenter,
-                child: Text(
-                  'Resend OTP',
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: Color(0xFF2192CA),
-                      fontWeight: FontWeight.bold),
-                ))),
+        if (forgotOtpController.otpExpired)
+          InkWell(
+              onTap: () {
+                if (widget.from == AppConstants.individual) {
+                  forgotOtpController.resendOTP(
+                      widget.from, widget.frm, language, widget.email);
+                }
+              },
+              child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Text(
+                    'Resend OTP',
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Color(0xFF2192CA),
+                        fontWeight: FontWeight.bold),
+                  ))),
       ],
     );
   }

@@ -28,6 +28,7 @@ class OtpController extends GetxController {
   bool otpExpired = false;
   late String phone, otp, otpValue;
 
+
   verifyOTP() async {
     otp = otpController.text;
 
@@ -39,7 +40,7 @@ class OtpController extends GetxController {
         MySharedPreferences.instance.addIntToSF(
             SharedPreferencesKeys.userId, value.data!.customerData!.id);
         exitScreen();
-      //  navigateToDrawerScreen();
+        //  navigateToDrawerScreen();
       } else {
         Helper.showGetSnackBar(value.statusMessage!);
       }
@@ -151,13 +152,14 @@ class OtpController extends GetxController {
             .addStringToSF(SharedPreferencesKeys.token, value.data!.token);
         MySharedPreferences.instance.addIntToSF(
             SharedPreferencesKeys.userId, value.data!.customerData!.id);
-        MySharedPreferences.instance
-            .addStringToSF(SharedPreferencesKeys.image, value.data!.customerData!.largeImageUrl);
-        if(value.data!.customerAddressData!=null)
-          if(value.data!.customerAddressData!.length>0)
-            if (value.data!.customerAddressData![0].cityName != null)
-          MySharedPreferences.instance
-              .addStringToSF(SharedPreferencesKeys.address, "${value.data!.customerAddressData![0].cityName} - ${value.data!.customerAddressData![0].zip}");
+        MySharedPreferences.instance.addStringToSF(SharedPreferencesKeys.image,
+            value.data!.customerData!.largeImageUrl);
+        if (value.data!.customerAddressData != null) if (value
+                .data!.customerAddressData!.length >
+            0) if (value.data!.customerAddressData![0].cityName != null)
+          MySharedPreferences.instance.addStringToSF(
+              SharedPreferencesKeys.address,
+              "${value.data!.customerAddressData![0].cityName} - ${value.data!.customerAddressData![0].zip}");
 
         Helper.isIndividual = true;
         navigateToDrawerScreen();
@@ -176,7 +178,7 @@ class OtpController extends GetxController {
   resendOTP(String phone) async {
     print('hdf.....$phone');
     loading = true;
-    otpExpired =false;
+    otpExpired = false;
     update();
     await api.resendOTP(phone).then((value) {
       if (value.statusCode == 200) {

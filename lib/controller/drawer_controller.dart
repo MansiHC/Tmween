@@ -35,26 +35,6 @@ class DrawerControllers extends GetxController {
 
   ListQueue<int> navigationQueue = ListQueue();
 
-  List<AddressModel> addresses = const <AddressModel>[
-    const AddressModel(
-        name: 'Salim Akka',
-        addressLine1: '34 Brooke Place,',
-        addressLine2: '',
-        city: 'Farmington',
-        state: 'nm',
-        country: 'Unites States',
-        pincode: '83401',
-        isDefault: true),
-    const AddressModel(
-      name: 'Salim Akka',
-      addressLine1: '34 Brooke Place,',
-      addressLine2: '',
-      city: 'Farmington',
-      state: 'nm',
-      country: 'Unites States',
-      pincode: '83401',
-    )
-  ];
 
   int userId = 0;
   String token = '';
@@ -77,6 +57,7 @@ class DrawerControllers extends GetxController {
 
   @override
   void onInit() {
+
     MySharedPreferences.instance
         .getBoolValuesSF(SharedPreferencesKeys.isLogin)
         .then((value) async {
@@ -86,8 +67,7 @@ class DrawerControllers extends GetxController {
     MySharedPreferences.instance
         .getStringValuesSF(SharedPreferencesKeys.address)
         .then((value) async {
-        if(value!=null)
-      address = value;
+      if (value != null) address = value;
       update();
     });
     MySharedPreferences.instance
@@ -96,6 +76,7 @@ class DrawerControllers extends GetxController {
       image = value!;
       update();
     });
+
     MySharedPreferences.instance
         .addBoolToSF(SharedPreferencesKeys.isDrawer, true);
     languages = <LanguageModel>[
@@ -133,7 +114,7 @@ class DrawerControllers extends GetxController {
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-       Get.deleteAll();
+        Get.deleteAll();
         Get.offAll(DrawerScreen());
       } else {
         Helper.showGetSnackBar(value.message!);

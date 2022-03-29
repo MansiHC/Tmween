@@ -30,7 +30,9 @@ class _GridViewPaginationState extends State<GridViewPagination> {
   Widget build(BuildContext context) {
     return NotificationListener<ScrollNotification>(
       onNotification: (ScrollNotification sn) {
-        if (!isLoading && sn is ScrollUpdateNotification && sn.metrics.pixels == sn.metrics.maxScrollExtent) {
+        if (!isLoading &&
+            sn is ScrollUpdateNotification &&
+            sn.metrics.pixels == sn.metrics.maxScrollExtent) {
           setState(() {
             this.isLoading = true;
           });

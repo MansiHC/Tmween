@@ -20,11 +20,10 @@ class WishlistScreen extends StatefulWidget {
   State<StatefulWidget> createState() {
     return WishlistScreenState();
   }
-
 }
+
 class WishlistScreenState extends State<WishlistScreen> {
   late String language;
-
 
   final wishlistController = Get.put(WishlistController());
 
@@ -32,6 +31,7 @@ class WishlistScreenState extends State<WishlistScreen> {
     wishlistController.exitScreen();
     return true;
   }
+
   int userId = 0;
   String token = '';
   int loginLogId = 0;
@@ -68,77 +68,109 @@ class WishlistScreenState extends State<WishlistScreen> {
           wishlistController.context = context;
           return WillPopScope(
               onWillPop: () => _onWillPop(wishlistController),
-          child:Scaffold(
-              body: Container(
-            color: Colors.white,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Visibility(
-                    visible: widget.fromProfile,
-                    child: Container(
-                        constraints: BoxConstraints(
-                            minWidth: double.infinity, maxHeight: 90),
-                        color: AppColors.appBarColor,
-                        padding: EdgeInsets.only(top: 20),
-                        child: topView(wishlistController))),
-if(wishlistController.loading)
-                Expanded(child:CircularProgressBar(),
-                ),
-                Visibility(
-                  visible: !wishlistController.loading &&
-                      wishlistController.wishListData.length == 0,
-                  child: Expanded(
-                    child: Center(
-                        child: Text(
+              child: Scaffold(
+                  body: Container(
+                color: Colors.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Visibility(
+                        visible: widget.fromProfile,
+                        child: Container(
+                            constraints: BoxConstraints(
+                                minWidth: double.infinity, maxHeight: 90),
+                            color: AppColors.appBarColor,
+                            padding: EdgeInsets.only(top: 20),
+                            child: topView(wishlistController))),
+                    if (wishlistController.loading)
+                      Expanded(
+                        child: CircularProgressBar(),
+                      ),
+                    Visibility(
+                      visible: !wishlistController.loading &&
+                          wishlistController.wishListData.length == 0,
+                      child: Expanded(
+                        child: Center(
+                            child: Text(
                           'No Records',
                           style: TextStyle(
                               color: Color(0xFF414141),
                               fontSize: 14,
                               fontWeight: FontWeight.bold),
                         )),
-                  ),
+                      ),
+                    ),
+                    Visibility(
+                        visible: !wishlistController.loading &&
+                            wishlistController.wishListData.length > 0,
+                        child: Expanded(
+                            child: RefreshIndicator(
+          onRefresh: () =>
+          wishlistController.onRefresh(language)
+          ,
+          child:Container(
+                                color: Colors.white,
+                                child: Container(
+                                    margin: EdgeInsets.only(
+                                        top: 15,
+                                        bottom: 10,
+                                        right: 10,
+                                        left: 10),
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(4)),
+                                    ),
+                                    padding: EdgeInsets.all(1.5),
+                                    child: /*NotificationListener<
+                                            ScrollNotification>(
+                                        onNotification:
+                                            (ScrollNotification scrollInfo) {
+                                          if (scrollInfo
+                                                  is ScrollEndNotification &&
+                                                scrollInfo.metrics.pixels ==scrollInfo.metrics.maxScrollExtent) {
+                                            if (wishlistController.next != 0) {
+                                              wishlistController
+                                                  .loadMore(language);
+                                            }
+                                          }
+
+                                          return false;
+                                        },
+                                        child: */GridView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: wishlistController
+                                                .wishListData.length,
+                                            physics: ScrollPhysics(),
+                                            gridDelegate:
+                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisSpacing: 5,
+                                              mainAxisSpacing: 5,
+                                              crossAxisCount: 2,
+                                              childAspectRatio: 0.66,
+                                            ),
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return InkWell(
+                                                  onTap: () {
+                                                    wishlistController
+                                                        .navigateTo(
+                                                            ProductDetailScreen(
+                                                      productId:
+                                                          wishlistController
+                                                              .wishListData[0]
+                                                              .id,
+                                                    ));
+                                                  },
+                                                  child: WishlistContainer(
+                                                    wishlistData:
+                                                        wishlistController
+                                                                .wishListData[
+                                                            index],
+                                                  ));
+                                            }))))))//)
+                  ],
                 ),
-                Visibility(
-                  visible: !wishlistController.loading &&
-                      wishlistController.wishListData.length > 0,
-                  child:
-                  Expanded(
-                    child: Container(
-                        color: Colors.white,
-                        child: Container(
-                            margin: EdgeInsets.only(
-                                top: 15, bottom: 10, right: 10, left: 10),
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(4)),
-                            ),
-                            padding: EdgeInsets.all(1.5),
-                            child: GridView.count(
-                                padding: EdgeInsets.zero,
-                                crossAxisSpacing: 5,
-                                mainAxisSpacing: 5,
-                                crossAxisCount: 2,
-                                shrinkWrap: true,
-                                childAspectRatio: 0.66,
-                                physics: ScrollPhysics(),
-                                children: List.generate(
-                                    wishlistController.wishListData.length,
-                                    (index) {
-                                    //  print('..........fdhj.........${wishlistController.wishListData.length}');
-                                  return InkWell(
-                                      onTap: () {
-                                        wishlistController
-                                            .navigateTo(ProductDetailScreen(productId: wishlistController.wishListData[0].id,));
-                                      },
-                                      child: WishlistContainer(
-                                        wishlistData: wishlistController
-                                            .wishListData[index],
-                                      ));
-                                }))))))
-              ],
-            ),
-          )));
+              )));
         });
   }
 

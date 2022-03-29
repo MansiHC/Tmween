@@ -6,7 +6,6 @@ import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/utils/extensions.dart';
 
 import '../../../model/dashboard_model.dart';
-import '../../../model/select_category_model.dart';
 
 class SelectCategoryContainer extends StatelessWidget {
   SelectCategoryContainer(
@@ -30,13 +29,13 @@ class SelectCategoryContainer extends StatelessWidget {
                     child: Container(
                         width: 55,
                         padding:
-                        EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                            EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                         decoration: BoxDecoration(
                             color: Color(0xFFFF9529),
                             borderRadius: BorderRadius.all(Radius.circular(4))),
                         child: Row(
                           children: [
-                            Text(/*'${category.offer}%'*/'30%',
+                            Text(/*'${category.offer}%'*/ '30%',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 11,
@@ -63,23 +62,27 @@ class SelectCategoryContainer extends StatelessWidget {
             5.heightBox,
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),
-                child: category.smallImageUrl!.isNotEmpty?CachedNetworkImage(
-                  imageUrl: category.smallImageUrl!,
-                  height: MediaQuery.of(context).size.width/5.3,
-                  placeholder: (context, url) =>
-                      Center(child:CupertinoActivityIndicator()),
-                  errorWidget:
-                      (context, url, error) =>
-                          Icon(Icons.image_not_supported,color: Colors.grey,),
-                ): Container(height: 80,
-                    width: 80,child:Icon(Icons.image_not_supported,color: Colors.grey,))),
-            5.heightBox
+                child: category.smallImageUrl!.isNotEmpty
+                    ? CachedNetworkImage(
+                        imageUrl: category.smallImageUrl!,
+                        height: MediaQuery.of(context).size.width / 4.5,
+                        placeholder: (context, url) =>
+                            Center(child: CupertinoActivityIndicator()),
+                        errorWidget: (context, url, error) => Icon(
+                          Icons.image_not_supported,
+                          color: Colors.grey,
+                        ),
+                      )
+                    : Container(
+                    height: MediaQuery.of(context).size.width / 5.3,
+                        child: Icon(
+                          Icons.image_not_supported,
+                          color: Colors.grey,
+                        ))),
           ]),
     );
   }
 }
-
-
 
 /*
 import 'package:flutter/cupertino.dart';

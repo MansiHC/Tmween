@@ -330,7 +330,6 @@ class FilterScreen extends StatelessWidget {
         ]);
   }
 
-
   _checkBoxTile(FilterController filterController, Map map) {
     return InkWell(
         onTap: () {

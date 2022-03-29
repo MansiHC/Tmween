@@ -12,7 +12,7 @@ import 'dashboard/product_detail_screen.dart';
 
 class SoldByTmweenScreen extends StatelessWidget {
   final soldByTmweenController = Get.put(SoldByTmweenController());
-
+var language;
   Future<bool> _onWillPop(SoldByTmweenController soldByTmweenController) async {
     soldByTmweenController.exitScreen();
     return true;
@@ -20,6 +20,7 @@ class SoldByTmweenScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    language= Get.locale!.languageCode;
     return GetBuilder<SoldByTmweenController>(
         init: SoldByTmweenController(),
         builder: (contet) {
@@ -27,20 +28,19 @@ class SoldByTmweenScreen extends StatelessWidget {
 
           return WillPopScope(
               onWillPop: () => _onWillPop(soldByTmweenController),
-          child:Scaffold(
-              appBar: AppBar(
-                elevation: 0.0,
-                iconTheme: IconThemeData(color: Colors.white),
-                backgroundColor: AppColors.appBarColor,
-                centerTitle: false,
-                titleSpacing: 0.0,
-                title: Text(
-                  LocaleKeys.soldByTmweenSmall.tr,
-                  style: TextStyle(color: Colors.white),
+              child: Scaffold(
+                appBar: AppBar(
+                  elevation: 0.0,
+                  iconTheme: IconThemeData(color: Colors.white),
+                  backgroundColor: AppColors.appBarColor,
+                  centerTitle: false,
+                  titleSpacing: 0.0,
+                  title: Text(
+                    LocaleKeys.soldByTmweenSmall.tr,
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
-              ),
-              body: SingleChildScrollView(
-                child: Column(
+                body: Column(
                   children: [
                     Container(
                         color: AppColors.appBarColor,
@@ -88,39 +88,64 @@ class SoldByTmweenScreen extends StatelessWidget {
                                   return null;
                                 }))),
                     soldByTmweenController.loading
-                        ?Center(child:CircularProgressBar())
-                        :
-                    Container(
-                        margin: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(4)),
-                        ),
-                        padding: EdgeInsets.all(1.5),
-                        child: GridView.count(
-                            padding: EdgeInsets.zero,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 5,
-                            crossAxisCount: 2,
-                            shrinkWrap: true,
-                            childAspectRatio: 0.66,
-                            physics: ScrollPhysics(),
-                            children: List.generate(
-                                soldByTmweenController.soldByTmweenProductData!.length,
-                                (index) {
-                              return InkWell(
-                                  onTap: () {
-                                    soldByTmweenController
-                                        .navigateTo(ProductDetailScreen());
-                                  },
-                                  child: SoldByTmweenContainer(
-                                    soldByTmween: soldByTmweenController
-                                        .soldByTmweenProductData![index],
-                                    from: SharedPreferencesKeys.isDashboard,
-                                  ));
-                            })))
+                        ? Center(child: CircularProgressBar())
+                        : Expanded(
+                            child:  RefreshIndicator(
+                                onRefresh: () =>
+                                    soldByTmweenController.onRefresh(language)
+                                ,
+                                child:Container(
+                                margin: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(4)),
+                                ),
+                                padding: EdgeInsets.all(1.5),
+                                child: NotificationListener<ScrollNotification>(
+                                    onNotification:
+                                        (ScrollNotification scrollInfo) {
+                                      if (scrollInfo is ScrollEndNotification &&
+                                          scrollInfo.metrics.pixels ==scrollInfo.metrics.maxScrollExtent) {
+                                        if (soldByTmweenController.next != 0) {
+                                          soldByTmweenController.loadMore(language);
+                                        }
+                                      }
+
+                                      return false;
+                                    },
+                                    child: GridView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: soldByTmweenController
+                                            .soldByTmweenProductData!.length,
+                                        physics: ScrollPhysics(),
+                                        gridDelegate:
+                                            SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          crossAxisSpacing: 10,
+                                          mainAxisSpacing: 5,
+                                          childAspectRatio: 0.66,
+                                        ),
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return InkWell(
+                                              onTap: () {
+                                                soldByTmweenController
+                                                    .navigateTo(
+                                                        ProductDetailScreen(productId: soldByTmweenController
+                                                            .soldByTmweenProductData![
+                                                        index].id,));
+                                              },
+                                              child: SoldByTmweenContainer(
+                                                soldByTmween: soldByTmweenController
+                                                        .soldByTmweenProductData![
+                                                    index],
+                                                from: SharedPreferencesKeys
+                                                    .isDashboard,
+                                              ));
+                                        })))))
                   ],
                 ),
-              )));
+              ));
         });
   }
 }

@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/dashboard_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
-import 'package:tmween/model/select_category_model.dart';
 import 'package:tmween/screens/drawer/categories_screen.dart';
 import 'package:tmween/screens/drawer/dashboard/best_seller_container.dart';
 import 'package:tmween/screens/drawer/dashboard/deals_of_the_day_container.dart';
@@ -27,46 +26,47 @@ import '../top_selection_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   final dashboardController = Get.put(DashboardController());
-
-
+var language;
   @override
   Widget build(BuildContext context) {
+    language= Get.locale!.languageCode;
     return GetBuilder<DashboardController>(
         init: DashboardController(),
         builder: (contet) {
           dashboardController.context = context;
 
           return RefreshIndicator(
-              onRefresh:
-                dashboardController.onRefresh
+              onRefresh: () =>
+                dashboardController.onRefresh(language)
               ,
-               child:dashboardController.loading
-              ?Center(child:CircularProgressBar())
-              :SingleChildScrollView(
-              child: Column(
-                children: [
-                   _topBanner(dashboardController),
-                  Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      child: _shopByCategory(dashboardController)),
-                  20.heightBox,
-                  _dealsOfTheDay(dashboardController),
-                  _centerBanner(dashboardController),
-                  _bestSeller(dashboardController),
-                  _soldByTmween(dashboardController),
-                  _centerUpBanner(dashboardController),
-                  _topSelection(dashboardController),
-                  _centerDownBanner(dashboardController),
-                  _recentlyViewed(dashboardController),
-                  10.heightBox,
-                  Text(
-                    LocaleKeys.thatAll.tr,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Color(0xFF575757), fontSize: 14),
-                  ),
-                  10.heightBox
-                ],
-              )));
+              child: dashboardController.loading
+                  ? Center(child: CircularProgressBar())
+                  : SingleChildScrollView(
+                      child: Column(
+                      children: [
+                        _topBanner(dashboardController),
+                        Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15),
+                            child: _shopByCategory(dashboardController)),
+                        20.heightBox,
+                        _dealsOfTheDay(dashboardController),
+                        _centerBanner(dashboardController),
+                        _bestSeller(dashboardController),
+                        _soldByTmween(dashboardController),
+                        _centerUpBanner(dashboardController),
+                        _topSelection(dashboardController),
+                        _centerDownBanner(dashboardController),
+                        _recentlyViewed(dashboardController),
+                        10.heightBox,
+                        Text(
+                          LocaleKeys.thatAll.tr,
+                          textAlign: TextAlign.center,
+                          style:
+                              TextStyle(color: Color(0xFF575757), fontSize: 14),
+                        ),
+                        10.heightBox
+                      ],
+                    )));
         });
   }
 
@@ -74,21 +74,21 @@ class DashboardScreen extends StatelessWidget {
     return Stack(
       children: [
         CarouselSlider(
-          items: dashboardController.
-              topBanners!.map((item) => Container(
-            child: CachedNetworkImage(
-              imageUrl: item.largeImageUrl!,
-              width: double.maxFinite,
-              height: double.maxFinite,
-              fit: BoxFit.fill,
-              placeholder: (context, url) =>
-                  Center(child:CupertinoActivityIndicator()
-                  )
-              ,
-              errorWidget: (context, url, error) => Icon(Icons.image_not_supported,color: Colors.grey,),
-            )
-            ,
-          ))
+          items: dashboardController.topBanners!
+              .map((item) => Container(
+                    child: CachedNetworkImage(
+                      imageUrl: item.largeImageUrl!,
+                      width: double.maxFinite,
+                      height: double.maxFinite,
+                      fit: BoxFit.fill,
+                      placeholder: (context, url) =>
+                          Center(child: CupertinoActivityIndicator()),
+                      errorWidget: (context, url, error) => Icon(
+                        Icons.image_not_supported,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ))
               .toList(),
           carouselController: dashboardController.topBannerController,
           options: CarouselOptions(
@@ -101,54 +101,57 @@ class DashboardScreen extends StatelessWidget {
                 dashboardController.changPage(index);
               }),
         ),
-        if( dashboardController.topBanners!.length>1)
-        Positioned(
-            bottom: 0.0,
-            left: 0.0,
-            right: 0.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children:
-              dashboardController.topBanners!.asMap().entries.map((entry) {
-                return GestureDetector(
-                  onTap: () =>
-                      dashboardController.topBannerController.animateToPage(entry.key),
-                  child: Container(
-                    width: 8.0,
-                    height: 8.0,
-                    margin:
-                    EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: dashboardController.current == entry.key
-                            ? AppColors.primaryColor
-                            : Colors.white),
-                  ),
-                );
-              }).toList(),
-            )),
+        if (dashboardController.topBanners!.length > 1)
+          Positioned(
+              bottom: 0.0,
+              left: 0.0,
+              right: 0.0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: dashboardController.topBanners!
+                    .asMap()
+                    .entries
+                    .map((entry) {
+                  return GestureDetector(
+                    onTap: () => dashboardController.topBannerController
+                        .animateToPage(entry.key),
+                    child: Container(
+                      width: 8.0,
+                      height: 8.0,
+                      margin:
+                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: dashboardController.current == entry.key
+                              ? AppColors.primaryColor
+                              : Colors.white),
+                    ),
+                  );
+                }).toList(),
+              )),
       ],
     );
   }
+
   _centerBanner(DashboardController dashboardController) {
     return Stack(
       children: [
         CarouselSlider(
-          items: dashboardController.
-              centerBanners!.map((item) => Container(
-            child: CachedNetworkImage(
-              imageUrl: item.largeImageUrl!,
-              width: double.maxFinite,
-              height: double.maxFinite,
-              fit: BoxFit.fill,
-              placeholder: (context, url) =>
-                  Center(child:CupertinoActivityIndicator()
-                  )
-              ,
-              errorWidget: (context, url, error) => Icon(Icons.image_not_supported,color: Colors.grey,),
-            )
-            ,
-          ))
+          items: dashboardController.centerBanners!
+              .map((item) => Container(
+                    child: CachedNetworkImage(
+                      imageUrl: item.largeImageUrl!,
+                      width: double.maxFinite,
+                      height: double.maxFinite,
+                      fit: BoxFit.fill,
+                      placeholder: (context, url) =>
+                          Center(child: CupertinoActivityIndicator()),
+                      errorWidget: (context, url, error) => Icon(
+                        Icons.image_not_supported,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ))
               .toList(),
           carouselController: dashboardController.centerBannerController,
           options: CarouselOptions(
@@ -161,54 +164,57 @@ class DashboardScreen extends StatelessWidget {
                 dashboardController.changPage(index);
               }),
         ),
-        if( dashboardController.centerBanners!.length>1)
-        Positioned(
-            bottom: 0.0,
-            left: 0.0,
-            right: 0.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children:
-              dashboardController.centerBanners!.asMap().entries.map((entry) {
-                return GestureDetector(
-                  onTap: () =>
-                      dashboardController.centerBannerController.animateToPage(entry.key),
-                  child: Container(
-                    width: 8.0,
-                    height: 8.0,
-                    margin:
-                    EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: dashboardController.current == entry.key
-                            ? AppColors.primaryColor
-                            : Colors.white),
-                  ),
-                );
-              }).toList(),
-            )),
+        if (dashboardController.centerBanners!.length > 1)
+          Positioned(
+              bottom: 0.0,
+              left: 0.0,
+              right: 0.0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: dashboardController.centerBanners!
+                    .asMap()
+                    .entries
+                    .map((entry) {
+                  return GestureDetector(
+                    onTap: () => dashboardController.centerBannerController
+                        .animateToPage(entry.key),
+                    child: Container(
+                      width: 8.0,
+                      height: 8.0,
+                      margin:
+                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: dashboardController.current == entry.key
+                              ? AppColors.primaryColor
+                              : Colors.white),
+                    ),
+                  );
+                }).toList(),
+              )),
       ],
     );
   }
+
   _centerUpBanner(DashboardController dashboardController) {
     return Stack(
       children: [
         CarouselSlider(
-          items: dashboardController.
-              centerUpBanners!.map((item) => Container(
-            child: CachedNetworkImage(
-              imageUrl: item.largeImageUrl!,
-              width: double.maxFinite,
-              height: double.maxFinite,
-              fit: BoxFit.fill,
-              placeholder: (context, url) =>
-                  Center(child:CupertinoActivityIndicator()
-                  )
-              ,
-              errorWidget: (context, url, error) => Icon(Icons.image_not_supported,color: Colors.grey,),
-            )
-            ,
-          ))
+          items: dashboardController.centerUpBanners!
+              .map((item) => Container(
+                    child: CachedNetworkImage(
+                      imageUrl: item.largeImageUrl!,
+                      width: double.maxFinite,
+                      height: double.maxFinite,
+                      fit: BoxFit.fill,
+                      placeholder: (context, url) =>
+                          Center(child: CupertinoActivityIndicator()),
+                      errorWidget: (context, url, error) => Icon(
+                        Icons.image_not_supported,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ))
               .toList(),
           carouselController: dashboardController.centerUpBannerController,
           options: CarouselOptions(
@@ -221,54 +227,57 @@ class DashboardScreen extends StatelessWidget {
                 dashboardController.changPage(index);
               }),
         ),
-        if( dashboardController.centerUpBanners!.length>1)
-        Positioned(
-            bottom: 0.0,
-            left: 0.0,
-            right: 0.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children:
-              dashboardController.centerUpBanners!.asMap().entries.map((entry) {
-                return GestureDetector(
-                  onTap: () =>
-                      dashboardController.centerUpBannerController.animateToPage(entry.key),
-                  child: Container(
-                    width: 8.0,
-                    height: 8.0,
-                    margin:
-                    EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: dashboardController.current == entry.key
-                            ? AppColors.primaryColor
-                            : Colors.white),
-                  ),
-                );
-              }).toList(),
-            )),
+        if (dashboardController.centerUpBanners!.length > 1)
+          Positioned(
+              bottom: 0.0,
+              left: 0.0,
+              right: 0.0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: dashboardController.centerUpBanners!
+                    .asMap()
+                    .entries
+                    .map((entry) {
+                  return GestureDetector(
+                    onTap: () => dashboardController.centerUpBannerController
+                        .animateToPage(entry.key),
+                    child: Container(
+                      width: 8.0,
+                      height: 8.0,
+                      margin:
+                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: dashboardController.current == entry.key
+                              ? AppColors.primaryColor
+                              : Colors.white),
+                    ),
+                  );
+                }).toList(),
+              )),
       ],
     );
   }
+
   _centerDownBanner(DashboardController dashboardController) {
     return Stack(
       children: [
         CarouselSlider(
-          items: dashboardController.
-              centerDownBanners!.map((item) => Container(
-            child: CachedNetworkImage(
-              imageUrl: item.largeImageUrl!,
-              width: double.maxFinite,
-              height: double.maxFinite,
-              fit: BoxFit.fill,
-              placeholder: (context, url) =>
-                  Center(child:CupertinoActivityIndicator()
-                  )
-              ,
-              errorWidget: (context, url, error) => Icon(Icons.image_not_supported,color: Colors.grey,),
-            )
-            ,
-          ))
+          items: dashboardController.centerDownBanners!
+              .map((item) => Container(
+                    child: CachedNetworkImage(
+                      imageUrl: item.largeImageUrl!,
+                      width: double.maxFinite,
+                      height: double.maxFinite,
+                      fit: BoxFit.fill,
+                      placeholder: (context, url) =>
+                          Center(child: CupertinoActivityIndicator()),
+                      errorWidget: (context, url, error) => Icon(
+                        Icons.image_not_supported,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ))
               .toList(),
           carouselController: dashboardController.centerDownBannerController,
           options: CarouselOptions(
@@ -281,32 +290,34 @@ class DashboardScreen extends StatelessWidget {
                 dashboardController.changPage(index);
               }),
         ),
-        if( dashboardController.centerDownBanners!.length>1)
-        Positioned(
-            bottom: 0.0,
-            left: 0.0,
-            right: 0.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children:
-              dashboardController.centerDownBanners!.asMap().entries.map((entry) {
-                return GestureDetector(
-                  onTap: () =>
-                      dashboardController.centerDownBannerController.animateToPage(entry.key),
-                  child: Container(
-                    width: 8.0,
-                    height: 8.0,
-                    margin:
-                    EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: dashboardController.current == entry.key
-                            ? AppColors.primaryColor
-                            : Colors.white),
-                  ),
-                );
-              }).toList(),
-            )),
+        if (dashboardController.centerDownBanners!.length > 1)
+          Positioned(
+              bottom: 0.0,
+              left: 0.0,
+              right: 0.0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: dashboardController.centerDownBanners!
+                    .asMap()
+                    .entries
+                    .map((entry) {
+                  return GestureDetector(
+                    onTap: () => dashboardController.centerDownBannerController
+                        .animateToPage(entry.key),
+                    child: Container(
+                      width: 8.0,
+                      height: 8.0,
+                      margin:
+                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: dashboardController.current == entry.key
+                              ? AppColors.primaryColor
+                              : Colors.white),
+                    ),
+                  );
+                }).toList(),
+              )),
       ],
     );
   }
@@ -326,31 +337,30 @@ class DashboardScreen extends StatelessWidget {
                   color: Colors.black),
             ),
             Visibility(
-                visible: dashboardController.shopByCategory!.length>9,
-                child:
-            InkWell(
-                onTap: () {
-                  dashboardController.navigateTo(CategoriesScreen(
-                    fromDrawer: true,
-                  ));
-                },
-                child: Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    Text(
-                      LocaleKeys.viewAll.tr,
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF575757)),
-                    ),
-                    Icon(
-                      CupertinoIcons.chevron_forward,
-                      color: Color(0xFF575757),
-                      size: 14,
-                    )
-                  ],
-                )))
+                visible: dashboardController.shopByCategory!.length > 9,
+                child: InkWell(
+                    onTap: () {
+                      dashboardController.navigateTo(CategoriesScreen(
+                        fromDrawer: true,
+                      ));
+                    },
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Text(
+                          LocaleKeys.viewAll.tr,
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF575757)),
+                        ),
+                        Icon(
+                          CupertinoIcons.chevron_forward,
+                          color: Color(0xFF575757),
+                          size: 14,
+                        )
+                      ],
+                    )))
           ],
         ),
         5.heightBox,
@@ -363,12 +373,14 @@ class DashboardScreen extends StatelessWidget {
             child: GridView.builder(
                 shrinkWrap: true,
                 physics: ScrollPhysics(),
-                itemCount: dashboardController.shopByCategory!.length>9?9:dashboardController.shopByCategory!.length,
+                itemCount: dashboardController.shopByCategory!.length > 9
+                    ? 9
+                    : dashboardController.shopByCategory!.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     crossAxisSpacing: 1.5,
                     mainAxisSpacing: 1.5,
-                    childAspectRatio: 0.75),
+                    childAspectRatio: 0.73),
                 itemBuilder: (context, index) {
                   return SelectCategoryContainer(
                       category: dashboardController.shopByCategory![index]);
@@ -426,29 +438,28 @@ class DashboardScreen extends StatelessWidget {
                       color: Colors.white),
                 ),
                 Visibility(
-                    visible: dashboardController.dailyDealsData!.length>4,
-                    child:
-                InkWell(
-                    onTap: () {
-                      dashboardController.navigateTo(DealsOfTheDayScreen());
-                    },
-                    child: Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        Text(
-                          LocaleKeys.viewAll.tr,
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFFFAFBFF)),
-                        ),
-                        Icon(
-                          CupertinoIcons.chevron_forward,
-                          color: Color(0xFFFAFBFF),
-                          size: 14,
-                        )
-                      ],
-                    )))
+                    visible: dashboardController.dailyDealsData!.length > 4,
+                    child: InkWell(
+                        onTap: () {
+                          dashboardController.navigateTo(DealsOfTheDayScreen());
+                        },
+                        child: Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            Text(
+                              LocaleKeys.viewAll.tr,
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFFFAFBFF)),
+                            ),
+                            Icon(
+                              CupertinoIcons.chevron_forward,
+                              color: Color(0xFFFAFBFF),
+                              size: 14,
+                            )
+                          ],
+                        )))
               ],
             ),
             5.heightBox,
@@ -460,11 +471,16 @@ class DashboardScreen extends StatelessWidget {
                 shrinkWrap: true,
                 childAspectRatio: 0.66,
                 physics: ScrollPhysics(),
-                children:
-                List.generate(dashboardController.dailyDealsData!.length>4?4:dashboardController.dailyDealsData!.length, (index) {
+                children: List.generate(
+                    dashboardController.dailyDealsData!.length > 4
+                        ? 4
+                        : dashboardController.dailyDealsData!.length, (index) {
                   return InkWell(
                       onTap: () {
-                        dashboardController.navigateTo(ProductDetailScreen(productId: dashboardController.dailyDealsData![0].productId,));
+                        dashboardController.navigateTo(ProductDetailScreen(
+                          productId:
+                              dashboardController.dailyDealsData![0].productId,
+                        ));
                       },
                       child: DealsOfTheDayContainer(
                           deal: dashboardController.dailyDealsData![index]));
@@ -496,46 +512,50 @@ class DashboardScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
                     ),
-                   Visibility(
-                       visible: dashboardController.bestSellerData!.length>AppConstants.cardsPerPage,
-                       child:  InkWell(
-                        onTap: () {
-                          dashboardController.navigateTo(BestSellerScreen());
-                        },
-                        child: Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                            Text(
-                              LocaleKeys.viewAll.tr,
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFFAFBFF)),
-                            ),
-                            Icon(
-                              CupertinoIcons.chevron_forward,
-                              color: Color(0xFFFAFBFF),
-                              size: 14,
-                            )
-                          ],
-                        )))
+                    Visibility(
+                        visible: dashboardController.bestSellerData!.length >
+                            AppConstants.cardsPerPage,
+                        child: InkWell(
+                            onTap: () {
+                              dashboardController
+                                  .navigateTo(BestSellerScreen());
+                            },
+                            child: Wrap(
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              children: [
+                                Text(
+                                  LocaleKeys.viewAll.tr,
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFFFAFBFF)),
+                                ),
+                                Icon(
+                                  CupertinoIcons.chevron_forward,
+                                  color: Color(0xFFFAFBFF),
+                                  size: 14,
+                                )
+                              ],
+                            )))
                   ],
                 )),
             5.heightBox,
             Container(
                 height: 244,
                 child: ListView.builder(
-                    itemCount:dashboardController.bestSellerData!.length,
+                    itemCount: dashboardController.bestSellerData!.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return InkWell(
                           onTap: () {
-                            dashboardController
-                                .navigateTo(ProductDetailScreen(productId: dashboardController.bestSellerData![0].id,));
+                            dashboardController.navigateTo(ProductDetailScreen(
+                              productId:
+                                  dashboardController.bestSellerData![0].id,
+                            ));
                           },
                           child: BestSellerContainer(
                               bestSeller:
-                              dashboardController.bestSellerData![index]));
+                                  dashboardController.bestSellerData![index]));
                     })),
             20.heightBox
           ],
@@ -564,46 +584,55 @@ class DashboardScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
                     ),
-                   Visibility(
-                       visible: dashboardController.soldByTmweenProductData!.length>AppConstants.cardsPerPage,
-                       child: InkWell(
-                        onTap: () {
-                          dashboardController.navigateTo(SoldByTmweenScreen());
-                        },
-                        child: Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                            Text(
-                              LocaleKeys.viewAll.tr,
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFFAFBFF)),
-                            ),
-                            Icon(
-                              CupertinoIcons.chevron_forward,
-                              color: Color(0xFFFAFBFF),
-                              size: 14,
-                            )
-                          ],
-                        )))
+                    Visibility(
+                        visible: dashboardController
+                                .soldByTmweenProductData!.length >
+                            AppConstants.cardsPerPage,
+                        child: InkWell(
+                            onTap: () {
+                              dashboardController
+                                  .navigateTo(SoldByTmweenScreen());
+                            },
+                            child: Wrap(
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              children: [
+                                Text(
+                                  LocaleKeys.viewAll.tr,
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFFFAFBFF)),
+                                ),
+                                Icon(
+                                  CupertinoIcons.chevron_forward,
+                                  color: Color(0xFFFAFBFF),
+                                  size: 14,
+                                )
+                              ],
+                            )))
                   ],
                 )),
             5.heightBox,
             Container(
                 height: 244,
                 child: ListView.builder(
-                    itemCount: dashboardController.soldByTmweenProductData!.length>AppConstants.cardsPerPage?AppConstants.cardsPerPage:dashboardController.soldByTmweenProductData!.length,
+                    itemCount: dashboardController
+                                .soldByTmweenProductData!.length >
+                            AppConstants.cardsPerPage
+                        ? AppConstants.cardsPerPage
+                        : dashboardController.soldByTmweenProductData!.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return InkWell(
                           onTap: () {
-                            dashboardController
-                                .navigateTo(ProductDetailScreen(productId: dashboardController.soldByTmweenProductData![0].id,));
+                            dashboardController.navigateTo(ProductDetailScreen(
+                              productId: dashboardController
+                                  .soldByTmweenProductData![0].id,
+                            ));
                           },
                           child: SoldByTmweenContainer(
-                              soldByTmween:
-                              dashboardController.soldByTmweenProductData![index]));
+                              soldByTmween: dashboardController
+                                  .soldByTmweenProductData![index]));
                     })),
             20.heightBox
           ],
@@ -633,45 +662,52 @@ class DashboardScreen extends StatelessWidget {
                           color: Colors.black),
                     ),
                     Visibility(
-                        visible: dashboardController.topSelectionData!.length>AppConstants.cardsPerPage,
+                        visible: dashboardController.topSelectionData!.length >
+                            AppConstants.cardsPerPage,
                         child: InkWell(
-                        onTap: () {
-                          dashboardController.navigateTo(TopSelectionScreen());
-                        },
-                        child: Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                            Text(
-                              LocaleKeys.viewAll.tr,
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF6E7C77)),
-                            ),
-                            Icon(
-                              CupertinoIcons.chevron_forward,
-                              color: Color(0xFF6E7C77),
-                              size: 14,
-                            )
-                          ],
-                        )))
+                            onTap: () {
+                              dashboardController
+                                  .navigateTo(TopSelectionScreen());
+                            },
+                            child: Wrap(
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              children: [
+                                Text(
+                                  LocaleKeys.viewAll.tr,
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF6E7C77)),
+                                ),
+                                Icon(
+                                  CupertinoIcons.chevron_forward,
+                                  color: Color(0xFF6E7C77),
+                                  size: 14,
+                                )
+                              ],
+                            )))
                   ],
                 )),
             5.heightBox,
             Container(
                 height: 244,
                 child: ListView.builder(
-                    itemCount: dashboardController.topSelectionData!.length>AppConstants.cardsPerPage?AppConstants.cardsPerPage:dashboardController.topSelectionData!.length,
+                    itemCount: dashboardController.topSelectionData!.length >
+                            AppConstants.cardsPerPage
+                        ? AppConstants.cardsPerPage
+                        : dashboardController.topSelectionData!.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return InkWell(
                           onTap: () {
-                            dashboardController
-                                .navigateTo(ProductDetailScreen(productId: dashboardController.topSelectionData![0].id,));
+                            dashboardController.navigateTo(ProductDetailScreen(
+                              productId:
+                                  dashboardController.topSelectionData![0].id,
+                            ));
                           },
                           child: TopSelectionContainer(
-                              topSelection:
-                              dashboardController.topSelectionData![index]));
+                              topSelection: dashboardController
+                                  .topSelectionData![index]));
                     })),
             20.heightBox
           ],
@@ -700,58 +736,60 @@ class DashboardScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
                     ),
-                 Visibility(
-                     visible: dashboardController.recentlyViewProduct!.length>AppConstants.cardsPerPage,
-                     child:    InkWell(
-                        onTap: () {
-                          dashboardController
-                              .navigateTo(RecentlyViewedScreen());
-                        },
-                        child: Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                            Text(
-                              LocaleKeys.viewAll.tr,
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF6E7C77)),
-                            ),
-                            Icon(
-                              CupertinoIcons.chevron_forward,
-                              color: Color(0xFF6E7C77),
-                              size: 14,
-                            )
-                          ],
-                        )))
+                    Visibility(
+                        visible:
+                            dashboardController.recentlyViewProduct!.length >
+                                AppConstants.cardsPerPage,
+                        child: InkWell(
+                            onTap: () {
+                              dashboardController
+                                  .navigateTo(RecentlyViewedScreen());
+                            },
+                            child: Wrap(
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              children: [
+                                Text(
+                                  LocaleKeys.viewAll.tr,
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF6E7C77)),
+                                ),
+                                Icon(
+                                  CupertinoIcons.chevron_forward,
+                                  color: Color(0xFF6E7C77),
+                                  size: 14,
+                                )
+                              ],
+                            )))
                   ],
                 )),
             5.heightBox,
             Container(
                 height: 244,
                 child: ListView.builder(
-                    itemCount: dashboardController.recentlyViewProduct!.length>AppConstants.cardsPerPage?AppConstants.cardsPerPage:dashboardController.recentlyViewProduct!.length,
+                    itemCount: dashboardController.recentlyViewProduct!.length >
+                            AppConstants.cardsPerPage
+                        ? AppConstants.cardsPerPage
+                        : dashboardController.recentlyViewProduct!.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return InkWell(
                           onTap: () {
-                            dashboardController
-                                .navigateTo(ProductDetailScreen(productId: dashboardController.recentlyViewProduct![0].productId,));
+                            dashboardController.navigateTo(ProductDetailScreen(
+                              productId: dashboardController
+                                  .recentlyViewProduct![0].productId,
+                            ));
                           },
                           child: RecentlyViewedContainer(
-                              recentlyViewed:
-                              dashboardController.recentlyViewProduct![index]));
+                              recentlyViewed: dashboardController
+                                  .recentlyViewProduct![index]));
                     })),
             20.heightBox
           ],
         ));
   }
 }
-
-
-
-
-
 
 ///without api
 /*
@@ -958,7 +996,7 @@ class DashboardScreen extends StatelessWidget {
                   2: FlexColumnWidth(4),
                 },
                 border: TableBorder.all(color: Color(0xFFF0F0F0)),
-                children: dynamicRow()))*//*
+                children: dynamicRow()))*/ /*
 
       ],
     );

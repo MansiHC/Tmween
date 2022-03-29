@@ -13,8 +13,8 @@ class GetCategoriesModel {
     statusCode = json['status_code'];
     statusMessage = json['status_message'];
     message = json['message'];
-    if(statusCode==200)
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    if (statusCode == 200)
+      data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -36,11 +36,12 @@ class Data {
   var previous;
   int? totalRecords;
 
-  Data({this.productAllCategory,
-    this.totalPages,
-    this.next,
-    this.previous,
-    this.totalRecords});
+  Data(
+      {this.productAllCategory,
+      this.totalPages,
+      this.next,
+      this.previous,
+      this.totalRecords});
 
   Data.fromJson(Map<String, dynamic> json) {
     if (json['shop_by_top_category'] != null) {
@@ -68,4 +69,3 @@ class Data {
     return data;
   }
 }
-

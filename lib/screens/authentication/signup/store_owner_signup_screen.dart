@@ -264,7 +264,7 @@ class StoreOwnerSignUpScreen extends StatelessWidget {
                                     CustomButton(
                                         text: LocaleKeys.createAccount,
                                         onPressed: () {
-                                         // storeOwnerSignUpController.signUp();
+                                          // storeOwnerSignUpController.signUp();
                                         }),
                                     Visibility(
                                       visible:

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:alt_sms_autofill/alt_sms_autofill.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,6 @@ import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_button.dart';
 import 'package:tmween/utils/views/otp_text_field.dart';
 
-import '../../../utils/helper.dart';
 import '../../../utils/views/circular_progress_bar.dart';
 import '../../../utils/views/custom_text_form_field.dart';
 
@@ -35,27 +35,52 @@ class UpdateProfileScreen extends StatefulWidget {
   State<StatefulWidget> createState() {
     return UpdateProfileScreenState();
   }
-
 }
+
 class UpdateProfileScreenState extends State<UpdateProfileScreen> {
   late String language;
   final editAccountController = Get.put(EditProfileController());
 
+  Future<void> readSMS(EditProfileController otpController,bool fromMobile) async {
+    String comingSms;
+    try {
+      comingSms = (await AltSmsAutofill().listenForSms)!;
+    } on PlatformException {
+      comingSms = 'Failed to get Sms.';
+    }
+    if (!mounted) return;
+    if(comingSms.contains('Tmween')) {
+      otpController.comingSms = comingSms;
+      print("====>Message: ${otpController.comingSms}");
+      final intInStr = RegExp(r'\d+');
+      if(fromMobile)
+      otpController.mobileOTPController.text =
+          intInStr.allMatches(otpController.comingSms).map((m) => m.group(0)).toString().replaceAll('(', '').replaceAll(')','');
+      else
+        otpController.emailOTPController.text =
+          intInStr.allMatches(otpController.comingSms).map((m) => m.group(0)).toString().replaceAll('(', '').replaceAll(')','');
+      otpController.update();
+    }
+  }
+
   @override
   void initState() {
-    editAccountController.nameController.text = widget.profileData!.yourName!.split(' ')[0];
-    editAccountController.lastNameController.text = widget.profileData!.yourName!.split(' ')[1];
-    editAccountController.mobileNumberController.text = widget.profileData!.phone!;
-    if(widget.profileData!.email!=null) {
+    editAccountController.nameController.text =
+        widget.profileData!.yourName!.split(' ')[0];
+    editAccountController.lastNameController.text =
+        widget.profileData!.yourName!.split(' ')[1];
+    editAccountController.mobileNumberController.text =
+        widget.profileData!.phone!;
+    if (widget.profileData!.email != null) {
       editAccountController.emailController.text = widget.profileData!.email!;
-    }super.initState();
+    }
+    super.initState();
   }
+
   Future<bool> _onWillPop(EditProfileController editAccountController) async {
     editAccountController.exitScreen();
     return true;
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -63,35 +88,13 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
     return WillPopScope(
         onWillPop: () => _onWillPop(editAccountController),
-    child:GetBuilder<EditProfileController>(
-        init: EditProfileController(),
-        builder: (contet) {
-          editAccountController.context = context;
-          // editAccountController.getProfileDetails();
-          return editAccountController.sample == null
-              ? Scaffold(
-                  body: Container(
-                      color: Colors.white,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                              constraints: BoxConstraints(
-                                  minWidth: double.infinity, maxHeight: 90),
-                              color: AppColors.appBarColor,
-                              padding: EdgeInsets.only(top: 20),
-                              child: topView(editAccountController)),
-                          Visibility(
-                            visible: editAccountController.loading,
-                            child: Expanded(child:CircularProgressBar()),
-                          ),
-                          if (!editAccountController.loading)
-                            _middleView(editAccountController),
-                        ],
-                      )))
-              : editAccountController.lastCropped == null
-                  ? _buildCroppingImage(editAccountController)
-                  : Scaffold(
+        child: GetBuilder<EditProfileController>(
+            init: EditProfileController(),
+            builder: (contet) {
+              editAccountController.context = context;
+              // editAccountController.getProfileDetails();
+              return editAccountController.sample == null
+                  ? Scaffold(
                       body: Container(
                           color: Colors.white,
                           child: Column(
@@ -105,13 +108,37 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                   child: topView(editAccountController)),
                               Visibility(
                                 visible: editAccountController.loading,
-                                child: Expanded(child:CircularProgressBar()),
+                                child: Expanded(child: CircularProgressBar()),
                               ),
                               if (!editAccountController.loading)
                                 _middleView(editAccountController),
                             ],
-                          )));
-        }));
+                          )))
+                  : editAccountController.lastCropped == null
+                      ? _buildCroppingImage(editAccountController)
+                      : Scaffold(
+                          body: Container(
+                              color: Colors.white,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                      constraints: BoxConstraints(
+                                          minWidth: double.infinity,
+                                          maxHeight: 90),
+                                      color: AppColors.appBarColor,
+                                      padding: EdgeInsets.only(top: 20),
+                                      child: topView(editAccountController)),
+                                  Visibility(
+                                    visible: editAccountController.loading,
+                                    child:
+                                        Expanded(child: CircularProgressBar()),
+                                  ),
+                                  if (!editAccountController.loading)
+                                    _middleView(editAccountController),
+                                ],
+                              )));
+            }));
   }
 
   Widget _buildCroppingImage(EditProfileController editAccountController) {
@@ -200,27 +227,26 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                 radius: 40,
                                 /*backgroundImage: NetworkImage(
                                     widget.profileData!.image!)*/
-                      foregroundColor: Colors.transparent,
-                      child: CachedNetworkImage(
-                        imageUrl: widget
-                            .profileData!.largeImageUrl!,
-                        placeholder: (context, url) =>
-                            CupertinoActivityIndicator(),
-                        imageBuilder: (context, image) =>
-                            CircleAvatar(
-                              backgroundImage: image,
-                              radius: 40,
-                            ),
-                        errorWidget: (context, url, error) =>
-                            CircleAvatar(
-                              child: SvgPicture.asset(
-                                ImageConstanst.user,
-                                height: 80,
-                                width: 80,
-                              ),
-                              radius: 40,
-                            ),
-                      ))
+                                foregroundColor: Colors.transparent,
+                                child: CachedNetworkImage(
+                                  imageUrl: widget.profileData!.largeImageUrl!,
+                                  placeholder: (context, url) =>
+                                      CupertinoActivityIndicator(),
+                                  imageBuilder: (context, image) =>
+                                      CircleAvatar(
+                                    backgroundImage: image,
+                                    radius: 40,
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      CircleAvatar(
+                                    child: SvgPicture.asset(
+                                      ImageConstanst.user,
+                                      height: 80,
+                                      width: 80,
+                                    ),
+                                    radius: 40,
+                                  ),
+                                ))
                             : SvgPicture.asset(
                                 ImageConstanst.user,
                                 height: 80,
@@ -322,11 +348,12 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 text: LocaleKeys.update,
                 fontSize: 14,
                 onPressed: () {
-                  editAccountController.updateNameImage(widget.profileData!.image,language);
+                  editAccountController.updateNameImage(
+                      widget.profileData!.image, language);
                 }),
             Visibility(
               visible: editAccountController.loadingImageName,
-              child:CircularProgressBar(),
+              child: CircularProgressBar(),
             ),
             20.heightBox,
             Text(
@@ -348,7 +375,11 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 ),
                 suffixIcon: InkWell(
                     onTap: () {
-                        editAccountController.generateOTP(editAccountController.mobileNumberController.text,language,true);
+                      editAccountController.generateOTP(
+                          editAccountController.mobileNumberController.text,
+                          language,
+                          true);
+                      readSMS(editAccountController,true);
                       _showOtpVerificationDialog(
                           editAccountController,
                           editAccountController.mobileNumberController.text,
@@ -371,16 +402,11 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 ],
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return LocaleKeys
-                        .emptyPhoneNumber.tr;
+                    return LocaleKeys.emptyPhoneNumber.tr;
                   } else if (editAccountController
-                      .mobileNumberController
-                      .value
-                      .text
-                      .length <
+                          .mobileNumberController.value.text.length <
                       10) {
-                    return LocaleKeys
-                        .validPhoneNumber.tr;
+                    return LocaleKeys.validPhoneNumber.tr;
                   }
                   return null;
                 }),
@@ -404,15 +430,16 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 textInputAction: TextInputAction.done,
                 suffixIcon: InkWell(
                     onTap: () {
-
-                        editAccountController.generateOTP(
-                            editAccountController.emailController.text,
-                            language,false);
-                        _showOtpVerificationDialog(
-                            editAccountController,
-                            editAccountController.emailController.text,
-                            language == 'ar' ? 340 : 350,
-                            true);
+                      editAccountController.generateOTP(
+                          editAccountController.emailController.text,
+                          language,
+                          false);
+                      readSMS(editAccountController,false);
+                      _showOtpVerificationDialog(
+                          editAccountController,
+                          editAccountController.emailController.text,
+                          language == 'ar' ? 340 : 350,
+                          true);
                     },
                     child: Padding(
                         padding:
@@ -425,14 +452,12 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               fontWeight: FontWeight.bold),
                         ))),
                 inputFormatters: [
-                  FilteringTextInputFormatter.deny(
-                      RegExp(r'[/\\]')),
+                  FilteringTextInputFormatter.deny(RegExp(r'[/\\]')),
                 ],
                 validator: (value) {
                   if (value!.isEmpty) {
                     return LocaleKeys.emptyYourEmail.tr;
-                  } else if (!editAccountController
-                      .emailController.value.text
+                  } else if (!editAccountController.emailController.value.text
                       .validateEmail()) {
                     return LocaleKeys.validYourEmail.tr;
                   }
@@ -450,11 +475,10 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 fontSize: 15,
                 onPressed: () {
                   //Helper.showToast(LocaleKeys.otpSentSuccessfully.tr);
-                  editAccountController.navigateTo(ChangePasswordScreen(email:
-                  editAccountController
-                      .emailController.text,mobile:editAccountController
-                    .mobileNumberController
-                      .text));
+                  editAccountController.navigateTo(ChangePasswordScreen(
+                      email: editAccountController.emailController.text,
+                      mobile:
+                          editAccountController.mobileNumberController.text));
                 }),
             /*InkWell(
                 onTap: () {
@@ -565,188 +589,199 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
             contentPadding: EdgeInsets.symmetric(horizontal: 15),
             buttonPadding: EdgeInsets.zero,
             actions: [],
-            content:GetBuilder<EditProfileController>(
+            content: GetBuilder<EditProfileController>(
                 init: EditProfileController(),
                 builder: (contet) {
-                  return  Container(
-              height: height,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  5.heightBox,
-                  if(!editProfileController.loadingDialog)
-                  Text(
-                    'Otp is : ${editProfileController.otpValue}',
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF7C7C7C)),
-                  ),
-                  15.heightBox,
-                  Text(
-                    LocaleKeys.otpVerification.tr,
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF7C7C7C)),
-                  ),
-                  15.heightBox,
-                  RichText(
-                    text: TextSpan(
-                        text: '${LocaleKeys.enterOtpSentTo.tr} ',
-                        style: TextStyle(
-                            fontSize: 13,
-                            color: Color(0xFF7C7C7C),
-                            fontWeight: FontWeight.bold),
-                        children: [
-                          TextSpan(
-                              text: text,
+                  return Container(
+                    height: height,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        5.heightBox,
+                        if (!editProfileController.loadingDialog)
+                          Text(
+                            'Otp is : ${editProfileController.otpValue}',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF7C7C7C)),
+                          ),
+                        15.heightBox,
+                        Text(
+                          LocaleKeys.otpVerification.tr,
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF7C7C7C)),
+                        ),
+                        15.heightBox,
+                        RichText(
+                          text: TextSpan(
+                              text: '${LocaleKeys.enterOtpSentTo.tr} ',
                               style: TextStyle(
                                   fontSize: 13,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold))
-                        ]),
-                  ),
-                  10.heightBox,
-                  if(!editProfileController.loadingDialog && !editProfileController.otpExpired)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          LocaleKeys.otpExpire.tr,
-                          style: TextStyle(fontSize:  13, color: Colors.black),
+                                  color: Color(0xFF7C7C7C),
+                                  fontWeight: FontWeight.bold),
+                              children: [
+                                TextSpan(
+                                    text: text,
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold))
+                              ]),
                         ),
-                        5.widthBox,
-                        TweenAnimationBuilder<Duration>(
-                            duration: Duration(seconds: AppConstants.timer),
-                            tween: Tween(begin: Duration(seconds: AppConstants.timer), end: Duration.zero),
-                            onEnd: () {
-                              editProfileController.otpExpired = true;
-                              editProfileController.update();
-                            },
-                            builder: (BuildContext context, Duration value, Widget? child) {
-                              final minutes = value.inMinutes;
-                              final seconds = value.inSeconds % 60;
-                              return Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 5),
-                                  child: Text('$minutes:$seconds',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: AppColors.primaryColor,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 17)));
-                            }),
+                        10.heightBox,
+                        if (!editProfileController.loadingDialog &&
+                            !editProfileController.otpExpired)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                LocaleKeys.otpExpire.tr,
+                                style: TextStyle(
+                                    fontSize: 13, color: Colors.black),
+                              ),
+                              5.widthBox,
+                              TweenAnimationBuilder<Duration>(
+                                  duration:
+                                      Duration(seconds: AppConstants.timer),
+                                  tween: Tween(
+                                      begin:
+                                          Duration(seconds: AppConstants.timer),
+                                      end: Duration.zero),
+                                  onEnd: () {
+                                    editProfileController.otpExpired = true;
+                                    editProfileController.update();
+                                  },
+                                  builder: (BuildContext context,
+                                      Duration value, Widget? child) {
+                                    final minutes = value.inMinutes;
+                                    final seconds = value.inSeconds % 60;
+                                    return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 5),
+                                        child: Text('$minutes:$seconds',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                color: AppColors.primaryColor,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 17)));
+                                  }),
+                            ],
+                          ),
+                        if (editProfileController.otpExpired)
+                          Text(
+                            'Please Resend the Otp.',
+                            style: TextStyle(fontSize: 13, color: Colors.black),
+                          ),
+                        10.heightBox,
+                        OtpTextField(
+                          length: 4,
+                          obscureText: false,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          animationType: AnimationType.scale,
+                          pinTheme: PinTheme(
+                            shape: PinCodeFieldShape.box,
+                            borderRadius: BorderRadius.circular(5),
+                            fieldHeight: 50,
+                            fieldWidth: 40,
+                            activeFillColor: AppColors.primaryColor,
+                            activeColor: AppColors.primaryColor,
+                            selectedColor: AppColors.primaryColor,
+                            selectedFillColor: AppColors.primaryColor,
+                            inactiveFillColor: AppColors.lightGrayColor,
+                            inactiveColor: AppColors.lightGrayColor,
+                          ),
+                          animationDuration: const Duration(milliseconds: 300),
+                          enableActiveFill: true,
+                          cursorColor: Colors.white,
+                          textStyle: TextStyle(color: Colors.white),
+                          controller: isEmail
+                              ? editProfileController.emailOTPController
+                              : editProfileController.mobileOTPController,
+                          onCompleted: (v) {
+                            if (isEmail) {
+                              editProfileController.updateEmail(text, language);
+                            } else {
+                              editProfileController.updateMobileNumber(
+                                  text, language);
+                            }
+                          },
+                          onChanged: (value) {
+                            debugPrint(value);
+                            editProfileController.currentText = value;
+                            editProfileController.update();
+                          },
+                          beforeTextPaste: (text) {
+                            return true;
+                          },
+                          appContext: editProfileController.context,
+                        ),
+                        Visibility(
+                          visible: editProfileController.loadingDialog,
+                          child: CircularProgressBar(),
+                        ),
+                        10.heightBox,
+                        Text(
+                          LocaleKeys.notReceivedOtp.tr,
+                          style: TextStyle(fontSize: 13, color: Colors.black),
+                        ),
+                        5.heightBox,
+                        if (editProfileController.otpExpired)
+                          InkWell(
+                              onTap: () {
+                                editAccountController.resendOTP(text, !isEmail);
+                              },
+                              child: Text(
+                                LocaleKeys.resendCode.tr,
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    color: AppColors.primaryColor),
+                              )),
+                        18.heightBox,
+                        Row(
+                          children: [
+                            Expanded(
+                                child: TextButton(
+                              style: TextButton.styleFrom(
+                                  padding: EdgeInsets.zero),
+                              onPressed: () {
+                                editProfileController.pop();
+                              },
+                              child: Text(
+                                LocaleKeys.cancel.tr,
+                                style: TextStyle(
+                                    color: Colors.grey[400],
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            )),
+                            Expanded(
+                                child: TextButton(
+                              style: TextButton.styleFrom(
+                                  padding: EdgeInsets.zero),
+                              onPressed: () {
+                                editProfileController.pop();
+                              },
+                              child: Text(
+                                LocaleKeys.save.tr,
+                                style: TextStyle(
+                                    color: AppColors.darkblue,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ))
+                          ],
+                        ),
                       ],
                     ),
-                  if(editProfileController.otpExpired)
-                    Text(
-                      'Please Resend the Otp.',
-                      style: TextStyle(fontSize:  13, color: Colors.black),
-                    ),
-                  10.heightBox,
-                  OtpTextField(
-                    length: 4,
-                    obscureText: false,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    animationType: AnimationType.scale,
-                    pinTheme: PinTheme(
-                      shape: PinCodeFieldShape.box,
-                      borderRadius: BorderRadius.circular(5),
-                      fieldHeight: 50,
-                      fieldWidth: 40,
-                      activeFillColor: AppColors.primaryColor,
-                      activeColor: AppColors.primaryColor,
-                      selectedColor: AppColors.primaryColor,
-                      selectedFillColor: AppColors.primaryColor,
-                      inactiveFillColor: AppColors.lightGrayColor,
-                      inactiveColor: AppColors.lightGrayColor,
-                    ),
-                    animationDuration: const Duration(milliseconds: 300),
-                    enableActiveFill: true,
-                    cursorColor: Colors.white,
-                    textStyle: TextStyle(color: Colors.white),
-                    controller: isEmail
-                        ? editProfileController.emailOTPController
-                        : editProfileController.mobileOTPController,
-                    onCompleted: (v) {
-                      if (isEmail) {
-                        editProfileController.updateEmail(text,language);
-                      } else {
-                        editProfileController.updateMobileNumber(text,language);
-                      }
-                    },
-                    onChanged: (value) {
-                      debugPrint(value);
-                      editProfileController.currentText = value;
-                      editProfileController.update();
-                    },
-                    beforeTextPaste: (text) {
-                      return true;
-                    },
-                    appContext: editProfileController.context,
-                  ),
-                  Visibility(
-                    visible: editProfileController.loadingDialog,
-                    child: CircularProgressBar(),
-                  ),
-                  10.heightBox,
-
-                  Text(
-                    LocaleKeys.notReceivedOtp.tr,
-                    style: TextStyle(fontSize: 13, color: Colors.black),
-                  ),
-                  5.heightBox,
-                  if(editProfileController.otpExpired)
-                  InkWell(
-                      onTap: () {
-                        editAccountController.resendOTP(
-                            text,!isEmail);
-                      },
-                      child: Text(
-                        LocaleKeys.resendCode.tr,
-                        style: TextStyle(
-                            fontSize: 13, color: AppColors.primaryColor),
-                      )),
-                  18.heightBox,
-                  Row(
-                    children: [
-                      Expanded(
-                          child: TextButton(
-                        style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                        onPressed: () {
-                          editProfileController.pop();
-                        },
-                        child: Text(
-                          LocaleKeys.cancel.tr,
-                          style: TextStyle(
-                              color: Colors.grey[400],
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      )),
-                      Expanded(
-                          child: TextButton(
-                        style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                        onPressed: () {
-                          editProfileController.pop();
-                        },
-                        child: Text(
-                          LocaleKeys.save.tr,
-                          style: TextStyle(
-                              color: AppColors.darkblue,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ))
-                    ],
-                  ),
-                ],
-              ),
-            );}))
-
                   );
+                })));
   }
 
   void _shopImagePickerDialog(

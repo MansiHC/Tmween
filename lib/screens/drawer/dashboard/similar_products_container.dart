@@ -35,7 +35,6 @@ class SimilarProductsContainer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   Container(
                       padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                       decoration: BoxDecoration(

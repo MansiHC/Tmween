@@ -35,7 +35,6 @@ class Helper {
   static bool isIndividual = false;
 
   static void showGetSnackBar(String message) {
-
     Get.snackbar(
       message,
       "",
@@ -49,7 +48,6 @@ class Helper {
   }
 
   static void showGetSnackBar2(String message) {
-
     Get.snackbar(
       message,
       "",

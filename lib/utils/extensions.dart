@@ -35,14 +35,22 @@ extension StringExtension on String {
       RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
           .hasMatch(this);
 
-  setNetworkImage()=>toString().isNotEmpty?CachedNetworkImage(
-    imageUrl: toString(),
-    placeholder: (context, url) =>
-        Center(child:CupertinoActivityIndicator()
+  setNetworkImage() => toString().isNotEmpty
+      ? CachedNetworkImage(
+          imageUrl: toString(),
+          placeholder: (context, url) =>
+              Center(child: CupertinoActivityIndicator()),
+          errorWidget: (context, url, error) => Icon(
+            Icons.image_not_supported,
+            color: Colors.grey,
+          ),
         )
-    ,
-    errorWidget: (context, url, error) => Icon(Icons.image_not_supported,color: Colors.grey,),
-  ):Center(child: Icon(Icons.image_not_supported,color: Colors.grey,),);
+      : Center(
+          child: Icon(
+            Icons.image_not_supported,
+            color: Colors.grey,
+          ),
+        );
 }
 
 extension IterableExtensions<E> on Iterable<E> {

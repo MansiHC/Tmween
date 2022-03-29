@@ -2,15 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:tmween/controller/my_account_controller.dart';
 
 import '../screens/drawer/drawer_screen.dart';
 import '../service/api.dart';
 import '../utils/global.dart';
 import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
-import 'dashboard_controller.dart';
-import 'drawer_controller.dart';
 
 class ChangePasswordController extends GetxController {
   late BuildContext context;
@@ -25,7 +22,7 @@ class ChangePasswordController extends GetxController {
   final api = Api();
   bool loading = false;
   bool otpExpired = false;
-  late String  otpValue;
+  late String otpValue;
 
   void exitScreen() {
     Get.delete<ChangePasswordController>();
@@ -55,64 +52,52 @@ class ChangePasswordController extends GetxController {
   }
 
   Future<void> generateOtp(language) async {
-
-        loading = true;
+    loading = true;
+    update();
+    await api.generateSendOtp(token, userId, language).then((value) {
+      loading = false;
+      update();
+      if (value.statusCode == 200) {
+        otpValue = value.data!.otp.toString();
         update();
-        await api.generateSendOtp(
-            token,
-            userId,
-            language)
-            .then((value) {
-          loading = false;
-          update();
-          if (value.statusCode == 200) {
-            otpValue = value.data!.otp.toString();
-            update();
-          } else if (value.statusCode == 401) {
-            MySharedPreferences.instance
-                .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-            Get.deleteAll();
-            Get.offAll(DrawerScreen());
-          }
-          Helper.showGetSnackBar(value.message!);
-        }).catchError((error) {
-          loading = false;
-          update();
-          print('error....$error');
-        });
-
-
+      } else if (value.statusCode == 401) {
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        Get.deleteAll();
+        Get.offAll(DrawerScreen());
+      }
+      Helper.showGetSnackBar(value.message!);
+    }).catchError((error) {
+      loading = false;
+      update();
+      print('error....$error');
+    });
   }
 
-Future<void> resendOtp(language) async {
-otpExpired = false;
-        loading = true;
+  Future<void> resendOtp(language) async {
+    otpExpired = false;
+    loading = true;
+    update();
+    await api.resendMobileOtp(token, userId, language).then((value) {
+      loading = false;
+      update();
+      if (value.statusCode == 200) {
+        otpValue = value.data!.otp.toString();
         update();
-        await api.resendMobileOtp(
-            token,
-            userId,
-            language)
-            .then((value) {
-          loading = false;
-          update();
-          if (value.statusCode == 200) {
-            otpValue = value.data!.otp.toString();
-            update();
-          } else if (value.statusCode == 401) {
-            MySharedPreferences.instance
-                .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-            Get.deleteAll();
-            Get.offAll(DrawerScreen());
-          }
-          Helper.showGetSnackBar(value.message!);
-        }).catchError((error) {
-          loading = false;
-          update();
-          print('error....$error');
-        });
-
-
+      } else if (value.statusCode == 401) {
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        Get.deleteAll();
+        Get.offAll(DrawerScreen());
+      }
+      Helper.showGetSnackBar(value.message!);
+    }).catchError((error) {
+      loading = false;
+      update();
+      print('error....$error');
+    });
   }
+
   void navigateToDashBoardScreen() {
     MySharedPreferences.instance
         .addBoolToSF(SharedPreferencesKeys.isLogin, false);
@@ -123,37 +108,31 @@ otpExpired = false;
         MaterialPageRoute(builder: (context) => DrawerScreen()),
         (Route<dynamic> route) => false);*/
   }
+
   Future<void> changePassword(language) async {
-
-        loading = true;
-        update();
-        await api.verifyMobileChangePassword(
-            token,
-            userId,
-            otpValue,
-            newPasswordController.text,
-            language)
-            .then((value) {
-          loading = false;
-          update();
-          if (value.statusCode == 200) {
-navigateToDashBoardScreen();
-          } else if (value.statusCode == 401) {
-            MySharedPreferences.instance
-                .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-            Get.deleteAll();
-            Get.offAll(DrawerScreen());
-          }
-          Helper.showGetSnackBar(value.message!);
-        }).catchError((error) {
-          loading = false;
-          update();
-          print('error....$error');
-        });
-
-
+    loading = true;
+    update();
+    await api
+        .verifyMobileChangePassword(
+            token, userId, otpValue, newPasswordController.text, language)
+        .then((value) {
+      loading = false;
+      update();
+      if (value.statusCode == 200) {
+        navigateToDashBoardScreen();
+      } else if (value.statusCode == 401) {
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        Get.deleteAll();
+        Get.offAll(DrawerScreen());
+      }
+      Helper.showGetSnackBar(value.message!);
+    }).catchError((error) {
+      loading = false;
+      update();
+      print('error....$error');
+    });
   }
-
 
   void visiblePasswordIcon() {
     visiblePassword = !visiblePassword;
@@ -164,5 +143,4 @@ navigateToDashBoardScreen();
     visibleConfirmPassword = !visibleConfirmPassword;
     update();
   }
-
 }

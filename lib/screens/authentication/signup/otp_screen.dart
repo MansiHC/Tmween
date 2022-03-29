@@ -36,17 +36,14 @@ class OtpScreenState extends State<OtpScreen> {
       comingSms = 'Failed to get Sms.';
     }
     if (!mounted) return;
-    otpController.comingSms = comingSms;
-    print("====>Message: ${otpController.comingSms}");
-    print("${otpController.comingSms[32]}");
-    otpController.otpController.text = otpController.comingSms[32] +
-        otpController.comingSms[33] +
-        otpController.comingSms[34] +
-        otpController.comingSms[35] +
-        otpController.comingSms[36] +
-        otpController.comingSms[
-            37]; //used to set the code in the message to a string and setting it to a textcontroller. message length is 38. so my code is in string index 32-37.
-    otpController.update();
+    if(comingSms.contains('Tmween')) {
+      otpController.comingSms = comingSms;
+      print("====>Message: ${otpController.comingSms}");
+      final intInStr = RegExp(r'\d+');
+      otpController.otpController.text =
+          intInStr.allMatches(otpController.comingSms).map((m) => m.group(0)).toString().replaceAll('(', '').replaceAll(')','');
+      otpController.update();
+    }
   }
 
   @override
@@ -127,23 +124,26 @@ class OtpScreenState extends State<OtpScreen> {
           style: TextStyle(fontSize: 16, color: Colors.black),
         ),
         10.heightBox,
-        if(!otpController.loading && !otpController.otpExpired)
+        if (!otpController.loading && !otpController.otpExpired)
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
                 LocaleKeys.otpExpire.tr,
-                style: TextStyle(fontSize:  16, color: Colors.black),
+                style: TextStyle(fontSize: 16, color: Colors.black),
               ),
               5.widthBox,
               TweenAnimationBuilder<Duration>(
                   duration: Duration(seconds: AppConstants.timer),
-                  tween: Tween(begin: Duration(seconds: AppConstants.timer), end: Duration.zero),
+                  tween: Tween(
+                      begin: Duration(seconds: AppConstants.timer),
+                      end: Duration.zero),
                   onEnd: () {
                     otpController.otpExpired = true;
                     otpController.update();
                   },
-                  builder: (BuildContext context, Duration value, Widget? child) {
+                  builder:
+                      (BuildContext context, Duration value, Widget? child) {
                     final minutes = value.inMinutes;
                     final seconds = value.inSeconds % 60;
                     return Padding(
@@ -157,10 +157,10 @@ class OtpScreenState extends State<OtpScreen> {
                   }),
             ],
           ),
-        if(otpController.otpExpired)
+        if (otpController.otpExpired)
           Text(
             'Please Resend the Otp.',
-            style: TextStyle(fontSize:  16, color: Colors.black),
+            style: TextStyle(fontSize: 16, color: Colors.black),
           ),
         40.heightBox,
         Padding(
@@ -216,17 +216,17 @@ class OtpScreenState extends State<OtpScreen> {
           style: TextStyle(fontSize: 16, color: Colors.black),
         ),
         5.heightBox,
-        if(otpController.otpExpired)
-        InkWell(
-            onTap: () {
-              if (Helper.isIndividual == true) {
-                otpController.resendOTP(widget.phone);
-              }
-            },
-            child: Text(
-              LocaleKeys.resendCode.tr,
-              style: TextStyle(fontSize: 16, color: AppColors.primaryColor),
-            )),
+        if (otpController.otpExpired)
+          InkWell(
+              onTap: () {
+                if (Helper.isIndividual == true) {
+                  otpController.resendOTP(widget.phone);
+                }
+              },
+              child: Text(
+                LocaleKeys.resendCode.tr,
+                style: TextStyle(fontSize: 16, color: AppColors.primaryColor),
+              )),
       ],
     );
   }

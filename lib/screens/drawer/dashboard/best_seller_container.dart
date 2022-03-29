@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -46,30 +45,33 @@ class BestSellerContainer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  bestSeller.reviewsAvg==0?
-                  Container(width: 10,)
-                      :
-                  Container(
-                      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                      decoration: BoxDecoration(
-                          color: AppColors.offerGreen,
-                          borderRadius: BorderRadius.all(Radius.circular(4))),
-                      child: Wrap(
-                        alignment: WrapAlignment.center,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          Text(bestSeller.reviewsAvg.toString(),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold)),
-                          Icon(
-                            Icons.star,
-                            color: Colors.white,
-                            size: 11,
-                          )
-                        ],
-                      )),
+                  bestSeller.reviewsAvg == 0
+                      ? Container(
+                          width: 10,
+                        )
+                      : Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                          decoration: BoxDecoration(
+                              color: AppColors.offerGreen,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4))),
+                          child: Wrap(
+                            alignment: WrapAlignment.center,
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              Text(bestSeller.reviewsAvg.toString(),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold)),
+                              Icon(
+                                Icons.star,
+                                color: Colors.white,
+                                size: 11,
+                              )
+                            ],
+                          )),
                   if (bestSeller.discountPer != 0)
                     Container(
                         padding:
@@ -92,13 +94,10 @@ class BestSellerContainer extends StatelessWidget {
                         )),
                 ])),
         5.heightBox,
-        SizedBox(
-          height: 100,
+        Expanded(
             child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),
-                child:
-                bestSeller.largeImageUrl!.setNetworkImage()
-)),
+                child: bestSeller.largeImageUrl!.setNetworkImage())),
         5.heightBox,
         Align(
             alignment: Alignment.centerLeft,
@@ -110,7 +109,7 @@ class BestSellerContainer extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(color: Color(0xFF333333), fontSize: 13)))),
         5.heightBox,
-        if (bestSeller.bottomLeftCaptionArr!=null)
+        if (bestSeller.bottomLeftCaptionArr != null)
           Padding(
               padding: EdgeInsets.only(left: 5, right: 15),
               child: Align(

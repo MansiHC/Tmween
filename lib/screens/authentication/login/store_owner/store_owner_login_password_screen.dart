@@ -112,7 +112,7 @@ class StoreOwnerLoginPasswordScreen extends StatelessWidget {
                                                 }),
                                             hintText: LocaleKeys.yourPassword,
                                             onSubmitted: (term) {
-                                            /*  loginController
+                                              /*  loginController
                                                   .doLoginWithPassword(
                                                       language);*/
                                             },
@@ -220,7 +220,7 @@ class StoreOwnerLoginPasswordScreen extends StatelessWidget {
         CustomButton(
             text: LocaleKeys.login,
             onPressed: () {
-            //  loginController.doLoginWithPassword(language);
+              //  loginController.doLoginWithPassword(language);
             }),
         Visibility(
           visible: loginController.loading,

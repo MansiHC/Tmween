@@ -11,7 +11,6 @@ import 'package:tmween/model/get_customer_address_list_model.dart';
 import 'package:tmween/model/state_model.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
-import 'package:tmween/utils/helper.dart';
 import 'package:tmween/utils/views/custom_button.dart';
 
 import '../../../controller/add_address_controller.dart';
@@ -56,7 +55,7 @@ class AddAddressScreen extends StatelessWidget {
                               color: AppColors.appBarColor,
                               padding: EdgeInsets.only(top: 20),
                               child: topView(addressController)),
-                           _bottomView(addressController)
+                          _bottomView(addressController)
                         ],
                       ))));
         });
@@ -74,7 +73,7 @@ class AddAddressScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                      /*  DropdownButtonHideUnderline(
+                        /*  DropdownButtonHideUnderline(
                           child: DropdownButton2(
                             buttonDecoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(2),
@@ -120,68 +119,66 @@ class AddAddressScreen extends StatelessWidget {
                           ),
                         ),*/
                         Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(2),
-                                    border: Border.all(
-                                      color: Color(0xFFA7A7A7),
-                                    ),
-                                    color: Color(0xFFEEEEEE)),
-                                height: 40,
-                                child: TypeAheadFormField<Country>(
-                                  getImmediateSuggestions: true,
-                                  textFieldConfiguration: TextFieldConfiguration(
-                                    controller:  addressController.countrySearchController,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.search,
-                                    onSubmitted: (term) {
-                                      FocusScope.of(addressController.context).unfocus();
-                                    },
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 10),
-                                      border: OutlineInputBorder(
-                                        borderSide:
-                                        BorderSide(color: AppColors.lightGrayColor),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide:
-                                        BorderSide(color: AppColors.lightGrayColor),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide:
-                                        BorderSide(color: AppColors.lightGrayColor),
-                                      ),
-                                      isDense: true,
-                                      hintText: LocaleKeys.selectCountry.tr,
-                                      suffixIcon: IconButton(
-                                          onPressed: () {
-
-                                          },
-                                          icon: Icon(
-                                            Icons.keyboard_arrow_down,
-                                            color: Colors.black45,
-
-                                          )),
-                                    ),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(2),
+                                border: Border.all(
+                                  color: Color(0xFFA7A7A7),
+                                ),
+                                color: Color(0xFFEEEEEE)),
+                            height: 40,
+                            child: TypeAheadFormField<Country>(
+                              getImmediateSuggestions: true,
+                              textFieldConfiguration: TextFieldConfiguration(
+                                controller:
+                                    addressController.countrySearchController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.search,
+                                onSubmitted: (term) {
+                                  FocusScope.of(addressController.context)
+                                      .unfocus();
+                                },
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 10),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: AppColors.lightGrayColor),
                                   ),
-                                  suggestionsCallback: (String pattern) async {
-                                    return addressController.countries
-                                        .where((item) => item.countryName!
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: AppColors.lightGrayColor),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: AppColors.lightGrayColor),
+                                  ),
+                                  isDense: true,
+                                  hintText: LocaleKeys.selectCountry.tr,
+                                  suffixIcon: IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color: Colors.black45,
+                                      )),
+                                ),
+                              ),
+                              suggestionsCallback: (String pattern) async {
+                                return addressController.countries
+                                    .where((item) => item.countryName!
                                         .toLowerCase()
                                         .startsWith(pattern.toLowerCase()))
-                                        .toList();
-                                  },
-                                  itemBuilder: (context, Country suggestion) {
-                                    return ListTile(
-                                      title: Text(suggestion.countryName!),
-                                    );
-                                  },
-                                  onSuggestionSelected: (Country value) {
-
-                                    addressController.updateCountry(value, language);
-                                  },
-                                )),
-
+                                    .toList();
+                              },
+                              itemBuilder: (context, Country suggestion) {
+                                return ListTile(
+                                  title: Text(suggestion.countryName!),
+                                );
+                              },
+                              onSuggestionSelected: (Country value) {
+                                addressController.updateCountry(
+                                    value, language);
+                              },
+                            )),
                         10.heightBox,
                         Text(
                           LocaleKeys.fullName.tr,
@@ -336,7 +333,7 @@ class AddAddressScreen extends StatelessWidget {
                               fontSize: 14),
                         ),
                         5.heightBox,
-                       /* DropdownButtonHideUnderline(
+                        /* DropdownButtonHideUnderline(
                           child: DropdownButton2(
                             buttonDecoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(2),
@@ -392,33 +389,33 @@ class AddAddressScreen extends StatelessWidget {
                             child: TypeAheadFormField<States>(
                               getImmediateSuggestions: true,
                               textFieldConfiguration: TextFieldConfiguration(
-                                controller:  addressController.stateSearchController,
+                                controller:
+                                    addressController.stateSearchController,
                                 keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.search,
                                 onSubmitted: (term) {
-                                  FocusScope.of(addressController.context).unfocus();
+                                  FocusScope.of(addressController.context)
+                                      .unfocus();
                                 },
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 10),
                                   border: OutlineInputBorder(
-                                    borderSide:
-                                    BorderSide(color: AppColors.lightGrayColor),
+                                    borderSide: BorderSide(
+                                        color: AppColors.lightGrayColor),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                    BorderSide(color: AppColors.lightGrayColor),
+                                    borderSide: BorderSide(
+                                        color: AppColors.lightGrayColor),
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderSide:
-                                    BorderSide(color: AppColors.lightGrayColor),
+                                    borderSide: BorderSide(
+                                        color: AppColors.lightGrayColor),
                                   ),
                                   isDense: true,
                                   hintText: LocaleKeys.chooseState.tr,
                                   suffixIcon: IconButton(
-                                      onPressed: () {
-
-                                      },
+                                      onPressed: () {},
                                       icon: Icon(
                                         Icons.keyboard_arrow_down,
                                         color: Colors.black45,
@@ -428,8 +425,8 @@ class AddAddressScreen extends StatelessWidget {
                               suggestionsCallback: (String pattern) async {
                                 return addressController.states
                                     .where((item) => item.stateName!
-                                    .toLowerCase()
-                                    .startsWith(pattern.toLowerCase()))
+                                        .toLowerCase()
+                                        .startsWith(pattern.toLowerCase()))
                                     .toList();
                               },
                               itemBuilder: (context, States suggestion) {
@@ -438,7 +435,6 @@ class AddAddressScreen extends StatelessWidget {
                                 );
                               },
                               onSuggestionSelected: (States value) {
-
                                 addressController.updateState(value, language);
                               },
                             )),
@@ -507,33 +503,33 @@ class AddAddressScreen extends StatelessWidget {
                             child: TypeAheadFormField<City>(
                               getImmediateSuggestions: true,
                               textFieldConfiguration: TextFieldConfiguration(
-                                controller:  addressController.citySearchController,
+                                controller:
+                                    addressController.citySearchController,
                                 keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.search,
                                 onSubmitted: (term) {
-                                  FocusScope.of(addressController.context).unfocus();
+                                  FocusScope.of(addressController.context)
+                                      .unfocus();
                                 },
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 10),
                                   border: OutlineInputBorder(
-                                    borderSide:
-                                    BorderSide(color: AppColors.lightGrayColor),
+                                    borderSide: BorderSide(
+                                        color: AppColors.lightGrayColor),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                    BorderSide(color: AppColors.lightGrayColor),
+                                    borderSide: BorderSide(
+                                        color: AppColors.lightGrayColor),
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderSide:
-                                    BorderSide(color: AppColors.lightGrayColor),
+                                    borderSide: BorderSide(
+                                        color: AppColors.lightGrayColor),
                                   ),
                                   isDense: true,
                                   hintText: 'Choose a City',
                                   suffixIcon: IconButton(
-                                      onPressed: () {
-
-                                      },
+                                      onPressed: () {},
                                       icon: Icon(
                                         Icons.keyboard_arrow_down,
                                         color: Colors.black45,
@@ -543,8 +539,8 @@ class AddAddressScreen extends StatelessWidget {
                               suggestionsCallback: (String pattern) async {
                                 return addressController.cities
                                     .where((item) => item.cityName!
-                                    .toLowerCase()
-                                    .startsWith(pattern.toLowerCase()))
+                                        .toLowerCase()
+                                        .startsWith(pattern.toLowerCase()))
                                     .toList();
                               },
                               itemBuilder: (context, City suggestion) {
@@ -553,7 +549,6 @@ class AddAddressScreen extends StatelessWidget {
                                 );
                               },
                               onSuggestionSelected: (City value) {
-
                                 addressController.updateCity(value);
                               },
                             )),

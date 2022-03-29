@@ -12,12 +12,15 @@ import 'dashboard/product_detail_screen.dart';
 
 class TopSelectionScreen extends StatelessWidget {
   final topSelectionController = Get.put(TopSelectionController());
+var language;
   Future<bool> _onWillPop(TopSelectionController categoriesController) async {
     categoriesController.exitScreen();
     return true;
   }
+
   @override
   Widget build(BuildContext context) {
+    language= Get.locale!.languageCode;
     return GetBuilder<TopSelectionController>(
         init: TopSelectionController(),
         builder: (contet) {
@@ -25,20 +28,19 @@ class TopSelectionScreen extends StatelessWidget {
 
           return WillPopScope(
               onWillPop: () => _onWillPop(topSelectionController),
-          child:Scaffold(
-              appBar: AppBar(
-                elevation: 0.0,
-                iconTheme: IconThemeData(color: Colors.white),
-                backgroundColor: AppColors.appBarColor,
-                centerTitle: false,
-                titleSpacing: 0.0,
-                title: Text(
-                  LocaleKeys.topSelectionSmall.tr,
-                  style: TextStyle(color: Colors.white),
+              child: Scaffold(
+                appBar: AppBar(
+                  elevation: 0.0,
+                  iconTheme: IconThemeData(color: Colors.white),
+                  backgroundColor: AppColors.appBarColor,
+                  centerTitle: false,
+                  titleSpacing: 0.0,
+                  title: Text(
+                    LocaleKeys.topSelectionSmall.tr,
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
-              ),
-              body: SingleChildScrollView(
-                child: Column(
+                body: Column(
                   children: [
                     Container(
                         color: AppColors.appBarColor,
@@ -86,39 +88,66 @@ class TopSelectionScreen extends StatelessWidget {
                                   return null;
                                 }))),
                     topSelectionController.loading
-                        ?Center(child:CircularProgressBar())
-                        :
-                    Container(
-                        margin: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(4)),
-                        ),
-                        padding: EdgeInsets.all(1.5),
-                        child: GridView.count(
-                            padding: EdgeInsets.zero,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 5,
-                            crossAxisCount: 2,
-                            shrinkWrap: true,
-                            childAspectRatio: 0.66,
-                            physics: ScrollPhysics(),
-                            children: List.generate(
-                                topSelectionController.topSelectionData!.length,
-                                (index) {
-                              return InkWell(
-                                  onTap: () {
-                                    topSelectionController
-                                        .navigateTo(ProductDetailScreen());
-                                  },
-                                  child: TopSelectionContainer(
-                                    topSelection: topSelectionController
-                                        .topSelectionData![index],
-                                    from: SharedPreferencesKeys.isDashboard,
-                                  ));
-                            })))
+                        ? Center(child: CircularProgressBar())
+                        : Expanded(
+                            child: RefreshIndicator(
+                                onRefresh: () =>
+                                    topSelectionController.onRefresh(language)
+                                ,
+                                child:Container(
+                                margin: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(4)),
+                                ),
+                                padding: EdgeInsets.all(1.5),
+                                child: NotificationListener<ScrollNotification>(
+                                    onNotification:
+                                        (ScrollNotification scrollInfo) {
+                                      if (scrollInfo is ScrollEndNotification &&
+                                          scrollInfo.metrics.pixels ==scrollInfo.metrics.maxScrollExtent) {
+                                        if (topSelectionController.next != 0) {
+                                          topSelectionController.loadMore(language);
+
+                                        }
+                                      }
+
+                                      return false;
+                                    },
+                                    child:  GridView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: topSelectionController
+                                                .topSelectionData!.length,
+                                            physics: ScrollPhysics(),
+                                            gridDelegate:
+                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 2,
+                                              crossAxisSpacing: 10,
+                                              mainAxisSpacing: 5,
+                                              childAspectRatio: 0.66,
+                                            ),
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return InkWell(
+                                                  onTap: () {
+                                                    topSelectionController
+                                                        .navigateTo(
+                                                            ProductDetailScreen(productId:topSelectionController
+                                                                .topSelectionData![
+                                                            index].id ,));
+                                                  },
+                                                  child: TopSelectionContainer(
+                                                    topSelection:
+                                                        topSelectionController
+                                                                .topSelectionData![
+                                                            index],
+                                                    from: SharedPreferencesKeys
+                                                        .isDashboard,
+                                                  ));
+                                            })))))
                   ],
                 ),
-              )));
+              ));
         });
   }
 }

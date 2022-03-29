@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/model/get_wishlist_details_model.dart';
 
-import '../model/sold_by_tmween_model.dart';
 import '../screens/drawer/drawer_screen.dart';
 import '../service/api.dart';
 import '../utils/global.dart';
@@ -16,10 +15,13 @@ class WishlistController extends GetxController {
 
   TextEditingController searchController = TextEditingController();
 
-
   final api = Api();
   bool loading = false;
   List<WishlistData> wishListData = [];
+  int totalPages = 0;
+  int prev = 0;
+  int next = 0;
+  int totalRecords = 0;
 
   void exitScreen() {
     Get.delete<WishlistController>();
@@ -42,7 +44,7 @@ class WishlistController extends GetxController {
           .getIntValuesSF(SharedPreferencesKeys.userId)
           .then((value) async {
         userId = value!;
-      //  getWishListData(Get.locale!.languageCode);
+        //  getWishListData(Get.locale!.languageCode);
         MySharedPreferences.instance
             .getIntValuesSF(SharedPreferencesKeys.loginLogId)
             .then((value) async {
@@ -59,13 +61,17 @@ class WishlistController extends GetxController {
     update();
     await api.getWishListDetails(token, userId, language).then((value) {
       if (value.statusCode == 200) {
+        /*totalPages = value.data!.totalPages!;
+        prev =
+            value.data!.previous.runtimeType == int ? value.data!.previous : 0;
+        next = value.data!.next.runtimeType == int ? value.data!.next : 0;
+        totalRecords = value.data!.totalRecords!;*/
         wishListData = value.data!.wishlistData!;
-      //  print('.................${wishListData.length}');
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
-     //   Get.offAll(DrawerScreen());
+        //   Get.offAll(DrawerScreen());
       }
       loading = false;
       update();
@@ -76,6 +82,44 @@ class WishlistController extends GetxController {
     });
   }
 
+  Future<void> onRefresh(language) async {
+    await api.getWishListDetails(token, userId, language).then((value) {
+      if (value.statusCode == 200) {
+        /*totalPages = value.data!.totalPages!;
+        prev =
+            value.data!.previous.runtimeType == int ? value.data!.previous : 0;
+        next = value.data!.next.runtimeType == int ? value.data!.next : 0;
+        totalRecords = value.data!.totalRecords!;*/
+        wishListData = value.data!.wishlistData!;
+        update();
+      }
+    }).catchError((error) {
+      print('error....$error');
+    });
+  }
+
+  Future<bool> loadMore(language) async {
+    update();
+    await api.getWishListDetails(token, userId, language).then((value) {
+      if (value.statusCode == 200) {
+        totalPages = value.data!.totalPages!;
+        prev =
+            value.data!.previous.runtimeType == int ? value.data!.previous : 0;
+        next = value.data!.next.runtimeType == int ? value.data!.next : 0;
+        totalRecords = value.data!.totalRecords!;
+        wishListData.addAll(value.data!.wishlistData!);
+        update();
+        return true;
+      }
+      update();
+    }).catchError((error) {
+      update();
+      print('error....$error');
+      return false;
+    });
+    return false;
+  }
+
   Future<void> removeWishlistProduct(id, language) async {
     //  if (Helper.isIndividual) {
     await api.deleteWishListDetails(token, id, userId, language).then((value) {
@@ -84,7 +128,7 @@ class WishlistController extends GetxController {
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-       Get.deleteAll();
+        Get.deleteAll();
         Get.offAll(DrawerScreen());
       }
       Helper.showGetSnackBar(value.message!);

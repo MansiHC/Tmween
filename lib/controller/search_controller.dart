@@ -3,19 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:tmween/controller/dashboard_controller.dart';
-import 'package:tmween/controller/product_detail_controller.dart';
 import 'package:tmween/model/address_model.dart';
-import 'package:tmween/screens/drawer/search_screen.dart';
 
 import '../model/get_customer_address_list_model.dart';
+import '../model/product_listing_model.dart';
 import '../model/recently_viewed_model.dart';
 import '../screens/drawer/drawer_screen.dart';
 import '../service/api.dart';
 import '../utils/global.dart';
-import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
-import 'drawer_controller.dart';
 
 class SearchController extends GetxController {
   late BuildContext context;
@@ -26,28 +22,8 @@ class SearchController extends GetxController {
   late bool visibleList = false;
   int val = 1;
 
-  final List<String> items = ['Sofa', 'Bed',];
 
-  List<AddressModel> addresses = const <AddressModel>[
-    const AddressModel(
-        name: 'Salim Akka',
-        addressLine1: '34 Brooke Place,',
-        addressLine2: '',
-        city: 'Farmington',
-        state: 'nm',
-        country: 'Unites States',
-        pincode: '83401',
-        isDefault: true),
-    const AddressModel(
-      name: 'Salim Akka',
-      addressLine1: '34 Brooke Place,',
-      addressLine2: '',
-      city: 'Farmington',
-      state: 'nm',
-      country: 'Unites States',
-      pincode: '83401',
-    )
-  ];
+
 
   final List<String> historyList = [
     'Watches',
@@ -68,54 +44,41 @@ class SearchController extends GetxController {
     'Computer and Gaming',
   ];
 
-  List<RecentlyViewdModel> recentlVieweds = const <RecentlyViewdModel>[
-    const RecentlyViewdModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: true,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image: 'asset/image/category_home_page_images/category_img_1.jpg'),
-    const RecentlyViewdModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: true,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image: 'asset/image/category_home_page_images/category_img_1.jpg'),
-    const RecentlyViewdModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: false,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image: 'asset/image/category_home_page_images/category_img_1.jpg'),
-    const RecentlyViewdModel(
-        title: 'WOW Raw Apple Cider Vinegar 750 ml',
-        fulfilled: false,
-        offer: '35',
-        rating: '4.1',
-        price: '2450',
-        beforePrice: '7000',
-        image: 'asset/image/category_home_page_images/category_img_1.jpg'),
-  ];
-
   int userId = 0;
   String token = '';
   int loginLogId = 0;
   final api = Api();
   bool loading = false;
+  bool searchLoading = false;
   List<Address> addressList = [];
+  List<ProductData> productList = [];
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
   }
+  bool isLogin = true;
+  String image = "", address = "";
 
   @override
   void onInit() {
+    MySharedPreferences.instance
+        .getBoolValuesSF(SharedPreferencesKeys.isLogin)
+        .then((value) async {
+      isLogin = value!;
+      update();
+    });
+    MySharedPreferences.instance
+        .getStringValuesSF(SharedPreferencesKeys.address)
+        .then((value) async {
+      if (value != null) address = value;
+      update();
+    });
+    MySharedPreferences.instance
+        .getStringValuesSF(SharedPreferencesKeys.image)
+        .then((value) async {
+      image = value!;
+      update();
+    });
     MySharedPreferences.instance
         .getStringValuesSF(SharedPreferencesKeys.token)
         .then((value) async {
@@ -155,6 +118,34 @@ class SearchController extends GetxController {
     });
   }
 
+  void searchProduct(suggestion,language){
+    visibleList = true;
+    searchController.text = suggestion;
+update();
+getProductList(language);
+  }
+
+  Future<void> getProductList(language) async {
+    productList = [];
+    searchLoading = true;
+    update();
+    await api.topSearchSuggestionProductList(searchController.text,userId,isLogin, language).then((value) {
+      if (value.statusCode == 200) {
+
+        productList = value.data!;
+      } else if (value.statusCode == 401) {
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+      }
+      searchLoading = false;
+      update();
+    }).catchError((error) {
+      searchLoading = false;
+      update();
+      print('error....$error');
+    });
+  }
+
   Future<void> editAddress(
       id,
       fullName,
@@ -170,34 +161,33 @@ class SearchController extends GetxController {
       deliveryInstruction,
       defaultValue,
       language) async {
-
     loading = true;
     update();
     await api
         .editCustomerAddress(
-        token,
-        id,
-        userId,
-        fullName,
-        address1,
-        address2,
-        landmark,
-        country,
-        state,
-        city,
-        zip,
-        mobile,
-        addressType,
-        deliveryInstruction,
-        defaultValue,
-        language)
+            token,
+            id,
+            userId,
+            fullName,
+            address1,
+            address2,
+            landmark,
+            country,
+            state,
+            city,
+            zip,
+            mobile,
+            addressType,
+            deliveryInstruction,
+            defaultValue,
+            language)
         .then((value) {
       loading = false;
       update();
       if (value.statusCode == 200) {
         Get.delete<SearchController>();
         Navigator.of(context).pop(true);
-     update();
+        update();
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);

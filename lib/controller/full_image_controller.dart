@@ -5,8 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
-import '../model/recently_viewed_model.dart';
-
 class FullImageController extends GetxController {
   late BuildContext context;
   TextEditingController searchController = TextEditingController();
@@ -49,7 +47,6 @@ class FullImageController extends GetxController {
   void onInit() {
     super.onInit();
   }
-
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));

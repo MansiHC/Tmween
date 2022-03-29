@@ -16,8 +16,6 @@ import '../model/recently_viewed_model.dart';
 import '../service/api.dart';
 import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
-import 'dashboard_controller.dart';
-import 'drawer_controller.dart';
 
 class ProductDetailController extends GetxController {
   late BuildContext context;
@@ -66,7 +64,6 @@ class ProductDetailController extends GetxController {
     MySharedPreferences.instance
         .getBoolValuesSF(SharedPreferencesKeys.isLogin)
         .then((value) async {
-
       isLogin = value!;
     });
     MySharedPreferences.instance
@@ -117,7 +114,9 @@ class ProductDetailController extends GetxController {
   Future<void> addToWishlist(language) async {
     addressList = [];
     print('add......$productId');
-    await api.addDataToWishlist(token, userId, productId,language).then((value) {
+    await api
+        .addDataToWishlist(token, userId, productId, language)
+        .then((value) {
       if (value.statusCode == 200) {
         isLiked = true;
         update();
@@ -127,19 +126,20 @@ class ProductDetailController extends GetxController {
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
-      }else{
+      } else {
         Helper.showGetSnackBar(value.message!);
       }
-
     }).catchError((error) {
       print('error....$error');
     });
   }
 
-  Future<void> removeWishlistProduct( language) async {
+  Future<void> removeWishlistProduct(language) async {
     //  if (Helper.isIndividual) {
     print('remove......');
-    await api.deleteWishListDetails(token, productId, userId, language).then((value) {
+    await api
+        .deleteWishListDetails(token, productId, userId, language)
+        .then((value) {
       if (value.statusCode == 200) {
         isLiked = false;
         update();
@@ -149,7 +149,7 @@ class ProductDetailController extends GetxController {
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
-      }else{
+      } else {
         Helper.showGetSnackBar(value.message!);
       }
       Helper.showGetSnackBar(value.message!);
@@ -167,7 +167,6 @@ class ProductDetailController extends GetxController {
     await api.getCustomerAddressList(token, userId, language).then((value) {
       if (value.statusCode == 200) {
         addressList = value.data!;
-
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
@@ -198,35 +197,34 @@ class ProductDetailController extends GetxController {
       deliveryInstruction,
       defaultValue,
       language) async {
-
     loading = true;
     update();
     await api
         .editCustomerAddress(
-        token,
-        id,
-        userId,
-        fullName,
-        address1,
-        address2,
-        landmark,
-        country,
-        state,
-        city,
-        zip,
-        mobile,
-        addressType,
-        deliveryInstruction,
-        defaultValue,
-        language)
+            token,
+            id,
+            userId,
+            fullName,
+            address1,
+            address2,
+            landmark,
+            country,
+            state,
+            city,
+            zip,
+            mobile,
+            addressType,
+            deliveryInstruction,
+            defaultValue,
+            language)
         .then((value) {
       loading = false;
       update();
       if (value.statusCode == 200) {
         Get.delete<ProductDetailController>();
         Navigator.of(context).pop(true);
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>
-            ProductDetailScreen()));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => ProductDetailScreen()));
         update();
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
@@ -234,7 +232,6 @@ class ProductDetailController extends GetxController {
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       }
-
     }).catchError((error) {
       loading = false;
       update();

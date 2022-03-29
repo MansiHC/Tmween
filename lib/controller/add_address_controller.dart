@@ -14,8 +14,6 @@ import '../service/api.dart';
 import '../utils/global.dart';
 import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
-import 'dashboard_controller.dart';
-import 'drawer_controller.dart';
 
 class CountryModel2 {
   const CountryModel2({required this.name});
@@ -131,50 +129,50 @@ class AddAddressController extends GetxController {
         name: LocaleKeys.officeAddress.tr,
       ),
     ];
-  //  if (Helper.isIndividual) {
-      this.address = address;
+    //  if (Helper.isIndividual) {
+    this.address = address;
+    MySharedPreferences.instance
+        .getStringValuesSF(SharedPreferencesKeys.token)
+        .then((value) async {
+      token = value!;
+      print('dhsh.....$token');
       MySharedPreferences.instance
-          .getStringValuesSF(SharedPreferencesKeys.token)
+          .getIntValuesSF(SharedPreferencesKeys.userId)
           .then((value) async {
-        token = value!;
-        print('dhsh.....$token');
+        userId = value!;
         MySharedPreferences.instance
-            .getIntValuesSF(SharedPreferencesKeys.userId)
+            .getIntValuesSF(SharedPreferencesKeys.loginLogId)
             .then((value) async {
-          userId = value!;
-          MySharedPreferences.instance
-              .getIntValuesSF(SharedPreferencesKeys.loginLogId)
-              .then((value) async {
-            loginLogId = value!;
-          });
+          loginLogId = value!;
         });
       });
-      var language = Get.locale!.languageCode;
-      getCountry(language);
-      if (address != null) {
-        /*countryValue = Country(countryCode: address.countryCode,countryName: address.countryName);
+    });
+    var language = Get.locale!.languageCode;
+    getCountry(language);
+    if (address != null) {
+      /*countryValue = Country(countryCode: address.countryCode,countryName: address.countryName);
       stateValue = States(stateCode: address.stateCode,stateName: address.stateName,countryCode:  address.countryCode);
       cityValue = City(cityCode: address.cityCode,cityName: address.cityName,stateCode: address.stateCode,countryCode: address.countryCode);
       addressTypeValue = AddressTypeModel(name: address.addressType!);
 */
-        for (var i = 0; i < addressTypes.length; i++) {
-          if (addressTypes[i].id == address.addressType) {
-            addressTypeValue = addressTypes[i];
-            break;
-          }
+      for (var i = 0; i < addressTypes.length; i++) {
+        if (addressTypes[i].id == address.addressType) {
+          addressTypeValue = addressTypes[i];
+          break;
         }
-        fullNameController.text = address.fullname!;
-        mobileNumberController.text = address.mobile1!;
-        pincodeController.text = address.zip!;
-        houseNoController.text = address.address1!;
-        areaStreetController.text = address.address2!;
-        landmarkController.text = address.landmark!;
-        address.defaultAddress == 1 ? isDefault = true : isDefault = false;
-        deliveryInstructionController.text = address.deliveryInstruction != null
-            ? address.deliveryInstruction!
-            : '';
       }
-   // }
+      fullNameController.text = address.fullname!;
+      mobileNumberController.text = address.mobile1!;
+      pincodeController.text = address.zip!;
+      houseNoController.text = address.address1!;
+      areaStreetController.text = address.address2!;
+      landmarkController.text = address.landmark!;
+      address.defaultAddress == 1 ? isDefault = true : isDefault = false;
+      deliveryInstructionController.text = address.deliveryInstruction != null
+          ? address.deliveryInstruction!
+          : '';
+    }
+    // }
     super.onInit();
   }
 
@@ -244,114 +242,114 @@ class AddAddressController extends GetxController {
   get defaultValue => isDefault ? 1 : 0;
 
   Future<void> addAddress(language) async {
-   // if (Helper.isIndividual) {
+    // if (Helper.isIndividual) {
     print('gdhgdhgh.......');
-      if (countryValue == null) {
-        Helper.showGetSnackBar('Please Select Country');
-      } else if (formKey.currentState!.validate()) {
-        if (stateValue == null) {
-          Helper.showGetSnackBar('Please Select State');
-        } else if (cityValue == null) {
-          Helper.showGetSnackBar('Please Select City');
-        } else if (addressTypeValue == null) {
-          Helper.showGetSnackBar('Please Select Address Type');
-        } else {
-          loading = true;
+    if (countryValue == null) {
+      Helper.showGetSnackBar('Please Select Country');
+    } else if (formKey.currentState!.validate()) {
+      if (stateValue == null) {
+        Helper.showGetSnackBar('Please Select State');
+      } else if (cityValue == null) {
+        Helper.showGetSnackBar('Please Select City');
+      } else if (addressTypeValue == null) {
+        Helper.showGetSnackBar('Please Select Address Type');
+      } else {
+        loading = true;
+        update();
+        await api
+            .addCustomerAddress(
+                token,
+                userId,
+                fullNameController.text,
+                houseNoController.text,
+                areaStreetController.text,
+                landmarkController.text,
+                countryValue!.countryCode,
+                stateValue!.stateCode,
+                cityValue!.cityCode,
+                pincodeController.text,
+                mobileNumberController.text,
+                addressTypeValue!.id,
+                deliveryInstructionController.text,
+                defaultValue,
+                language)
+            .then((value) {
+          loading = false;
           update();
-          await api
-              .addCustomerAddress(
-                  token,
-                  userId,
-                  fullNameController.text,
-                  houseNoController.text,
-                  areaStreetController.text,
-                  landmarkController.text,
-                  countryValue!.countryCode,
-                  stateValue!.stateCode,
-                  cityValue!.cityCode,
-                  pincodeController.text,
-                  mobileNumberController.text,
-                  addressTypeValue!.id,
-                  deliveryInstructionController.text,
-                  defaultValue,
-                  language)
-              .then((value) {
-            loading = false;
-            update();
-            if (value.statusCode == 200) {
-              Get.delete<AddAddressController>();
-              Navigator.of(context).pop(true);
-            } else if (value.statusCode == 401) {
-              MySharedPreferences.instance
-                  .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-              Get.deleteAll();
-              Get.offAll(DrawerScreen());
-            }
-            Helper.showGetSnackBar(value.message!);
-          }).catchError((error) {
-            loading = false;
-            update();
-            print('error....$error');
-          });
-        }
+          if (value.statusCode == 200) {
+            Get.delete<AddAddressController>();
+            Navigator.of(context).pop(true);
+          } else if (value.statusCode == 401) {
+            MySharedPreferences.instance
+                .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+            Get.deleteAll();
+            Get.offAll(DrawerScreen());
+          }
+          Helper.showGetSnackBar(value.message!);
+        }).catchError((error) {
+          loading = false;
+          update();
+          print('error....$error');
+        });
       }
-   // }
+    }
+    // }
   }
 
   Future<void> editAddress(id, language) async {
-   // if (Helper.isIndividual) {
+    // if (Helper.isIndividual) {
 
-      if (countryValue == null) {
-        Helper.showGetSnackBar('Please Select Country');
-      } else if (formKey.currentState!.validate()) {
-        if (stateValue == null) {
-          Helper.showGetSnackBar('Please Select State');
-        } else if (cityValue == null) {
-          Helper.showGetSnackBar('Please Select City');
-        } else if (addressTypeValue == null) {
-          Helper.showGetSnackBar('Please Select Address Type');
-        } else {
-          loading = true;
+    if (countryValue == null) {
+      Helper.showGetSnackBar('Please Select Country');
+    } else if (formKey.currentState!.validate()) {
+      if (stateValue == null) {
+        Helper.showGetSnackBar('Please Select State');
+      } else if (cityValue == null) {
+        Helper.showGetSnackBar('Please Select City');
+      } else if (addressTypeValue == null) {
+        Helper.showGetSnackBar('Please Select Address Type');
+      } else {
+        loading = true;
+        update();
+        await api
+            .editCustomerAddress(
+                token,
+                id,
+                userId,
+                fullNameController.text,
+                houseNoController.text,
+                areaStreetController.text,
+                landmarkController.text,
+                countryValue!.countryCode,
+                stateValue!.stateCode,
+                cityValue!.cityCode,
+                pincodeController.text,
+                mobileNumberController.text,
+                addressTypeValue!.id,
+                deliveryInstructionController.text,
+                defaultValue,
+                language)
+            .then((value) {
+          loading = false;
           update();
-          await api
-              .editCustomerAddress(
-                  token,
-                  id,
-                  userId,
-                  fullNameController.text,
-                  houseNoController.text,
-                  areaStreetController.text,
-                  landmarkController.text,
-                  countryValue!.countryCode,
-                  stateValue!.stateCode,
-                  cityValue!.cityCode,
-                  pincodeController.text,
-                  mobileNumberController.text,
-                  addressTypeValue!.id,
-                  deliveryInstructionController.text,
-                  defaultValue,
-                  language)
-              .then((value) {
-            loading = false;
-            update();
-            if (value.statusCode == 200) {
-              Get.delete<AddAddressController>();
-              Navigator.of(context).pop(true);
-            } else if (value.statusCode == 401) {
-              MySharedPreferences.instance
-                  .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-              Get.deleteAll();
-              Get.offAll(DrawerScreen());
-            }
-            Helper.showGetSnackBar(value.message!);
-          }).catchError((error) {
-            loading = false;
-            update();
-            print('error....$error');
-          });
-        }
+          if (value.statusCode == 200) {
+            Get.delete<AddAddressController>();
+            Navigator.of(context).pop(true);
+          } else if (value.statusCode == 401) {
+            MySharedPreferences.instance
+                .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+            Get.deleteAll();
+            Get.offAll(DrawerScreen());
+          }
+          Helper.showGetSnackBar(value.message!);
+        }).catchError((error) {
+          loading = false;
+          update();
+          print('error....$error');
+        });
       }
-   // }
+    }
+    // }
   }
 
   void updateCountry(Country? value, String language) {

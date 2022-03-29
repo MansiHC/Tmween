@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
-import '../model/best_seller_model.dart';
 import '../model/dashboard_model.dart';
 import '../service/api.dart';
 import '../utils/helper.dart';
@@ -15,7 +14,7 @@ class BestSellerController extends GetxController {
 
   final api = Api();
   bool loading = false;
-  List<BestSellerData>? bestSellerData;
+  List<BestSellerData>? bestSellerData = [];
   int totalPages = 0;
   int prev = 0;
   int next = 0;
@@ -23,18 +22,19 @@ class BestSellerController extends GetxController {
 
   @override
   void onInit() {
-    getData();
+    getData(Get.locale!.languageCode);
     super.onInit();
   }
 
-  Future<void> getData() async {
+  Future<void> getData(language) async {
     loading = true;
     update();
-    await api.getBestSeller("1",'en').then((value) {
+    await api.getBestSeller("1", language).then((value) {
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
-        prev = value.data!.previous.runtimeType == int?value.data!.previous:0;
-        next = value.data!.next.runtimeType == int?value.data!.next:0;
+        prev =
+            value.data!.previous.runtimeType == int ? value.data!.previous : 0;
+        next = value.data!.next.runtimeType == int ? value.data!.next : 0;
         totalRecords = value.data!.totalRecords!;
         bestSellerData = value.data!.bestSellerData;
         update();
@@ -49,24 +49,40 @@ class BestSellerController extends GetxController {
       print('error....$error');
     });
   }
-
-  Future<bool> loadMore() async {
-    update();
-    await api.getBestSeller(next,'en').then((value) {
+  Future<void> onRefresh(language) async {
+    await api.getBestSeller("1", language).then((value) {
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
-        prev = value.data!.previous.runtimeType == int?value.data!.previous:0;
-        next = value.data!.next.runtimeType == int?value.data!.next:0;
+        prev =
+        value.data!.previous.runtimeType == int ? value.data!.previous : 0;
+        next = value.data!.next.runtimeType == int ? value.data!.next : 0;
         totalRecords = value.data!.totalRecords!;
         bestSellerData = value.data!.bestSellerData;
+        update();
+      }
+    }).catchError((error) {
+      print('error....$error');
+    });
+  }
+
+  Future<bool> loadMore(language) async {
+    update();
+    await api.getBestSeller(next, language).then((value) {
+      if (value.statusCode == 200) {
+        totalPages = value.data!.totalPages!;
+        prev =
+            value.data!.previous.runtimeType == int ? value.data!.previous : 0;
+        next = value.data!.next.runtimeType == int ? value.data!.next : 0;
+        totalRecords = value.data!.totalRecords!;
+        bestSellerData?.addAll(value.data!.bestSellerData!);
         update();
         return true;
       }
       update();
     }).catchError((error) {
-return false;
       update();
       print('error....$error');
+      return false;
     });
     return false;
   }

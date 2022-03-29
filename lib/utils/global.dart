@@ -60,7 +60,8 @@ abstract class UrlConstants {
   static const String verifyOTP = '$baseUrl/customer/verify-otp';
   static const String resendOTP = '$baseUrl/customer/resend-otp';
   static const String resendLoginOTP = '$baseUrl/customer/resend-login-otp';
-  static const String resendLoginOTPLogin = '$baseUrl/customer/resend-login-otp-login';
+  static const String resendLoginOTPLogin =
+      '$baseUrl/customer/resend-login-otp-login';
   static const String generateForgotPasswordOTP =
       '$baseUrl/customer/generate-forgot-pasword-mobile-otp';
   static const String generateMobileOTP =
@@ -71,16 +72,22 @@ abstract class UrlConstants {
       '$baseUrl/customer/resend-forgot-password-mobile-otp';
   static const String resetPassword = '$baseUrl/customer/reset-forgot-password';
   static const String editProfile = '$baseUrl/customer/edit-profile';
-  static const String addDataToWishList = '$baseUrl/customer/add-data-to-whishlist';
-  static const String deleteWishListDetails = '$baseUrl/customer/delete-wishlist-details';
-  static const String getWishListDetails = '$baseUrl/customer/get-wishlist-details';
-  static const String getCustomerData = '$baseUrl/customer/get-customer-data-mobile';
+  static const String addDataToWishList =
+      '$baseUrl/customer/add-data-to-whishlist';
+  static const String deleteWishListDetails =
+      '$baseUrl/customer/delete-wishlist-details';
+  static const String getWishListDetails =
+      '$baseUrl/customer/get-wishlist-details';
+  static const String getCustomerData =
+      '$baseUrl/customer/get-customer-data-mobile';
   static const String generateSendOtp = '$baseUrl/customer/generate-send-otp';
   static const String resendMobileOtp = '$baseUrl/customer/resend-mobile-otp';
-  static const String verifyMobileChangePassword = '$baseUrl/customer/verify-mobile-change-password';
+  static const String verifyMobileChangePassword =
+      '$baseUrl/customer/verify-mobile-change-password';
   static const String updateEmail = '$baseUrl/customer/update-email';
   static const String updateMobile = '$baseUrl/customer/update-mobile';
-  static const String updateProfileMobile = '$baseUrl/customer/update-profile-mobile';
+  static const String updateProfileMobile =
+      '$baseUrl/customer/update-profile-mobile';
   static const String getCustomerAddressList =
       '$baseUrl/customer/get-customer-address-list-csc';
   static const String deleteCustomerAddress =
@@ -89,11 +96,17 @@ abstract class UrlConstants {
       '$baseUrl/customer/update-customer-address-mobile';
   static const String addCustomerAddress =
       '$baseUrl/customer/add-customer-address';
+  static const String getSearchHistory =
+      '$baseUrl2/customer/get-search-history';
 
   //e-commerce
   static const String getMasterData = '$baseUrl/get-master-data';
-  static const String getHomePageMobileData = '$baseUrl/get-home-page-mobile-data';
-  static const String getMobileMasterViewData = '$baseUrl2/get-mobile-master-view-data';
+  static const String getHomePageMobileData =
+      '$baseUrl/get-home-page-mobile-data';
+  static const String getMobileMasterViewData =
+      '$baseUrl2/get-mobile-master-view-data';
+  static const String topSearchSuggestionProductList =
+      '$baseUrl2/top-search-suggestion-product-list';
   static const String dealOfTheDay = '$baseUrl/get-dailydeal-list';
   static const String soldByTmween = '$baseUrl/get-soldby-system-product-list';
   static const String topSelection = '$baseUrl/get-top-selected-product';

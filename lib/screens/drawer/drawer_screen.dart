@@ -4,10 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:tmween/controller/cart_controller.dart';
 import 'package:tmween/controller/drawer_controller.dart';
-import 'package:tmween/controller/login_controller.dart';
-import 'package:tmween/controller/otp_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/language_model.dart';
 import 'package:tmween/screens/drawer/categories_screen.dart';
@@ -19,8 +16,6 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
 import '../../controller/search_controller.dart';
-import '../../controller/signup_controller.dart';
-import '../../controller/wishlist_controller.dart';
 import '../../model/get_customer_address_list_model.dart';
 import '../../utils/my_shared_preferences.dart';
 import '../../utils/views/circular_progress_bar.dart';
@@ -28,22 +23,29 @@ import '../../utils/views/custom_button.dart';
 import '../../utils/views/custom_text_form_field.dart';
 import '../authentication/login/login_screen.dart';
 import 'address_container.dart';
-import 'profile/my_account_screen.dart';
 
-class DrawerScreen extends StatelessWidget {
-  final drawerController = Get.put(DrawerControllers());
-  final searchController = Get.put(SearchController());
-
-  late var language;
-
+class DrawerScreen extends StatefulWidget {
   final String? from;
 
   DrawerScreen({Key? key, this.from}) : super(key: key);
 
   @override
+  State<StatefulWidget> createState() {
+    return DrawerScreenState();
+  }
+
+}
+class DrawerScreenState extends State<DrawerScreen>{
+  final drawerController = Get.put(DrawerControllers());
+  final searchController = Get.put(SearchController());
+
+  late var language;
+
+
+  @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
-    if (from == AppConstants.productDetail) {
+    if (widget.from == AppConstants.productDetail) {
       drawerController.pageIndex = 4;
       drawerController.pageTitle = LocaleKeys.cart.tr;
     }
@@ -146,8 +148,7 @@ class DrawerScreen extends StatelessWidget {
                                   if (!isLogin) {
                                     _loginFirstDialog(drawerController);
                                   } else {
-                                    drawerController
-                                        .navigateToProfileScreen();
+                                    drawerController.navigateToProfileScreen();
                                   }
                                 });
                               },
@@ -430,30 +431,26 @@ class DrawerScreen extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       currentIndex: drawerController.pageIndex,
       onTap: (index) {
-
-
         if (index == 2) {
           drawerController.navigateTo(SearchScreen(
             from: AppConstants.bottomBar,
           ));
-        } else if(index==3 && !drawerController.isLogin){
+        } else if (index == 3 && !drawerController.isLogin) {
           MySharedPreferences.instance
-              .getBoolValuesSF(
-              SharedPreferencesKeys.isLogin)
+              .getBoolValuesSF(SharedPreferencesKeys.isLogin)
               .then((value) async {
             bool isLogin = value!;
             if (!isLogin) {
               _loginFirstDialog(drawerController);
-            } });
-        }else if (index != drawerController.pageIndex) {
-
+            }
+          });
+        } else if (index != drawerController.pageIndex) {
           drawerController.navigationQueue
               .removeWhere((element) => element == index);
           drawerController.navigationQueue.addLast(index);
           drawerController.pageIndex = index;
           drawerController.update();
         }
-
       },
       items: [
         BottomNavigationBarItem(

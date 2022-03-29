@@ -11,76 +11,35 @@ class CategoriesController extends GetxController {
   late BuildContext context;
 
   TextEditingController searchController = TextEditingController();
-  List<SelectCategoryModel> categories = const <SelectCategoryModel>[
-    const SelectCategoryModel(
-        title: 'Furniture',
-        offer: '50',
-        image: 'asset/image/category_home_page_images/category_img_1.jpg'),
-    const SelectCategoryModel(
-        title: 'Watches',
-        offer: '50',
-        image: 'asset/image/category_home_page_images/category_img_2.jpg'),
-    const SelectCategoryModel(
-        title: 'Sunglasses',
-        offer: '50',
-        image: 'asset/image/category_home_page_images/category_img_3.jpg'),
-    const SelectCategoryModel(
-        title: 'Electronics',
-        offer: '50',
-        image: 'asset/image/category_home_page_images/category_img_4.jpg'),
-    const SelectCategoryModel(
-        title: 'Sports, Fitness & Outdoor',
-        offer: '50',
-        image: 'asset/image/category_home_page_images/category_img_5.jpg'),
-    const SelectCategoryModel(
-        title: 'Computers & Gaming',
-        offer: '50',
-        image: 'asset/image/category_home_page_images/category_img_6.jpg'),
-    const SelectCategoryModel(
-        title: 'Belts',
-        offer: '50',
-        image: 'asset/image/category_home_page_images/category_img_7.jpg'),
-    const SelectCategoryModel(
-        title: 'Wallets & Clutches',
-        offer: '50',
-        image: 'asset/image/category_home_page_images/category_img_8.jpg'),
-    const SelectCategoryModel(
-        title: 'Jewelry',
-        offer: '50',
-        image: 'asset/image/category_home_page_images/category_img_9.jpg'),
-    const SelectCategoryModel(
-        title: 'Beauty',
-        offer: '50',
-        image: 'asset/image/category_home_page_images/category_img_10.jpg'),
-    const SelectCategoryModel(
-        title: 'Outdoor',
-        offer: '50',
-        image: 'asset/image/category_home_page_images/category_img_11.jpg'),
-    const SelectCategoryModel(
-        title: 'Daily Needs',
-        offer: '50',
-        image: 'asset/image/category_home_page_images/category_img_12.jpg'),
-  ];
+
 
   final api = Api();
   bool loading = false;
   List<ShopByCategory>? shopByCategory = [];
+  int totalPages = 0;
+  int prev = 0;
+  int next = 0;
+  int totalRecords = 0;
 
   @override
   void onInit() {
-    getCategories();
+    getCategories(Get.locale!.languageCode);
     super.onInit();
   }
 
-  Future<void> getCategories() async {
+  Future<void> getCategories(language) async {
     loading = true;
     update();
-    await api.getAllCategories('en').then((value) {
+    await api.getAllCategories("1", language).then((value) {
       if (value.statusCode == 200) {
+        totalPages = value.data!.totalPages!;
+        prev =
+            value.data!.previous.runtimeType == int ? value.data!.previous : 0;
+        next = value.data!.next.runtimeType == int ? value.data!.next : 0;
+        totalRecords = value.data!.totalRecords!;
         shopByCategory = value.data!.productAllCategory;
 
         update();
-
       } else {
         Helper.showGetSnackBar(value.message!);
       }
@@ -91,6 +50,43 @@ class CategoriesController extends GetxController {
       update();
       print('error....$error');
     });
+  }
+  Future<void> onRefresh(language) async {
+    await api.getAllCategories("1", language).then((value) {
+      if (value.statusCode == 200) {
+        totalPages = value.data!.totalPages!;
+        prev =
+        value.data!.previous.runtimeType == int ? value.data!.previous : 0;
+        next = value.data!.next.runtimeType == int ? value.data!.next : 0;
+        totalRecords = value.data!.totalRecords!;
+        shopByCategory = value.data!.productAllCategory;
+        update();
+      }
+    }).catchError((error) {
+      print('error....$error');
+    });
+  }
+
+  Future<bool> loadMore(language) async {
+    update();
+    await api.getAllCategories(next, language).then((value) {
+      if (value.statusCode == 200) {
+        totalPages = value.data!.totalPages!;
+        prev =
+            value.data!.previous.runtimeType == int ? value.data!.previous : 0;
+        next = value.data!.next.runtimeType == int ? value.data!.next : 0;
+        totalRecords = value.data!.totalRecords!;
+        shopByCategory?.addAll(value.data!.productAllCategory!);
+        update();
+        return true;
+      }
+      update();
+    }).catchError((error) {
+      update();
+      print('error....$error');
+      return false;
+    });
+    return false;
   }
 
   void exitScreen() {

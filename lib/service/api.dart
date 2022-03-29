@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/UserDataModel.dart';
-import 'package:tmween/model/banner_model.dart';
 import 'package:tmween/model/best_seller_model.dart';
 import 'package:tmween/model/city_model.dart';
 import 'package:tmween/model/country_model.dart';
@@ -14,9 +13,10 @@ import 'package:tmween/model/deals_of_the_day_model.dart';
 import 'package:tmween/model/get_customer_address_list_model.dart';
 import 'package:tmween/model/get_customer_data_model.dart';
 import 'package:tmween/model/get_wishlist_details_model.dart';
-import 'package:tmween/model/login_model.dart';
-import 'package:tmween/model/login_using_otp_model.dart';
+import 'package:tmween/model/popular_search_model.dart';
+import 'package:tmween/model/product_listing_model.dart';
 import 'package:tmween/model/recently_viewed_model.dart';
+import 'package:tmween/model/search_history_model.dart';
 import 'package:tmween/model/signup_model.dart';
 import 'package:tmween/model/sold_by_tmween_model.dart';
 import 'package:tmween/model/state_model.dart';
@@ -127,7 +127,7 @@ class Api {
     return result;
   }
 
-  Future<SignupModel> generateMobileOtpLogin(email,  langCode) async {
+  Future<SignupModel> generateMobileOtpLogin(email, langCode) async {
     late SignupModel result;
     try {
       final response =
@@ -157,7 +157,8 @@ class Api {
     return result;
   }
 
-  Future<SignupModel> generateMobileOtp(email,userid, isMobile, langCode) async {
+  Future<SignupModel> generateMobileOtp(
+      email, userid, isMobile, langCode) async {
     late SignupModel result;
     try {
       final response =
@@ -171,8 +172,8 @@ class Api {
                 "entity_type_id": AppConstants.entity_type_id_customer,
                 "device_type": AppConstants.device_type,
                 "user_id": userid,
-                "email": !isMobile?email:"",
-                "phone": isMobile?email:"",
+                "email": !isMobile ? email : "",
+                "phone": isMobile ? email : "",
                 /*"device_uuid": uuid,
                 "device_no": deviceNo,
                 "device_name": deviceName,
@@ -189,8 +190,8 @@ class Api {
     return result;
   }
 
-  Future<UserDataModel> verifyLoginOTP(email, otp, uuid, deviceNo,
-      deviceName, platform, model, version, langCode) async {
+  Future<UserDataModel> verifyLoginOTP(email, otp, uuid, deviceNo, deviceName,
+      platform, model, version, langCode) async {
     late UserDataModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.verifyLoginOTP),
@@ -311,7 +312,8 @@ class Api {
     }
     return result;
   }
-  Future<SignupModel> resendLoginOTP(userId,phone,isMobile) async {
+
+  Future<SignupModel> resendLoginOTP(userId, phone, isMobile) async {
     late SignupModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.resendLoginOTP),
@@ -323,9 +325,9 @@ class Api {
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
             "device_type": AppConstants.device_type,
-            "phone": isMobile?phone:"",
-            "email": !isMobile?phone:"",
-            "user_id":userId
+            "phone": isMobile ? phone : "",
+            "email": !isMobile ? phone : "",
+            "user_id": userId
           }));
       var responseJson = _returnResponse(response);
       result = SignupModel.fromJson(responseJson);
@@ -513,7 +515,7 @@ class Api {
     return result;
   }
 
-Future<SignupModel> resendMobileOtp(token, userId, langCode) async {
+  Future<SignupModel> resendMobileOtp(token, userId, langCode) async {
     late SignupModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.resendMobileOtp),
@@ -537,25 +539,28 @@ Future<SignupModel> resendMobileOtp(token, userId, langCode) async {
     }
     return result;
   }
-Future<SuccessModel> verifyMobileChangePassword(token, userId, otp,password,langCode) async {
+
+  Future<SuccessModel> verifyMobileChangePassword(
+      token, userId, otp, password, langCode) async {
     late SuccessModel result;
     try {
-      final response = await http.post(Uri.parse(UrlConstants.verifyMobileChangePassword),
-          headers: {
-            HttpHeaders.contentTypeHeader: "application/json",
-            'username': token,
-            HttpHeaders.authorizationHeader:
-                "Bearer ${AppConstants.customer_token}"
-          },
-          body: json.encode({
-            "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": AppConstants.device_type,
-            "user_id": userId,
-          "otp":otp,
-          "new_password": password,
-          "confirm_password": password,
-            "lang_code": langCode
-          }));
+      final response =
+          await http.post(Uri.parse(UrlConstants.verifyMobileChangePassword),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                'username': token,
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "user_id": userId,
+                "otp": otp,
+                "new_password": password,
+                "confirm_password": password,
+                "lang_code": langCode
+              }));
       var responseJson = _returnResponse(response);
 
       result = SuccessModel.fromJson(responseJson);
@@ -565,7 +570,7 @@ Future<SuccessModel> verifyMobileChangePassword(token, userId, otp,password,lang
     return result;
   }
 
-  Future<SuccessModel> updateEmail(token, userId,email,otp, langCode) async {
+  Future<SuccessModel> updateEmail(token, userId, email, otp, langCode) async {
     late SuccessModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.updateEmail),
@@ -592,7 +597,7 @@ Future<SuccessModel> verifyMobileChangePassword(token, userId, otp,password,lang
     return result;
   }
 
- Future<SuccessModel> updateMobile(token, userId,phone,otp, langCode) async {
+  Future<SuccessModel> updateMobile(token, userId, phone, otp, langCode) async {
     late SuccessModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.updateMobile),
@@ -678,7 +683,7 @@ Future<SuccessModel> verifyMobileChangePassword(token, userId, otp,password,lang
                 "entity_type_id": AppConstants.entity_type_id_customer,
                 "device_type": AppConstants.device_type,
                 "user_id": userId,
-                "old_image": oldImage!=null?oldImage.split("/").last:'',
+                "old_image": oldImage != null ? oldImage.split("/").last : '',
                 "image": image != null
                     ? 'data:image/jpeg;base64,${base64Encode(image.readAsBytesSync())}'
                     : '',
@@ -688,7 +693,6 @@ Future<SuccessModel> verifyMobileChangePassword(token, userId, otp,password,lang
 
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
-
     } on SocketException {
       Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }
@@ -724,24 +728,25 @@ Future<SuccessModel> verifyMobileChangePassword(token, userId, otp,password,lang
   }
 
   Future<SuccessModel> addDataToWishlist(
-      token, userId,  productId, langCode) async {
+      token, userId, productId, langCode) async {
     late SuccessModel result;
     try {
-      final response = await http.post(Uri.parse(UrlConstants.addDataToWishList),
-          headers: {
-            HttpHeaders.contentTypeHeader: "application/json",
-            'username': token,
-            HttpHeaders.authorizationHeader:
-                "Bearer ${AppConstants.customer_token}"
-          },
-          body: json.encode({
-            "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": AppConstants.device_type,
-            "user_id": userId,
-            "customer_id": userId,
-            "product_id": productId,
-            "lang_code": langCode
-          }));
+      final response =
+          await http.post(Uri.parse(UrlConstants.addDataToWishList),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                'username': token,
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "user_id": userId,
+                "customer_id": userId,
+                "product_id": productId,
+                "lang_code": langCode
+              }));
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
@@ -751,23 +756,24 @@ Future<SuccessModel> verifyMobileChangePassword(token, userId, otp,password,lang
   }
 
   Future<SuccessModel> deleteWishListDetails(
-      token, id,  userId, langCode) async {
+      token, id, userId, langCode) async {
     late SuccessModel result;
     try {
-      final response = await http.post(Uri.parse(UrlConstants.deleteWishListDetails),
-          headers: {
-            HttpHeaders.contentTypeHeader: "application/json",
-            'username': token,
-            HttpHeaders.authorizationHeader:
-                "Bearer ${AppConstants.customer_token}"
-          },
-          body: json.encode({
-            "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": AppConstants.device_type,
-            "user_id": userId,
-            "id": id,
-            "lang_code": langCode
-          }));
+      final response =
+          await http.post(Uri.parse(UrlConstants.deleteWishListDetails),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                'username': token,
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "user_id": userId,
+                "id": id,
+                "lang_code": langCode
+              }));
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
@@ -780,19 +786,20 @@ Future<SuccessModel> verifyMobileChangePassword(token, userId, otp,password,lang
       token, userId, langCode) async {
     late GetWishlistDetailsModel result;
     try {
-      final response = await http.post(Uri.parse(UrlConstants.getWishListDetails),
-          headers: {
-            HttpHeaders.contentTypeHeader: "application/json",
-            'username': token,
-            HttpHeaders.authorizationHeader:
-                "Bearer ${AppConstants.customer_token}"
-          },
-          body: json.encode({
-            "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": AppConstants.device_type,
-            "user_id": userId,
-            "lang_code": langCode
-          }));
+      final response =
+          await http.post(Uri.parse(UrlConstants.getWishListDetails),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                'username': token,
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "user_id": userId,
+                "lang_code": langCode
+              }));
       var responseJson = _returnResponse(response);
       result = GetWishlistDetailsModel.fromJson(responseJson);
     } on SocketException {
@@ -942,7 +949,6 @@ Future<SuccessModel> verifyMobileChangePassword(token, userId, otp,password,lang
                     "Bearer ${AppConstants.customer_token}"
               },
               body: json.encode({
-
                 "entity_type_id": AppConstants.entity_type_id_customer,
                 "device_type": AppConstants.device_type,
                 "user_id": userId,
@@ -1007,7 +1013,7 @@ Future<SuccessModel> verifyMobileChangePassword(token, userId, otp,password,lang
           headers: {
             HttpHeaders.contentTypeHeader: "application/json",
             HttpHeaders.authorizationHeader:
-            "Bearer ${AppConstants.customer_token}"
+                "Bearer ${AppConstants.customer_token}"
           },
           body: json.encode({
             "data-request": ["country"],
@@ -1028,7 +1034,7 @@ Future<SuccessModel> verifyMobileChangePassword(token, userId, otp,password,lang
           headers: {
             HttpHeaders.contentTypeHeader: "application/json",
             HttpHeaders.authorizationHeader:
-            "Bearer ${AppConstants.customer_token}"
+                "Bearer ${AppConstants.customer_token}"
           },
           body: json.encode({
             "data-request": ["state"],
@@ -1050,7 +1056,7 @@ Future<SuccessModel> verifyMobileChangePassword(token, userId, otp,password,lang
           headers: {
             HttpHeaders.contentTypeHeader: "application/json",
             HttpHeaders.authorizationHeader:
-            "Bearer ${AppConstants.customer_token}"
+                "Bearer ${AppConstants.customer_token}"
           },
           body: json.encode({
             "data-request": ["city"],
@@ -1090,6 +1096,7 @@ Future<SuccessModel> verifyMobileChangePassword(token, userId, otp,password,lang
     }
     return result;
   }
+
 /*1. product_category
 2. product_all_category
 3. popular_searches
@@ -1100,7 +1107,57 @@ Future<SuccessModel> verifyMobileChangePassword(token, userId, otp,password,lang
 8. shop_by_top_category
 9. recently_view_product
 */
-  Future<GetCategoriesModel> getAllCategories(langCode) async {
+  Future<SearchHistoryModel> getSearchHistory(userId,langCode) async {
+    late SearchHistoryModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.getSearchHistory),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "user_id": userId,
+                "lang_code": langCode,
+              }));
+      var responseJson = _returnResponse(response);
+      result = SearchHistoryModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<ProductListingModel> topSearchSuggestionProductList(
+      searchText, userId, isLogin, langCode) async {
+    late ProductListingModel result;
+    try {
+      final response = await http.post(
+          Uri.parse(UrlConstants.topSearchSuggestionProductList),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "search_text": searchText,
+            if (isLogin) "user_id": userId,
+            "lang_code": langCode,
+          }));
+      var responseJson = _returnResponse(response);
+      result = ProductListingModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<GetCategoriesModel> getAllCategories(page, langCode) async {
     late GetCategoriesModel result;
     try {
       final response =
@@ -1116,7 +1173,7 @@ Future<SuccessModel> verifyMobileChangePassword(token, userId, otp,password,lang
                 "data-request": ["shop_by_top_category"],
                 "lang_code": langCode,
                 "pagination": "1",
-                "page": "1"
+                "page": page
               }));
       var responseJson = _returnResponse(response);
       result = GetCategoriesModel.fromJson(responseJson);
@@ -1126,23 +1183,24 @@ Future<SuccessModel> verifyMobileChangePassword(token, userId, otp,password,lang
     return result;
   }
 
-  Future<DealsOfTheDayModel> getDealsOfTheDay(langCode) async {
+  Future<DealsOfTheDayModel> getDealsOfTheDay(page, langCode) async {
     late DealsOfTheDayModel result;
     try {
-      final response = await http.post(Uri.parse(UrlConstants.getMobileMasterViewData),
-          headers: {
-            HttpHeaders.contentTypeHeader: "application/json",
-            HttpHeaders.authorizationHeader:
-                "Bearer ${AppConstants.customer_token}"
-          },
-          body: json.encode({
-            "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": AppConstants.device_type,
-            "data-request": ["daily_deals_data"],
-            "lang_code": langCode,
-            "pagination": "1",
-            "page": "1"
-          }));
+      final response =
+          await http.post(Uri.parse(UrlConstants.getMobileMasterViewData),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "data-request": ["daily_deals_data"],
+                "lang_code": langCode,
+                "pagination": "1",
+                "page": page
+              }));
       var responseJson = _returnResponse(response);
       result = DealsOfTheDayModel.fromJson(responseJson);
     } on SocketException {
@@ -1151,23 +1209,24 @@ Future<SuccessModel> verifyMobileChangePassword(token, userId, otp,password,lang
     return result;
   }
 
-  Future<BestSellerModel> getBestSeller(page,langCode) async {
+  Future<BestSellerModel> getBestSeller(page, langCode) async {
     late BestSellerModel result;
     try {
-      final response = await http.post(Uri.parse(UrlConstants.getMobileMasterViewData),
-          headers: {
-            HttpHeaders.contentTypeHeader: "application/json",
-            HttpHeaders.authorizationHeader:
-                "Bearer ${AppConstants.customer_token}"
-          },
-          body: json.encode({
-            "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": AppConstants.device_type,
-            "data-request": ["best_seller_data"],
-            "lang_code": langCode,
-            "pagination": "1",
-            "page": page
-          }));
+      final response =
+          await http.post(Uri.parse(UrlConstants.getMobileMasterViewData),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "data-request": ["best_seller_data"],
+                "lang_code": langCode,
+                "pagination": "1",
+                "page": page
+              }));
       var responseJson = _returnResponse(response);
       result = BestSellerModel.fromJson(responseJson);
     } on SocketException {
@@ -1176,23 +1235,24 @@ Future<SuccessModel> verifyMobileChangePassword(token, userId, otp,password,lang
     return result;
   }
 
-  Future<SoldByTmweenModel> getSoldByTmween(langCode) async {
+  Future<SoldByTmweenModel> getSoldByTmween(page, langCode) async {
     late SoldByTmweenModel result;
     try {
-      final response = await http.post(Uri.parse(UrlConstants.getMobileMasterViewData),
-          headers: {
-            HttpHeaders.contentTypeHeader: "application/json",
-            HttpHeaders.authorizationHeader:
-                "Bearer ${AppConstants.customer_token}"
-          },
-          body: json.encode({
-            "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": AppConstants.device_type,
-            "data-request": ["sold_by_tmween_product_data"],
-            "lang_code": langCode,
-            "pagination": "1",
-            "page": "1"
-          }));
+      final response =
+          await http.post(Uri.parse(UrlConstants.getMobileMasterViewData),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "data-request": ["sold_by_tmween_product_data"],
+                "lang_code": langCode,
+                "pagination": "1",
+                "page": page
+              }));
       var responseJson = _returnResponse(response);
       result = SoldByTmweenModel.fromJson(responseJson);
     } on SocketException {
@@ -1201,23 +1261,24 @@ Future<SuccessModel> verifyMobileChangePassword(token, userId, otp,password,lang
     return result;
   }
 
-  Future<TopSelectionModel> getTopSelection( langCode) async {
+  Future<TopSelectionModel> getTopSelection(page, langCode) async {
     late TopSelectionModel result;
     try {
-      final response = await http.post(Uri.parse(UrlConstants.getMobileMasterViewData),
-          headers: {
-            HttpHeaders.contentTypeHeader: "application/json",
-            HttpHeaders.authorizationHeader:
-                "Bearer ${AppConstants.customer_token}"
-          },
-          body: json.encode({
-            "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": AppConstants.device_type,
-            "data-request": ["top_selection_data"],
-            "lang_code": langCode,
-            "pagination": "1",
-            "page": "1"
-          }));
+      final response =
+          await http.post(Uri.parse(UrlConstants.getMobileMasterViewData),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "data-request": ["top_selection_data"],
+                "lang_code": langCode,
+                "pagination": "1",
+                "page": page
+              }));
       var responseJson = _returnResponse(response);
       result = TopSelectionModel.fromJson(responseJson);
     } on SocketException {
@@ -1226,23 +1287,24 @@ Future<SuccessModel> verifyMobileChangePassword(token, userId, otp,password,lang
     return result;
   }
 
-Future<RecentlyViewedModel> getRecentlyViewed( langCode) async {
+  Future<RecentlyViewedModel> getRecentlyViewed(page, langCode) async {
     late RecentlyViewedModel result;
     try {
-      final response = await http.post(Uri.parse(UrlConstants.getMobileMasterViewData),
-          headers: {
-            HttpHeaders.contentTypeHeader: "application/json",
-            HttpHeaders.authorizationHeader:
-                "Bearer ${AppConstants.customer_token}"
-          },
-          body: json.encode({
-            "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": AppConstants.device_type,
-            "data-request": ["recently_view_product"],
-            "lang_code": langCode,
-            "pagination": "1",
-            "page": "1"
-          }));
+      final response =
+          await http.post(Uri.parse(UrlConstants.getMobileMasterViewData),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "data-request": ["recently_view_product"],
+                "lang_code": langCode,
+                "pagination": "1",
+                "page": page
+              }));
       var responseJson = _returnResponse(response);
       result = RecentlyViewedModel.fromJson(responseJson);
     } on SocketException {
@@ -1250,8 +1312,6 @@ Future<RecentlyViewedModel> getRecentlyViewed( langCode) async {
     }
     return result;
   }
-
-
 
   dynamic _returnResponse(http.Response response) {
     switch (response.statusCode) {

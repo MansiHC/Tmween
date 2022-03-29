@@ -10,8 +10,6 @@ import '../service/api.dart';
 import '../utils/global.dart';
 import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
-import 'dashboard_controller.dart';
-import 'drawer_controller.dart';
 
 class AddressController extends GetxController {
   late BuildContext context;
@@ -38,6 +36,7 @@ class AddressController extends GetxController {
   void onInit() {
     countPersonalAddress = 0;
     countOfficeAddress = 0;
+    print('....${Get.locale!.languageCode}');
     // if (Helper.isIndividual) {
     MySharedPreferences.instance
         .getStringValuesSF(SharedPreferencesKeys.token)
@@ -49,6 +48,7 @@ class AddressController extends GetxController {
           .then((value) async {
         userId = value!;
         getAddressList(Get.locale!.languageCode);
+
         MySharedPreferences.instance
             .getIntValuesSF(SharedPreferencesKeys.loginLogId)
             .then((value) async {
@@ -71,7 +71,7 @@ class AddressController extends GetxController {
     await api.getCustomerAddressList(token, userId, language).then((value) {
       if (value.statusCode == 200) {
         addressList = value.data!;
-        if(addressList.length>0) {
+        if (addressList.length > 0) {
           if (addressList[0].addressType == "1") {
             addressList.sort((a, b) {
               return int.parse(a.addressType!)
@@ -79,9 +79,8 @@ class AddressController extends GetxController {
             });
           } else {
             addressList
-              ..sort((a, b) =>
-                  int.parse(b.addressType!).compareTo(
-                      int.parse(a.addressType!)));
+              ..sort((a, b) => int.parse(b.addressType!)
+                  .compareTo(int.parse(a.addressType!)));
           }
         }
       } else if (value.statusCode == 401) {
@@ -95,6 +94,29 @@ class AddressController extends GetxController {
     }).catchError((error) {
       loading = false;
       update();
+      print('error....$error');
+    });
+  }
+
+  Future<void> onRefresh(language) async {
+    await api.getCustomerAddressList(token, userId, language).then((value) {
+      if (value.statusCode == 200) {
+        addressList = value.data!;
+        if (addressList.length > 0) {
+          if (addressList[0].addressType == "1") {
+            addressList.sort((a, b) {
+              return int.parse(a.addressType!)
+                  .compareTo(int.parse(b.addressType!));
+            });
+          } else {
+            addressList
+              ..sort((a, b) => int.parse(b.addressType!)
+                  .compareTo(int.parse(a.addressType!)));
+          }
+        }
+        update();
+      }
+    }).catchError((error) {
       print('error....$error');
     });
   }

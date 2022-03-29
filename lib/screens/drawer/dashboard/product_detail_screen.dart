@@ -192,21 +192,23 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                             children: [
                               InkWell(
                                   onTap: () {
-    MySharedPreferences.instance
-        .getBoolValuesSF(SharedPreferencesKeys.isLogin)
-        .then((value) async {
-var  isLogin = value!;
-    if (!isLogin) {
-                                      _loginFirstDialog(
-                                          productDetailController);
-                                    } else if (!productDetailController
-                                        .isLiked) {
-                                      productDetailController
-                                          .addToWishlist(language);
-                                    } else {
-                                      productDetailController
-                                          .removeWishlistProduct(language);
-                                    }});
+                                    MySharedPreferences.instance
+                                        .getBoolValuesSF(
+                                            SharedPreferencesKeys.isLogin)
+                                        .then((value) async {
+                                      var isLogin = value!;
+                                      if (!isLogin) {
+                                        _loginFirstDialog(
+                                            productDetailController);
+                                      } else if (!productDetailController
+                                          .isLiked) {
+                                        productDetailController
+                                            .addToWishlist(language);
+                                      } else {
+                                        productDetailController
+                                            .removeWishlistProduct(language);
+                                      }
+                                    });
                                   },
                                   child: SvgPicture.asset(
                                     productDetailController.isLiked

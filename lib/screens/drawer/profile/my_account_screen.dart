@@ -6,22 +6,18 @@ import 'package:get/get.dart';
 import 'package:tmween/controller/my_account_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/drawer/profile/notification_screen.dart';
-import 'package:tmween/screens/drawer/profile/update_profile_screen.dart';
-import 'package:tmween/screens/drawer/profile/your_addresses_screen.dart';
 import 'package:tmween/screens/drawer/profile/your_order_screen.dart';
 import 'package:tmween/screens/drawer/wishlist_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_list_tile.dart';
 
-import '../../../controller/drawer_controller.dart';
 import '../../../utils/views/circular_progress_bar.dart';
 import 'my_wallet_screen.dart';
 
 class MyAccountScreen extends StatelessWidget {
   late String language;
   final myAccountController = Get.put(MyAccountController());
-
 
   Future<bool> _onWillPop(MyAccountController myAccountController) async {
     myAccountController.exitScreen();
@@ -56,7 +52,6 @@ class MyAccountScreen extends StatelessWidget {
   }
 
   Widget _bottomView(MyAccountController myAccountController) {
-
     return Expanded(
         child: SingleChildScrollView(
             child: Column(
@@ -92,7 +87,6 @@ class MyAccountScreen extends StatelessWidget {
                                         child: CachedNetworkImage(
                                           imageUrl: myAccountController
                                               .profileData!.largeImageUrl!,
-
                                           placeholder: (context, url) =>
                                               CupertinoActivityIndicator(),
                                           imageBuilder: (context, image) =>
@@ -219,8 +213,7 @@ class MyAccountScreen extends StatelessWidget {
                           //if(myAccountController.profileData!.fullname!=null)
                           InkWell(
                               onTap: () {
-                                myAccountController
-                                    .navigateToAddressScreen();
+                                myAccountController.navigateToAddressScreen();
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -301,8 +294,7 @@ class MyAccountScreen extends StatelessWidget {
         CustomListTile(
             title: LocaleKeys.accountSettings,
             onTap: () {
-              myAccountController
-                  .navigateToUpdateProfileScreen();
+              myAccountController.navigateToUpdateProfileScreen();
             },
             leadingIcon: ImageConstanst.accountSettingIcon),
         Padding(

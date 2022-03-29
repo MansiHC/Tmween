@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:tmween/controller/wishlist_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/get_wishlist_details_model.dart';
-import 'package:tmween/model/sold_by_tmween_model.dart';
 import 'package:tmween/utils/extensions.dart';
 
 import '../../../utils/global.dart';
@@ -74,9 +73,8 @@ class WishlistContainer extends StatelessWidget {
                                     )),
                             InkWell(
                                 onTap: () {
-
-                                  wishlistController.removeWishlistProduct(wishlistData.id, language);
-
+                                  wishlistController.removeWishlistProduct(
+                                      wishlistData.id, language);
                                 },
                                 child: Container(
                                     height: 24,
@@ -104,7 +102,8 @@ class WishlistContainer extends StatelessWidget {
                           padding: EdgeInsets.only(left: 5, right: 15),
                           child: Text(wishlistData.productName!,
                               textAlign: TextAlign.start,
-                              maxLines: 2,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   color: Color(0xFF333333), fontSize: 13)))),
                   5.heightBox,

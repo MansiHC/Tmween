@@ -12,12 +12,16 @@ import 'dashboard/product_detail_screen.dart';
 
 class DealsOfTheDayScreen extends StatelessWidget {
   final dealOfTheDayController = Get.put(DealsOfTheDayController());
-  Future<bool> _onWillPop(DealsOfTheDayController dealsOfTheDayController) async {
+var language;
+  Future<bool> _onWillPop(
+      DealsOfTheDayController dealsOfTheDayController) async {
     dealOfTheDayController.exitScreen();
     return true;
   }
+
   @override
   Widget build(BuildContext context) {
+    language= Get.locale!.languageCode;
     return GetBuilder<DealsOfTheDayController>(
         init: DealsOfTheDayController(),
         builder: (contet) {
@@ -25,20 +29,19 @@ class DealsOfTheDayScreen extends StatelessWidget {
 
           return WillPopScope(
               onWillPop: () => _onWillPop(dealOfTheDayController),
-          child:Scaffold(
-              appBar: AppBar(
-                elevation: 0.0,
-                iconTheme: IconThemeData(color: Colors.white),
-                backgroundColor: AppColors.appBarColor,
-                centerTitle: false,
-                titleSpacing: 0.0,
-                title: Text(
-                  LocaleKeys.dealOfDaySmall.tr,
-                  style: TextStyle(color: Colors.white),
+              child: Scaffold(
+                appBar: AppBar(
+                  elevation: 0.0,
+                  iconTheme: IconThemeData(color: Colors.white),
+                  backgroundColor: AppColors.appBarColor,
+                  centerTitle: false,
+                  titleSpacing: 0.0,
+                  title: Text(
+                    LocaleKeys.dealOfDaySmall.tr,
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
-              ),
-              body: SingleChildScrollView(
-                child: Column(
+                body: Column(
                   children: [
                     Container(
                         color: AppColors.appBarColor,
@@ -86,37 +89,62 @@ class DealsOfTheDayScreen extends StatelessWidget {
                                   return null;
                                 }))),
                     dealOfTheDayController.loading
-                        ?Center(child:CircularProgressBar())
-                        :
-                    Container(
-                        margin: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(4)),
-                        ),
-                        padding: EdgeInsets.all(1.5),
-                        child: GridView.count(
-                            padding: EdgeInsets.zero,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 5,
-                            crossAxisCount: 2,
-                            shrinkWrap: true,
-                            childAspectRatio: 0.66,
-                            physics: ScrollPhysics(),
-                            children: List.generate(
-                                dealOfTheDayController.dailyDealsData!.length, (index) {
-                              return InkWell(
-                                  onTap: () {
-                                    dealOfTheDayController
-                                        .navigateTo(ProductDetailScreen());
-                                  },
-                                  child: DealsOfTheDayContainer(
-                                    deal: dealOfTheDayController.dailyDealsData![index],
-                                    from: SharedPreferencesKeys.isDashboard,
-                                  ));
-                            })))
+                        ? Center(child: CircularProgressBar())
+                        : Expanded(
+                            child: RefreshIndicator(
+                                onRefresh: () =>
+                                    dealOfTheDayController.onRefresh(language)
+                                ,
+                                child:Container(
+                                margin: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(4)),
+                                ),
+                                padding: EdgeInsets.all(1.5),
+                                child: NotificationListener<ScrollNotification>(
+                                    onNotification:
+                                        (ScrollNotification scrollInfo) {
+                                      if (scrollInfo is ScrollEndNotification &&
+                                          scrollInfo.metrics.pixels ==scrollInfo.metrics.maxScrollExtent) {
+                                        if (dealOfTheDayController.next != 0) {
+                                          dealOfTheDayController.loadMore(language);
+                                        }
+                                      }
+
+                                      return false;
+                                    },
+                                    child: GridView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: dealOfTheDayController
+                                            .dailyDealsData!.length,
+                                        physics: ScrollPhysics(),
+                                        gridDelegate:
+                                            SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          crossAxisSpacing: 10,
+                                          mainAxisSpacing: 5,
+                                          childAspectRatio: 0.66,
+                                        ),
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return InkWell(
+                                              onTap: () {
+                                                dealOfTheDayController
+                                                    .navigateTo(
+                                                        ProductDetailScreen(productId: dealOfTheDayController
+                                                            .dailyDealsData![index].id,));
+                                              },
+                                              child: DealsOfTheDayContainer(
+                                                deal: dealOfTheDayController
+                                                    .dailyDealsData![index],
+                                                from: SharedPreferencesKeys
+                                                    .isDashboard,
+                                              ));
+                                        })))))
                   ],
                 ),
-              )));
+              ));
         });
   }
 }

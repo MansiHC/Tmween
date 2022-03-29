@@ -20,14 +20,13 @@ class ChangePasswordScreen extends StatelessWidget {
   final String? email;
   final String? mobile;
 
-  ChangePasswordScreen({Key? key, this.email,this.mobile}) : super(key: key);
+  ChangePasswordScreen({Key? key, this.email, this.mobile}) : super(key: key);
 
-
-  Future<bool> _onWillPop(ChangePasswordController changePasswordController) async {
+  Future<bool> _onWillPop(
+      ChangePasswordController changePasswordController) async {
     changePasswordController.exitScreen();
     return true;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -38,21 +37,21 @@ class ChangePasswordScreen extends StatelessWidget {
           changePasswordController.context = context;
           return WillPopScope(
               onWillPop: () => _onWillPop(changePasswordController),
-          child: Scaffold(
-              body: Container(
-                  color: Colors.white,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                          constraints: BoxConstraints(
-                              minWidth: double.infinity, maxHeight: 90),
-                          color: AppColors.appBarColor,
-                          padding: EdgeInsets.only(top: 20),
-                          child: topView(changePasswordController)),
-                      _bottomView(changePasswordController),
-                    ],
-                  ))));
+              child: Scaffold(
+                  body: Container(
+                      color: Colors.white,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              constraints: BoxConstraints(
+                                  minWidth: double.infinity, maxHeight: 90),
+                              color: AppColors.appBarColor,
+                              padding: EdgeInsets.only(top: 20),
+                              child: topView(changePasswordController)),
+                          _bottomView(changePasswordController),
+                        ],
+                      ))));
         });
   }
 
@@ -64,11 +63,11 @@ class ChangePasswordScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if(!changePasswordController.loading)
-                    Text(
-                      'Otp is : ${changePasswordController.otpValue         }',
-                      style: TextStyle(fontSize: 14, color: Colors.black54),
-                    ),
+                    if (!changePasswordController.loading)
+                      Text(
+                        'Otp is : ${changePasswordController.otpValue}',
+                        style: TextStyle(fontSize: 14, color: Colors.black54),
+                      ),
                     15.heightBox,
                     Text(
                       LocaleKeys.email.tr,
@@ -185,41 +184,46 @@ class ChangePasswordScreen extends StatelessWidget {
                           )
                         ])),
                     15.heightBox,
-                    if(!changePasswordController.loading && !changePasswordController.otpExpired)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          LocaleKeys.otpExpire.tr,
-                          style: TextStyle(fontSize:  16, color: Colors.black),
-                        ),
-                        5.widthBox,
-                        TweenAnimationBuilder<Duration>(
-                            duration: Duration(seconds: AppConstants.timer),
-                            tween: Tween(begin: Duration(seconds: AppConstants.timer), end: Duration.zero),
-                            onEnd: () {
-                            changePasswordController.otpExpired = true;
-                            changePasswordController.update();
-                            },
-                            builder: (BuildContext context, Duration value, Widget? child) {
-                              final minutes = value.inMinutes;
-                              final seconds = value.inSeconds % 60;
-                              return Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 5),
-                                  child: Text('$minutes:$seconds',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: AppColors.primaryColor,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20)));
-                            }),
-                      ],
-                    ),
-    if(changePasswordController.otpExpired)
-      Text(
-        'Please Resend the Otp.',
-        style: TextStyle(fontSize:  16, color: Colors.black),
-      ),
+                    if (!changePasswordController.loading &&
+                        !changePasswordController.otpExpired)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            LocaleKeys.otpExpire.tr,
+                            style: TextStyle(fontSize: 16, color: Colors.black),
+                          ),
+                          5.widthBox,
+                          TweenAnimationBuilder<Duration>(
+                              duration: Duration(seconds: AppConstants.timer),
+                              tween: Tween(
+                                  begin: Duration(seconds: AppConstants.timer),
+                                  end: Duration.zero),
+                              onEnd: () {
+                                changePasswordController.otpExpired = true;
+                                changePasswordController.update();
+                              },
+                              builder: (BuildContext context, Duration value,
+                                  Widget? child) {
+                                final minutes = value.inMinutes;
+                                final seconds = value.inSeconds % 60;
+                                return Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 5),
+                                    child: Text('$minutes:$seconds',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: AppColors.primaryColor,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20)));
+                              }),
+                        ],
+                      ),
+                    if (changePasswordController.otpExpired)
+                      Text(
+                        'Please Resend the Otp.',
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                      ),
                     10.heightBox,
                     Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40),
@@ -248,9 +252,7 @@ class ChangePasswordScreen extends StatelessWidget {
                           cursorColor: Colors.white,
                           textStyle: TextStyle(color: Colors.white),
                           controller: changePasswordController.otpController,
-                          onCompleted: (v) {
-                            
-                          },
+                          onCompleted: (v) {},
                           onChanged: (value) {
                             debugPrint(value);
                             changePasswordController.currentText = value;

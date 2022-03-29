@@ -1,18 +1,22 @@
-class GetWishlistDetailsModel {
+class ProductListingModel {
   int? statusCode;
   String? statusMessage;
   String? message;
-  Data? data;
+  List<ProductData>? data;
 
-  GetWishlistDetailsModel(
+  ProductListingModel(
       {this.statusCode, this.statusMessage, this.message, this.data});
 
-  GetWishlistDetailsModel.fromJson(Map<String, dynamic> json) {
+  ProductListingModel.fromJson(Map<String, dynamic> json) {
     statusCode = json['status_code'];
     statusMessage = json['status_message'];
     message = json['message'];
-    if (statusCode == 200)
-      data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    if (json['data'] != null) {
+      data = <ProductData>[];
+      json['data'].forEach((v) {
+        data!.add(new ProductData.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -21,56 +25,13 @@ class GetWishlistDetailsModel {
     data['status_message'] = this.statusMessage;
     data['message'] = this.message;
     if (this.data != null) {
-      data['data'] = this.data!.toJson();
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class Data {
-  List<WishlistData>? wishlistData;
-  int? totalPages;
-  var next;
-  var previous;
-  int? totalRecords;
-
-  Data(
-      {this.wishlistData,
-      this.totalPages,
-      this.next,
-      this.previous,
-      this.totalRecords});
-
-  Data.fromJson(Map<String, dynamic> json) {
-    if (json['customer_data'] != null) {
-      wishlistData = <WishlistData>[];
-      json['customer_data'].forEach((v) {
-        wishlistData!.add(new WishlistData.fromJson(v));
-      });
-    }
-    totalPages = json['total_pages'];
-    next = json['next'];
-    previous = json['previous'];
-    totalRecords = json['total_records'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.wishlistData != null) {
-      data['customer_data'] =
-          this.wishlistData!.map((v) => v.toJson()).toList();
-    }
-    // data['total_pages'] = this.totalPages;
-    // data['next'] = this.next;
-    // data['previous'] = this.previous;
-    // data['total_records'] = this.totalRecords;
-    return data;
-  }
-}
-
-class WishlistData {
-  int? whishlistId;
-
+class ProductData {
   int? id;
   int? attributeSetId;
   int? productCategoryId;
@@ -116,64 +77,65 @@ class WishlistData {
   int? status;
   String? createdAt;
   String? updatedAt;
+  String? attributeSetName;
+  String? categoryName;
   String? productSlug;
-  String? smallImageUrl;
-  String? largeImageUrl;
+  String? productImage;
+  String? prodImage;
 
-  WishlistData(
-      {this.whishlistId,
-      this.id,
-      this.attributeSetId,
-      this.productCategoryId,
-      this.upc,
-      this.sku,
-      this.productName,
-      this.finalPrice,
-      this.retailPrice,
-      this.stock,
-      this.inStock,
-      this.isCombinationAvailable,
-      this.reviewsAvg,
-      this.brandId,
-      this.manufacturerNumber,
-      this.countryCode,
-      this.vehicleTypeCode,
-      this.taxClass,
-      this.shortDescription,
-      this.longDescription,
-      this.specification,
-      this.image,
-      this.isBestSellers,
-      this.isTopSelection,
-      this.autogenerateSeo,
-      this.metaTitle,
-      this.metaKeywords,
-      this.metaDescription,
-      this.specialTransportId,
-      this.weightUnitId,
-      this.singleProductWeight,
-      this.singleProductDimensionsUnitId,
-      this.singleProductHeight,
-      this.singleProductWidth,
-      this.singleProductLength,
-      this.packProductDimensionsUnitId,
-      this.packProductHeight,
-      this.packProductWidth,
-      this.packProductLength,
-      this.packProductWeightUnitId,
-      this.packProductWeight,
-      this.productInOnePack,
-      this.expirable,
-      this.status,
-      this.createdAt,
-      this.updatedAt,
-      this.productSlug,
-      this.smallImageUrl,
-      this.largeImageUrl});
+  ProductData(
+      {this.id,
+        this.attributeSetId,
+        this.productCategoryId,
+        this.upc,
+        this.sku,
+        this.productName,
+        this.finalPrice,
+        this.retailPrice,
+        this.stock,
+        this.inStock,
+        this.isCombinationAvailable,
+        this.reviewsAvg,
+        this.brandId,
+        this.manufacturerNumber,
+        this.countryCode,
+        this.vehicleTypeCode,
+        this.taxClass,
+        this.shortDescription,
+        this.longDescription,
+        this.specification,
+        this.image,
+        this.isBestSellers,
+        this.isTopSelection,
+        this.autogenerateSeo,
+        this.metaTitle,
+        this.metaKeywords,
+        this.metaDescription,
+        this.specialTransportId,
+        this.weightUnitId,
+        this.singleProductWeight,
+        this.singleProductDimensionsUnitId,
+        this.singleProductHeight,
+        this.singleProductWidth,
+        this.singleProductLength,
+        this.packProductDimensionsUnitId,
+        this.packProductHeight,
+        this.packProductWidth,
+        this.packProductLength,
+        this.packProductWeightUnitId,
+        this.packProductWeight,
+        this.productInOnePack,
+        this.expirable,
+        this.status,
+        this.createdAt,
+        this.updatedAt,
+        this.attributeSetName,
+        this.categoryName,
+        this.productSlug,
+        this.productImage,
+        this.prodImage});
 
-  WishlistData.fromJson(Map<String, dynamic> json) {
-    whishlistId = json['whishlist_id'];
-    print('$whishlistId');
+  ProductData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     attributeSetId = json['attribute_set_id'];
     productCategoryId = json['product_category_id'];
@@ -219,14 +181,15 @@ class WishlistData {
     status = json['status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    attributeSetName = json['attribute_set_name'];
+    categoryName = json['category_name'];
     productSlug = json['product_slug'];
-    smallImageUrl = json['small_image_url'];
-    largeImageUrl = json['large_image_url'];
+    productImage = json['product_image'];
+    prodImage = json['prod_image'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['whishlist_id'] = this.whishlistId;
     data['id'] = this.id;
     data['attribute_set_id'] = this.attributeSetId;
     data['product_category_id'] = this.productCategoryId;
@@ -273,9 +236,11 @@ class WishlistData {
     data['status'] = this.status;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    data['attribute_set_name'] = this.attributeSetName;
+    data['category_name'] = this.categoryName;
     data['product_slug'] = this.productSlug;
-    data['small_image_url'] = this.smallImageUrl;
-    data['large_image_url'] = this.largeImageUrl;
+    data['product_image'] = this.productImage;
+    data['prod_image'] = this.prodImage;
     return data;
   }
 }
