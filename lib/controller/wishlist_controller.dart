@@ -85,11 +85,11 @@ class WishlistController extends GetxController {
   Future<void> onRefresh(language) async {
     await api.getWishListDetails(token, userId, language).then((value) {
       if (value.statusCode == 200) {
-        /*totalPages = value.data!.totalPages!;
+        totalPages = value.data!.totalPages!;
         prev =
             value.data!.previous.runtimeType == int ? value.data!.previous : 0;
         next = value.data!.next.runtimeType == int ? value.data!.next : 0;
-        totalRecords = value.data!.totalRecords!;*/
+        totalRecords = value.data!.totalRecords!;
         wishListData = value.data!.wishlistData!;
         update();
       }

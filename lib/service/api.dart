@@ -12,6 +12,7 @@ import 'package:tmween/model/dashboard_model.dart';
 import 'package:tmween/model/deals_of_the_day_model.dart';
 import 'package:tmween/model/get_customer_address_list_model.dart';
 import 'package:tmween/model/get_customer_data_model.dart';
+import 'package:tmween/model/get_filter_data_model.dart';
 import 'package:tmween/model/get_wishlist_details_model.dart';
 import 'package:tmween/model/popular_search_model.dart';
 import 'package:tmween/model/product_listing_model.dart';
@@ -1107,20 +1108,22 @@ class Api {
 8. shop_by_top_category
 9. recently_view_product
 */
-  Future<SearchHistoryModel> getSearchHistory(userId,langCode) async {
+  Future<SearchHistoryModel> getSearchHistory(token,userId,langCode) async {
     late SearchHistoryModel result;
     try {
       final response =
           await http.post(Uri.parse(UrlConstants.getSearchHistory),
               headers: {
                 HttpHeaders.contentTypeHeader: "application/json",
+                'username': '93056041329642570004360129530972671168868915674465',
                 HttpHeaders.authorizationHeader:
-                    "Bearer ${AppConstants.customer_token}"
+                    " Bearer ${AppConstants.customer_token}"
               },
               body: json.encode({
                 "entity_type_id": AppConstants.entity_type_id_customer,
                 "device_type": AppConstants.device_type,
-                "user_id": userId,
+                "user_id": '120',
+                "user_search_keyword_id":'120',
                 "lang_code": langCode,
               }));
       var responseJson = _returnResponse(response);
@@ -1131,8 +1134,57 @@ class Api {
     return result;
   }
 
+  Future<SuccessModel> clearSearchHistory(token,userId,langCode) async {
+    late SuccessModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.clearSearchHistory),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                'username': '93056041329642570004360129530972671168868915674465',
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "user_id": '120',
+                "lang_code": langCode,
+              }));
+      var responseJson = _returnResponse(response);
+      result = SuccessModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<PopularSearchModel> getPopularSearch( langCode) async {
+    late PopularSearchModel result;
+    try {
+      final response =
+      await http.post(Uri.parse(UrlConstants.getMobileMasterViewData),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader:
+            "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "data-request": ["popular_searches"],
+            "lang_code": langCode,
+          }));
+      var responseJson = _returnResponse(response);
+      result = PopularSearchModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
   Future<ProductListingModel> topSearchSuggestionProductList(
-      searchText, userId, isLogin, langCode) async {
+      page,searchText, userId, isLogin, langCode) async {
     late ProductListingModel result;
     try {
       final response = await http.post(
@@ -1146,11 +1198,69 @@ class Api {
             "entity_type_id": AppConstants.entity_type_id_customer,
             "device_type": AppConstants.device_type,
             "search_text": searchText,
-            if (isLogin) "user_id": userId,
+             "user_id": isLogin?120:0,
             "lang_code": langCode,
+            "pagination": "1",
+            "page": page
           }));
       var responseJson = _returnResponse(response);
       result = ProductListingModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+Future<ProductListingModel> getCategoryMobileFilterData(
+      page,catSlug, sortOrder, langCode) async {
+    late ProductListingModel result;
+    try {
+      final response = await http.post(
+          Uri.parse(UrlConstants.getCategoryMobileFilterData),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "lang_code": langCode,
+            "pagination": "1",
+            "page": page,
+            "category_slug":"boys-fashion",
+            "sort":"final_price",
+            "sort_order":sortOrder
+          }));
+      var responseJson = _returnResponse(response);
+      result = ProductListingModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<GetFilterDataModel> getFilterData(
+      page,catSlug, langCode) async {
+    late GetFilterDataModel result;
+    try {
+      final response = await http.post(
+          Uri.parse(UrlConstants.getCategoryMobileFilterData),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "lang_code": langCode,
+            "pagination": "1",
+            "page": page,
+            "category_slug":"fresh",
+          }));
+      var responseJson = _returnResponse(response);
+      result = GetFilterDataModel.fromJson(responseJson);
     } on SocketException {
       Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }

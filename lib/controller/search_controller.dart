@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:tmween/model/address_model.dart';
+import 'package:tmween/model/popular_search_model.dart';
+import 'package:tmween/screens/drawer/product_listing_screen.dart';
+import 'package:tmween/utils/animations.dart';
 
-import '../model/get_customer_address_list_model.dart';
 import '../model/product_listing_model.dart';
-import '../model/recently_viewed_model.dart';
-import '../screens/drawer/drawer_screen.dart';
+import '../model/search_history_model.dart';
 import '../service/api.dart';
 import '../utils/global.dart';
 import '../utils/my_shared_preferences.dart';
@@ -21,50 +21,35 @@ class SearchController extends GetxController {
 
   late bool visibleList = false;
   int val = 1;
-
-
-
-
-  final List<String> historyList = [
-    'Watches',
-    'Sunglasses',
-    'Furniture',
-    'Outdoor',
-    'Sport,Fitness and Outdoor',
-    'Jewelry',
-    'Computer and Gaming',
-  ];
-  final List<String> popularSearchList = [
-    'Watches',
-    'Sunglasses',
-    'Furniture',
-    'Outdoor',
-    'Sport,Fitness and Outdoor',
-    'Jewelry',
-    'Computer and Gaming',
-  ];
+  var searchedString = '';
 
   int userId = 0;
   String token = '';
   int loginLogId = 0;
   final api = Api();
-  bool loading = false;
-  bool searchLoading = false;
-  List<Address> addressList = [];
+  bool historyLoading = false;
+  List<SearchHistoryData> historyList = [];
+  List<PopularSearches> popularList = [];
   List<ProductData> productList = [];
+  List<String> searchList = [];
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
   }
+
   bool isLogin = true;
   String image = "", address = "";
 
   @override
   void onInit() {
+    searchList=[];
+    getPopularList(Get.locale!.languageCode);
+    getFilterData(Get.locale!.languageCode);
     MySharedPreferences.instance
         .getBoolValuesSF(SharedPreferencesKeys.isLogin)
         .then((value) async {
       isLogin = value!;
+
       update();
     });
     MySharedPreferences.instance
@@ -98,111 +83,132 @@ class SearchController extends GetxController {
     super.onInit();
   }
 
-  Future<void> getAddressList(language) async {
-    addressList = [];
-    loading = true;
-    update();
-    await api.getCustomerAddressList(token, userId, language).then((value) {
+  Future<void> getFilterData(language) async {
+    await api.getFilterData('1','fresh', language).then((value) {
       if (value.statusCode == 200) {
-        addressList = value.data!;
+        print('....${value.data!.productData!.productDetailData!.id}');
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
       }
-      loading = false;
+      historyLoading = false;
       update();
     }).catchError((error) {
-      loading = false;
+      historyLoading = false;
       update();
       print('error....$error');
     });
   }
 
-  void searchProduct(suggestion,language){
+
+Future<void> getHistoryList(language) async {
+    historyList = [];
+    searchList = [];
+
+    await api.getSearchHistory(token, userId, language).then((value) {
+      if (value.statusCode == 200) {
+        historyList = value.data!.searchHistoryData!;
+        for(var i=0;i<historyList.length;i++) {
+          searchList.add(historyList[i].keyword!);
+        }
+      } else if (value.statusCode == 401) {
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+      }
+      historyLoading = false;
+      update();
+    }).catchError((error) {
+      historyLoading = false;
+      update();
+      print('error....$error');
+    });
+  }
+
+  Future<void> clearHistoryList(language) async {
+    await api.clearSearchHistory(token, userId, language).then((value) {
+      if (value.statusCode == 200) {
+        historyList.clear();
+        searchList.clear();
+      } else if (value.statusCode == 401) {
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+      }
+      update();
+    }).catchError((error) {
+      update();
+      print('error....$error');
+    });
+  }
+
+  Future<void> getPopularList(language) async {
+    popularList = [];
+    historyLoading = true;
+    update();
+    await api.getPopularSearch(language).then((value) {
+      if (value.statusCode == 200) {
+        popularList = value.data!.popularSearches!;
+        if (isLogin)
+          getHistoryList(Get.locale!.languageCode);
+        else {
+          historyLoading = false;
+          update();
+        }
+      }
+    }).catchError((error) {
+      historyLoading = false;
+      update();
+      print('error....$error');
+    });
+  }
+
+  void searchProduct(from, language) {
     visibleList = true;
-    searchController.text = suggestion;
-update();
-getProductList(language);
-  }
-
-  Future<void> getProductList(language) async {
-    productList = [];
-    searchLoading = true;
+    searchController.text = searchedString;
     update();
-    await api.topSearchSuggestionProductList(searchController.text,userId,isLogin, language).then((value) {
-      if (value.statusCode == 200) {
-
-        productList = value.data!;
-      } else if (value.statusCode == 401) {
-        MySharedPreferences.instance
-            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-      }
-      searchLoading = false;
-      update();
-    }).catchError((error) {
-      searchLoading = false;
-      update();
-      print('error....$error');
-    });
-  }
-
-  Future<void> editAddress(
-      id,
-      fullName,
-      address1,
-      address2,
-      landmark,
-      country,
-      state,
-      city,
-      zip,
-      mobile,
-      addressType,
-      deliveryInstruction,
-      defaultValue,
-      language) async {
-    loading = true;
-    update();
-    await api
-        .editCustomerAddress(
-            token,
-            id,
-            userId,
-            fullName,
-            address1,
-            address2,
-            landmark,
-            country,
-            state,
-            city,
-            zip,
-            mobile,
-            addressType,
-            deliveryInstruction,
-            defaultValue,
-            language)
-        .then((value) {
-      loading = false;
-      update();
-      if (value.statusCode == 200) {
-        Get.delete<SearchController>();
-        Navigator.of(context).pop(true);
-        update();
-      } else if (value.statusCode == 401) {
-        MySharedPreferences.instance
-            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-        Get.deleteAll();
-        Get.offAll(DrawerScreen());
-      }
-    }).catchError((error) {
-      loading = false;
-      update();
-      print('error....$error');
-    });
+    Get.delete<SearchController>();
+    Navigator.pushReplacement(
+        context,
+        CustomPageRoute(
+             ProductListingScreen(
+                  from: from,
+                  searchString: searchController.text,
+                )));
   }
 
   void popp() {
     Navigator.pop(context);
+  }
+
+  Future<List<String>> getProductList(searchString,language) async {
+    productList = [];
+    await api
+        .topSearchSuggestionProductList(
+        "1", searchString, userId, false, language)
+        .then((value) {
+      if (value.statusCode == 200) {
+        productList = value.data!.productData!;
+
+       for(var i=0;i<productList.length;i++){
+         if(productList[i].productSlug==null){
+         //  productList.removeAt(i);
+         }else{
+           print('....gffg...$searchString....${searchList.toSet().toList().toString()}');
+           searchList.add(productList[i].productName!);
+         }
+       }
+
+       print('......${searchList.toSet().toList().toString()}');
+
+        return searchList.toSet().toList();
+      } else if (value.statusCode == 401) {
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        return searchList.toSet().toList();
+      }
+
+    }).catchError((error) {
+    });
+    return searchList.toSet().toList();
   }
 
   void pop() {

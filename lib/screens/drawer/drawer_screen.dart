@@ -281,7 +281,7 @@ class DrawerScreenState extends State<DrawerScreen>{
         init: DrawerControllers(),
         builder: (contet) {
           return Container(
-              height: 310,
+              height: drawerController.isLogin?310:200,
               padding: EdgeInsets.all(15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

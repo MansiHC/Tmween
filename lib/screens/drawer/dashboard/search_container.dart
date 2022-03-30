@@ -60,7 +60,7 @@ class SearchContainer extends StatelessWidget {
                           )
                         ],
                       )),
-                //  if (productData.discountPer != 0)
+                  if (productData.percentage != 0)
                   Container(
                       padding: EdgeInsets.all(3),
                       decoration: BoxDecoration(
@@ -68,7 +68,7 @@ class SearchContainer extends StatelessWidget {
                           borderRadius: BorderRadius.all(Radius.circular(4))),
                       child: Column(
                         children: [
-                          Text('30%',/*'${productData.discountPer}%',*/
+                          Text('${productData.percentage}%',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 12,
@@ -83,7 +83,7 @@ class SearchContainer extends StatelessWidget {
         Expanded(
             child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),
-                child: productData.productImage!.setNetworkImage())),
+                child: productData.largeImageUrl!.setNetworkImage())),
         5.heightBox,
           Align(
               alignment: Alignment.centerLeft,

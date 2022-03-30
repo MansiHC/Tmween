@@ -121,7 +121,7 @@ class WishlistScreenState extends State<WishlistScreen> {
                                           BorderRadius.all(Radius.circular(4)),
                                     ),
                                     padding: EdgeInsets.all(1.5),
-                                    child: /*NotificationListener<
+                                    child: NotificationListener<
                                             ScrollNotification>(
                                         onNotification:
                                             (ScrollNotification scrollInfo) {
@@ -136,7 +136,7 @@ class WishlistScreenState extends State<WishlistScreen> {
 
                                           return false;
                                         },
-                                        child: */GridView.builder(
+                                        child: GridView.builder(
                                             shrinkWrap: true,
                                             itemCount: wishlistController
                                                 .wishListData.length,
@@ -167,7 +167,7 @@ class WishlistScreenState extends State<WishlistScreen> {
                                                                 .wishListData[
                                                             index],
                                                   ));
-                                            }))))))//)
+                                            })))))))
                   ],
                 ),
               )));

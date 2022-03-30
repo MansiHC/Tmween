@@ -80,7 +80,7 @@ var language;
                       imageUrl: item.largeImageUrl!,
                       width: double.maxFinite,
                       height: double.maxFinite,
-                      fit: BoxFit.fill,
+                      fit: BoxFit.fill ,
                       placeholder: (context, url) =>
                           Center(child: CupertinoActivityIndicator()),
                       errorWidget: (context, url, error) => Icon(

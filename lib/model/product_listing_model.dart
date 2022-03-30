@@ -2,7 +2,7 @@ class ProductListingModel {
   int? statusCode;
   String? statusMessage;
   String? message;
-  List<ProductData>? data;
+  Data? data;
 
   ProductListingModel(
       {this.statusCode, this.statusMessage, this.message, this.data});
@@ -11,12 +11,8 @@ class ProductListingModel {
     statusCode = json['status_code'];
     statusMessage = json['status_message'];
     message = json['message'];
-    if (json['data'] != null) {
-      data = <ProductData>[];
-      json['data'].forEach((v) {
-        data!.add(new ProductData.fromJson(v));
-      });
-    }
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+
   }
 
   Map<String, dynamic> toJson() {
@@ -25,8 +21,48 @@ class ProductListingModel {
     data['status_message'] = this.statusMessage;
     data['message'] = this.message;
     if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+      data['data'] = this.data!.toJson();
     }
+    return data;
+  }
+}
+
+class Data {
+  List<ProductData>? productData;
+  int? totalPages;
+  var next;
+  var previous;
+  int? totalRecords;
+
+  Data(
+      {this.productData,
+        this.totalPages,
+        this.next,
+        this.previous,
+        this.totalRecords});
+
+  Data.fromJson(Map<String, dynamic> json) {
+    if (json['product_data'] != null) {
+      productData = <ProductData>[];
+      json['product_data'].forEach((v) {
+        productData!.add(new ProductData.fromJson(v));
+      });
+    }
+    totalPages = json['total_pages'];
+    next = json['next'];
+    previous = json['previous'];
+    totalRecords = json['total_records'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.productData != null) {
+      data['product_data'] = this.productData!.map((v) => v.toJson()).toList();
+    }
+    data['total_pages'] = this.totalPages;
+    data['next'] = this.next;
+    data['previous'] = this.previous;
+    data['total_records'] = this.totalRecords;
     return data;
   }
 }
@@ -59,7 +95,7 @@ class ProductData {
   String? metaTitle;
   String? metaKeywords;
   String? metaDescription;
-  int? specialTransportId;
+  Null? specialTransportId;
   int? weightUnitId;
   int? singleProductWeight;
   int? singleProductDimensionsUnitId;
@@ -80,8 +116,10 @@ class ProductData {
   String? attributeSetName;
   String? categoryName;
   String? productSlug;
+  int? percentage;
   String? productImage;
   String? prodImage;
+  String? largeImageUrl;
 
   ProductData(
       {this.id,
@@ -132,8 +170,10 @@ class ProductData {
         this.attributeSetName,
         this.categoryName,
         this.productSlug,
+        this.percentage,
         this.productImage,
-        this.prodImage});
+        this.prodImage,
+        this.largeImageUrl});
 
   ProductData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -184,8 +224,10 @@ class ProductData {
     attributeSetName = json['attribute_set_name'];
     categoryName = json['category_name'];
     productSlug = json['product_slug'];
+    percentage = json['percentage'];
     productImage = json['product_image'];
     prodImage = json['prod_image'];
+    largeImageUrl = json['large_image_url'];
   }
 
   Map<String, dynamic> toJson() {
@@ -239,8 +281,10 @@ class ProductData {
     data['attribute_set_name'] = this.attributeSetName;
     data['category_name'] = this.categoryName;
     data['product_slug'] = this.productSlug;
+    data['percentage'] = this.percentage;
     data['product_image'] = this.productImage;
     data['prod_image'] = this.prodImage;
+    data['large_image_url'] = this.largeImageUrl;
     return data;
   }
 }

@@ -136,7 +136,7 @@ class CustomPageRoute<T> extends PageRoute<T> {
 
   @override
   // TODO: implement barrierColor
-  Color get barrierColor => Colors.black;
+  Color get barrierColor => Colors.transparent;
 
   @override
   String? get barrierLabel => null;

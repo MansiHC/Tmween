@@ -98,6 +98,8 @@ abstract class UrlConstants {
       '$baseUrl/customer/add-customer-address';
   static const String getSearchHistory =
       '$baseUrl2/customer/get-search-history';
+  static const String clearSearchHistory =
+      '$baseUrl2/customer/clear-search-history';
 
   //e-commerce
   static const String getMasterData = '$baseUrl/get-master-data';
@@ -105,8 +107,10 @@ abstract class UrlConstants {
       '$baseUrl/get-home-page-mobile-data';
   static const String getMobileMasterViewData =
       '$baseUrl2/get-mobile-master-view-data';
+  static const String getCategoryMobileFilterData =
+      '$baseUrl2/get-category-mobile-filter-data';
   static const String topSearchSuggestionProductList =
-      '$baseUrl2/top-search-suggestion-product-list';
+      '$baseUrl2/top-search-suggestion-product-list-mobile';
   static const String dealOfTheDay = '$baseUrl/get-dailydeal-list';
   static const String soldByTmween = '$baseUrl/get-soldby-system-product-list';
   static const String topSelection = '$baseUrl/get-top-selected-product';
