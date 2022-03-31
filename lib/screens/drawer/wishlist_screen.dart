@@ -159,6 +159,8 @@ class WishlistScreenState extends State<WishlistScreen> {
                                                           wishlistController
                                                               .wishListData[0]
                                                               .id,
+                                                                productslug:wishlistController
+                                                                    .wishListData[index].productSlug
                                                     ));
                                                   },
                                                   child: WishlistContainer(

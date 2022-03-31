@@ -47,9 +47,9 @@ class DrawerControllers extends GetxController {
   final pages = [
     DashboardScreen(),
     CategoriesScreen(),
-    SearchScreen(
+    /*SearchScreen(
       from: SharedPreferencesKeys.isDrawer,
-    ),
+    )*/Container(),
     WishlistScreen(),
     CartScreen(
       from: SharedPreferencesKeys.isDrawer,

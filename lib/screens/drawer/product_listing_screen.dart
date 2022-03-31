@@ -328,7 +328,11 @@ class ProductListingScreenState extends State<ProductListingScreen> {
                   itemBuilder: (ctx, i) {
                     return InkWell(
                         onTap: () {
-                          productListingController.navigateTo(ProductDetailScreen());
+                          print('njjjj........${productListingController
+                              .productList[i].productSlug}');
+                          productListingController.navigateTo(ProductDetailScreen(productId: productListingController.productList[i].id,
+                              productslug:productListingController
+                                  .productList[i].productSlug));
                         },
                         child: SearchContainer(
                           productData: productListingController.productList[i],

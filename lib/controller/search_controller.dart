@@ -42,9 +42,10 @@ class SearchController extends GetxController {
 
   @override
   void onInit() {
+    print('...........#############################');
     searchList=[];
     getPopularList(Get.locale!.languageCode);
-    getFilterData(Get.locale!.languageCode);
+   // getFilterData(Get.locale!.languageCode);
     MySharedPreferences.instance
         .getBoolValuesSF(SharedPreferencesKeys.isLogin)
         .then((value) async {
@@ -86,7 +87,7 @@ class SearchController extends GetxController {
   Future<void> getFilterData(language) async {
     await api.getFilterData('1','fresh', language).then((value) {
       if (value.statusCode == 200) {
-        print('....${value.data!.productData!.productDetailData!.id}');
+
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);

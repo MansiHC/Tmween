@@ -18,13 +18,15 @@ class LoginOtpScreen extends StatefulWidget {
   final String otp;
   final String from;
   final String frm;
+  final int isLoginWithPassword;
 
   LoginOtpScreen(
       {Key? key,
       required this.otp,
       required this.phoneEmail,
       required this.from,
-      required this.frm})
+      required this.frm,
+      required this.isLoginWithPassword})
       : super(key: key);
 
   @override
@@ -61,6 +63,7 @@ class LoginOtpScreenState extends State<LoginOtpScreen>  {
   void initState() {
     otpController.otpValue = widget.otp;
    initSmsListener(otpController);
+
 
     super.initState();
   }
@@ -318,6 +321,7 @@ class LoginOtpScreenState extends State<LoginOtpScreen>  {
           ],
         ),
         10.heightBox,
+        if(widget.isLoginWithPassword==1)
         GetBuilder<LoginController>(
             init: LoginController(),
             builder: (contet) {

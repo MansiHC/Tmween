@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
+import 'package:tmween/model/product_detail_model.dart';
 import 'package:tmween/model/recently_viewed_model.dart';
 import 'package:tmween/utils/extensions.dart';
 
@@ -11,7 +12,7 @@ import '../../../utils/global.dart';
 class SimilarProductsContainer extends StatelessWidget {
   SimilarProductsContainer({Key? key, required this.products})
       : super(key: key);
-  final RecentlyViewdModel products;
+  final SimilarProduct products;
   var language;
 
   @override
@@ -35,6 +36,11 @@ class SimilarProductsContainer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  products.reviewsAvg == 0
+                      ? Container(
+                    width: 10,
+                  )
+                      :
                   Container(
                       padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                       decoration: BoxDecoration(
@@ -44,7 +50,7 @@ class SimilarProductsContainer extends StatelessWidget {
                         alignment: WrapAlignment.center,
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
-                          Text(products.rating,
+                         Text(products.reviewsAvg.toString(),
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 11,
@@ -56,6 +62,7 @@ class SimilarProductsContainer extends StatelessWidget {
                           )
                         ],
                       )),
+                  if (products.discountValuePercentage != 0)
                   Container(
                       padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                       decoration: BoxDecoration(
@@ -63,7 +70,7 @@ class SimilarProductsContainer extends StatelessWidget {
                           borderRadius: BorderRadius.all(Radius.circular(4))),
                       child: Row(
                         children: [
-                          Text('${products.offer}%',
+                          Text('${products.discountValuePercentage}%',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 11,
@@ -79,19 +86,16 @@ class SimilarProductsContainer extends StatelessWidget {
         Expanded(
             child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),
-                child: Image.asset(
-                  products.image,
-                  fit: BoxFit.contain,
-                ))),
+                child: products.largeImageUrl!.setNetworkImage())),
         5.heightBox,
         Padding(
             padding: EdgeInsets.only(left: 5, right: 15),
-            child: Text(products.title,
+            child: Text(products.productName!,
                 textAlign: TextAlign.start,
                 maxLines: 2,
                 style: TextStyle(color: Color(0xFF333333), fontSize: 13))),
         5.heightBox,
-        if (products.fulfilled)
+        if (true)
           Padding(
               padding: EdgeInsets.only(left: 5, right: 15),
               child: Align(
@@ -126,21 +130,24 @@ class SimilarProductsContainer extends StatelessWidget {
                   bottomRight: Radius.circular(4))),
           child: Row(
             children: [
-              Text('${LocaleKeys.sar.tr} ${products.price}',
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      color: Color(0xFF000000),
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold)),
-              2.widthBox,
               Expanded(
-                  child: Text('${LocaleKeys.sar.tr} ${products.beforePrice!}',
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                          decoration: TextDecoration.lineThrough,
-                          decorationThickness: 3,
-                          color: Color(0xFF7B7B7B),
-                          fontSize: 10))),
+                  child: Wrap(children: [
+                    Text('${products.finalPriceDisp!}',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            color: Color(0xFF000000),
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold)),
+                    2.widthBox,
+                    Text('${products.retailPriceDisp!}',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            decoration: TextDecoration.lineThrough,
+                            decorationThickness: 3,
+                            color: Color(0xFF7B7B7B),
+                            fontSize: 10))
+                  ])),
+              2.widthBox,
               Align(
                 alignment: Alignment.topRight,
                 child: Container(

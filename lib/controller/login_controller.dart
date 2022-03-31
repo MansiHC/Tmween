@@ -229,7 +229,7 @@ class LoginController extends GetxController {
         .then((value) async {
       if (value.statusCode == 200) {
 
-        navigateToOTPScreen(value.data!.otp.toString(), from, frm);
+        navigateToOTPScreen(value.data!.otp.toString(),value.data!.loginWithPasswordFlag!, from, frm);
       } else {
         Helper.showGetSnackBar(value.message!);
       }
@@ -282,7 +282,7 @@ class LoginController extends GetxController {
                 )));
   }
 
-  void navigateToOTPScreen(String otp, String from, String frm) {
+  void navigateToOTPScreen(String otp,int isLoginWithPassword, String from, String frm) {
     // Get.delete<OtpController>();
 /*
     Navigator.push(
@@ -298,6 +298,7 @@ class LoginController extends GetxController {
             builder: (context) => LoginOtpScreen(
                   otp: otp,
                   phoneEmail: phoneEmailController.text.toString(),
+              isLoginWithPassword: isLoginWithPassword,
                   from: from,
                   frm: frm,
                 )));
@@ -322,7 +323,7 @@ class LoginController extends GetxController {
   }
 
   void navigateToDrawerScreen() {
-    Get.delete<LoginController>();
+    Get.deleteAll();
 
     rememberMe == true
         ? MySharedPreferences.instance
@@ -348,6 +349,7 @@ class LoginController extends GetxController {
 
       if (frm == SharedPreferencesKeys.isDrawer &&
           from == AppConstants.forgotPassword) {
+        Get.deleteAll();
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => DrawerScreen()),
             (Route<dynamic> route) => false);

@@ -134,7 +134,9 @@ var language;
                                                     .navigateTo(
                                                         ProductDetailScreen(productId:recentlyProviderController
                                                             .recentlyViewProduct![
-                                                        index].id ,));
+                                                        index].id ,
+                                                            productslug:recentlyProviderController
+                                                                .recentlyViewProduct![index].productSlug));
                                               },
                                               child: RecentlyViewedContainer(
                                                 from: SharedPreferencesKeys

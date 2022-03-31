@@ -224,6 +224,7 @@ class DrawerScreenState extends State<DrawerScreen>{
                                 child: InkWell(
                                     onTap: () {
                                       //drawerController.changePage(2);
+                                      Get.delete<SearchController>();
                                       drawerController.navigateTo(SearchScreen(
                                         from: SharedPreferencesKeys.isDrawer,
                                       ));

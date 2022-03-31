@@ -1,9 +1,11 @@
 import 'package:badges/badges.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:share/share.dart';
 import 'package:tmween/screens/drawer/dashboard/full_image_screen.dart';
 import 'package:tmween/screens/drawer/dashboard/review_product_screen.dart';
 import 'package:tmween/screens/drawer/dashboard/similar_products_container.dart';
@@ -26,8 +28,11 @@ import '../profile/your_addresses_screen.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final int? productId;
+  final String? productslug;
 
-  ProductDetailScreen({Key? key, this.productId}) : super(key: key);
+  ProductDetailScreen(
+      {Key? key, required this.productId, required this.productslug})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -42,6 +47,15 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   void initState() {
     productDetailController.productId = widget.productId!;
+    productDetailController.productSlug = widget.productslug!;
+    print('hhhh....${widget.productslug}');
+    MySharedPreferences.instance
+        .getBoolValuesSF(SharedPreferencesKeys.isLogin)
+        .then((value) async {
+      productDetailController.isLogin = value!;
+      productDetailController.getProductDetails(Get.locale!.languageCode);
+    });
+
     super.initState();
   }
 
@@ -74,8 +88,10 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                               child: topView(productDetailController)),
                           InkWell(
                               onTap: () {
-                                productDetailController
-                                    .getAddressList(language);
+                                if (productDetailController.isLogin) {
+                                  productDetailController
+                                      .getAddressList(language);
+                                }
                                 showModalBottomSheet<void>(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -97,7 +113,13 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                       ),
                                       3.widthBox,
                                       Text(
-                                        'Alabama - 35004',
+                                        productDetailController.isLogin
+                                            ? productDetailController
+                                                    .address.isNotEmpty
+                                                ? productDetailController
+                                                    .address
+                                                : 'Select Delivery Address'
+                                            : 'Select Delivery Address',
                                         style: TextStyle(
                                             color: Color(0xFF454545),
                                             fontSize: 12,
@@ -110,7 +132,16 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                       5.widthBox
                                     ],
                                   ))),
-                          _bottomView(productDetailController),
+                          productDetailController.detailLoading
+                              ? Center(child: CircularProgressBar())
+                              : !productDetailController.detailLoading &&
+                                      productDetailController
+                                              .productDetailData !=
+                                          null
+                                  ? _bottomView(productDetailController)
+                                  : Center(
+                                      child: Icon(Icons.error),
+                                    ),
                         ],
                       ))));
         });
@@ -168,17 +199,19 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
               width: double.maxFinite,
               child: Stack(
                 children: [
-                  Positioned(
-                      top: 0,
-                      left: 0,
-                      child: Container(
-                        color: Color(0xFF158D07),
-                        padding: EdgeInsets.all(5),
-                        child: Text(
-                          'NEW',
-                          style: TextStyle(color: Colors.white, fontSize: 14),
-                        ),
-                      )),
+                  if (productDetailController.topLeftInfo != null)
+                    Positioned(
+                        top: 0,
+                        left: 0,
+                        child: Container(
+                          color: HexColor.fromHex(
+                              productDetailController.topLeftInfo!.color!),
+                          padding: EdgeInsets.all(5),
+                          child: Text(
+                            productDetailController.topLeftInfo!.caption!,
+                            style: TextStyle(color: Colors.white, fontSize: 14),
+                          ),
+                        )),
                   Positioned(
                       top: 0,
                       right: 0,
@@ -187,119 +220,176 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                             //     color: Color(0xFFF6F6F6),
                             borderRadius: BorderRadius.all(Radius.circular(2)),
                           ),
-                          padding: EdgeInsets.all(5),
-                          child: Column(
-                            children: [
-                              InkWell(
-                                  onTap: () {
-                                    MySharedPreferences.instance
-                                        .getBoolValuesSF(
-                                            SharedPreferencesKeys.isLogin)
-                                        .then((value) async {
-                                      var isLogin = value!;
-                                      if (!isLogin) {
-                                        _loginFirstDialog(
-                                            productDetailController);
-                                      } else if (!productDetailController
-                                          .isLiked) {
-                                        productDetailController
-                                            .addToWishlist(language);
-                                      } else {
-                                        productDetailController
-                                            .removeWishlistProduct(language);
-                                      }
-                                    });
-                                  },
-                                  child: SvgPicture.asset(
-                                    productDetailController.isLiked
-                                        ? ImageConstanst.likeFill
-                                        : ImageConstanst.like,
-                                    color: productDetailController.isLiked
-                                        ? Colors.red
-                                        : Color(0xFF666666),
-                                    height: 20,
-                                    width: 20,
-                                  )),
-                              15.heightBox,
-                              InkWell(
-                                  onTap: () {},
-                                  child: SvgPicture.asset(
-                                    ImageConstanst.share,
-                                    color: Color(0xFF666666),
-                                    height: 20,
-                                    width: 20,
-                                  )),
-                            ],
-                          ))),
+                          child: Wrap(children: [
+                            if (productDetailController.topRightInfo != null)
+                              Container(
+                                color: HexColor.fromHex(productDetailController
+                                    .topRightInfo!.color!),
+                                padding: EdgeInsets.all(5),
+                                child: Text(
+                                  productDetailController
+                                      .topRightInfo!.caption!,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 14),
+                                ),
+                              ),
+                            3.widthBox,
+                            InkWell(
+                                onTap: () {
+                                  MySharedPreferences.instance
+                                      .getBoolValuesSF(
+                                          SharedPreferencesKeys.isLogin)
+                                      .then((value) async {
+                                    var isLogin = value!;
+                                    if (!isLogin) {
+                                      _loginFirstDialog(
+                                          productDetailController);
+                                    } else if (!productDetailController
+                                        .isLiked) {
+                                      productDetailController
+                                          .addToWishlist(language);
+                                    } else {
+                                      productDetailController
+                                          .removeWishlistProduct(language);
+                                    }
+                                  });
+                                },
+                                child: SvgPicture.asset(
+                                  productDetailController.isLiked
+                                      ? ImageConstanst.likeFill
+                                      : ImageConstanst.like,
+                                  color: productDetailController.isLiked
+                                      ? Colors.red
+                                      : Color(0xFF666666),
+                                  height: 20,
+                                  width: 20,
+                                )),
+                          ]))),
                   Padding(
                       padding: EdgeInsets.only(
-                        top: 50,
+                        top: 35,
                       ),
                       child: Align(
                           alignment: Alignment.topCenter,
-                          child: Stack(
-                            children: [
-                              Container(
-                                  height: 200,
-                                  width: double.maxFinite,
-                                  child: InkWell(
-                                      onTap: () {
-                                        Get.delete<FullImageController>();
-                                        productDetailController.navigateTo(
-                                            FullImageScreen(
-                                                image: productDetailController
-                                                    .current));
-                                      },
-                                      child: CarouselSlider(
-                                        items: productDetailController
-                                            .imageSliders,
-                                        carouselController:
-                                            productDetailController.controller,
-                                        options: CarouselOptions(
-                                          autoPlay: false,
-                                          enlargeCenterPage: false,
-                                          enableInfiniteScroll: false,
-                                          viewportFraction: 1,
-                                          aspectRatio: 1.6,
-                                          pageSnapping: true,
-                                          onPageChanged: (index, reason) {
-                                            productDetailController
-                                                .changPage(index);
-                                          },
-                                        ),
-                                      ))),
-                              Positioned(
-                                  bottom: 0.0,
-                                  left: 0.0,
-                                  right: 0.0,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: productDetailController.imgList
-                                        .asMap()
-                                        .entries
-                                        .map((entry) {
-                                      return GestureDetector(
-                                        onTap: () => productDetailController
-                                            .controller
-                                            .animateToPage(entry.key),
-                                        child: Container(
-                                          width: 8.0,
-                                          height: 2,
-                                          margin: EdgeInsets.symmetric(
-                                              vertical: 8.0, horizontal: 4.0),
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.rectangle,
-                                              color: productDetailController
-                                                          .current ==
-                                                      entry.key
-                                                  ? AppColors.darkblue
-                                                  : Colors.grey),
-                                        ),
-                                      );
-                                    }).toList(),
-                                  )),
-                            ],
-                          ))),
+                          child: Column(children: [
+                            Stack(
+                              children: [
+                                Container(
+                                    height: 200,
+                                    width: double.maxFinite,
+                                    child: InkWell(
+                                        onTap: () {
+                                          Get.delete<FullImageController>();
+                                          productDetailController.navigateTo(
+                                              FullImageScreen(
+                                                  image: productDetailController
+                                                      .current));
+                                        },
+                                        child: CarouselSlider(
+                                          items: productDetailController
+                                              .productDetailData!
+                                              .productData![0]
+                                              .productGallery!
+                                              .map((item) => Container(
+                                                    child:
+                                                        item.largeImageUrl!.setNetworkImage(),
+                                                  ))
+                                              .toList()
+                                          ,
+                                          carouselController:
+                                              productDetailController
+                                                  .controller,
+                                          options: CarouselOptions(
+                                            autoPlay: false,
+                                            enlargeCenterPage: false,
+                                            enableInfiniteScroll: false,
+                                            viewportFraction: 1,
+                                            aspectRatio: 1.6,
+                                            pageSnapping: true,
+                                            onPageChanged: (index, reason) {
+                                              productDetailController
+                                                  .changPage(index);
+                                            },
+                                          ),
+                                        ))),
+                                if (productDetailController
+                                        .productDetailData!
+                                        .productData![0]
+                                        .productGallery!
+                                        .length >
+                                    1)
+                                  Positioned(
+                                      bottom: 0.0,
+                                      left: 0.0,
+                                      right: 0.0,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: productDetailController
+                                            .productDetailData!
+                                            .productData![0]
+                                            .productGallery!
+                                            .asMap()
+                                            .entries
+                                            .map((entry) {
+                                          return GestureDetector(
+                                            onTap: () => productDetailController
+                                                .controller
+                                                .animateToPage(entry.key),
+                                            child: Container(
+                                              width: 8.0,
+                                              height: 2,
+                                              margin: EdgeInsets.symmetric(
+                                                  vertical: 8.0,
+                                                  horizontal: 4.0),
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.rectangle,
+                                                  color: productDetailController
+                                                              .current ==
+                                                          entry.key
+                                                      ? AppColors.darkblue
+                                                      : Colors.grey),
+                                            ),
+                                          );
+                                        }).toList(),
+                                      )),
+                              ],
+                            ),
+                            5.heightBox,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                if (productDetailController.bottomLeftInfo !=
+                                    null)
+                                  Container(
+                                    color: HexColor.fromHex(
+                                        productDetailController
+                                            .bottomLeftInfo!.color!),
+                                    padding: EdgeInsets.all(5),
+                                    child: Text(
+                                      productDetailController
+                                          .bottomLeftInfo!.caption!,
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 14),
+                                    ),
+                                  ),
+                                if (productDetailController.bottomRightInfo !=
+                                    null)
+                                  Container(
+                                    color: HexColor.fromHex(
+                                        productDetailController
+                                            .bottomRightInfo!.color!),
+                                    padding: EdgeInsets.all(5),
+                                    child: Text(
+                                      productDetailController
+                                          .bottomRightInfo!.caption!,
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 14),
+                                    ),
+                                  ),
+                              ],
+                            )
+                          ]))),
                 ],
               )),
           5.heightBox,
@@ -307,7 +397,8 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
               height: 80,
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: productDetailController.imgList.length,
+                  itemCount: productDetailController.productDetailData!
+                      .productData![0].productGallery!.length,
                   itemBuilder: (context, index) {
                     return InkWell(
                         onTap: () {
@@ -334,76 +425,96 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                             : Colors.white)),
                             padding: EdgeInsets.all(5),
                             margin: EdgeInsets.only(right: 5),
-                            child: Image.asset(
-                              productDetailController.imgList[index],
-                              fit: BoxFit.contain,
-                            )));
+                            child:
+                              productDetailController
+                                  .productDetailData!
+                                  .productData![0]
+                                  .productGallery![index]
+                                  .largeImageUrl!.setNetworkImage()));
                   })),
           10.heightBox,
           Text(
-            'Canon EOS 1300D 18MP Digital SLR Camera (Black) with 18-55mm ISII Lens, 16GB Card and',
+            productDetailController
+                .productDetailData!.productData![0].productName!,
             style: TextStyle(
                 color: Color(0xFF2E3846),
                 fontSize: 16,
                 fontWeight: FontWeight.bold),
           ),
           5.heightBox,
-          Align(
-              alignment: Alignment.centerLeft,
-              child: RichText(
-                  textAlign: TextAlign.start,
-                  text: TextSpan(
-                      text: 'by ',
-                      style: TextStyle(color: Color(0xFF48505C), fontSize: 16),
-                      children: <InlineSpan>[
-                        TextSpan(
-                          text: 'Canon',
-                          style: TextStyle(
-                              color: Color(0xFF1992CE),
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ]))),
+          if (productDetailController
+                  .productDetailData!.productData![0].brandName !=
+              null)
+            Align(
+                alignment: Alignment.centerLeft,
+                child: RichText(
+                    textAlign: TextAlign.start,
+                    text: TextSpan(
+                        text: 'by ',
+                        style:
+                            TextStyle(color: Color(0xFF48505C), fontSize: 16),
+                        children: <InlineSpan>[
+                          TextSpan(
+                            text: productDetailController
+                                .productDetailData!.productData![0].brandName!,
+                            style: TextStyle(
+                                color: Color(0xFF1992CE),
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ]))),
           8.heightBox,
-          Row(
-            children: [
-              Container(
-                  padding: EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                      color: AppColors.offerGreen,
-                      borderRadius: BorderRadius.all(Radius.circular(4))),
-                  child: Wrap(
-                    alignment: WrapAlignment.center,
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      Text('4.1',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold)),
-                      5.widthBox,
-                      Icon(
-                        Icons.star,
-                        color: Colors.white,
-                        size: 12,
-                      )
-                    ],
-                  )),
-              10.widthBox,
-              Text('(15 Reviews)',
+          productDetailController
+                      .productDetailData!.productData![0].reviewsAvg ==
+                  0
+              ? Text('No Reviews Yet',
                   style: TextStyle(
                     color: Color(0xFF828282),
                     fontSize: 13,
-                  )),
-            ],
-          ),
+                  ))
+              : Row(
+                  children: [
+                    Container(
+                        padding: EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                            color: AppColors.offerGreen,
+                            borderRadius: BorderRadius.all(Radius.circular(4))),
+                        child: Wrap(
+                          alignment: WrapAlignment.center,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            Text(
+                                productDetailController.productDetailData!
+                                    .productData![0].reviewsAvg!
+                                    .toString(),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold)),
+                            5.widthBox,
+                            Icon(
+                              Icons.star,
+                              color: Colors.white,
+                              size: 12,
+                            )
+                          ],
+                        )),
+                    10.widthBox,
+                    Text(
+                        '(${productDetailController.productDetailData!.customerProductReview!.data!.length} Reviews)',
+                        style: TextStyle(
+                          color: Color(0xFF828282),
+                          fontSize: 13,
+                        )),
+                  ],
+                ),
           15.heightBox,
           Divider(
             thickness: 1,
             height: 5,
             color: Color(0xFFE9E9E9),
           ),
-          20.heightBox,
+          15.heightBox,
           Align(
               alignment: Alignment.centerLeft,
               child: RichText(
@@ -423,7 +534,9 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                               fontWeight: FontWeight.bold),
                         ),
                         TextSpan(
-                          text: '24,999',
+                          text: productDetailController
+                              .productDetailData!.productData![0].finalPrice
+                              .toString(),
                           style: TextStyle(
                               color: Color(0xFFF4500F),
                               fontSize: 20,
@@ -453,7 +566,9 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                               fontSize: 14),
                         ),
                         TextSpan(
-                          text: '31,955',
+                          text: productDetailController
+                              .productDetailData!.productData![0].retailPrice
+                              .toString(),
                           style: TextStyle(
                               decoration: TextDecoration.lineThrough,
                               decorationThickness: 2,
@@ -474,27 +589,40 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                           fontWeight: FontWeight.bold),
                       children: <InlineSpan>[
                         TextSpan(
-                          text: 'SAR 6,996.00 (22%)',
+                          text:
+                              'SAR ${productDetailController.productDetailData!.productData![0].discountValue.toString()} (${productDetailController.productDetailData!.productData![0].discountValuePercentage.toString()}%)',
                           style:
                               TextStyle(color: Color(0xFFF4500F), fontSize: 14),
                         ),
                       ]))),
           5.heightBox,
-          Align(
-              alignment: Alignment.centerLeft,
-              child: RichText(
-                  text: TextSpan(
-                      text: '${LocaleKeys.fulfilledBy.tr} ',
-                      style: TextStyle(color: Color(0xFF1992CE), fontSize: 14),
-                      children: <InlineSpan>[
-                    TextSpan(
-                      text: '${LocaleKeys.appTitle.tr} ',
-                      style: TextStyle(
-                          color: Color(0xFF1992CE),
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    TextSpan(
+          if (productDetailController
+                  .productDetailData!.productData![0].fullfilledByTmween ==
+              1)
+            Align(
+                alignment: Alignment.centerLeft,
+                child: RichText(
+                    text: TextSpan(
+                        text: productDetailController.productDetailData!
+                                    .productData![0].fullfilledByTmween ==
+                                1
+                            ? '${LocaleKeys.fulfilledBy.tr} '
+                            : '',
+                        style:
+                            TextStyle(color: Color(0xFF1992CE), fontSize: 14),
+                        children: <InlineSpan>[
+                      TextSpan(
+                        text: productDetailController.productDetailData!
+                                    .productData![0].fullfilledByTmween ==
+                                1
+                            ? '${LocaleKeys.appTitle.tr} '
+                            : '',
+                        style: TextStyle(
+                            color: Color(0xFF1992CE),
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      /*  TextSpan(
                       text: 'FREE Delivery.',
                       style: TextStyle(
                           color: Color(0xFF414141),
@@ -504,8 +632,8 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                     TextSpan(
                       text: 'Details',
                       style: TextStyle(color: Color(0xFF1992CE), fontSize: 14),
-                    ),
-                  ]))),
+                    ),*/
+                    ]))),
           15.heightBox,
           Divider(
             thickness: 1,
@@ -513,7 +641,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
             color: Color(0xFFE9E9E9),
           ),
           10.heightBox,
-          Align(
+          /* Align(
               alignment: Alignment.centerLeft,
               child: RichText(
                   textAlign: TextAlign.start,
@@ -544,36 +672,93 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
             thickness: 1,
             height: 5,
             color: Color(0xFFE9E9E9),
-          ),
+          ),*/
           10.heightBox,
-          Align(
-              alignment: Alignment.centerLeft,
-              child: RichText(
-                  textAlign: TextAlign.start,
-                  text: TextSpan(
-                      text: 'Style name: ',
-                      style: TextStyle(
-                          color: Color(0xFF636363),
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold),
-                      children: <InlineSpan>[
-                        TextSpan(
-                          text: 'Body + 18-55mm Lens',
-                          style: TextStyle(
-                              color: Color(0xFF414141),
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ]))),
-          10.heightBox,
-          Text(
-            '18MP APS-C CMOS sensor and DIGIC 4+\n'
-            '9-point AF with 1 center cross-type AF point\n'
-            'Standard ISO: 100 to 6400, expandable to 12800\n'
-            'Wi-Fi and NFC supported, Lens Mount: Canon EF mount',
-            style:
-                TextStyle(height: 1.3, color: Color(0xFF636363), fontSize: 14),
-          ),
+          Wrap(
+              spacing: 10,
+              children: List.generate(
+                productDetailController
+                    .productDetailData!.productAssociateAttribute!.length,
+                (index) => Column(
+                  children: [
+                    Align(
+                        alignment: Alignment.centerLeft,
+                        child: RichText(
+                            textAlign: TextAlign.start,
+                            text: TextSpan(
+                                text:
+                                    '${productDetailController.productDetailData!.productAssociateAttribute![index].attributeName} : ',
+                                style: TextStyle(
+                                    color: Color(0xFF636363),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold),
+                                children: <InlineSpan>[
+                                  if (productDetailController
+                                          .productDetailData!
+                                          .productAssociateAttribute![index]
+                                          .options !=
+                                      null)
+                                    TextSpan(
+                                      text: productDetailController
+                                          .productDetailData!
+                                          .productAssociateAttribute![index]
+                                          .options![0]
+                                          .attributeOptionValue,
+                                      style: TextStyle(
+                                          color: Color(0xFF1992CE),
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                ]))),
+                    5.heightBox,
+                    if (productDetailController.productDetailData!
+                            .productAssociateAttribute![index].options !=
+                        null)
+                      Align(
+                          alignment: Alignment.centerLeft,
+                          child: Wrap(
+                              spacing: 10,
+                              alignment: WrapAlignment.start,
+                              crossAxisAlignment: WrapCrossAlignment.start,
+                              children: List.generate(
+                                  productDetailController
+                                      .productDetailData!
+                                      .productAssociateAttribute![index]
+                                      .options!
+                                      .length,
+                                  (index2) => InkWell(
+                                      onTap: () {},
+                                      child: Container(
+                                          padding: EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Color(0xFF1992CE)),
+                                              borderRadius:
+                                                  BorderRadius.circular(4)),
+                                          child: Text(
+                                            productDetailController
+                                                        .productDetailData!
+                                                        .productAssociateAttribute![
+                                                            index]
+                                                        .options![index2]
+                                                        .attributeOptionValue !=
+                                                    null
+                                                ? productDetailController
+                                                    .productDetailData!
+                                                    .productAssociateAttribute![
+                                                        index]
+                                                    .options![index2]
+                                                    .attributeOptionValue!
+                                                : '',
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold),
+                                          )))))),
+                    10.heightBox,
+                  ],
+                ),
+              )),
           10.heightBox,
           Align(
               alignment: Alignment.centerLeft,
@@ -754,13 +939,13 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                         padding: EdgeInsets.only(right: 15),
                         child: _specification(productDetailController)),
                     0.1.heightBox,
-                    Padding(
+                   /* Padding(
                         padding: EdgeInsets.only(right: 15),
                         child: _sizeSpecification(productDetailController)),
                     0.1.heightBox,
                     Padding(
                         padding: EdgeInsets.only(right: 15),
-                        child: _deliveryReturns(productDetailController)),
+                        child: _deliveryReturns(productDetailController)),*/
                     15.heightBox,
                     Padding(
                         padding: EdgeInsets.only(right: 15),
@@ -786,11 +971,11 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
     return Container(
         height: 244,
         child: ListView.builder(
-            itemCount: productDetailController.recentlVieweds.length,
+            itemCount: productDetailController.productDetailData!.similarProduct!.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return SimilarProductsContainer(
-                  products: productDetailController.recentlVieweds[index]);
+                  products: productDetailController.productDetailData!.similarProduct![index]);
             }));
   }
 
@@ -835,13 +1020,21 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
           5.heightBox,
           Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
-              child: ListView.builder(
+              child:
+              productDetailController.productDetailData!.customerProductReview!.data!.length==0?
+              Text('Be the First to write a review',
+                  style: TextStyle(
+                    color: Color(0xFF333333),
+                    fontSize: 12,
+                  ))
+
+              :ListView.builder(
                   padding: EdgeInsets.zero,
                   shrinkWrap: true,
                   physics: ScrollPhysics(),
-                  itemCount: productDetailController.reviews.length + 1,
+                  itemCount: productDetailController.productDetailData!.customerProductReview!.data!.length>2?3:productDetailController.productDetailData!.customerProductReview!.data!.length + 1,
                   itemBuilder: (context, index) {
-                    return (index != productDetailController.reviews.length)
+                    return (index != productDetailController.productDetailData!.customerProductReview!.data!.length)
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -853,12 +1046,35 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                 children: [
                                   Column(
                                     children: [
+                                      productDetailController.productDetailData!.customerProductReview!.data![index].largeImageUrl!.isEmpty?
+
                                       SvgPicture.asset(
                                         ImageConstanst.user,
                                         height: 35,
                                         width: 35,
+                                      ):CircleAvatar(
+                                        radius: 24,
+                                        foregroundColor: Colors.transparent,
+                                        child: CachedNetworkImage(
+                                          imageUrl: productDetailController.productDetailData!.customerProductReview!.data![index].smallImageUrl!,
+                                          placeholder: (context, url) =>
+                                              CupertinoActivityIndicator(),
+                                          imageBuilder: (context, image) =>
+                                              CircleAvatar(
+                                                backgroundImage: image,
+                                                radius: 45,
+                                              ),
+                                          errorWidget:
+                                              (context, url, error) =>
+                                               SvgPicture.asset(
+                                                  ImageConstanst.user,
+                                                  height: 50,
+                                                  width: 50,
+                                                ),
+                                        ),
                                       ),
                                       5.heightBox,
+                                      if(productDetailController.productDetailData!.customerProductReview!.data![index].rating!=0)
                                       Container(
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 3, vertical: 2),
@@ -872,8 +1088,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                                 WrapCrossAlignment.center,
                                             children: [
                                               Text(
-                                                  productDetailController
-                                                      .reviews[index].rating,
+                                                  productDetailController.productDetailData!.customerProductReview!.data![index].rating!.toString(),
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 11,
@@ -900,8 +1115,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                           child: RichText(
                                               textAlign: TextAlign.start,
                                               text: TextSpan(
-                                                  text: productDetailController
-                                                      .reviews[index].name,
+                                                  text: productDetailController.productDetailData!.customerProductReview!.data![index].fullname,
                                                   style: TextStyle(
                                                       fontSize: 13,
                                                       fontWeight:
@@ -910,7 +1124,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                                   children: <InlineSpan>[
                                                     TextSpan(
                                                         text:
-                                                            ' - ${productDetailController.reviews[index].date}',
+                                                            ' - ${productDetailController.productDetailData!.customerProductReview!.data![index].createdAt!.split(' ')[0]}',
                                                         style: TextStyle(
                                                           color:
                                                               Color(0xFF888888),
@@ -918,9 +1132,17 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                                         )),
                                                   ]))),
                                       5.heightBox,
-                                      ExpandableText(
-                                        productDetailController
-                                            .reviews[index].desc,
+                                      if(productDetailController.productDetailData!.customerProductReview!.data![index].review!.length<140)
+
+                                      Text(productDetailController.productDetailData!.customerProductReview!.data![index].review!,
+                                          style: TextStyle(
+                                            color: Color(0xFF333333),
+                                            fontSize: 12,
+                                          )),
+                                      if(productDetailController.productDetailData!.customerProductReview!.data![index].review!.length>140)
+
+                                        ExpandableText(
+                                        productDetailController.productDetailData!.customerProductReview!.data![index].review!,
                                         trimLines: 4,
                                       ),
                                       5.heightBox,
@@ -938,12 +1160,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                             color: Color(0xFF333333),
                                           ),
                                           5.widthBox,
-                                          Container(
-                                            width: 1,
-                                            height: 12,
-                                            color: Color(0xFF333333),
-                                          ),
-                                          5.widthBox,
+
                                           Text('Report abuse',
                                               style: TextStyle(
                                                 color: Color(0xFF333333),
@@ -956,6 +1173,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                   ))
                                 ],
                               ),
+                              if(productDetailController.productDetailData!.customerProductReview!.data!.length>2)
                               Divider(
                                 thickness: 1,
                                 height: 5,
@@ -963,13 +1181,14 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                               ),
                             ],
                           )
-                        : Padding(
+                        : productDetailController.productDetailData!.customerProductReview!.data!.length>2?
+                    Padding(
                             padding: EdgeInsets.only(top: 10, bottom: 5),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'All 9233 Reviews',
+                                  'All ${productDetailController.productDetailData!.customerProductReview!.data!.length} Reviews',
                                   style: TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.bold,
@@ -978,7 +1197,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                 Icon(Icons.keyboard_arrow_right,
                                     color: Colors.black)
                               ],
-                            ));
+                            )):Container();
                   }))
         ],
       ),
@@ -1720,44 +1939,56 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                         blurRadius: 5,
                         spreadRadius: 5)
                   ]),
-                  padding: EdgeInsets.all(10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Descriptions:',
-                        style: TextStyle(
-                            color: Color(0xFF333333),
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      8.heightBox,
-                      Text(
-                        'Style: Body + 18-55mm Lens',
-                        style: TextStyle(
-                          color: Color(0xFF4A4A4A),
-                          fontSize: 14,
-                        ),
-                      ),
-                      8.heightBox,
-                      Text(
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-                        style: TextStyle(
-                          color: Color(0xFF4A4A4A),
-                          fontSize: 14,
-                        ),
-                      ),
-                      8.heightBox,
-                      Text(
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-                        style: TextStyle(
-                          color: Color(0xFF4A4A4A),
-                          fontSize: 14,
-                        ),
-                      ),
-                      5.heightBox,
-                    ],
-                  )),
+                  padding: EdgeInsets.all(productDetailController
+                              .productDetailData!
+                              .productData![0]
+                              .shortDescription!
+                              .isNotEmpty &&
+                          productDetailController.productDetailData!
+                              .productData![0].longDescription!.isNotEmpty
+                      ? 10
+                      : 0),
+                  child: (productDetailController.productDetailData!
+                              .productData![0].shortDescription!.isNotEmpty &&
+                          productDetailController.productDetailData!
+                              .productData![0].longDescription!.isNotEmpty)
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Descriptions:',
+                              style: TextStyle(
+                                  color: Color(0xFF333333),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            if (productDetailController.productDetailData!
+                                .productData![0].shortDescription!.isNotEmpty)
+                              8.heightBox,
+                            if (productDetailController.productDetailData!
+                                .productData![0].shortDescription!.isNotEmpty)
+                              Text(
+                                productDetailController.productDetailData!
+                                    .productData![0].shortDescription!,
+                                style: TextStyle(
+                                  color: Color(0xFF4A4A4A),
+                                  fontSize: 14,
+                                ),
+                              ),
+                            if (productDetailController.productDetailData!
+                                .productData![0].shortDescription!.isNotEmpty)
+                              8.heightBox,
+                            Text(
+                              productDetailController.productDetailData!
+                                  .productData![0].longDescription!,
+                              style: TextStyle(
+                                color: Color(0xFF4A4A4A),
+                                fontSize: 14,
+                              ),
+                            )
+                          ],
+                        )
+                      : Container()),
             ]));
   }
 
@@ -1783,7 +2014,32 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: Colors.white)),
-            children: []));
+            children: [
+               if (productDetailController.productDetailData!
+                  .productData![0].specification!.isNotEmpty)
+              Container(
+                  decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey[200]!,
+                        blurRadius: 5,
+                        spreadRadius: 5)
+                  ]),
+                  padding: EdgeInsets.all(productDetailController
+                          .productDetailData!
+                          .productData![0]
+                          .specification!
+                          .isNotEmpty
+                      ? 10
+                      : 0),
+                  child: Text(
+                    productDetailController
+                        .productDetailData!.productData![0].specification!,
+                    style: TextStyle(
+                      color: Color(0xFF4A4A4A),
+                      fontSize: 14,
+                    ),
+                  ))
+            ]));
   }
 
   Widget _sizeSpecification(ProductDetailController productDetailController) {
@@ -1873,6 +2129,18 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                 ),
                 InkWell(
                     onTap: () {
+                      Share.share('check out my website https://example.com',
+                          subject: 'Look what I made!');
+                    },
+                    child: SvgPicture.asset(
+                      ImageConstanst.share,
+                      color: Colors.white,
+                      height: 24,
+                      width: 24,
+                    )),
+                10.widthBox,
+                InkWell(
+                    onTap: () {
                       productDetailController.navigateTo(CartScreen(
                         from: AppConstants.productDetail,
                       ));
@@ -1899,7 +2167,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
         init: ProductDetailController(),
         builder: (contet) {
           return Container(
-              height: 310,
+              height: productDetailController.isLogin ? 310 : 200,
               padding: EdgeInsets.all(15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1918,102 +2186,117 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                     style: TextStyle(color: Color(0xFF666666), fontSize: 16),
                   ),
                   20.heightBox,
-                  Visibility(
-                    visible: productDetailController.loading,
-                    child: CircularProgressBar(),
-                  ),
-                  Visibility(
-                    visible: !productDetailController.loading &&
-                        productDetailController.addressList.length == 0,
-                    child: InkWell(
-                        onTap: () {
-                          productDetailController.pop();
-                          productDetailController
-                              .navigateTo(YourAddressesScreen());
-                        },
-                        child: Container(
-                            width: 150,
-                            height: 160,
-                            padding: EdgeInsets.all(10),
-                            margin: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(color: AppColors.lightBlue),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(2))),
-                            child: Center(
-                                child: Text(LocaleKeys.addAddressText.tr,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: AppColors.primaryColor,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold))))),
-                  ),
-                  Visibility(
-                      visible: !productDetailController.loading &&
-                          productDetailController.addressList.length > 0,
-                      child: Container(
-                          height: 170,
-                          child: ListView.builder(
-                              itemCount:
-                                  productDetailController.addresses.length + 1,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                return (index !=
-                                        productDetailController
-                                            .addressList.length)
-                                    ? InkWell(
-                                        onTap: () {
-                                          Address address =
-                                              productDetailController
-                                                  .addressList[index];
-                                          productDetailController.editAddress(
-                                              address.id,
-                                              address.fullname,
-                                              address.address1,
-                                              address.address2,
-                                              address.landmark,
-                                              address.countryCode,
-                                              address.stateCode,
-                                              address.cityCode,
-                                              address.zip,
-                                              address.mobile1,
-                                              address.addressType,
-                                              address.deliveryInstruction,
-                                              '1',
-                                              language);
-                                        },
-                                        child: AddressContainer(
-                                            address: productDetailController
-                                                .addressList[index]))
-                                    : InkWell(
-                                        onTap: () {
-                                          productDetailController.pop();
-                                          productDetailController.navigateTo(
-                                              YourAddressesScreen());
-                                        },
-                                        child: Container(
-                                            width: 150,
-                                            padding: EdgeInsets.all(10),
-                                            margin: EdgeInsets.all(5),
-                                            decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                border: Border.all(
-                                                    color: AppColors.lightBlue),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(2))),
-                                            child: Center(
-                                                child: Text(
-                                                    LocaleKeys
-                                                        .addAddressText.tr,
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: AppColors
-                                                            .primaryColor,
-                                                        fontSize: 15,
-                                                        fontWeight: FontWeight
-                                                            .bold)))));
-                              })))
+                  productDetailController.isLogin
+                      ? Column(children: [
+                          Visibility(
+                            visible: productDetailController.loading,
+                            child: CircularProgressBar(),
+                          ),
+                          Visibility(
+                            visible: !productDetailController.loading &&
+                                productDetailController.addressList.length == 0,
+                            child: InkWell(
+                                onTap: () {
+                                  productDetailController.pop();
+                                  productDetailController
+                                      .navigateTo(YourAddressesScreen());
+                                },
+                                child: Container(
+                                    width: 150,
+                                    height: 160,
+                                    padding: EdgeInsets.all(10),
+                                    margin: EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(
+                                            color: AppColors.lightBlue),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(2))),
+                                    child: Center(
+                                        child: Text(
+                                            LocaleKeys.addAddressText.tr,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                color: AppColors.primaryColor,
+                                                fontSize: 15,
+                                                fontWeight:
+                                                    FontWeight.bold))))),
+                          ),
+                          Visibility(
+                              visible: !productDetailController.loading &&
+                                  productDetailController.addressList.length >
+                                      0,
+                              child: Container(
+                                  height: 170,
+                                  child: ListView.builder(
+                                      itemCount: productDetailController
+                                              .addressList.length +
+                                          1,
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context, index) {
+                                        return (index !=
+                                                productDetailController
+                                                    .addressList.length)
+                                            ? InkWell(
+                                                onTap: () {
+                                                  Address address =
+                                                      productDetailController
+                                                          .addressList[index];
+                                                  productDetailController
+                                                      .editAddress(
+                                                          address.id,
+                                                          address.fullname,
+                                                          address.address1,
+                                                          address.address2,
+                                                          address.landmark,
+                                                          address.countryCode,
+                                                          address.stateCode,
+                                                          address.cityCode,
+                                                          address.zip,
+                                                          address.mobile1,
+                                                          address.addressType,
+                                                          address
+                                                              .deliveryInstruction,
+                                                          '1',
+                                                          language);
+                                                },
+                                                child: AddressContainer(
+                                                    address: productDetailController
+                                                        .addressList[index]))
+                                            : InkWell(
+                                                onTap: () {
+                                                  productDetailController.pop();
+                                                  productDetailController
+                                                      .navigateTo(
+                                                          YourAddressesScreen());
+                                                },
+                                                child: Container(
+                                                    width: 150,
+                                                    padding: EdgeInsets.all(10),
+                                                    margin: EdgeInsets.all(5),
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        border: Border.all(
+                                                            color: AppColors
+                                                                .lightBlue),
+                                                        borderRadius: BorderRadius.all(
+                                                            Radius.circular(
+                                                                2))),
+                                                    child: Center(
+                                                        child: Text(
+                                                            LocaleKeys.addAddressText.tr,
+                                                            textAlign: TextAlign.center,
+                                                            style: TextStyle(color: AppColors.primaryColor, fontSize: 15, fontWeight: FontWeight.bold)))));
+                                      })))
+                        ])
+                      : CustomButton(
+                          text: 'Sign in to see your Addresses',
+                          fontSize: 16,
+                          onPressed: () {
+                            Get.deleteAll();
+                            productDetailController.navigateTo(LoginScreen(
+                                from: SharedPreferencesKeys.isDrawer));
+                          }),
                 ],
               ));
         });

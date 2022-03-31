@@ -133,7 +133,9 @@ var language;
                                                 dealOfTheDayController
                                                     .navigateTo(
                                                         ProductDetailScreen(productId: dealOfTheDayController
-                                                            .dailyDealsData![index].id,));
+                                                            .dailyDealsData![index].id,
+                                                            productslug:dealOfTheDayController
+                                                                .dailyDealsData![index].productSlug));
                                               },
                                               child: DealsOfTheDayContainer(
                                                 deal: dealOfTheDayController

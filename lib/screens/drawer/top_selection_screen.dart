@@ -134,7 +134,9 @@ var language;
                                                         .navigateTo(
                                                             ProductDetailScreen(productId:topSelectionController
                                                                 .topSelectionData![
-                                                            index].id ,));
+                                                            index].id ,
+                                                                productslug:topSelectionController
+                                                                    .topSelectionData![index].productSlug));
                                                   },
                                                   child: TopSelectionContainer(
                                                     topSelection:

@@ -133,7 +133,9 @@ var language;
                                                     .navigateTo(
                                                         ProductDetailScreen(productId: soldByTmweenController
                                                             .soldByTmweenProductData![
-                                                        index].id,));
+                                                        index].id,
+                                                            productslug:soldByTmweenController
+                                                                .soldByTmweenProductData![index].productSlug));
                                               },
                                               child: SoldByTmweenContainer(
                                                 soldByTmween: soldByTmweenController

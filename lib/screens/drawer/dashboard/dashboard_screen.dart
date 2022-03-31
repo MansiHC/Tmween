@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/dashboard_controller.dart';
+import 'package:tmween/controller/product_detail_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/drawer/categories_screen.dart';
 import 'package:tmween/screens/drawer/dashboard/best_seller_container.dart';
@@ -479,7 +480,9 @@ var language;
                       onTap: () {
                         dashboardController.navigateTo(ProductDetailScreen(
                           productId:
-                              dashboardController.dailyDealsData![0].productId,
+                              dashboardController.dailyDealsData![index].productId,
+                            productslug:dashboardController
+                                .dailyDealsData![index].productSlug
                         ));
                       },
                       child: DealsOfTheDayContainer(
@@ -550,7 +553,9 @@ var language;
                           onTap: () {
                             dashboardController.navigateTo(ProductDetailScreen(
                               productId:
-                                  dashboardController.bestSellerData![0].id,
+                                  dashboardController.bestSellerData![index].id,
+                                productslug:dashboardController
+                                    .bestSellerData![index].productSlug
                             ));
                           },
                           child: BestSellerContainer(
@@ -627,7 +632,9 @@ var language;
                           onTap: () {
                             dashboardController.navigateTo(ProductDetailScreen(
                               productId: dashboardController
-                                  .soldByTmweenProductData![0].id,
+                                  .soldByTmweenProductData![index].id,
+                                productslug:dashboardController
+                                    .soldByTmweenProductData![index].productSlug
                             ));
                           },
                           child: SoldByTmweenContainer(
@@ -702,7 +709,9 @@ var language;
                           onTap: () {
                             dashboardController.navigateTo(ProductDetailScreen(
                               productId:
-                                  dashboardController.topSelectionData![0].id,
+                                  dashboardController.topSelectionData![index].id,
+                                productslug:dashboardController
+                                    .topSelectionData![index].productSlug
                             ));
                           },
                           child: TopSelectionContainer(
@@ -778,7 +787,9 @@ var language;
                           onTap: () {
                             dashboardController.navigateTo(ProductDetailScreen(
                               productId: dashboardController
-                                  .recentlyViewProduct![0].productId,
+                                  .recentlyViewProduct![index].productId,
+                                productslug:dashboardController
+                                    .recentlyViewProduct![index].productSlug
                             ));
                           },
                           child: RecentlyViewedContainer(

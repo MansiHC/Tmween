@@ -14,7 +14,9 @@ import 'package:tmween/model/get_customer_address_list_model.dart';
 import 'package:tmween/model/get_customer_data_model.dart';
 import 'package:tmween/model/get_filter_data_model.dart';
 import 'package:tmween/model/get_wishlist_details_model.dart';
+import 'package:tmween/model/login_otp_model.dart';
 import 'package:tmween/model/popular_search_model.dart';
+import 'package:tmween/model/product_detail_model.dart';
 import 'package:tmween/model/product_listing_model.dart';
 import 'package:tmween/model/recently_viewed_model.dart';
 import 'package:tmween/model/search_history_model.dart';
@@ -128,8 +130,8 @@ class Api {
     return result;
   }
 
-  Future<SignupModel> generateMobileOtpLogin(email, langCode) async {
-    late SignupModel result;
+  Future<LoginOTPModel> generateMobileOtpLogin(email, langCode) async {
+    late LoginOTPModel result;
     try {
       final response =
           await http.post(Uri.parse(UrlConstants.generateMobileOtpLogin),
@@ -151,7 +153,7 @@ class Api {
                 "lang_code": langCode
               }));
       var responseJson = _returnResponse(response);
-      result = SignupModel.fromJson(responseJson);
+      result = LoginOTPModel.fromJson(responseJson);
     } on SocketException {
       Helper.showGetSnackBar('No Internet connection');
     }
@@ -1115,15 +1117,15 @@ class Api {
           await http.post(Uri.parse(UrlConstants.getSearchHistory),
               headers: {
                 HttpHeaders.contentTypeHeader: "application/json",
-                'username': '93056041329642570004360129530972671168868915674465',
+                'username': token,
                 HttpHeaders.authorizationHeader:
                     " Bearer ${AppConstants.customer_token}"
               },
               body: json.encode({
                 "entity_type_id": AppConstants.entity_type_id_customer,
                 "device_type": AppConstants.device_type,
-                "user_id": '120',
-                "user_search_keyword_id":'120',
+                "user_id": userId,
+                "user_search_keyword_id":userId,
                 "lang_code": langCode,
               }));
       var responseJson = _returnResponse(response);
@@ -1141,14 +1143,14 @@ class Api {
           await http.post(Uri.parse(UrlConstants.clearSearchHistory),
               headers: {
                 HttpHeaders.contentTypeHeader: "application/json",
-                'username': '93056041329642570004360129530972671168868915674465',
+                'username': token,
                 HttpHeaders.authorizationHeader:
                     "Bearer ${AppConstants.customer_token}"
               },
               body: json.encode({
                 "entity_type_id": AppConstants.entity_type_id_customer,
                 "device_type": AppConstants.device_type,
-                "user_id": '120',
+                "user_id": userId,
                 "lang_code": langCode,
               }));
       var responseJson = _returnResponse(response);
@@ -1198,13 +1200,39 @@ class Api {
             "entity_type_id": AppConstants.entity_type_id_customer,
             "device_type": AppConstants.device_type,
             "search_text": searchText,
-             "user_id": isLogin?120:0,
+             "user_id": isLogin?userId:0,
             "lang_code": langCode,
             "pagination": "1",
             "page": page
           }));
       var responseJson = _returnResponse(response);
       result = ProductListingModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<ProductDetailModel> getProductDetailsMobile(
+      slug, isLogin,userId,langCode) async {
+    late ProductDetailModel result;
+    try {
+      final response = await http.post(
+          Uri.parse(UrlConstants.getProductDetailsMobile),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "user_id": isLogin?userId:0,
+            "slug": slug,
+            "lang_code": langCode,
+          }));
+      var responseJson = _returnResponse(response);
+      result = ProductDetailModel.fromJson(responseJson);
     } on SocketException {
       Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }

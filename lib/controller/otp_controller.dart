@@ -215,6 +215,7 @@ class OtpController extends GetxController {
   }
 
   void navigateToDrawerScreen() {
+    Get.deleteAll();
     MySharedPreferences.instance
         .addBoolToSF(SharedPreferencesKeys.isLogin, true);
     Navigator.of(context).pushAndRemoveUntil(

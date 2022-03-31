@@ -131,7 +131,9 @@ class BestSellerScreen extends StatelessWidget {
                                               onTap: () {
                                                 bestSellerController.navigateTo(
                                                     ProductDetailScreen(productId: bestSellerController
-                                                        .bestSellerData![index].id,));
+                                                        .bestSellerData![index].id,
+                                                    productslug:bestSellerController
+                                                        .bestSellerData![index].productSlug ,));
                                               },
                                               child: BestSellerContainer(
                                                 bestSeller: bestSellerController

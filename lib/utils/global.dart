@@ -42,10 +42,10 @@ abstract class AppConstants {
 }
 
 abstract class UrlConstants {
-  static const String baseUrl2 =
+  static const String baseUrl =
       'http://192.168.32.160/tmween/panel/public/api/v1';
 
-  static const String baseUrl = 'http://admin.tmween.com/api/v1';
+  static const String baseUrl2 = 'http://admin.tmween.com/api/v1';
 
   //customer
   static const String request = '$baseUrl/customer/request';
@@ -97,20 +97,22 @@ abstract class UrlConstants {
   static const String addCustomerAddress =
       '$baseUrl/customer/add-customer-address';
   static const String getSearchHistory =
-      '$baseUrl2/customer/get-search-history';
+      '$baseUrl/customer/get-search-history';
   static const String clearSearchHistory =
-      '$baseUrl2/customer/clear-search-history';
+      '$baseUrl/customer/clear-search-history';
 
   //e-commerce
   static const String getMasterData = '$baseUrl/get-master-data';
   static const String getHomePageMobileData =
       '$baseUrl/get-home-page-mobile-data';
   static const String getMobileMasterViewData =
-      '$baseUrl2/get-mobile-master-view-data';
+      '$baseUrl/get-mobile-master-view-data';
   static const String getCategoryMobileFilterData =
-      '$baseUrl2/get-category-mobile-filter-data';
+      '$baseUrl/get-category-mobile-filter-data';
   static const String topSearchSuggestionProductList =
-      '$baseUrl2/top-search-suggestion-product-list-mobile';
+      '$baseUrl/top-search-suggestion-product-list-mobile';
+  static const String getProductDetailsMobile =
+      '$baseUrl/get-product-details-mobile';
   static const String dealOfTheDay = '$baseUrl/get-dailydeal-list';
   static const String soldByTmween = '$baseUrl/get-soldby-system-product-list';
   static const String topSelection = '$baseUrl/get-top-selected-product';

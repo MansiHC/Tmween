@@ -10,8 +10,8 @@ import 'package:tmween/screens/drawer/dashboard/product_detail_screen.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 import 'package:tmween/utils/global.dart';
 
-import '../model/address_model.dart';
 import '../model/get_customer_address_list_model.dart';
+import '../model/product_detail_model.dart';
 import '../model/recently_viewed_model.dart';
 import '../service/api.dart';
 import '../utils/helper.dart';
@@ -28,6 +28,7 @@ class ProductDetailController extends GetxController {
 
   int current = 0;
   int productId = 0;
+  String productSlug = '';
   final CarouselController controller = CarouselController();
   final List<Map> colors = [
     {
@@ -53,18 +54,32 @@ class ProductDetailController extends GetxController {
   int loginLogId = 0;
   final api = Api();
   bool loading = false;
-
+  bool detailLoading = false;
+    ProductDetailData? productDetailData;
+  ProductOtherInfo? topLeftInfo;
+  ProductOtherInfo? topRightInfo;
+  ProductOtherInfo? bottomLeftInfo;
+  ProductOtherInfo? bottomRightInfo;
   List<Address> addressList = [];
   bool isLogin = true;
+  String image = "", address = "";
 
   @override
   void onInit() {
     isLiked = false;
     selectedColor = colors[1];
+
     MySharedPreferences.instance
-        .getBoolValuesSF(SharedPreferencesKeys.isLogin)
+        .getStringValuesSF(SharedPreferencesKeys.address)
         .then((value) async {
-      isLogin = value!;
+      if (value != null) address = value;
+      update();
+    });
+    MySharedPreferences.instance
+        .getStringValuesSF(SharedPreferencesKeys.image)
+        .then((value) async {
+      image = value!;
+      update();
     });
     MySharedPreferences.instance
         .getStringValuesSF(SharedPreferencesKeys.token)
@@ -85,26 +100,39 @@ class ProductDetailController extends GetxController {
     super.onInit();
   }
 
-  List<AddressModel> addresses = const <AddressModel>[
-    const AddressModel(
-        name: 'Salim Akka',
-        addressLine1: '34 Brooke Place,',
-        addressLine2: '',
-        city: 'Farmington',
-        state: 'nm',
-        country: 'Unites States',
-        pincode: '83401',
-        isDefault: true),
-    const AddressModel(
-      name: 'Salim Akka',
-      addressLine1: '34 Brooke Place,',
-      addressLine2: '',
-      city: 'Farmington',
-      state: 'nm',
-      country: 'Unites States',
-      pincode: '83401',
-    )
-  ];
+  Future<void> getProductDetails(language) async {
+    detailLoading = true;
+    update();
+    await api
+        .getProductDetailsMobile(productSlug, isLogin, userId, language)
+        .then((value) {
+      if (value.statusCode == 200) {
+        productDetailData = value.data!;
+        for (var i = 0; i < productDetailData!.productOtherInfo!.length; i++) {
+          if (productDetailData!.productOtherInfo![i].position == 1) {
+            topLeftInfo = productDetailData!.productOtherInfo![i];
+          } else if (productDetailData!.productOtherInfo![i].position == 2) {
+            topRightInfo = productDetailData!.productOtherInfo![i];
+          } else if (productDetailData!.productOtherInfo![i].position == 3) {
+            bottomLeftInfo = productDetailData!.productOtherInfo![i];
+          } else if (productDetailData!.productOtherInfo![i].position == 4) {
+            bottomRightInfo = productDetailData!.productOtherInfo![i];
+          }
+        }
+        if (isLogin) if (productDetailData!.productData![0].isWhishlist == 1) {
+          isLiked = true;
+        }
+      } else {
+        Helper.showGetSnackBar(value.message!);
+      }
+      detailLoading = false;
+      update();
+    }).catchError((error) {
+      detailLoading = false;
+      update();
+      print('error....$error');
+    });
+  }
 
   void changPage(int index) {
     current = index;
@@ -223,8 +251,13 @@ class ProductDetailController extends GetxController {
       if (value.statusCode == 200) {
         Get.delete<ProductDetailController>();
         Navigator.of(context).pop(true);
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => ProductDetailScreen()));
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ProductDetailScreen(
+                      productId: productId,
+                      productslug: productSlug,
+                    )));
         update();
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance

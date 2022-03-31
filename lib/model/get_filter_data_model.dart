@@ -209,18 +209,18 @@ class ProductData {
   String? next;
   String? previous;
   int? totalRecords;
-  ProductDetailData? productDetailData;
-  int count = 0;
+ // ProductDetailData? productDetailData;
+  //int count = 0;
 
   ProductData(
       {this.totalPages,
       this.next,
       this.previous,
       this.totalRecords,
-      this.productDetailData});
+      /*this.productDetailData*/});
 
   ProductData.fromJson(Map<String, dynamic> json) {
-    do {
+   /* do {
       if (json.containsKey(count.toString())) {
        // productDetailData = json[count.toString()];
 
@@ -230,7 +230,7 @@ class ProductData {
             : null;
         count++;
       }
-    } while (!json.containsKey(count.toString()));
+    } while (!json.containsKey(count.toString()));*/
     totalPages = json['total_pages'];
     next = json['next'];
     previous = json['previous'];
@@ -244,9 +244,9 @@ class ProductData {
     data['previous'] = this.previous;
     data['total_records'] = this.totalRecords;
     //data[count.toString()] = this.productDetailData;
-    if (this.productDetailData != null) {
+   /* if (this.productDetailData != null) {
       data[count.toString()] = this.productDetailData!.toJson();
-    }
+    }*/
     return data;
   }
 }
