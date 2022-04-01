@@ -2,13 +2,16 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
 import '../../../controller/full_image_controller.dart';
+import '../../../model/product_detail_model.dart';
 
 class FullImageScreen extends StatefulWidget {
-  FullImageScreen({Key? key, required this.image}) : super(key: key);
-  final int image;
+  FullImageScreen({Key? key, required this.image,required this.current,}) : super(key: key);
+  final List<ProductGallery> image;
+  final int current;
 
   @override
   State<StatefulWidget> createState() {
@@ -23,7 +26,7 @@ class FullImageScreenState extends State<FullImageScreen> {
 
   @override
   void initState() {
-    fullImageController.current = widget.image;
+    fullImageController.current = widget.current;
 
     super.initState();
   }
@@ -63,7 +66,12 @@ class FullImageScreenState extends State<FullImageScreen> {
             width: double.maxFinite,
             padding: EdgeInsets.all(15),
             child: CarouselSlider(
-              items: fullImageController.imageSliders,
+              items: widget.image
+                  .map((item) => Container(
+                child: item.largeImageUrl!
+                    .setNetworkImage(),
+              ))
+                  .toList(),
               carouselController: fullImageController.controller,
               options: CarouselOptions(
                 height: MediaQuery.of(fullImageController.context).size.height,
@@ -86,7 +94,7 @@ class FullImageScreenState extends State<FullImageScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children:
-                  fullImageController.imgList.asMap().entries.map((entry) {
+                  widget.image.asMap().entries.map((entry) {
                 return Container(
                   width: 8.0,
                   height: 2,

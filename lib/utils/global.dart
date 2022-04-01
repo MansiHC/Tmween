@@ -100,6 +100,10 @@ abstract class UrlConstants {
       '$baseUrl/customer/get-search-history';
   static const String clearSearchHistory =
       '$baseUrl/customer/clear-search-history';
+  static const String updateAccountStatus =
+      '$baseUrl/customer/update-account-status';
+  static const String reactivateUserAccount =
+      '$baseUrl/customer/reactivate-user-account';
 
   //e-commerce
   static const String getMasterData = '$baseUrl/get-master-data';
@@ -113,6 +117,8 @@ abstract class UrlConstants {
       '$baseUrl/top-search-suggestion-product-list-mobile';
   static const String getProductDetailsMobile =
       '$baseUrl/get-product-details-mobile';
+  static const String getItemIdByAttributeCombination =
+      '$baseUrl/get-itemid-by-attribute-combination';
   static const String dealOfTheDay = '$baseUrl/get-dailydeal-list';
   static const String soldByTmween = '$baseUrl/get-soldby-system-product-list';
   static const String topSelection = '$baseUrl/get-top-selected-product';

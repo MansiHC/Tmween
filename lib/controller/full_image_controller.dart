@@ -21,27 +21,7 @@ class FullImageController extends GetxController {
     update();
   }
 
-  final List<String> items = ['Sofa', 'Bed'];
 
-  late final List<Widget> imageSliders = imgList
-      .map((item) => Container(
-          height: double.maxFinite,
-          width: double.maxFinite,
-          child: InteractiveViewer(
-            panEnabled: true,
-            minScale: 0.1,
-            maxScale: 4,
-            child: Image.asset(item, fit: BoxFit.contain),
-          )))
-      .toList();
-
-  final List<String> imgList = [
-    'asset/image/product_detail_page_images/slider_thumb_1.jpg',
-    'asset/image/product_detail_page_images/slider_thumb_2.jpg',
-    'asset/image/product_detail_page_images/slider_thumb_3.jpg',
-    'asset/image/product_detail_page_images/slider_thumb_4.jpg',
-    'asset/image/product_detail_page_images/slider_thumb_5.jpg',
-  ];
 
   @override
   void onInit() {

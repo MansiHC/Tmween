@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:tmween/model/AttributeModel.dart';
 import 'package:tmween/model/review_model.dart';
 import 'package:tmween/model/seller_on_tmween_model.dart';
 import 'package:tmween/screens/drawer/dashboard/product_detail_screen.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 import 'package:tmween/utils/global.dart';
+import 'package:tmween/utils/transparent_page.dart';
 
+import '../model/attribute_combination_model.dart';
 import '../model/get_customer_address_list_model.dart';
 import '../model/product_detail_model.dart';
 import '../model/recently_viewed_model.dart';
@@ -30,32 +33,15 @@ class ProductDetailController extends GetxController {
   int productId = 0;
   String productSlug = '';
   final CarouselController controller = CarouselController();
-  final List<Map> colors = [
-    {
-      'name': 'Grey',
-      'color': 0xFFBCBCBC,
-    },
-    {
-      'name': 'Black',
-      'color': 0xFF000000,
-    },
-    {
-      'name': 'BlueGrey',
-      'color': 0xFFCCD6D4,
-    },
-    {
-      'name': 'LightPink',
-      'color': 0xFFE6DBC8,
-    }
-  ];
-  late Map selectedColor;
+  late String selectedColor;
   int userId = 0;
   String token = '';
   int loginLogId = 0;
   final api = Api();
   bool loading = false;
   bool detailLoading = false;
-    ProductDetailData? productDetailData;
+  ProductDetailData? productDetailData;
+  AttributeData? attributeData;
   ProductOtherInfo? topLeftInfo;
   ProductOtherInfo? topRightInfo;
   ProductOtherInfo? bottomLeftInfo;
@@ -63,11 +49,14 @@ class ProductDetailController extends GetxController {
   List<Address> addressList = [];
   bool isLogin = true;
   String image = "", address = "";
+  List<String> attributeTypeArr = [];
+  List<String> attributeValueArray = [];
+  final List<AttributeModel> attributeItems = [];
+  int packId=0;
 
   @override
   void onInit() {
     isLiked = false;
-    selectedColor = colors[1];
 
     MySharedPreferences.instance
         .getStringValuesSF(SharedPreferencesKeys.address)
@@ -103,11 +92,37 @@ class ProductDetailController extends GetxController {
   Future<void> getProductDetails(language) async {
     detailLoading = true;
     update();
+    attributeTypeArr = [];
+    attributeValueArray = [];
     await api
         .getProductDetailsMobile(productSlug, isLogin, userId, language)
         .then((value) {
       if (value.statusCode == 200) {
         productDetailData = value.data!;
+        packId = productDetailData!.productData![0].productPack![0].id!;
+        if (productDetailData!.productAssociateAttribute != null) {
+          for (var i = 0;
+              i < productDetailData!.productAssociateAttribute!.length;
+              i++) {
+            if (productDetailData!.productAssociateAttribute![i].options !=
+                null) {
+              attributeTypeArr.add(productDetailData!
+                  .productAssociateAttribute![i].attributeName!);
+              attributeValueArray.add(productDetailData!
+                  .productAssociateAttribute![i]
+                  .options![0]
+                  .attributeOptionValue!);
+            }
+            var a = AttributeModel();
+            a.setPrimaryIndex = i;
+            a.setSecondaryIndex = 0;
+            attributeItems.add(a);
+          }
+          getAttributeCombination(packId, language);
+        } else {
+          detailLoading = false;
+          update();
+        }
         for (var i = 0; i < productDetailData!.productOtherInfo!.length; i++) {
           if (productDetailData!.productOtherInfo![i].position == 1) {
             topLeftInfo = productDetailData!.productOtherInfo![i];
@@ -122,6 +137,91 @@ class ProductDetailController extends GetxController {
         if (isLogin) if (productDetailData!.productData![0].isWhishlist == 1) {
           isLiked = true;
         }
+      } else if (value.statusCode == 401) {
+      MySharedPreferences.instance
+          .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+      Get.deleteAll();
+      Get.offAll(DrawerScreen());
+    } else {
+        Helper.showGetSnackBar(value.message!);
+      }
+    }).catchError((error) {
+      detailLoading = false;
+      update();
+      print('error....$error');
+    });
+  }
+
+  String getAttributeSelectedValue(index){
+String name='';
+    for (var i = 0; i < attributeTypeArr.length; i++) {
+      if (productDetailData!.productAssociateAttribute![index].attributeName ==
+          attributeTypeArr[i]) {
+        name = attributeValueArray[i];
+      }
+  }
+    return name;
+  }
+  changeItemSelection(index, index2, language) async {
+    attributeItems[index].setPrimaryIndex = index;
+    attributeItems[index].setSecondaryIndex = index2;
+    for (var i = 0; i < attributeTypeArr.length; i++) {
+      if (productDetailData!.productAssociateAttribute![index].attributeName ==
+          attributeTypeArr[i]) {
+        attributeValueArray[i] = productDetailData!
+            .productAssociateAttribute![index]
+            .options![index2]
+            .attributeOptionValue!;
+      }
+
+      update();
+    }
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (_, __, ___) {
+          return TransparentPage();
+        },
+      ),
+    );
+    final Map<String, dynamic> attrData = {
+      "attribute_type": attributeTypeArr,
+      "attribute_value": attributeValueArray
+    };
+    print('$attrData.....$productId....$packId');
+    await api
+        .getItemIdByAttributeCombination(
+        packId, productId, attrData, language)
+        .then((value) {
+      if (value.statusCode == 200) {
+        attributeData = value.data;
+      } else {
+        Helper.showGetSnackBar(value.message!);
+      }
+      pop();
+      update();
+    }).catchError((error) {
+      pop();
+      update();
+      print('error....$error');
+    });
+  }
+
+  Future<void> getAttributeCombination(productPackId, language) async {
+    detailLoading = true;
+    update();
+
+    final Map<String, dynamic> attrData = {
+      "attribute_type": attributeTypeArr,
+      "attribute_value": attributeValueArray
+    };
+    print('$attrData.....$productId....$productPackId');
+    await api
+        .getItemIdByAttributeCombination(
+            productPackId, productId, attrData, language)
+        .then((value) {
+      if (value.statusCode == 200) {
+        attributeData = value.data;
       } else {
         Helper.showGetSnackBar(value.message!);
       }

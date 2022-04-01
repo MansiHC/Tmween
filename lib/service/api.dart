@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/UserDataModel.dart';
+import 'package:tmween/model/attribute_combination_model.dart';
 import 'package:tmween/model/best_seller_model.dart';
 import 'package:tmween/model/city_model.dart';
 import 'package:tmween/model/country_model.dart';
@@ -981,12 +982,39 @@ class Api {
     return result;
   }
 
-  Future<SuccessModel> changePassword(
-      userId, newPassword, confirmPassword, langCode) async {
+ Future<SuccessModel> deactivateAccount(token,
+      userId, password,langCode) async {
     late SuccessModel result;
     try {
       final response =
-          await http.post(Uri.parse(UrlConstants.addCustomerAddress),
+          await http.post(Uri.parse(UrlConstants.updateAccountStatus),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                'username': token,
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "user_id": userId,
+                "password": password,
+                "lang_code": langCode
+              }));
+      var responseJson = _returnResponse(response);
+      result = SuccessModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<SuccessModel> reactivateAccount(token,
+      phone, otp,langCode) async {
+    late SuccessModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.reactivateUserAccount),
               headers: {
                 HttpHeaders.contentTypeHeader: "application/json",
                 HttpHeaders.authorizationHeader:
@@ -995,9 +1023,8 @@ class Api {
               body: json.encode({
                 "entity_type_id": AppConstants.entity_type_id_customer,
                 "device_type": AppConstants.device_type,
-                "user_id": userId,
-                "new_password": newPassword,
-                "confirm_password": confirmPassword,
+                "phone": phone,
+                "otp": otp,
                 "lang_code": langCode
               }));
       var responseJson = _returnResponse(response);
@@ -1233,6 +1260,44 @@ class Api {
           }));
       var responseJson = _returnResponse(response);
       result = ProductDetailModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  /*{
+ "entity_type_id": {{entity_type_id}},
+ "device_type": {{device_type}},
+ "product_pack_id":"283",
+ "product_id":"244",
+ "attribute_data": {
+    "attribute_type": ["Color","Size"],
+    "attribute_value":["Black","Small"]
+ }
+}*/
+
+  Future<AttributeCombinationModel> getItemIdByAttributeCombination(
+      productPackId, productId,attributeData,langCode) async {
+    late AttributeCombinationModel result;
+    try {
+      final response = await http.post(
+          Uri.parse(UrlConstants.getItemIdByAttributeCombination),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "product_pack_id": productPackId,
+            "product_id": productId,
+            "attribute_data": attributeData,
+            "lang_code": langCode,
+          }));
+      var responseJson = _returnResponse(response);
+      result = AttributeCombinationModel.fromJson(responseJson);
     } on SocketException {
       Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
     }

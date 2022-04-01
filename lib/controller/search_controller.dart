@@ -9,6 +9,7 @@ import 'package:tmween/utils/animations.dart';
 
 import '../model/product_listing_model.dart';
 import '../model/search_history_model.dart';
+import '../screens/drawer/drawer_screen.dart';
 import '../service/api.dart';
 import '../utils/global.dart';
 import '../utils/my_shared_preferences.dart';
@@ -115,6 +116,8 @@ Future<void> getHistoryList(language) async {
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        Get.deleteAll();
+        Get.offAll(DrawerScreen());
       }
       historyLoading = false;
       update();
@@ -133,6 +136,8 @@ Future<void> getHistoryList(language) async {
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        Get.deleteAll();
+        Get.offAll(DrawerScreen());
       }
       update();
     }).catchError((error) {
@@ -204,7 +209,8 @@ Future<void> getHistoryList(language) async {
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-        return searchList.toSet().toList();
+        Get.deleteAll();
+        Get.offAll(DrawerScreen());
       }
 
     }).catchError((error) {
