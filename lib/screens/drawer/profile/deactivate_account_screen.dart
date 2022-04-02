@@ -6,6 +6,7 @@ import 'package:tmween/controller/deactivate_account_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
+import 'package:tmween/utils/views/circular_progress_bar.dart';
 
 import '../../../utils/views/custom_button.dart';
 import '../../../utils/views/custom_text_form_field.dart';
@@ -95,7 +96,7 @@ class DeactivateAccountScreen extends StatelessWidget {
                         ),
                         textInputAction: TextInputAction.done,
                         onSubmitted: (term) {
-                          deactivateAccountController.deActivate();
+                          deactivateAccountController.deActivate(language);
                         },
                         hintText: LocaleKeys.password,
                         validator: (value) {
@@ -123,8 +124,10 @@ class DeactivateAccountScreen extends StatelessWidget {
                         text: LocaleKeys.confirmDeactivate,
                         fontSize: 16,
                         onPressed: () {
-                          deactivateAccountController.deActivate();
+                          deactivateAccountController.deActivate(language);
                         })),
+                Visibility(visible:deactivateAccountController.loading,
+                    child: CircularProgressBar()),
                 15.heightBox,
                 Divider(
                   height: 5,

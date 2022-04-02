@@ -993,7 +993,7 @@ class Api {
                 'username': token,
                 HttpHeaders.authorizationHeader:
                     "Bearer ${AppConstants.customer_token}"
-              },
+                   },
               body: json.encode({
                 "entity_type_id": AppConstants.entity_type_id_customer,
                 "device_type": AppConstants.device_type,

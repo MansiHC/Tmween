@@ -52,7 +52,7 @@ class ProductDetailController extends GetxController {
   List<String> attributeTypeArr = [];
   List<String> attributeValueArray = [];
   final List<AttributeModel> attributeItems = [];
-  int packId=0;
+  int packId = 0;
 
   @override
   void onInit() {
@@ -104,14 +104,20 @@ class ProductDetailController extends GetxController {
           for (var i = 0;
               i < productDetailData!.productAssociateAttribute!.length;
               i++) {
+
             if (productDetailData!.productAssociateAttribute![i].options !=
                 null) {
               attributeTypeArr.add(productDetailData!
                   .productAssociateAttribute![i].attributeName!);
+if(productDetailData!
+    .productAssociateAttribute![i]
+    .options![0]
+    .attributeOptionValue==null)
               attributeValueArray.add(productDetailData!
                   .productAssociateAttribute![i]
                   .options![0]
                   .attributeOptionValue!);
+
             }
             var a = AttributeModel();
             a.setPrimaryIndex = i;
@@ -138,11 +144,11 @@ class ProductDetailController extends GetxController {
           isLiked = true;
         }
       } else if (value.statusCode == 401) {
-      MySharedPreferences.instance
-          .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-      Get.deleteAll();
-      Get.offAll(DrawerScreen());
-    } else {
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        Get.deleteAll();
+        Get.offAll(DrawerScreen());
+      } else {
         Helper.showGetSnackBar(value.message!);
       }
     }).catchError((error) {
@@ -152,16 +158,20 @@ class ProductDetailController extends GetxController {
     });
   }
 
-  String getAttributeSelectedValue(index){
-String name='';
-    for (var i = 0; i < attributeTypeArr.length; i++) {
-      if (productDetailData!.productAssociateAttribute![index].attributeName ==
-          attributeTypeArr[i]) {
-        name = attributeValueArray[i];
+  String getAttributeSelectedValue(index) {
+    String name = '';
+    if (attributeTypeArr.length > 0)
+      for (var i = 0; i < attributeTypeArr.length; i++) {
+        if (productDetailData!
+                .productAssociateAttribute![index].attributeName ==
+            attributeTypeArr[i]) {
+          print('.......$attributeTypeArr.....$attributeValueArray');
+          if (attributeValueArray.length > 0) name = attributeValueArray[i];
+        }
       }
-  }
     return name;
   }
+
   changeItemSelection(index, index2, language) async {
     attributeItems[index].setPrimaryIndex = index;
     attributeItems[index].setSecondaryIndex = index2;
@@ -190,8 +200,7 @@ String name='';
     };
     print('$attrData.....$productId....$packId');
     await api
-        .getItemIdByAttributeCombination(
-        packId, productId, attrData, language)
+        .getItemIdByAttributeCombination(packId, productId, attrData, language)
         .then((value) {
       if (value.statusCode == 200) {
         attributeData = value.data;

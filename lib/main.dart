@@ -10,6 +10,7 @@ import 'package:tmween/screens/splash_screen.dart';
 import 'package:tmween/theme.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/my_shared_preferences.dart';
+import 'package:uni_links/uni_links.dart';
 
 import 'lang/translation_service.dart';
 
@@ -43,19 +44,84 @@ void main() async {
           isDrawer = value ?? false;
           SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
               .then((_) {
-            runApp(
-              MyApp(
+            runApp(MyApp2()
+              /*MyApp(
                 isLogin: isLogin,
                 isSplash: isSplash,
                 isDrawer: isDrawer,
                 language: language,
-              ),
+              ),*/
             );
           });
         });
       });
     });
   });
+}
+
+class MyApp2 extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  String link = "";
+
+
+  @override
+  void initState() {
+    initUniLinks().then((value) =>setState(() {
+      link = value!;
+    }));
+    super.initState();
+  }
+
+  Future<String?> initUniLinks() async {
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      final initialLink = await getInitialLink();
+      // Parse the link and warn the user, if it is not correct,
+      // but keep in mind it could be `null`.
+      return initialLink;
+    } on PlatformException {
+      // Handle exception by warning the user their action did not succeed
+      // return?
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('widget.title'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+                link == null ? "" : link
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
