@@ -96,7 +96,34 @@ class ProductListingScreenState extends State<ProductListingScreen> {
                     Container(
                         color: AppColors.appBarColor,
                         padding: EdgeInsets.only(top: 35),
-                        child: Container(
+                        child:  Row(
+                            children: [
+                              10.widthBox,
+                              Padding(
+                                  padding: EdgeInsets.only(bottom: 10),
+                                  child:
+                                  Align(
+                                      alignment: language == 'ar'
+                                          ? Alignment.centerRight
+                                          : Alignment.centerLeft,
+                                      child: /*ClipOval(
+                                        child: Material(
+                                          color: Colors.white, // Button color
+                                          child:*/ InkWell(
+                                            onTap: () {
+                                              productListingController.exitScreen();
+                                            },
+                                            child: SizedBox(
+                                                width: 24,
+                                                height: 24,
+                                                child: Icon(
+                                                  Icons.arrow_back,
+                                                  color: Colors.white,
+                                                )),
+                                          ),
+                                        ),
+                                     /* ))*/),
+                              Expanded(child: Container(
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(2)),
@@ -149,7 +176,7 @@ class ProductListingScreenState extends State<ProductListingScreen> {
                                     ),
                                     validator: (value) {
                                       return null;
-                                    })))),
+                                    }))))])),
                    _productList(productListingController)
                   ],
                 ),

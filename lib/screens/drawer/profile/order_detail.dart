@@ -200,8 +200,8 @@ class OrderDetailScreen extends StatelessWidget {
                         8.heightBox,
                         InkWell(
                           onTap: () {
-                            orderDetailController
-                                .navigateTo(ReviewProductScreen());
+                           /* orderDetailController
+                                .navigateTo(ReviewProductScreen());*/
                           },
                           child: Container(
                             decoration: BoxDecoration(

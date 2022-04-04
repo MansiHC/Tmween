@@ -41,9 +41,10 @@ var language;
                         LocaleKeys.shopByCategorySmall.tr,
                         style: TextStyle(color: Colors.white),
                       ),
-                      leading: BackButton(onPressed: () {
+                    /*  leading: BackButton(onPressed: () {
                         categoriesController.exitScreen();
-                      }),
+                      }),*/
+
                     )
                   : PreferredSize(child: Container(), preferredSize: Size.zero),
               body: WillPopScope(
@@ -122,7 +123,6 @@ var language;
                                           categoriesController.loadMore(language);
                                         }
                                       }
-
                                       return false;
                                     },
                                     child: GridView.builder(

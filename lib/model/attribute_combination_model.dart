@@ -62,9 +62,14 @@ class AttributeData {
           productQtyPackData!.add(new ProductQtyPackData.fromJson(v));
         });
       }
-      productDeliveryData = json['product_delivery_data'] != null
-          ? new ProductDeliveryData.fromJson(json['product_delivery_data'])
-          : null;
+      try {
+        productDeliveryData = json['product_delivery_data'] != null
+            ? new ProductDeliveryData.fromJson(json['product_delivery_data'])
+            : null;
+      }catch(e){
+        print('dghghsgdhdgjhgjh.........');
+        productDeliveryData = null;
+      }
       selectAttributeWiseImageShow = json['select_attribute_wise_image_show'];
     }
     /*if (json['product_associate_attribute_data'] != null) {

@@ -42,10 +42,10 @@ abstract class AppConstants {
 }
 
 abstract class UrlConstants {
-  static const String baseUrl =
+  static const String baseUrl2 =
       'http://192.168.32.160/tmween/panel/public/api/v1';
 
-  static const String baseUrl2 = 'http://admin.tmween.com/api/v1';
+  static const String baseUrl = 'http://admin.tmween.com/api/v1';
 
   //customer
   static const String request = '$baseUrl/customer/request';
@@ -104,9 +104,14 @@ abstract class UrlConstants {
       '$baseUrl/customer/update-account-status';
   static const String reactivateUserAccount =
       '$baseUrl/customer/reactivate-user-account';
+  static const String addCustomerReview =
+      '$baseUrl/customer/add-customer-review';
+  static const String addToCart =
+      '$baseUrl/customer/add-to-cart';
 
   //e-commerce
   static const String getMasterData = '$baseUrl/get-master-data';
+  static const String getProductReviewsList = '$baseUrl/get-product-review-list-mobile';
   static const String getHomePageMobileData =
       '$baseUrl/get-home-page-mobile-data';
   static const String getMobileMasterViewData =
@@ -119,6 +124,8 @@ abstract class UrlConstants {
       '$baseUrl/get-product-details-mobile';
   static const String getItemIdByAttributeCombination =
       '$baseUrl/get-itemid-by-attribute-combination';
+  static const String getProductSupplier =
+      '$baseUrl/get-product-suppliers';
   static const String dealOfTheDay = '$baseUrl/get-dailydeal-list';
   static const String soldByTmween = '$baseUrl/get-soldby-system-product-list';
   static const String topSelection = '$baseUrl/get-top-selected-product';

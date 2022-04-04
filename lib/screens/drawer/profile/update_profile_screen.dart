@@ -380,6 +380,7 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           language,
                           true);
                       readSMS(editAccountController,true);
+                      editAccountController.filled = false;
                       _showOtpVerificationDialog(
                           editAccountController,
                           editAccountController.mobileNumberController.text,
@@ -435,6 +436,7 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           language,
                           false);
                       readSMS(editAccountController,false);
+                      editAccountController.filled = false;
                       _showOtpVerificationDialog(
                           editAccountController,
                           editAccountController.emailController.text,
@@ -705,11 +707,16 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               ? editProfileController.emailOTPController
                               : editProfileController.mobileOTPController,
                           onCompleted: (v) {
-                            if (isEmail) {
-                              editProfileController.updateEmail(text, language);
-                            } else {
-                              editProfileController.updateMobileNumber(
-                                  text, language);
+                            if(!editProfileController.filled) {
+                              editProfileController.pop();
+                              editProfileController.filled = true;
+                              if (isEmail) {
+                                editProfileController.updateEmail(
+                                    text, language);
+                              } else {
+                                editProfileController.updateMobileNumber(
+                                    text, language);
+                              }
                             }
                           },
                           onChanged: (value) {
@@ -752,6 +759,7 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                   padding: EdgeInsets.zero),
                               onPressed: () {
                                 editProfileController.pop();
+
                               },
                               child: Text(
                                 LocaleKeys.cancel.tr,
@@ -767,6 +775,12 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                   padding: EdgeInsets.zero),
                               onPressed: () {
                                 editProfileController.pop();
+                                if (isEmail) {
+                                  editProfileController.updateEmail(text, language);
+                                } else {
+                                  editProfileController.updateMobileNumber(
+                                      text, language);
+                                }
                               },
                               child: Text(
                                 LocaleKeys.save.tr,

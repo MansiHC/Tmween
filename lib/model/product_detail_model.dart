@@ -1169,7 +1169,7 @@ class CustomerProductReviewData {
   int? productId;
   String? reviewTitle;
   String? review;
-  int? rating;
+  double? rating;
   String? ip;
   String? reviewDate;
   int? addedByType;
@@ -1191,7 +1191,7 @@ class CustomerProductReviewData {
     productId = json['product_id'];
     reviewTitle = json['review_title'];
     review = json['review'];
-    rating = json['rating'];
+    rating = double.parse(json['rating'].toString());
     ip = json['ip'];
     reviewDate = json['review_date'];
     addedByType = json['added_by_type'];

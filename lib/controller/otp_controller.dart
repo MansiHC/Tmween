@@ -37,6 +37,7 @@ class OtpController extends GetxController {
     update();
     await api.verifyOTP(phone, otp).then((value) {
       if (value.statusCode == 200) {
+        Get.deleteAll();
         MySharedPreferences.instance.addIntToSF(
             SharedPreferencesKeys.userId, value.data!.customerData!.id);
         exitScreen();

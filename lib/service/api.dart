@@ -14,6 +14,7 @@ import 'package:tmween/model/deals_of_the_day_model.dart';
 import 'package:tmween/model/get_customer_address_list_model.dart';
 import 'package:tmween/model/get_customer_data_model.dart';
 import 'package:tmween/model/get_filter_data_model.dart';
+import 'package:tmween/model/get_reviews_model.dart';
 import 'package:tmween/model/get_wishlist_details_model.dart';
 import 'package:tmween/model/login_otp_model.dart';
 import 'package:tmween/model/popular_search_model.dart';
@@ -982,6 +983,41 @@ class Api {
     return result;
   }
 
+  Future<SuccessModel> addCustomerReview(
+      token,
+      userId,
+     productId,
+      review,
+      rating,
+      langCode) async {
+    late SuccessModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.addCustomerReview),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                'username': token,
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "user_id": userId,
+                "product_id": productId,
+                "review_title": "test",
+                "review": review,
+                "rating": rating,
+                "lang_code": langCode
+              }));
+      var responseJson = _returnResponse(response);
+      result = SuccessModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
  Future<SuccessModel> deactivateAccount(token,
       userId, password,langCode) async {
     late SuccessModel result;
@@ -1036,6 +1072,29 @@ class Api {
   }
 
   ///E-Commerce
+  Future<GetReviewsModel> getProductReviewsList(productId,langCode) async {
+    late GetReviewsModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.getProductReviewsList),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "product_id": productId,
+            "lang_code": langCode
+          }));
+      var responseJson = _returnResponse(response);
+      result = GetReviewsModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
   Future<CountryModel> getCountries(langCode) async {
     late CountryModel result;
     try {
@@ -1294,6 +1353,32 @@ class Api {
             "product_pack_id": productPackId,
             "product_id": productId,
             "attribute_data": attributeData,
+            "lang_code": langCode,
+          }));
+      var responseJson = _returnResponse(response);
+      result = AttributeCombinationModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+ Future<AttributeCombinationModel> getProductSupplier(
+      productPackId, productId,langCode) async {
+    late AttributeCombinationModel result;
+    try {
+      final response = await http.post(
+          Uri.parse(UrlConstants.getProductSupplier),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "product_pack_id": productPackId,
+            "product_id": productId,
             "lang_code": langCode,
           }));
       var responseJson = _returnResponse(response);

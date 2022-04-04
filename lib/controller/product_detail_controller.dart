@@ -10,7 +10,7 @@ import 'package:tmween/model/seller_on_tmween_model.dart';
 import 'package:tmween/screens/drawer/dashboard/product_detail_screen.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 import 'package:tmween/utils/global.dart';
-import 'package:tmween/utils/transparent_page.dart';
+import 'package:tmween/utils/views/transparent_page.dart';
 
 import '../model/attribute_combination_model.dart';
 import '../model/get_customer_address_list_model.dart';
@@ -104,27 +104,28 @@ class ProductDetailController extends GetxController {
           for (var i = 0;
               i < productDetailData!.productAssociateAttribute!.length;
               i++) {
-
             if (productDetailData!.productAssociateAttribute![i].options !=
                 null) {
               attributeTypeArr.add(productDetailData!
                   .productAssociateAttribute![i].attributeName!);
-if(productDetailData!
-    .productAssociateAttribute![i]
-    .options![0]
-    .attributeOptionValue==null)
-              attributeValueArray.add(productDetailData!
-                  .productAssociateAttribute![i]
-                  .options![0]
-                  .attributeOptionValue!);
-
+              if (productDetailData!.productAssociateAttribute![i].options![0]
+                      .attributeOptionValue ==
+                  null)
+                attributeValueArray.add(productDetailData!
+                    .productAssociateAttribute![i]
+                    .options![0]
+                    .attributeOptionValue!);
             }
             var a = AttributeModel();
             a.setPrimaryIndex = i;
             a.setSecondaryIndex = 0;
             attributeItems.add(a);
           }
-          getAttributeCombination(packId, language);
+          if(attributeTypeArr.length==0){
+            getAttributeWithoutCombination(packId, language);
+          }else {
+            getAttributeCombination(packId, language);
+          }
         } else {
           detailLoading = false;
           update();
@@ -194,26 +195,31 @@ if(productDetailData!
         },
       ),
     );
-    final Map<String, dynamic> attrData = {
-      "attribute_type": attributeTypeArr,
-      "attribute_value": attributeValueArray
-    };
-    print('$attrData.....$productId....$packId');
-    await api
-        .getItemIdByAttributeCombination(packId, productId, attrData, language)
-        .then((value) {
-      if (value.statusCode == 200) {
-        attributeData = value.data;
-      } else {
-        Helper.showGetSnackBar(value.message!);
-      }
-      pop();
-      update();
-    }).catchError((error) {
-      pop();
-      update();
-      print('error....$error');
-    });
+    if(attributeTypeArr.length==0){
+      getAttributeWithoutCombination(packId, language);
+    }else {
+      final Map<String, dynamic> attrData = {
+        "attribute_type": attributeTypeArr,
+        "attribute_value": attributeValueArray
+      };
+      print('$attrData.....$productId....$packId');
+      await api
+          .getItemIdByAttributeCombination(
+          packId, productId, attrData, language)
+          .then((value) {
+        if (value.statusCode == 200) {
+          attributeData = value.data;
+        } else {
+          Helper.showGetSnackBar(value.message!);
+        }
+        pop();
+        update();
+      }).catchError((error) {
+        pop();
+        update();
+        print('error....$error');
+      });
+    }
   }
 
   Future<void> getAttributeCombination(productPackId, language) async {
@@ -228,6 +234,28 @@ if(productDetailData!
     await api
         .getItemIdByAttributeCombination(
             productPackId, productId, attrData, language)
+        .then((value) {
+      if (value.statusCode == 200) {
+        attributeData = value.data;
+      } else {
+        Helper.showGetSnackBar(value.message!);
+      }
+      detailLoading = false;
+      update();
+    }).catchError((error) {
+      detailLoading = false;
+      update();
+      print('error....$error');
+    });
+  }
+
+Future<void> getAttributeWithoutCombination(productPackId, language) async {
+    detailLoading = true;
+    update();
+
+   await api
+        .getProductSupplier(
+            productPackId, productId,  language)
         .then((value) {
       if (value.statusCode == 200) {
         attributeData = value.data;
@@ -289,7 +317,6 @@ if(productDetailData!
       } else {
         Helper.showGetSnackBar(value.message!);
       }
-      Helper.showGetSnackBar(value.message!);
       update();
     }).catchError((error) {
       print('error....$error');

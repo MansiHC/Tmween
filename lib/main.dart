@@ -44,13 +44,13 @@ void main() async {
           isDrawer = value ?? false;
           SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
               .then((_) {
-            runApp(MyApp2()
-              /*MyApp(
+            runApp(/*MyApp2()*/
+              MyApp(
                 isLogin: isLogin,
                 isSplash: isSplash,
                 isDrawer: isDrawer,
                 language: language,
-              ),*/
+              ),
             );
           });
         });

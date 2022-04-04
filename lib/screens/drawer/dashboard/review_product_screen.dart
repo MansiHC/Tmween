@@ -4,16 +4,37 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/review_product_controller.dart';
+import 'package:tmween/model/product_detail_model.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
+import 'package:tmween/utils/views/circular_progress_bar.dart';
 import 'package:tmween/utils/views/custom_button.dart';
 
 import '../../../utils/views/custom_text_form_field.dart';
 
-class ReviewProductScreen extends StatelessWidget {
+class ReviewProductScreen extends StatefulWidget {
+  final ProductData? product;
+
+  ReviewProductScreen(
+      {Key? key, required this.product,})
+      : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return ReviewProductScreenState();
+  }
+}
+class ReviewProductScreenState extends State<ReviewProductScreen> {
   late String language;
 
   final reviewProductController = Get.put(ReviewProductController());
+
+  @override
+  void initState() {
+    reviewProductController.productId = widget.product!.id!;
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,22 +75,17 @@ class ReviewProductScreen extends StatelessWidget {
                     Align(
                         alignment: Alignment.topCenter,
                         child: Container(
-                          color: Color(0xFFDDDDDD),
+
                           padding: EdgeInsets.all(10),
                           width: 120,
                           height: 100,
-                          child: Image.asset(
-                            'asset/image/product_review_and_rating_images/product_review_img.jpg',
-                            fit: BoxFit.contain,
-                            height: 60,
-                            width: 60,
-                          ),
+                          child: widget.product!.largeImageUrl!.setNetworkImage()
                         )),
                     20.heightBox,
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20),
                       child: Text(
-                        'Canon EOS 1300D 18MP Digital SLR Camera (Black) with 18-55mm ISII Lens, 16GB Card and Carry Case',
+                        widget.product!.productName!,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: Color(0xFF596067),
@@ -135,6 +151,7 @@ class ReviewProductScreen extends StatelessWidget {
                             reviewProductController.update();
                           },
                         )),
+                    Visibility(visible:reviewProductController.loading,child: CircularProgressBar()),
                     30.heightBox,
                     Text(
                       'Leave a comment',
@@ -158,7 +175,7 @@ class ReviewProductScreen extends StatelessWidget {
                     CustomButton(
                       text: 'Submit',
                       onPressed: () {
-                        reviewProductController.exitScreen();
+                        reviewProductController.rateProduct(language);
                       },
                       fontSize: 16,
                     ),

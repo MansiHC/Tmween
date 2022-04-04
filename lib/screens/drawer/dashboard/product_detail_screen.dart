@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:share/share.dart';
+import 'package:tmween/screens/drawer/dashboard/all_reviews_screen.dart';
 import 'package:tmween/screens/drawer/dashboard/full_image_screen.dart';
 import 'package:tmween/screens/drawer/dashboard/review_product_screen.dart';
 import 'package:tmween/screens/drawer/dashboard/similar_products_container.dart';
@@ -133,7 +134,8 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                     ],
                                   ))),
                           productDetailController.detailLoading
-                              ? Expanded(child: Center(child: CircularProgressBar()))
+                              ? Expanded(
+                                  child: Center(child: CircularProgressBar()))
                               : !productDetailController.detailLoading &&
                                       productDetailController
                                               .productDetailData !=
@@ -282,13 +284,13 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                           Get.delete<FullImageController>();
                                           productDetailController.navigateTo(
                                               FullImageScreen(
-                                              image:productDetailController
-                                                  .productDetailData!
-                                                  .productData![0]
-                                                  .productGallery!
-                                                  ,
-                                                  current: productDetailController
-                                                      .current));
+                                                  image: productDetailController
+                                                      .productDetailData!
+                                                      .productData![0]
+                                                      .productGallery!,
+                                                  current:
+                                                      productDetailController
+                                                          .current));
                                         },
                                         child: CarouselSlider(
                                           items: productDetailController
@@ -677,7 +679,9 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
             height: 5,
             color: Color(0xFFE9E9E9),
           ),*/
-          10.heightBox,
+         // 10.heightBox,
+          if( productDetailController
+              .productDetailData!.productAssociateAttribute!.length>0)
           Wrap(
               spacing: 10,
               children: List.generate(
@@ -706,12 +710,19 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                             .options !=
                                         null)
                                       TextSpan(
-                                        text: productDetailController.getAttributeSelectedValue(index).isNotEmpty?
-                                        productDetailController.getAttributeSelectedValue(index):
-                                        productDetailController
-                                            .productDetailData!
-                                            .productAssociateAttribute![index]
-                                            .options![0].attributeOptionValue,
+                                        text: productDetailController
+                                                .getAttributeSelectedValue(
+                                                    index)
+                                                .isNotEmpty
+                                            ? productDetailController
+                                                .getAttributeSelectedValue(
+                                                    index)
+                                            : productDetailController
+                                                .productDetailData!
+                                                .productAssociateAttribute![
+                                                    index]
+                                                .options![0]
+                                                .attributeOptionValue,
                                         style: TextStyle(
                                             color: Color(0xFF1992CE),
                                             fontSize: 14,
@@ -748,19 +759,19 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                           null
                                       ? InkWell(
                                           onTap: () {
-                                            productDetailController.changeItemSelection(index,index2,language);
-
+                                            productDetailController
+                                                .changeItemSelection(
+                                                    index, index2, language);
                                           },
                                           child: Container(
                                               padding: EdgeInsets.all(5),
                                               decoration: BoxDecoration(
                                                   border: Border.all(
-                                                      color: productDetailController.attributeItems[index].getPrimaryIndex ==
-                                                                  index &&
-                                                              productDetailController
+                                                      color: productDetailController
                                                                       .attributeItems[index]
-                                                                      .getSecondaryIndex ==
-                                                                  index2
+                                                                      .getPrimaryIndex ==
+                                                                  index &&
+                                                              productDetailController.attributeItems[index].getSecondaryIndex == index2
                                                           ? Color(0xFF1992CE)
                                                           : Colors.black),
                                                   borderRadius: BorderRadius.circular(4)),
@@ -805,7 +816,9 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                     null)
                                   return InkWell(
                                       onTap: () {
-                                        productDetailController.changeItemSelection(index,index2,language);
+                                        productDetailController
+                                            .changeItemSelection(
+                                                index, index2, language);
                                       },
                                       child: Container(
                                         margin: EdgeInsets.only(right: 10),
@@ -821,28 +834,29 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                                 .color(),
                                             borderRadius:
                                                 BorderRadius.circular(40)),
-                                        child:
-                                            productDetailController
-                                                            .attributeItems[
-                                                                index]
-                                                            .getPrimaryIndex ==
-                                                        index &&
-                                                    productDetailController
-                                                            .attributeItems[
-                                                                index]
-                                                            .getSecondaryIndex ==
-                                                        index2
-                                                ? Icon(
-                                                    Icons.check,
-                                                    size: 16,
-                                                    color:productDetailController
+                                        child: productDetailController
+                                                        .attributeItems[index]
+                                                        .getPrimaryIndex ==
+                                                    index &&
+                                                productDetailController
+                                                        .attributeItems[index]
+                                                        .getSecondaryIndex ==
+                                                    index2
+                                            ? Icon(
+                                                Icons.check,
+                                                size: 16,
+                                                color: productDetailController
                                                         .productDetailData!
                                                         .productAssociateAttribute![
-                                                    index]
+                                                            index]
                                                         .options![index2]
-                                                        .attributeOptionValue!.toLowerCase().contains('white')?Colors.black: Colors.white,
-                                                  )
-                                                : Container(),
+                                                        .attributeOptionValue!
+                                                        .toLowerCase()
+                                                        .contains('white')
+                                                    ? Colors.black
+                                                    : Colors.white,
+                                              )
+                                            : Container(),
                                       ));
                                 return Container();
                               })),
@@ -850,86 +864,88 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                   ],
                 ),
               )),
-
-          if(productDetailController.attributeData!.productMainSupplier!.length!=0)
-
+          if (productDetailController
+                  .attributeData!.productMainSupplier!.length !=
+              0)
             Container(
-              height: 35,
-              child: Row(
-                children: [
-                  InkWell(
-                      onTap: () {
-                        if (productDetailController.quntity != 1) {
-                          productDetailController.quntity--;
+                height: 35,
+                child: Row(
+                  children: [
+                    InkWell(
+                        onTap: () {
+                          if (productDetailController.quntity != 1) {
+                            productDetailController.quntity--;
+                            productDetailController.update();
+                          }
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.grey[200]!,
+                                    blurRadius: 2,
+                                    spreadRadius: 2)
+                              ]),
+                          height: 35,
+                          width: 30,
+                          child: Icon(
+                            Icons.keyboard_arrow_left_sharp,
+                            color: Color(0xFF48525E),
+                          ),
+                        )),
+                    2.widthBox,
+                    Container(
+                      width: 40,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey[200]!,
+                                blurRadius: 2,
+                                spreadRadius: 2)
+                          ]),
+                      padding: EdgeInsets.all(10),
+                      child: Text(productDetailController.quntity.toString(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color(0xFF656565),
+                          )),
+                    ),
+                    2.widthBox,
+                    InkWell(
+                        onTap: () {
+                          productDetailController.quntity++;
                           productDetailController.update();
-                        }
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.grey[200]!,
-                                  blurRadius: 2,
-                                  spreadRadius: 2)
-                            ]),
-                        height: 35,
-                        width: 30,
-                        child: Icon(
-                          Icons.keyboard_arrow_left_sharp,
-                          color: Color(0xFF48525E),
-                        ),
-                      )),
-                  2.widthBox,
-                  Container(
-                    width: 40,
-                    decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                      BoxShadow(
-                          color: Colors.grey[200]!,
-                          blurRadius: 2,
-                          spreadRadius: 2)
-                    ]),
-                    padding: EdgeInsets.all(10),
-                    child: Text(productDetailController.quntity.toString(),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Color(0xFF656565),
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.grey[200]!,
+                                    blurRadius: 2,
+                                    spreadRadius: 2)
+                              ]),
+                          height: 35,
+                          width: 30,
+                          child: Center(
+                              child: Icon(
+                            Icons.keyboard_arrow_right_sharp,
+                            color: Color(0xFF48525E),
+                          )),
                         )),
-                  ),
-                  2.widthBox,
-                  InkWell(
-                      onTap: () {
-                        productDetailController.quntity++;
-                        productDetailController.update();
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.grey[200]!,
-                                  blurRadius: 2,
-                                  spreadRadius: 2)
-                            ]),
-                        height: 35,
-                        width: 30,
-                        child: Center(
-                            child: Icon(
-                          Icons.keyboard_arrow_right_sharp,
-                          color: Color(0xFF48525E),
-                        )),
-                      )),
-                  5.widthBox,
-                  Expanded(
-                      child: Text(
-                    '*Minimum order Quantity 1 Piece.',
-                    style: TextStyle(
-                        color: Color(0xFF000000),
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold),
-                  ))
-                ],
-              )),
+                    5.widthBox,
+                    Expanded(
+                        child: Text(
+                      '*Minimum order Quantity 1 Piece.',
+                      style: TextStyle(
+                          color: Color(0xFF000000),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold),
+                    ))
+                  ],
+                )),
         ]);
   }
 
@@ -947,39 +963,53 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                         padding: EdgeInsets.only(right: 15),
                         child: _imagePriceView(productDetailController)),
                     15.heightBox,
-                    if(productDetailController.attributeData!.productMainSupplier!.length!=0)
+                    if (productDetailController
+                            .attributeData!.productMainSupplier!.length !=
+                        0)
                       Padding(
-                        padding: EdgeInsets.only(right: 15),
-                        child: CustomButton(
-                            text: 'BUY NOW', fontSize: 14, onPressed: () {})),
-                    if(productDetailController.attributeData!.productMainSupplier!.length!=0)
+                          padding: EdgeInsets.only(right: 15),
+                          child: CustomButton(
+                              text: 'BUY NOW', fontSize: 14, onPressed: () {})),
+                    if (productDetailController
+                            .attributeData!.productMainSupplier!.length !=
+                        0)
                       Padding(
-                        padding: EdgeInsets.only(right: 15),
-                        child: CustomButton(
-                            text: 'ADD TO CART',
-                            fontSize: 14,
-                            backgroundColor: Color(0xFF314156),
-                            onPressed: () {
-                              _showDialog(productDetailController);
-                              // productDetailController.navigateToCartScreen();
-                            })),
-                    if(productDetailController.attributeData!.productMainSupplier!.length!=0)
+                          padding: EdgeInsets.only(right: 15),
+                          child: CustomButton(
+                              text: 'ADD TO CART',
+                              fontSize: 14,
+                              backgroundColor: Color(0xFF314156),
+                              onPressed: () {
+                                _showDialog(productDetailController);
+                                // productDetailController.navigateToCartScreen();
+                              })),
+                    if (productDetailController
+                            .attributeData!.productMainSupplier!.length !=
+                        0)
                       10.heightBox,
-                    if(productDetailController.attributeData!.productMainSupplier!.length!=0)
-                    Padding(
-                        padding: EdgeInsets.only(right: 15),
-                        child: _quantityDiscount(productDetailController)),
-                    if(productDetailController.attributeData!.productMainSupplier!.length!=0)
+                    if (productDetailController
+                            .attributeData!.productMainSupplier!.length !=
+                        0)
+                      Padding(
+                          padding: EdgeInsets.only(right: 15),
+                          child: _quantityDiscount(productDetailController)),
+                    if (productDetailController
+                            .attributeData!.productMainSupplier!.length !=
+                        0)
                       15.heightBox,
                     Padding(
                         padding: EdgeInsets.only(right: 15),
                         child: _guaranteeSection(productDetailController)),
                     15.heightBox,
-                    if(productDetailController.attributeData!.productMainSupplier!.length!=0)
+                    if (productDetailController
+                            .attributeData!.productMainSupplier!.length !=
+                        0)
                       Padding(
-                        padding: EdgeInsets.only(right: 15),
-                        child: _sellerSection(productDetailController)),
-                    if(productDetailController.attributeData!.productMainSupplier!.length!=0)
+                          padding: EdgeInsets.only(right: 15),
+                          child: _sellerSection(productDetailController)),
+                    if (productDetailController
+                            .attributeData!.productMainSupplier!.length !=
+                        0)
                       15.heightBox,
                     Padding(
                         padding: EdgeInsets.only(right: 15),
@@ -1056,7 +1086,18 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                     if (!productDetailController.isLogin) {
                       _loginFirstDialog(productDetailController);
                     } else {
-                      productDetailController.navigateTo(ReviewProductScreen());
+                      //     productDetailController.navigateTo(ReviewProductScreen(product:productDetailController.productDetailData!.productData![0]));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ReviewProductScreen(
+                                  product: productDetailController
+                                      .productDetailData!
+                                      .productData![0]))).then((value) {
+                        if (value) {
+                          productDetailController.getProductDetails(language);
+                        }
+                      });
                     }
                   },
                   child: Container(
@@ -1088,11 +1129,12 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                       padding: EdgeInsets.zero,
                       shrinkWrap: true,
                       physics: ScrollPhysics(),
-                      itemCount: productDetailController.productDetailData!
+                      itemCount: /*productDetailController.productDetailData!
                                   .customerProductReview!.data!.length >
                               2
-                          ? 3
-                          : productDetailController.productDetailData!
+                          ? 2
+                          :*/
+                          productDetailController.productDetailData!
                                   .customerProductReview!.data!.length +
                               1,
                       itemBuilder: (context, index) {
@@ -1132,7 +1174,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                                             .productDetailData!
                                                             .customerProductReview!
                                                             .data![index]
-                                                            .smallImageUrl!,
+                                                            .largeImageUrl!,
                                                     placeholder: (context,
                                                             url) =>
                                                         CupertinoActivityIndicator(),
@@ -1298,10 +1340,18 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                     ),
                                 ],
                               )
-                            : productDetailController.productDetailData!
+                            : /*productDetailController.productDetailData!
                                         .customerProductReview!.data!.length >
                                     2
-                                ? Padding(
+                                ? */
+                            InkWell(
+                                onTap: () {
+                                  productDetailController.navigateTo(
+                                      AllReviewScreen(
+                                          productId: productDetailController
+                                              .productId));
+                                },
+                                child: Padding(
                                     padding:
                                         EdgeInsets.only(top: 10, bottom: 5),
                                     child: Row(
@@ -1318,8 +1368,8 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                         Icon(Icons.keyboard_arrow_right,
                                             color: Colors.black)
                                       ],
-                                    ))
-                                : Container();
+                                    )));
+                        // : Container();
                       }))
         ],
       ),
@@ -1336,6 +1386,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if(productDetailController.attributeData!.productDeliveryData!=null)
           RichText(
               textAlign: TextAlign.start,
               text: TextSpan(
@@ -1346,7 +1397,8 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                   ),
                   children: <InlineSpan>[
                     TextSpan(
-                      text: '${productDetailController.attributeData!.productDeliveryData!.deliveryAgencyName} ',
+                      text:
+                          '${productDetailController.attributeData!.productDeliveryData!.deliveryAgencyName} ',
                       style: TextStyle(
                           color: Color(0xFF000000),
                           fontSize: 14,
@@ -1360,6 +1412,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                       ),
                     ),
                   ])),
+          if(productDetailController.attributeData!.productDeliveryData!=null)
           RichText(
               textAlign: TextAlign.start,
               text: TextSpan(
@@ -1370,14 +1423,19 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                   ),
                   children: <InlineSpan>[
                     TextSpan(
-                      text: '${productDetailController.attributeData!.productDeliveryData!
-                          .deliveryDurationLabel!} to ${productDetailController.attributeData!.productDeliveryData!.deliveryAgencyName}',
+                      text:
+                          '${productDetailController.attributeData!.productDeliveryData!.deliveryDurationLabel!} to ${productDetailController.attributeData!.productDeliveryData!.deliveryAgencyName}',
                       style: TextStyle(
                           color: Color(0xFF1992CE),
                           fontSize: 14,
                           fontWeight: FontWeight.bold),
                     ),
                   ])),
+          if(productDetailController.attributeData!.productDeliveryData==null)
+          Text('delivery is not available at your location', style: TextStyle(
+              color: Color(0xFF1992CE),
+              fontSize: 14,
+              fontWeight: FontWeight.bold)),
           8.heightBox,
           Divider(
             thickness: 1,
@@ -1385,7 +1443,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
             color: Color(0xFFF7F7F7),
           ),
           8.heightBox,
-         /* Row(
+          /* Row(
             children: [
               Expanded(
                   child: Text('Condition: ',
@@ -1415,8 +1473,8 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                      productDetailController.attributeData!.productMainSupplier![0]
-                     .supplierName!,
+                      productDetailController
+                          .attributeData!.productMainSupplier![0].supplierName!,
                       style: TextStyle(
                           color: Color(0xFF1992CE),
                           fontSize: 14,
@@ -1444,33 +1502,39 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                   color: Color(0xFFF77443),
                   fontSize: 14,
                   fontWeight: FontWeight.bold)),
-          if(productDetailController.productDetailData!.productData![0].productSupplier!.length>1)
+          if (productDetailController
+                  .productDetailData!.productData![0].productSupplier!.length >
+              1)
             3.heightBox,
-          if(productDetailController.productDetailData!.productData![0].productSupplier!.length>1)
-          RichText(
-              textAlign: TextAlign.start,
-              text: TextSpan(
-                  text: '${productDetailController.productDetailData!.productData![0].productSupplier!.length-1} offers ',
-                  style: TextStyle(
-                    color: Color(0xFF1992CE),
-                    fontSize: 14,
-                  ),
-                  children: <InlineSpan>[
-                    TextSpan(
-                      text: 'from ',
-                      style: TextStyle(
-                          color: Color(0xFF333333),
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold),
+          if (productDetailController
+                  .productDetailData!.productData![0].productSupplier!.length >
+              1)
+            RichText(
+                textAlign: TextAlign.start,
+                text: TextSpan(
+                    text:
+                        '${productDetailController.productDetailData!.productData![0].productSupplier!.length - 1} offers ',
+                    style: TextStyle(
+                      color: Color(0xFF1992CE),
+                      fontSize: 14,
                     ),
-                    TextSpan(
-                      text: '${productDetailController.productDetailData!.productData![0].finalPriceDisp}',
-                      style: TextStyle(
-                        color: Color(0xFFF77443),
-                        fontSize: 14,
+                    children: <InlineSpan>[
+                      TextSpan(
+                        text: 'from ',
+                        style: TextStyle(
+                            color: Color(0xFF333333),
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold),
                       ),
-                    ),
-                  ])),
+                      TextSpan(
+                        text:
+                            '${productDetailController.productDetailData!.productData![0].finalPriceDisp}',
+                        style: TextStyle(
+                          color: Color(0xFFF77443),
+                          fontSize: 14,
+                        ),
+                      ),
+                    ])),
           20.heightBox,
           Container(
             color: Color(0xFF314156),
@@ -1492,71 +1556,72 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                   padding: EdgeInsets.zero,
                   shrinkWrap: true,
                   physics: ScrollPhysics(),
-                  itemCount: productDetailController.attributeData!.productOtherSupplier!.length /*+ 1*/,
+                  itemCount: productDetailController
+                      .attributeData!.productOtherSupplier!.length /*+ 1*/,
                   itemBuilder: (context, index) {
                     return /*(index !=
                         productDetailController.attributeData!.productOtherSupplier!.length)
-                        ? */Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      if (index != 0) 5.heightBox,
-                                      Text(
-                                          '${productDetailController.attributeData!.productOtherSupplier![index].priceDisp}',
-                                          style: TextStyle(
-                                              color: Color(0xFFF77443),
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold)),
-                                      3.heightBox,
-                                      Text(
-                                          '+ ${'0.00'} Delivery charge',
-                                          style: TextStyle(
-                                            color: Color(0xFF7D838B),
-                                            fontSize: 13,
-                                          )),
-                                      3.heightBox,
-                                      RichText(
-                                          textAlign: TextAlign.start,
-                                          text: TextSpan(
-                                              text: 'Sold by: ',
-                                              style: TextStyle(
-                                                color: Color(0xFF7D838B),
+                        ? */
+                        Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (index != 0) 5.heightBox,
+                                Text(
+                                    '${productDetailController.attributeData!.productOtherSupplier![index].priceDisp}',
+                                    style: TextStyle(
+                                        color: Color(0xFFF77443),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold)),
+                                3.heightBox,
+                                Text('+ ${'0.00'} Delivery charge',
+                                    style: TextStyle(
+                                      color: Color(0xFF7D838B),
+                                      fontSize: 13,
+                                    )),
+                                3.heightBox,
+                                RichText(
+                                    textAlign: TextAlign.start,
+                                    text: TextSpan(
+                                        text: 'Sold by: ',
+                                        style: TextStyle(
+                                          color: Color(0xFF7D838B),
+                                          fontSize: 13,
+                                        ),
+                                        children: <InlineSpan>[
+                                          TextSpan(
+                                            text: productDetailController
+                                                .attributeData!
+                                                .productOtherSupplier![index]
+                                                .supplierName,
+                                            style: TextStyle(
+                                                color: Color(0xFF4D5560),
                                                 fontSize: 13,
-                                              ),
-                                              children: <InlineSpan>[
-                                                TextSpan(
-                                                  text: productDetailController.attributeData!.productOtherSupplier![index].supplierName,
-                                                  style: TextStyle(
-                                                      color: Color(0xFF4D5560),
-                                                      fontSize: 13,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ])),
-                                      5.heightBox,
-                                    ],
-                                  ),
-                                  CustomButton(
-                                      horizontalPadding: 0,
-                                      width: 105,
-                                      fontSize: 14,
-                                      text: 'ADD TO CART',
-                                      onPressed: () {})
-                                ],
-                              ),
-                              Divider(
-                                thickness: 1,
-                                height: 5,
-                                color: Color(0xFFF7F7F7),
-                              ),
-                            ],
-                          )
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ])),
+                                5.heightBox,
+                              ],
+                            ),
+                            CustomButton(
+                                horizontalPadding: 0,
+                                width: 105,
+                                fontSize: 14,
+                                text: 'ADD TO CART',
+                                onPressed: () {})
+                          ],
+                        ),
+                        Divider(
+                          thickness: 1,
+                          height: 5,
+                          color: Color(0xFFF7F7F7),
+                        ),
+                      ],
+                    )
                         /*: Padding(
                             padding: EdgeInsets.only(top: 10),
                             child: RichText(
@@ -1582,7 +1647,8 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                           fontSize: 14,
                                         ),
                                       ),
-                                    ])))*/;
+                                    ])))*/
+                        ;
                   }))
         ],
       ),
@@ -1945,50 +2011,57 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                             ),
                           ))
                     ]),
-                    for(int i =0;i<productDetailController.attributeData!.productQtyPackData!.length;i++)
-                    TableRow(children: [
-                      Container(
-                        height: 40,
-                        child: Radio(
-                          value: 1,
-                          groupValue: productDetailController.val,
-                          activeColor: Color(0xFF1992CE),
-                          onChanged: (int? value) {
-                            productDetailController.val = value!;
-                            productDetailController.update();
-                          },
+                    for (int i = 0;
+                        i <
+                            productDetailController
+                                .attributeData!.productQtyPackData!.length;
+                        i++)
+                      TableRow(children: [
+                        Container(
+                          height: 40,
+                          child: Radio(
+                            value: 1,
+                            groupValue: productDetailController.val,
+                            activeColor: Color(0xFF1992CE),
+                            onChanged: (int? value) {
+                              productDetailController.val = value!;
+                              productDetailController.update();
+                            },
+                          ),
                         ),
-                      ),
-                      Container(
-                          height: 40,
-                          child: Center(
-                              child: Text(
-                                productDetailController.attributeData!.productQtyPackData![i].qty!.toString(),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Color(0xFF3A3A3A), fontSize: 14),
-                          ))),
-                      Container(
-                          height: 40,
-                          child: Center(
-                              child: Text(
-                            '2.86%',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Color(0xFF3A3A3A), fontSize: 14),
-                          ))),
-                      Container(
-                          height: 40,
-                          child: Center(
-                            child: Text(
-                              productDetailController.attributeData!.productQtyPackData![i].price!.toString(),
-
+                        Container(
+                            height: 40,
+                            child: Center(
+                                child: Text(
+                              productDetailController
+                                  .attributeData!.productQtyPackData![i].qty!
+                                  .toString(),
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Color(0xFF3A3A3A), fontSize: 14),
-                            ),
-                          ))
-                    ]),
+                            ))),
+                        Container(
+                            height: 40,
+                            child: Center(
+                                child: Text(
+                              '2.86%',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color(0xFF3A3A3A), fontSize: 14),
+                            ))),
+                        Container(
+                            height: 40,
+                            child: Center(
+                              child: Text(
+                                productDetailController.attributeData!
+                                    .productQtyPackData![i].price!
+                                    .toString(),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Color(0xFF3A3A3A), fontSize: 14),
+                              ),
+                            ))
+                      ]),
                   ],
                 ),
               ),

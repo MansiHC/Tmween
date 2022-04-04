@@ -97,8 +97,8 @@ class OrderContainer extends StatelessWidget {
                               if (order.isRating)
                                 InkWell(
                                     onTap: () {
-                                      yourOrderController
-                                          .navigateTo(ReviewProductScreen());
+                                     /* yourOrderController
+                                          .navigateTo(ReviewProductScreen());*/
                                     },
                                     child: Text(order.ratingStatus!,
                                         textAlign: TextAlign.start,

@@ -2,12 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
-import 'package:tmween/model/search_history_model.dart';
 import 'package:tmween/utils/extensions.dart';
 
 import '../../controller/search_controller.dart';
 import '../../lang/locale_keys.g.dart';
-import '../../model/product_listing_model.dart';
 import '../../utils/global.dart';
 import '../../utils/views/circular_progress_bar.dart';
 
@@ -15,18 +13,19 @@ class SearchScreen extends StatefulWidget {
   final String? from;
   final String? searchText;
 
-  SearchScreen({Key? key, required this.from,this.searchText=''}) : super(key: key);
+  SearchScreen({Key? key, required this.from, this.searchText = ''})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
     return SearchScreenState();
   }
-
 }
+
 class SearchScreenState extends State<SearchScreen> {
   final searchController = Get.put(SearchController());
   late var language;
-  
+
   Future<bool> _onWillPop(SearchController searchController) async {
     searchController.exitScreen();
     return true;
@@ -56,85 +55,113 @@ class SearchScreenState extends State<SearchScreen> {
                     Container(
                         color: AppColors.appBarColor,
                         padding: EdgeInsets.only(top: 35),
-                        child: Container(
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(2)),
-                            height: 40,
-                            margin: EdgeInsets.only(
-                                bottom: 10, left: 15, right: 15),
-                            child: TypeAheadFormField<String>(
-                              getImmediateSuggestions: true,
-                              textFieldConfiguration: TextFieldConfiguration(
-                                controller: widget.from == AppConstants.bottomBar
-                                    ? searchController.searchController2
-                                    : searchController.searchController,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.search,
-                                onSubmitted: (term) {
-                                  FocusScope.of(context).unfocus();
-                                  searchController.searchedString = term;
+                        child: Row(
+                            children: [
+                              10.widthBox,
+                          Padding(
+                              padding: EdgeInsets.only(bottom: 10),
+                              child:
+                          Align(
+                              alignment: language == 'ar'
+                                  ? Alignment.centerRight
+                                  : Alignment.centerLeft,
+                              child: /*ClipOval(
+                                child: Material(
+                                  color: Colors.white, // Button color
+                                  child:*/ InkWell(
+                                    onTap: () {
+                                      searchController.exitScreen();
+                                    },
+                                    child: SizedBox(
+                                        width: 24,
+                                        height: 24,
+                                        child: Icon(
+                                          Icons.arrow_back,
+                                          color: Colors.white,
+                                        )),
+                                  ),
+                                )),
+                             // )),
+                         Expanded(child:  Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(2)),
+                              height: 40,
+                              margin: EdgeInsets.only(
+                                  bottom: 10, left: 15, right: 15),
+                              child: TypeAheadFormField<String>(
+                                getImmediateSuggestions: true,
+                                textFieldConfiguration: TextFieldConfiguration(
+                                  controller:
+                                      widget.from == AppConstants.bottomBar
+                                          ? searchController.searchController2
+                                          : searchController.searchController,
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.search,
+                                  onSubmitted: (term) {
+                                    FocusScope.of(context).unfocus();
+                                    searchController.searchedString = term;
+
+                                    searchController.searchProduct(
+                                        widget.from, language);
+                                  },
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 10),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.lightGrayColor),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.lightGrayColor),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.lightGrayColor),
+                                    ),
+                                    isDense: true,
+                                    hintText: LocaleKeys.searchProducts.tr,
+                                    prefixIcon: Icon(
+                                      Icons.search,
+                                      color: AppColors.primaryColor,
+                                      size: 32,
+                                    ),
+                                    suffixIcon: IconButton(
+                                        onPressed: () {
+                                          searchController.searchController
+                                              .clear();
+                                          searchController.update();
+                                        },
+                                        icon: Icon(
+                                          CupertinoIcons.clear_circled_solid,
+                                          color: AppColors.primaryColor,
+                                          size: 24,
+                                        )),
+                                  ),
+                                ),
+                                suggestionsCallback: (String pattern) async {
+                                  return await searchController
+                                      .getProductList(pattern, language)
+                                      .then((value) => value
+                                          .where((item) => item
+                                              .toLowerCase()
+                                              .contains(pattern.toLowerCase()))
+                                          .toList());
+                                },
+                                itemBuilder: (context, String suggestion) {
+                                  return ListTile(
+                                    title: Text(suggestion),
+                                  );
+                                },
+                                onSuggestionSelected: (String suggestion) {
+                                  searchController.searchedString = suggestion;
 
                                   searchController.searchProduct(
                                       widget.from, language);
                                 },
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 10),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: AppColors.lightGrayColor),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: AppColors.lightGrayColor),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: AppColors.lightGrayColor),
-                                  ),
-                                  isDense: true,
-                                  hintText: LocaleKeys.searchProducts.tr,
-                                  prefixIcon: Icon(
-                                    Icons.search,
-                                    color: AppColors.primaryColor,
-                                    size: 32,
-                                  ),
-                                  suffixIcon: IconButton(
-                                      onPressed: () {
-                                        searchController.searchController
-                                            .clear();
-                                        searchController.update();
-                                      },
-                                      icon: Icon(
-                                        CupertinoIcons.clear_circled_solid,
-                                        color: AppColors.primaryColor,
-                                        size: 24,
-                                      )),
-                                ),
-                              ),
-                              suggestionsCallback: (String pattern) async {
-                                return await searchController.getProductList(pattern, language).then((value) =>
-                                    value
-                                        .where((item) => item.toLowerCase()
-                                        .contains(pattern.toLowerCase()))
-                                        .toList()
-                                );
-                              },
-                              itemBuilder:
-                                  (context, String suggestion) {
-                                return ListTile(
-                                  title: Text(suggestion),
-                                );
-                              },
-                              onSuggestionSelected:
-                                  (String suggestion) {
-                                searchController.searchedString =
-                                    suggestion;
-
-                                searchController.searchProduct(widget.from, language);
-                              },
-                            ))),
+                              )))
+                        ])),
                     searchController.historyLoading
                         ? CircularProgressBar()
                         : _searchHistory(searchController),
@@ -232,7 +259,8 @@ class SearchScreenState extends State<SearchScreen> {
                           InkWell(
                               onTap: () {
                                 searchController.searchedString = item.keyword!;
-                                searchController.searchProduct(widget.from, language);
+                                searchController.searchProduct(
+                                    widget.from, language);
                               },
                               child: Container(
                                 padding: EdgeInsets.all(5),

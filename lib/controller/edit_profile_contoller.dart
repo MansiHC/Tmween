@@ -25,6 +25,7 @@ class EditProfileController extends GetxController {
   TextEditingController emailOTPController = TextEditingController();
   TextEditingController mobileOTPController = TextEditingController();
   String currentText = "";
+  bool filled = false;
 
   bool enablePhone = true;
   bool enableEmail = true;
@@ -174,20 +175,20 @@ class EditProfileController extends GetxController {
   }
 
   Future<void> updateMobileNumber(mobile, langCode) async {
+
+
     loadingDialog = true;
     update();
     await api
         .updateMobile(token, userId, mobile, otpValue, langCode)
         .then((value) {
       if (value.statusCode == 200) {
-        pop();
+       // pop();
         exitScreen();
-      } else {
-        pop();
       }
       Helper.showGetSnackBar(value.message!);
       loadingDialog = false;
-      update();
+      //update();
     }).catchError((error) {
       loadingDialog = false;
       update();
@@ -202,17 +203,15 @@ class EditProfileController extends GetxController {
         .updateEmail(token, userId, email, otpValue, langCode)
         .then((value) {
       if (value.statusCode == 200) {
-        pop();
+      //  pop();
         exitScreen();
-      } else {
-        pop();
       }
       Helper.showGetSnackBar(value.message!);
       loadingDialog = false;
-      update();
+     // update();
     }).catchError((error) {
       loadingDialog = false;
-      update();
+     // update();
       print('error....$error');
     });
   }
@@ -230,6 +229,6 @@ class EditProfileController extends GetxController {
   void pop() {
     emailOTPController.clear();
     mobileOTPController.clear();
-    Navigator.of(context).pop(false);
+    Navigator.of(context).pop();
   }
 }
