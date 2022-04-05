@@ -56,10 +56,14 @@ class MyAccountController extends GetxController {
       if (value.statusCode == 200) {
         profileData = value.data![0];
 
-        if (profileData!.cityName != null)
+        if (profileData!.cityName != null){
           MySharedPreferences.instance.addStringToSF(
               SharedPreferencesKeys.address,
               "${profileData!.cityName} - ${profileData!.zip}");
+          MySharedPreferences.instance.addStringToSF(
+              SharedPreferencesKeys.addressId,
+              profileData!.id);
+        }
         MySharedPreferences.instance.addStringToSF(
             SharedPreferencesKeys.image, profileData!.largeImageUrl);
       } else if (value.statusCode == 401) {
@@ -113,6 +117,8 @@ class MyAccountController extends GetxController {
   void navigateToDashBoardScreen() {
     MySharedPreferences.instance
         .addStringToSF(SharedPreferencesKeys.address, "");
+    MySharedPreferences.instance
+        .addStringToSF(SharedPreferencesKeys.addressId, "");
     MySharedPreferences.instance.addStringToSF(SharedPreferencesKeys.image, "");
     MySharedPreferences.instance
         .addBoolToSF(SharedPreferencesKeys.isLogin, false);

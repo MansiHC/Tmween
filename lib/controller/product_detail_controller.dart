@@ -48,16 +48,29 @@ class ProductDetailController extends GetxController {
   ProductOtherInfo? bottomRightInfo;
   List<Address> addressList = [];
   bool isLogin = true;
-  String image = "", address = "";
+  String image = "", address = "",addressId="";
   List<String> attributeTypeArr = [];
   List<String> attributeValueArray = [];
   final List<AttributeModel> attributeItems = [];
   int packId = 0;
+  int quntity = 1;
 
   @override
   void onInit() {
     isLiked = false;
 
+    MySharedPreferences.instance
+        .getStringValuesSF(SharedPreferencesKeys.address)
+        .then((value) async {
+      if (value != null) address = value;
+      update();
+    });
+    MySharedPreferences.instance
+        .getStringValuesSF(SharedPreferencesKeys.addressId)
+        .then((value) async {
+      if (value != null) addressId = value;
+      update();
+    });
     MySharedPreferences.instance
         .getStringValuesSF(SharedPreferencesKeys.address)
         .then((value) async {
@@ -299,6 +312,35 @@ Future<void> getAttributeWithoutCombination(productPackId, language) async {
     });
   }
 
+  Future<bool> addToCart(productItemId,supplierId,
+      supplierBranchId,language) async {
+    addressList = [];
+    print('add......$productId,$packId,$productItemId,$userId,$quntity,$addressId,$supplierId,$supplierBranchId');
+    await api
+        .addToCart(token, productId,packId,productItemId,userId,quntity,addressId,supplierId,
+        supplierBranchId, language)
+        .then((value) {
+      if (value.statusCode == 200) {
+
+        return true;
+      } else if (value.statusCode == 401) {
+
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        Get.deleteAll();
+        Get.offAll(DrawerScreen());
+        return false;
+      } else {
+
+        Helper.showGetSnackBar(value.message!);
+        return false;
+      }
+    }).catchError((error) {
+      print('error....$error');
+    });
+    return false;
+  }
+
   Future<void> removeWishlistProduct(language) async {
     //  if (Helper.isIndividual) {
     print('remove......');
@@ -410,41 +452,6 @@ Future<void> getAttributeWithoutCombination(productPackId, language) async {
 
   final List<String> items = ['Sofa', 'Bed'];
 
-  List<SellerOnTmweenModel> sellerOnTmweens = const <SellerOnTmweenModel>[
-    const SellerOnTmweenModel(
-      amount: '26,500.00',
-      charge: '95.00',
-      brand: 'LIFESTYLES',
-    ),
-    const SellerOnTmweenModel(
-      amount: '26,500.00',
-      charge: '95.00',
-      brand: 'LIFESTYLES',
-    ),
-  ];
-
-  List<ReviewModel> reviews = const <ReviewModel>[
-    const ReviewModel(
-        rating: '4.1',
-        name: 'Alberto Brando',
-        date: '21 January 2019',
-        desc:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
-            'incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation '
-            'ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
-            'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,'
-            ' sunt in culpa qui officia deserunt mollit anim id est laborum.'),
-    const ReviewModel(
-        rating: '4.1',
-        name: 'Alberto Brando',
-        date: '21 January 2019',
-        desc:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
-            'incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation '
-            'ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in '
-            'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,'
-            ' sunt in culpa qui officia deserunt mollit anim id est laborum.')
-  ];
 
   int val = 1;
 
@@ -483,60 +490,10 @@ Future<void> getAttributeWithoutCombination(productPackId, language) async {
     update();
   }
 
-  late final List<Widget> imageSliders = imgList
-      .map((item) => Container(
-            child: Image.asset(item, fit: BoxFit.contain),
-          ))
-      .toList();
 
-  final List<String> imgList = [
-    'asset/image/product_detail_page_images/slider_thumb_1.jpg',
-    'asset/image/product_detail_page_images/slider_thumb_2.jpg',
-    'asset/image/product_detail_page_images/slider_thumb_3.jpg',
-    'asset/image/product_detail_page_images/slider_thumb_4.jpg',
-    'asset/image/product_detail_page_images/slider_thumb_5.jpg',
-  ];
 
-  int quntity = 1;
 
-  List<RecentlyViewdModel> recentlVieweds = const <RecentlyViewdModel>[
-    const RecentlyViewdModel(
-      title: 'WOW Raw Apple Cider Vinegar 750 ml',
-      fulfilled: true,
-      offer: '35',
-      rating: '4.1',
-      price: '2450',
-      beforePrice: '7000',
-      image: 'asset/image/product_detail_page_images/similar_product_img_1.jpg',
-    ),
-    const RecentlyViewdModel(
-      title: 'WOW Raw Apple Cider Vinegar 750 ml',
-      fulfilled: true,
-      offer: '35',
-      rating: '4.1',
-      price: '2450',
-      beforePrice: '7000',
-      image: 'asset/image/product_detail_page_images/similar_product_img_2.jpg',
-    ),
-    const RecentlyViewdModel(
-      title: 'WOW Raw Apple Cider Vinegar 750 ml',
-      fulfilled: false,
-      offer: '35',
-      rating: '4.1',
-      price: '2450',
-      beforePrice: '7000',
-      image: 'asset/image/product_detail_page_images/similar_product_img_1.jpg',
-    ),
-    const RecentlyViewdModel(
-      title: 'WOW Raw Apple Cider Vinegar 750 ml',
-      fulfilled: false,
-      offer: '35',
-      rating: '4.1',
-      price: '2450',
-      beforePrice: '7000',
-      image: 'asset/image/product_detail_page_images/similar_product_img_2.jpg',
-    ),
-  ];
+
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));

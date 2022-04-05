@@ -980,7 +980,16 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                               fontSize: 14,
                               backgroundColor: Color(0xFF314156),
                               onPressed: () {
-                                _showDialog(productDetailController);
+                                productDetailController.addToCart(productDetailController
+                                    .attributeData!.productMainSupplier![0].productItemId, productDetailController
+                                    .attributeData!.productMainSupplier![0].supplierId, productDetailController
+                                    .attributeData!.productQtyPackData![0].supplierBranchId, language).then((value) {
+                                  {
+                                    if (value)
+                                      _showDialog(productDetailController);
+                                  }
+                                });
+
                                 // productDetailController.navigateToCartScreen();
                               })),
                     if (productDetailController

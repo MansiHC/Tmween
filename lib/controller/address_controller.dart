@@ -65,6 +65,8 @@ class AddressController extends GetxController {
   }
 
   Future<void> getAddressList(language) async {
+    countPersonalAddress = 0;
+    countOfficeAddress = 0;
     addressList = [];
     loading = true;
     update();

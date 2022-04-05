@@ -173,7 +173,7 @@ class LoginController extends GetxController {
   bool loading = false;
   bool storeLoading = false;
 
-  doIndividualLoginWithPassword(language) async {
+  doIndividualLoginWithPassword(language, from) async {
     FocusScope.of(context).unfocus();
     // navigateToDrawerScreen();
     if (formKey2.currentState!.validate()) {
@@ -197,12 +197,19 @@ class LoginController extends GetxController {
               value.data!.customerData!.largeImageUrl);
           if (value.data!.customerAddressData != null) if (value
                   .data!.customerAddressData!.length >
-              0) if (value.data!.customerAddressData![0].cityName != null)
+              0) if (value.data!.customerAddressData![0].cityName != null) {
             MySharedPreferences.instance.addStringToSF(
                 SharedPreferencesKeys.address,
-                "${value.data!.customerAddressData![0].cityName} - ${value.data!.customerAddressData![0].zip}");
+                "${value.data!.customerAddressData![0].cityName} - ${value.data!
+                    .customerAddressData![0].zip}");
+           MySharedPreferences.instance.addStringToSF(
+                SharedPreferencesKeys.addressId,
+                value.data!.customerAddressData![0].id);
+          }
 
           navigateToDrawerScreen();
+        } else if (value.statusCode == 426) {
+          _accountDeactivatedDialog(from, language);
         } else {
           Helper.showGetSnackBar(value.message!);
         }
@@ -216,8 +223,45 @@ class LoginController extends GetxController {
     }
   }
 
-  doIndividualLoginWithOtp(language, String from, String frm) async {
+  void _accountDeactivatedDialog(from, language) async {
+    await showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              title: Text(
+                'Your account has been deactivated.\n\nDo you want to reactivate this account?',
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              actions: [
+                TextButton(
+                  style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                  child: Text(
+                    LocaleKeys.no.tr,
+                    style: TextStyle(fontSize: 16, color: Colors.black54),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                  child: Text(
+                    LocaleKeys.yes.tr,
+                    style: TextStyle(fontSize: 16, color: Colors.black54),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                    doIndividualLoginWithOtp(
+                        language, AppConstants.individual, from, true);
+                  },
+                ),
+              ],
+            ));
+  }
 
+  doIndividualLoginWithOtp(
+      language, String from, String frm, bool isFromReActivate) async {
     FocusScope.of(context).unfocus();
     // navigateToDrawerScreen();
 
@@ -228,8 +272,8 @@ class LoginController extends GetxController {
         .generateMobileOtpLogin(phoneEmailController.text, language)
         .then((value) async {
       if (value.statusCode == 200) {
-
-        navigateToOTPScreen(value.data!.otp.toString(),value.data!.loginWithPasswordFlag!, from, frm);
+        navigateToOTPScreen(value.data!.otp.toString(),
+            value.data!.loginWithPasswordFlag!, from, frm, isFromReActivate);
       } else {
         Helper.showGetSnackBar(value.message!);
       }
@@ -282,7 +326,8 @@ class LoginController extends GetxController {
                 )));
   }
 
-  void navigateToOTPScreen(String otp,int isLoginWithPassword, String from, String frm) {
+  void navigateToOTPScreen(String otp, int isLoginWithPassword, String from,
+      String frm, bool isFromReActivate) {
     // Get.delete<OtpController>();
 /*
     Navigator.push(
@@ -298,9 +343,10 @@ class LoginController extends GetxController {
             builder: (context) => LoginOtpScreen(
                   otp: otp,
                   phoneEmail: phoneEmailController.text.toString(),
-              isLoginWithPassword: isLoginWithPassword,
+                  isLoginWithPassword: isLoginWithPassword,
                   from: from,
                   frm: frm,
+                  isFromReActivate: isFromReActivate,
                 )));
   }
 

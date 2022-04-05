@@ -275,7 +275,7 @@ class ProductListingScreenState extends State<ProductListingScreen> {
                         children: [
                           InkWell(
                               onTap: () {
-                                productListingController.navigateTo(FilterScreen());
+                                productListingController.navigateTo(FilterScreen(catId:productListingController.productList[0].productCategoryId));
                               },
                               child: Container(
                                   color: Colors.white,

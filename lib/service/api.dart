@@ -1045,7 +1045,7 @@ class Api {
     return result;
   }
 
-  Future<SuccessModel> reactivateAccount(token,
+  Future<SuccessModel> reactivateAccount(
       phone, otp,langCode) async {
     late SuccessModel result;
     try {
@@ -1061,6 +1061,41 @@ class Api {
                 "device_type": AppConstants.device_type,
                 "phone": phone,
                 "otp": otp,
+                "lang_code": langCode
+              }));
+      var responseJson = _returnResponse(response);
+      result = SuccessModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
+    }
+    return result;
+  }
+
+  Future<SuccessModel> addToCart(token,
+      productId,productPackId,productItemId,userId,qty,customerAddressId,supplierId,
+      supplierBranchId,langCode) async {
+    late SuccessModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.addToCart),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                'username': token,
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+              "product_id":productId,
+              "product_pack_id":productPackId,
+              "product_item_id":productItemId,
+              "customer_id":userId,
+              "user_id" : userId,
+              "quantity":qty,
+              "customer_address_id":customerAddressId,
+              "supplier_id": supplierId,
+              "supplier_branch_id": supplierBranchId,
                 "lang_code": langCode
               }));
       var responseJson = _returnResponse(response);
@@ -1419,7 +1454,7 @@ Future<ProductListingModel> getCategoryMobileFilterData(
   }
 
   Future<GetFilterDataModel> getFilterData(
-      page,catSlug, langCode) async {
+      page,catId, langCode) async {
     late GetFilterDataModel result;
     try {
       final response = await http.post(
@@ -1435,7 +1470,7 @@ Future<ProductListingModel> getCategoryMobileFilterData(
             "lang_code": langCode,
             "pagination": "1",
             "page": page,
-            "category_slug":"fresh",
+            "category_id":catId,
           }));
       var responseJson = _returnResponse(response);
       result = GetFilterDataModel.fromJson(responseJson);
@@ -1620,6 +1655,10 @@ Future<ProductListingModel> getCategoryMobileFilterData(
         print(responseJson);
         return responseJson;
       case 422:
+        var responseJson = json.decode(response.body.toString());
+        print(responseJson);
+        return responseJson;
+        case 426:
         var responseJson = json.decode(response.body.toString());
         print(responseJson);
         return responseJson;

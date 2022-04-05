@@ -4,12 +4,15 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/model/wallet_history_model.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 
-class MyWalletController extends GetxController {
+class ViewHistoryController extends GetxController {
   late BuildContext context;
 
   int userId = 0;
   int loginLogId = 0;
   TextEditingController amountController = TextEditingController();
+  String fromDate = "",toDate="";
+  DateTime selectedFromDate = DateTime.now();
+  DateTime selectedToDate = DateTime.now();
 
   final formKey = GlobalKey<FormState>();
 
@@ -19,8 +22,36 @@ class MyWalletController extends GetxController {
     'October 2021'
   ];
 
+  List months =
+  ['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  selectFromDate() async {
+    final DateTime? selected = await showDatePicker(
+      context: context,
+      initialDate: selectedFromDate,
+      firstDate: DateTime(2010),
+      lastDate: DateTime(2025),
+    );
+    if (selected != null && selected != selectedFromDate) {
+      selectedFromDate = selected;
+      fromDate= '${selectedFromDate.day} ${months[selectedFromDate.month-1]} ${selectedFromDate.year}';
+    }
+    update();
+  }
 
+  selectToDate() async {
+    final DateTime? selected = await showDatePicker(
+      context: context,
+      initialDate: selectedToDate,
+      firstDate: DateTime(2010),
+      lastDate: DateTime(2025),
+    );
+    if (selected != null && selected != selectedToDate) {
+      selectedToDate = selected;
+      toDate= '${selectedToDate.day} ${months[selectedToDate.month-1]} ${selectedToDate.year}';
 
+    }
+    update();
+  }
 
 
   List<WalletHistoryModel> walletHistoryList = const <WalletHistoryModel>[

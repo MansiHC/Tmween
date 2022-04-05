@@ -170,6 +170,12 @@ abstract class ImageConstanst {
   static const String pinIcon = 'asset/image/pin.svg';
   static const String deliveryInstructionIcon =
       'asset/image/delivery_instruction.svg';
+  static const String walletTickMarkIcon =
+      'asset/image/wallet_tickmark.svg';
+  static const String walletCrossIcon =
+      'asset/image/wallet_cross.svg';
+  static const String syberPay =
+      'asset/image/syberpay.svg';
   static const String user = 'asset/image/user.svg';
   static const String original = 'asset/image/original.svg';
   static const String like = 'asset/image/like.svg';
@@ -208,13 +214,16 @@ abstract class ImageConstanst {
   static const String deactivateUserIcon = 'asset/image/deactivate_user.svg';
   static const String accountSettingIcon =
       'asset/image/account_setting_icon.svg';
+  static const String walletLogoIcon =
+      'asset/image/wallet_logo.png';
 }
 
 abstract class SharedPreferencesKeys {
   static const String isDarkTheme = 'isDarkTheme';
   static const String homeCountryDetails = 'homeCountry';
   static const isLogin = "isLogin";
-  static const address = "address";
+ static const address = "address";
+  static const addressId = "addressId";
   static const image = "image";
   static const isDashboard = "isDashboard";
   static const isDrawer = "isDrawer";

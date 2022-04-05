@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 import '../lang/locale_keys.g.dart';
+import '../model/get_filter_data_model.dart';
+import '../service/api.dart';
 
 class League {
   String leagueName;
@@ -28,6 +30,7 @@ class Player {
 
 class FilterController extends GetxController {
   late BuildContext context;
+  late int catId;
 
   final List<Map> showOnlyList = [
     {
@@ -46,6 +49,26 @@ class FilterController extends GetxController {
     isShowOnlyExpanded = !isShowOnlyExpanded;
     update();
   }
+  final api = Api();
+  bool loading = false;
+  late GetFilterData filteredData;
+
+  Future<void> getFilterData(language) async {
+    loading = true;
+    update();
+    await api.getFilterData("1", catId, language).then((value) {
+      if (value.statusCode == 200) {
+filteredData = value.data!;
+      }
+      loading = false;
+      update();
+    }).catchError((error) {
+      loading = false;
+      update();
+      print('error....$error');
+    });
+  }
+
 
   final List<Map> categoryList = [
     {'title': 'Mobile Phone Accessories', 'isChecked': false},

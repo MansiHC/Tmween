@@ -522,7 +522,7 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     ],
                   ),
                   onPressed: () {
-                    editAccountController.navigateTo(DeactivateAccountScreen());
+                    editAccountController.navigateTo(DeactivateAccountScreen(mobileNumber: editAccountController.mobileNumberController.text,email: editAccountController.emailController.text,));
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.red[400]),

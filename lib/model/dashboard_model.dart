@@ -139,7 +139,7 @@ class SoldByTmweenProductData {
   int? stock;
   int? inStock;
   int? isCombinationAvailable;
-  int? reviewsAvg;
+ double? reviewsAvg;
   int? brandId;
   String? manufacturerNumber;
   String? countryCode;
@@ -263,7 +263,7 @@ class SoldByTmweenProductData {
     stock = json['stock'];
     inStock = json['in_stock'];
     isCombinationAvailable = json['is_combination_available'];
-    reviewsAvg = json['reviews_avg'];
+    reviewsAvg = double.parse(json['reviews_avg'].toString());
     brandId = json['brand_id'];
     manufacturerNumber = json['manufacturer_number'];
     countryCode = json['country_code'];
@@ -581,7 +581,7 @@ class TopSelectionData {
   int? stock;
   int? inStock;
   int? isCombinationAvailable;
-  int? reviewsAvg;
+ double? reviewsAvg;
   int? brandId;
   String? manufacturerNumber;
   String? countryCode;
@@ -707,7 +707,7 @@ class TopSelectionData {
     stock = json['stock'];
     inStock = json['in_stock'];
     isCombinationAvailable = json['is_combination_available'];
-    reviewsAvg = json['reviews_avg'];
+    reviewsAvg = double.parse(json['reviews_avg'].toString());
     brandId = json['brand_id'];
     manufacturerNumber = json['manufacturer_number'];
     countryCode = json['country_code'];
@@ -871,7 +871,7 @@ class BestSellerData {
   int? stock;
   int? inStock;
   int? isCombinationAvailable;
-  int? reviewsAvg;
+ double? reviewsAvg;
   int? brandId;
   String? manufacturerNumber;
   String? countryCode;
@@ -998,7 +998,7 @@ class BestSellerData {
     stock = json['stock'];
     inStock = json['in_stock'];
     isCombinationAvailable = json['is_combination_available'];
-    reviewsAvg = json['reviews_avg'];
+    reviewsAvg = double.parse(json['reviews_avg'].toString());
     brandId = json['brand_id'];
     manufacturerNumber = json['manufacturer_number'];
     countryCode = json['country_code'];
@@ -1168,7 +1168,7 @@ class DailyDealsData {
   int? stock;
   int? inStock;
   int? isCombinationAvailable;
-  int? reviewsAvg;
+ double? reviewsAvg;
   int? brandId;
   String? manufacturerNumber;
   String? countryCode;
@@ -1300,7 +1300,7 @@ class DailyDealsData {
     stock = json['stock'];
     inStock = json['in_stock'];
     isCombinationAvailable = json['is_combination_available'];
-    reviewsAvg = json['reviews_avg'];
+    reviewsAvg = double.parse(json['reviews_avg'].toString());
     brandId = json['brand_id'];
     manufacturerNumber = json['manufacturer_number'];
     countryCode = json['country_code'];
@@ -1464,7 +1464,7 @@ class RecentlyViewProduct {
   int? stock;
   int? inStock;
   int? isCombinationAvailable;
-  int? reviewsAvg;
+ double? reviewsAvg;
   int? brandId;
   String? manufacturerNumber;
   String? countryCode;
@@ -1584,7 +1584,7 @@ class RecentlyViewProduct {
     stock = json['stock'];
     inStock = json['in_stock'];
     isCombinationAvailable = json['is_combination_available'];
-    reviewsAvg = json['reviews_avg'];
+    reviewsAvg = double.parse(json['reviews_avg'].toString());
     brandId = json['brand_id'];
     manufacturerNumber = json['manufacturer_number'];
     countryCode = json['country_code'];
@@ -1705,6 +1705,7 @@ class ShopByCategory {
   int? showInTopMenu;
   String? image;
   String? slugName;
+  String? largeImageUrl;
   String? smallImageUrl;
 
   ShopByCategory(
@@ -1714,7 +1715,9 @@ class ShopByCategory {
       this.showInTopMenu,
       this.image,
       this.slugName,
-      this.smallImageUrl});
+        this.smallImageUrl,
+      this.largeImageUrl,
+});
 
   ShopByCategory.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -1724,6 +1727,7 @@ class ShopByCategory {
     image = json['image'];
     slugName = json['slug_name'];
     smallImageUrl = json['small_image_url'];
+    largeImageUrl = json['large_image_url'];
   }
 
   Map<String, dynamic> toJson() {
@@ -1735,6 +1739,7 @@ class ShopByCategory {
     data['image'] = this.image;
     data['slug_name'] = this.slugName;
     data['small_image_url'] = this.smallImageUrl;
+    data['large_image_url'] = this.largeImageUrl;
     return data;
   }
 }

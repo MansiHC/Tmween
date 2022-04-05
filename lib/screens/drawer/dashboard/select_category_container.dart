@@ -9,9 +9,10 @@ import '../../../model/dashboard_model.dart';
 
 class SelectCategoryContainer extends StatelessWidget {
   SelectCategoryContainer(
-      {Key? key, required this.category, this.offerVisible = true})
+      {Key? key, required this.category,required this.image, this.offerVisible = true})
       : super(key: key);
   final ShopByCategory category;
+  final String image;
   final bool offerVisible;
 
   @override
@@ -62,9 +63,9 @@ class SelectCategoryContainer extends StatelessWidget {
             5.heightBox,
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),
-                child: category.smallImageUrl!.isNotEmpty
+                child: image.isNotEmpty
                     ? CachedNetworkImage(
-                        imageUrl: category.smallImageUrl!,
+                        imageUrl: image,
                         height: MediaQuery.of(context).size.width / 4.5,
                         placeholder: (context, url) =>
                             Center(child: CupertinoActivityIndicator()),

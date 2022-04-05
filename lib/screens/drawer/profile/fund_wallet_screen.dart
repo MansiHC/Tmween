@@ -120,13 +120,13 @@ class FundWalletScreen extends StatelessWidget {
                                   children: [
                                     Wrap(children: [
                                       SvgPicture.asset(
-                                        ImageConstanst.upiIcon,
+                                        ImageConstanst.syberPay,
                                         height: 24,
                                         width: 24,
                                       ),
                                       15.widthBox,
                                       Text(
-                                        'UPI',
+                                        'SyberPay',
                                         style: TextStyle(
                                             color: Colors.black54,
                                             fontSize: 15,
@@ -140,79 +140,6 @@ class FundWalletScreen extends StatelessWidget {
                                   ],
                                 )),
                             10.heightBox,
-                            Divider(
-                              height: 1,
-                              thickness: 1,
-                              color: Color(0xFFE6E6E6),
-                            ),
-                            10.heightBox,
-                            Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Wrap(children: [
-                                      SvgPicture.asset(
-                                        ImageConstanst.creditCardIcon,
-                                        height: 24,
-                                        width: 24,
-                                      ),
-                                      15.widthBox,
-                                      Text(
-                                        'Credit/Debit Card',
-                                        style: TextStyle(
-                                            color: Colors.black54,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold),
-                                      )
-                                    ]),
-                                    Icon(
-                                      Icons.arrow_right,
-                                      color: Colors.grey[600],
-                                    )
-                                  ],
-                                )),
-                            10.heightBox,
-                            Divider(
-                              height: 1,
-                              thickness: 1,
-                              color: Color(0xFFE6E6E6),
-                            ),
-                            10.heightBox,
-                            Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Wrap(children: [
-                                      SvgPicture.asset(
-                                        ImageConstanst.internetBankingIcon,
-                                        height: 24,
-                                        width: 24,
-                                      ),
-                                      15.widthBox,
-                                      Text(
-                                        'Net Banking',
-                                        style: TextStyle(
-                                            color: Colors.black54,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ]),
-                                    Icon(
-                                      Icons.arrow_right,
-                                      color: Colors.grey[600],
-                                    )
-                                  ],
-                                )),
-                            10.heightBox,
-                            Divider(
-                              height: 1,
-                              thickness: 1,
-                              color: Color(0xFFE6E6E6),
-                            ),
                           ],
                         ))
                   ],
@@ -248,7 +175,7 @@ class FundWalletScreen extends StatelessWidget {
             Align(
               alignment: Alignment.center,
               child: Text(
-                'Payment',
+                'Fund Wallet',
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),

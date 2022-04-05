@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/utils/extensions.dart';
+import 'package:tmween/utils/views/circular_progress_bar.dart';
 import 'package:tmween/utils/views/custom_button.dart';
 import 'package:tmween/utils/views/custom_rectangle_slider_thumb_shape.dart';
 
@@ -10,10 +11,30 @@ import '../../controller/filter_controller.dart';
 import '../../lang/locale_keys.g.dart';
 import '../../utils/global.dart';
 
-class FilterScreen extends StatelessWidget {
+class FilterScreen extends StatefulWidget {
+  final int? catId;
+
+
+  FilterScreen({Key? key, required this.catId}) : super(key: key);
+
+
+  @override
+  State<StatefulWidget> createState() {
+    return FilterScreenState();
+  }
+
+}
+class FilterScreenState extends State<FilterScreen> {
   late String language;
 
   final filterController = Get.put(FilterController());
+
+  @override
+  void initState() {
+    filterController.catId = widget.catId!;
+  //  filterController.getFilterData(Get.locale!.languageCode);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +55,8 @@ class FilterScreen extends StatelessWidget {
                     color: AppColors.appBarColor,
                     padding: EdgeInsets.only(top: 20),
                     child: topView(filterController)),
+                filterController.loading?
+                    CircularProgressBar():
                 Expanded(
                     child: SingleChildScrollView(
                         child: Column(

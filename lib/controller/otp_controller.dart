@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:tmween/controller/login_controller.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 import 'package:tmween/service/api.dart';
 import 'package:tmween/utils/helper.dart';
@@ -157,11 +158,15 @@ class OtpController extends GetxController {
             value.data!.customerData!.largeImageUrl);
         if (value.data!.customerAddressData != null) if (value
                 .data!.customerAddressData!.length >
-            0) if (value.data!.customerAddressData![0].cityName != null)
+            0) if (value.data!.customerAddressData![0].cityName != null) {
           MySharedPreferences.instance.addStringToSF(
               SharedPreferencesKeys.address,
-              "${value.data!.customerAddressData![0].cityName} - ${value.data!.customerAddressData![0].zip}");
-
+              "${value.data!.customerAddressData![0].cityName} - ${value.data!
+                  .customerAddressData![0].zip}");
+          MySharedPreferences.instance.addStringToSF(
+              SharedPreferencesKeys.addressId,
+              value.data!.customerAddressData![0].id);
+        }
         Helper.isIndividual = true;
         navigateToDrawerScreen();
       } else {
@@ -175,6 +180,39 @@ class OtpController extends GetxController {
       print('error....$error');
     });
   }
+
+  reActivateLoginOTP(language,from,
+ frm,
+  isPasswordScreen,
+  isStorePasswordScreen) async {
+    FocusScope.of(context).nextFocus();
+    otp = otpController.text;
+    loading = true;
+    update();
+    await api
+        .reactivateAccount(phone, otp, language)
+        .then((value) {
+      if (value.statusCode == 200) {
+        Get.delete<LoginController>();
+        navigateToLoginScreen(
+            from,
+           frm,
+            isPasswordScreen,
+            isStorePasswordScreen);
+        Helper.showGetSnackBar(value.message!);
+      } else {
+        Helper.showGetSnackBar(value.message!);
+      }
+      loading = false;
+      update();
+    }).catchError((error) {
+      loading = false;
+      update();
+      print('error....$error');
+    });
+  }
+
+
 
   resendOTP(String phone) async {
     print('hdf.....$phone');

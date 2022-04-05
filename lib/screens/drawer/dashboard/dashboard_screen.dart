@@ -50,6 +50,7 @@ var language;
                             padding: EdgeInsets.symmetric(horizontal: 15),
                             child: _shopByCategory(dashboardController)),
                         20.heightBox,
+                        if(dashboardController.dailyDealsData!=null)
                         _dealsOfTheDay(dashboardController),
                         _centerBanner(dashboardController),
                         _bestSeller(dashboardController),
@@ -384,7 +385,8 @@ var language;
                     childAspectRatio: 0.73),
                 itemBuilder: (context, index) {
                   return SelectCategoryContainer(
-                      category: dashboardController.shopByCategory![index]);
+                      category: dashboardController.shopByCategory![index],
+                  image: dashboardController.shopByCategory![index].smallImageUrl! ,);
                 }))
         /*  Container(
             decoration: BoxDecoration(
@@ -438,6 +440,7 @@ var language;
                       fontWeight: FontWeight.bold,
                       color: Colors.white),
                 ),
+
                 Visibility(
                     visible: dashboardController.dailyDealsData!.length > 4,
                     child: InkWell(

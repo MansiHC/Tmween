@@ -10,8 +10,19 @@ import 'package:tmween/utils/views/circular_progress_bar.dart';
 
 import '../../../utils/views/custom_button.dart';
 import '../../../utils/views/custom_text_form_field.dart';
+class DeactivateAccountScreen extends StatefulWidget {
+  final String? mobileNumber;
+  final String? email;
 
-class DeactivateAccountScreen extends StatelessWidget {
+  DeactivateAccountScreen({Key? key,required this.mobileNumber,required this.email}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return DeactivateAccountScreenState();
+  }
+}
+
+class DeactivateAccountScreenState extends State<DeactivateAccountScreen> {
   late String language;
   final deactivateAccountController = Get.put(DeactivateAccountController());
 
@@ -59,7 +70,7 @@ class DeactivateAccountScreen extends StatelessWidget {
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15),
                     child: Text(
-                      'salim.akka@tmween.com',
+                      widget.email!,
                       style: TextStyle(
                           fontSize: 16,
                           color: Colors.black54,
@@ -76,7 +87,7 @@ class DeactivateAccountScreen extends StatelessWidget {
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15),
                     child: Text(
-                      '+249 9822114455',
+                      widget.mobileNumber!,
                       style: TextStyle(
                           fontSize: 16,
                           color: Colors.black54,
@@ -187,7 +198,7 @@ class DeactivateAccountScreen extends StatelessWidget {
                 5.heightBox,
                 _descView(
                   deactivateAccountController,
-                  'Simply contact us to re-activate your account. Your account data will be fully restored - default settings will be applied and you will be subscribed to receive promotional emails from Tmween.',
+                  're-activate your account from login page with generating otp',
                 ),
                 5.heightBox,
                 _descView(

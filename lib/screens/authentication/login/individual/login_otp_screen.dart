@@ -19,6 +19,7 @@ class LoginOtpScreen extends StatefulWidget {
   final String from;
   final String frm;
   final int isLoginWithPassword;
+  final bool isFromReActivate;
 
   LoginOtpScreen(
       {Key? key,
@@ -26,7 +27,8 @@ class LoginOtpScreen extends StatefulWidget {
       required this.phoneEmail,
       required this.from,
       required this.frm,
-      required this.isLoginWithPassword})
+      required this.isLoginWithPassword,
+      required this.isFromReActivate})
       : super(key: key);
 
   @override
@@ -258,6 +260,12 @@ class LoginOtpScreenState extends State<LoginOtpScreen>  {
               textStyle: TextStyle(color: Colors.white),
               controller: otpController.otpController,
               onCompleted: (v) {
+                if(widget.isFromReActivate)
+                  otpController.reActivateLoginOTP(language, widget.from,
+                      widget.frm,
+                      loginController.isPasswordScreen,
+                      loginController.isStorePasswordScreen);
+                else
                 otpController.verifyLoginOTP(language);
               },
               onChanged: (value) {

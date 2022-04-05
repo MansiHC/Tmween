@@ -143,6 +143,8 @@ var language;
                                             category: categoriesController
                                                 .shopByCategory![index],
                                             offerVisible: false,
+                                            image: categoriesController
+                                                .shopByCategory![index].largeImageUrl!,
                                           );
                                         })))))
                   ],

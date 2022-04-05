@@ -4,7 +4,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/model/wallet_history_model.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 
-class MyWalletController extends GetxController {
+class PaymentStatusController extends GetxController {
   late BuildContext context;
 
   int userId = 0;
@@ -30,7 +30,7 @@ class MyWalletController extends GetxController {
     ] ),
     WalletHistoryModel(title:'November 2021',historyItemList: [
       HistoryItem(title: 'Added to Wallet', date: '10 Nov, 9:05 AM', isSuccess: true, successText: 'Received in Wallet'),
-      HistoryItem(title: 'Paid for order', date: '10 Nov, 9:05 AM', isSuccess: false, successText: 'Paid from Waller'),
+      HistoryItem(title: 'Paid for order', date: '10 Nov, 9:05 AM', isSuccess: false, successText: 'Paid from Wallet'),
       HistoryItem(title: 'Paid for order', date: '10 Nov, 9:05 AM', isSuccess: false, successText: 'Failed'),
 
     ]),
