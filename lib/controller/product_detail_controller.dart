@@ -321,17 +321,14 @@ Future<void> getAttributeWithoutCombination(productPackId, language) async {
         supplierBranchId, language)
         .then((value) {
       if (value.statusCode == 200) {
-
         return true;
       } else if (value.statusCode == 401) {
-
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
         return false;
       } else {
-
         Helper.showGetSnackBar(value.message!);
         return false;
       }
