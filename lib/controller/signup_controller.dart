@@ -89,6 +89,7 @@ class SignUpController extends GetxController {
   }
 
   void signUpIndividual(language) {
+
     if (formKey.currentState!.validate()) {
       if (agree) {
         doRequest(language);

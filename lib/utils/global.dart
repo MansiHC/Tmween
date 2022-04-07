@@ -108,6 +108,10 @@ abstract class UrlConstants {
       '$baseUrl/customer/add-customer-review';
   static const String addToCart =
       '$baseUrl/customer/add-to-cart';
+  static const String addReviewReportAbuse =
+      '$baseUrl/customer/add-review-report-abuse';
+  static const String addReviewHelpful =
+      '$baseUrl/customer/add-review-helpful';
 
   //e-commerce
   static const String getMasterData = '$baseUrl/get-master-data';

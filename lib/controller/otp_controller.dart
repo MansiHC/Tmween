@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/controller/login_controller.dart';
+import 'package:tmween/controller/signup_controller.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 import 'package:tmween/service/api.dart';
 import 'package:tmween/utils/helper.dart';
@@ -38,7 +39,8 @@ class OtpController extends GetxController {
     update();
     await api.verifyOTP(phone, otp).then((value) {
       if (value.statusCode == 200) {
-        Get.deleteAll();
+        Get.delete<SignUpController>();
+        Get.delete<OtpController>();
         MySharedPreferences.instance.addIntToSF(
             SharedPreferencesKeys.userId, value.data!.customerData!.id);
         exitScreen();
