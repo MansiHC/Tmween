@@ -672,7 +672,7 @@ class ProductPack {
   int? marketPrice;
   int? packSize;
   int? weightUnitId;
-  int? weight;
+  double? weight;
   int? dimensionUnitId;
   String? height;
   String? width;
@@ -696,7 +696,7 @@ class ProductPack {
     marketPrice = json['market_price'];
     packSize = json['pack_size'];
     weightUnitId = json['weight_unit_id'];
-    weight = json['weight'];
+    weight = double.parse(json['weight'].toString());
     dimensionUnitId = json['dimension_unit_id'];
     height = json['height'];
     width = json['width'];
