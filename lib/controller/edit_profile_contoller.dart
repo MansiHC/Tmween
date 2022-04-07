@@ -174,13 +174,12 @@ class EditProfileController extends GetxController {
     update();
   }
 
-  Future<void> updateMobileNumber(mobile, langCode) async {
-
+  Future<void> updateMobileNumber( langCode) async {
 
     loadingDialog = true;
     update();
     await api
-        .updateMobile(token, userId, mobile, otpValue, langCode)
+        .updateMobile(token, userId, mobileNumberController.text, otpValue, langCode)
         .then((value) {
       if (value.statusCode == 200) {
        // pop();
@@ -196,11 +195,11 @@ class EditProfileController extends GetxController {
     });
   }
 
-  Future<void> updateEmail(email, langCode) async {
+  Future<void> updateEmail(langCode) async {
     loadingDialog = true;
     update();
     await api
-        .updateEmail(token, userId, email, otpValue, langCode)
+        .updateEmail(token, userId, emailController.text, otpValue, langCode)
         .then((value) {
       if (value.statusCode == 200) {
       //  pop();

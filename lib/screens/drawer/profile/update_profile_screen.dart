@@ -381,6 +381,7 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           true);
                       readSMS(editAccountController,true);
                       editAccountController.filled = false;
+                      print('jjjjj.....${editAccountController.mobileNumberController.text}');
                       _showOtpVerificationDialog(
                           editAccountController,
                           editAccountController.mobileNumberController.text,
@@ -710,12 +711,13 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             if(!editProfileController.filled) {
                               editProfileController.pop();
                               editProfileController.filled = true;
+                              print('sjs..dxs...$text');
                               if (isEmail) {
                                 editProfileController.updateEmail(
-                                    text, language);
+                                    language);
                               } else {
                                 editProfileController.updateMobileNumber(
-                                    text, language);
+                                     language);
                               }
                             }
                           },
@@ -776,10 +778,10 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               onPressed: () {
                                 editProfileController.pop();
                                 if (isEmail) {
-                                  editProfileController.updateEmail(text, language);
+                                  editProfileController.updateEmail( language);
                                 } else {
                                   editProfileController.updateMobileNumber(
-                                      text, language);
+                                     language);
                                 }
                               },
                               child: Text(
