@@ -549,7 +549,11 @@ var language;
             Container(
                 height: 244,
                 child: ListView.builder(
-                    itemCount: dashboardController.bestSellerData!.length,
+                    itemCount: dashboardController
+                        .bestSellerData!.length >
+                        AppConstants.cardsPerPage
+                        ? AppConstants.cardsPerPage
+                        : dashboardController.bestSellerData!.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return InkWell(

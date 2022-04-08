@@ -62,7 +62,8 @@ class MyAccountController extends GetxController {
               "${profileData!.cityName} - ${profileData!.zip}");
           MySharedPreferences.instance.addStringToSF(
               SharedPreferencesKeys.addressId,
-              profileData!.id);
+              profileData!.id.toString());
+
         }
         MySharedPreferences.instance.addStringToSF(
             SharedPreferencesKeys.image, profileData!.largeImageUrl);

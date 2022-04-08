@@ -19,6 +19,7 @@ class LoginScreen extends StatefulWidget {
   final String? frmReset;
   final bool? isPassword;
   final bool? isStorePassword;
+  final bool? fromReset;
 
   LoginScreen(
       {Key? key,
@@ -26,7 +27,8 @@ class LoginScreen extends StatefulWidget {
       this.frm,
       this.frmReset,
       this.isPassword = false,
-      this.isStorePassword = false})
+      this.isStorePassword = false,
+      this.fromReset = false})
       : super(key: key);
 
   @override
@@ -45,6 +47,7 @@ class _LoginScreenState extends State<LoginScreen>
 
   @override
   void initState() {
+    print('......${widget.frmReset}');
     if (widget.from != null) {
       if (widget.from == SharedPreferencesKeys.isDrawer) {
         loginController.isPasswordScreen = widget.isPassword!;
@@ -60,6 +63,9 @@ class _LoginScreenState extends State<LoginScreen>
         vsync: this,
         length: loginController.tabList.length,
         initialIndex: loginController.currentTabIndex);
+
+    if(widget.fromReset!)
+      loginController.passwordController.clear();
     super.initState();
   }
 

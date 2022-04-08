@@ -72,13 +72,22 @@ class DrawerScreenState extends State<DrawerScreen>{
                         ? InkWell(
                             onTap: () {
                               if (drawerController.isLogin) {
-                                drawerController.getAddressList(language);
+                                drawerController.getAddressList(language).then((value) {
+
+                                    showModalBottomSheet<void>(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return _bottomSheetView(drawerController);
+                                        });
+                                });
+                              }else{
+                                showModalBottomSheet<void>(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return _bottomSheetView(drawerController);
+                                    });
                               }
-                              showModalBottomSheet<void>(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return _bottomSheetView(drawerController);
-                                  });
+
                             },
                             child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -305,11 +314,11 @@ class DrawerScreenState extends State<DrawerScreen>{
                       ? Column(
                           children: [
                             Visibility(
-                              visible: drawerController.loading,
+                              visible: drawerController.dialogLoading,
                               child: CircularProgressBar(),
                             ),
                             Visibility(
-                              visible: !drawerController.loading &&
+                              visible: !drawerController.dialogLoading &&
                                   drawerController.addressList.length == 0,
                               child: InkWell(
                                   onTap: () {
@@ -339,7 +348,7 @@ class DrawerScreenState extends State<DrawerScreen>{
                                                       FontWeight.bold))))),
                             ),
                             Visibility(
-                                visible: !drawerController.loading &&
+                                visible: !drawerController.dialogLoading &&
                                     drawerController.addressList.length > 0,
                                 child: Container(
                                     height: 170,

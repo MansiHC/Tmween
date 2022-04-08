@@ -69,6 +69,7 @@ class ResetPasswordController extends GetxController {
                   from: LocaleKeys.forgotPassword,
                   frm: frm,
                   frmReset: from,
+              fromReset: true,
                 )),
         (Route<dynamic> route) => false);
   }

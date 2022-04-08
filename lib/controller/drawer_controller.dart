@@ -42,6 +42,7 @@ class DrawerControllers extends GetxController {
   int loginLogId = 0;
   final api = Api();
   bool loading = false;
+  bool dialogLoading = false;
   List<Address> addressList = [];
 
   final pages = [
@@ -107,11 +108,13 @@ class DrawerControllers extends GetxController {
 
   Future<void> getAddressList(language) async {
     addressList = [];
-    loading = true;
+    dialogLoading = true;
     update();
     await api.getCustomerAddressList(token, userId, language).then((value) {
       if (value.statusCode == 200) {
         addressList = value.data!;
+        dialogLoading = false;
+        update();
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
@@ -119,11 +122,12 @@ class DrawerControllers extends GetxController {
         Get.offAll(DrawerScreen());
       } else {
         Helper.showGetSnackBar(value.message!);
+        dialogLoading = false;
+        update();
       }
-      loading = false;
-      update();
+
     }).catchError((error) {
-      loading = false;
+      dialogLoading = false;
       update();
       print('error....$error');
     });
