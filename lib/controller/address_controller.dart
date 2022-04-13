@@ -68,10 +68,10 @@ class AddressController extends GetxController {
     countPersonalAddress = 0;
     countOfficeAddress = 0;
     addressList = [];
-    loading = true;
-    update();
+    Helper.showLoading();
     await api.getCustomerAddressList(token, userId, language).then((value) {
       if (value.statusCode == 200) {
+        Helper.hideLoading(context);
         addressList = value.data!;
         if (addressList.length > 0) {
           if (addressList[0].addressType == "1") {
@@ -86,15 +86,16 @@ class AddressController extends GetxController {
           }
         }
       } else if (value.statusCode == 401) {
+        Helper.hideLoading(context);
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       }
-      loading = false;
+
       update();
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });
@@ -125,24 +126,26 @@ class AddressController extends GetxController {
 
   Future<void> removeAddress(id, language) async {
     //  if (Helper.isIndividual) {
-    loading = true;
+
     countPersonalAddress = 0;
     countOfficeAddress = 0;
-    update();
+    Helper.showLoading();
     await api.deleteCustomerAddress(token, id, userId, language).then((value) {
       if (value.statusCode == 200) {
+        Helper.hideLoading(context);
         getAddressList(Get.locale!.languageCode);
       } else if (value.statusCode == 401) {
+        Helper.hideLoading(context);
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       }
       Helper.showGetSnackBar(value.message!);
-      loading = false;
+
       update();
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });
@@ -155,6 +158,8 @@ class AddressController extends GetxController {
   }
 
   void pop() {
+    countPersonalAddress = 0;
+    countOfficeAddress = 0;
     Navigator.of(context).pop(false);
     update();
   }

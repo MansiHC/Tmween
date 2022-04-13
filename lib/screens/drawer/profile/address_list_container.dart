@@ -123,6 +123,7 @@ class AddressListContainer extends StatelessWidget {
                               style: TextStyle(
                                   color: Color(0xFF666666), fontSize: 15)),
                         3.heightBox,
+                        if(address.stateName!=null)
                         Text('${address.stateName!}, ${address.countryName!}',
                             textAlign: TextAlign.start,
                             maxLines: 2,

@@ -9,24 +9,29 @@ import 'package:tmween/utils/global.dart';
 import '../../model/get_customer_address_list_model.dart';
 
 class AddressContainer extends StatelessWidget {
-  AddressContainer({Key? key, required this.address}) : super(key: key);
+  AddressContainer({Key? key, required this.address,this.addressFromCurrentLocation=false}) : super(key: key);
   final Address address;
   var language;
+  bool addressFromCurrentLocation;
+  var isDefault;
 
   @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
+    isDefault = address.defaultAddress;
+    if(addressFromCurrentLocation)
+      isDefault =0;
     return Container(
       width: 160,
       padding: EdgeInsets.all(10),
       margin: EdgeInsets.all(5),
       decoration: BoxDecoration(
-          color: address.defaultAddress == 1
+          color: isDefault == 1
               ? AppColors.lightBlueBackground
               : Colors.white,
           border: Border.all(color: AppColors.lightBlue),
           boxShadow: [
-            if (address.defaultAddress == 1)
+            if (isDefault == 1)
               BoxShadow(
                 color: AppColors.lightBlue,
                 blurRadius: 4.0,
@@ -87,7 +92,7 @@ class AddressContainer extends StatelessWidget {
                     ])),
             10.heightBox,
             Visibility(
-                visible: address.defaultAddress == 1,
+                visible: isDefault == 1,
                 child: Align(
                     alignment: language == 'ar'
                         ? Alignment.bottomRight

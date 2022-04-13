@@ -27,9 +27,9 @@ class RecentlyViewedController extends GetxController {
   }
 
   Future<void> getData(language) async {
-    loading = true;
-    update();
+    Helper.showLoading();
     await api.getRecentlyViewed("1", language).then((value) {
+      Helper.hideLoading(context);
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
         prev =
@@ -42,10 +42,10 @@ class RecentlyViewedController extends GetxController {
       } else {
         Helper.showGetSnackBar(value.message!);
       }
-      loading = false;
+
       update();
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });

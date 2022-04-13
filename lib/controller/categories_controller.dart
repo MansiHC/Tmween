@@ -23,11 +23,12 @@ class CategoriesController extends GetxController {
 
   @override
   void onInit() {
-    getCategories(Get.locale!.languageCode);
+getCategories(Get.locale!.languageCode);
     super.onInit();
   }
 
   Future<void> getCategories(language) async {
+    //Helper.showLoading();
     loading = true;
     update();
     await api.getAllCategories("1", language).then((value) {
@@ -43,9 +44,11 @@ class CategoriesController extends GetxController {
       } else {
         Helper.showGetSnackBar(value.message!);
       }
-      loading = false;
+      //Helper.hideLoading();
+      loading =false;
       update();
     }).catchError((error) {
+     // Helper.hideLoading();
       loading = false;
       update();
       print('error....$error');

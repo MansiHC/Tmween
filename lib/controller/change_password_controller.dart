@@ -22,7 +22,7 @@ class ChangePasswordController extends GetxController {
   final api = Api();
   bool loading = false;
   bool otpExpired = false;
-  late String otpValue;
+   String otpValue="";
 
   void exitScreen() {
     Get.delete<ChangePasswordController>();
@@ -52,23 +52,24 @@ class ChangePasswordController extends GetxController {
   }
 
   Future<void> generateOtp(language) async {
-    loading = true;
-    update();
+    Helper.showLoading();
     await api.generateSendOtp(token, userId, language).then((value) {
-      loading = false;
-      update();
+
       if (value.statusCode == 200) {
+        Helper.hideLoading(context);
         otpValue = value.data!.otp.toString();
-        update();
+
       } else if (value.statusCode == 401) {
+        Helper.hideLoading(context);
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       }
+      update();
       Helper.showGetSnackBar(value.message!);
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });
@@ -76,23 +77,24 @@ class ChangePasswordController extends GetxController {
 
   Future<void> resendOtp(language) async {
     otpExpired = false;
-    loading = true;
-    update();
+    Helper.showLoading();
     await api.resendMobileOtp(token, userId, language).then((value) {
-      loading = false;
-      update();
+
       if (value.statusCode == 200) {
+        Helper.hideLoading(context);
         otpValue = value.data!.otp.toString();
-        update();
+
       } else if (value.statusCode == 401) {
+        Helper.hideLoading(context);
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       }
+      update();
       Helper.showGetSnackBar(value.message!);
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });
@@ -110,25 +112,26 @@ class ChangePasswordController extends GetxController {
   }
 
   Future<void> changePassword(language) async {
-    loading = true;
-    update();
+    Helper.showLoading();
     await api
         .verifyMobileChangePassword(
             token, userId, otpValue, newPasswordController.text, language)
         .then((value) {
-      loading = false;
-      update();
+
       if (value.statusCode == 200) {
+        Helper.hideLoading(context);
         navigateToDashBoardScreen();
       } else if (value.statusCode == 401) {
+        Helper.hideLoading(context);
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       }
+      update();
       Helper.showGetSnackBar(value.message!);
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });

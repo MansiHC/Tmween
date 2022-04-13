@@ -18,6 +18,7 @@ class WishlistController extends GetxController {
   final api = Api();
   bool loading = false;
   List<WishlistData> wishListData = [];
+  List<WishlistData> wishListItems = [];
   int totalPages = 0;
   int prev = 0;
   int next = 0;
@@ -57,8 +58,8 @@ class WishlistController extends GetxController {
 
   Future<void> getWishListData(language) async {
     wishListData = [];
-    loading = true;
-    update();
+    wishListItems = [];
+    Helper.showLoading();
     await api.getWishListDetails(token, userId, language).then((value) {
       if (value.statusCode == 200) {
         /*totalPages = value.data!.totalPages!;
@@ -67,16 +68,19 @@ class WishlistController extends GetxController {
         next = value.data!.next.runtimeType == int ? value.data!.next : 0;
         totalRecords = value.data!.totalRecords!;*/
         wishListData = value.data!.wishlistData!;
+        wishListItems = value.data!.wishlistData!;
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         //   Get.offAll(DrawerScreen());
       }
-      loading = false;
+      //Helper.hideLoading();
+      Navigator.of(context).pop(false);
       update();
     }).catchError((error) {
-      loading = false;
+     // Helper.hideLoading();
+      Navigator.of(context).pop(false);
       update();
       print('error....$error');
     });
@@ -91,6 +95,7 @@ class WishlistController extends GetxController {
         next = value.data!.next.runtimeType == int ? value.data!.next : 0;
         totalRecords = value.data!.totalRecords!;
         wishListData = value.data!.wishlistData!;
+        wishListItems = value.data!.wishlistData!;
         update();
       }
     }).catchError((error) {
@@ -108,6 +113,7 @@ class WishlistController extends GetxController {
         next = value.data!.next.runtimeType == int ? value.data!.next : 0;
         totalRecords = value.data!.totalRecords!;
         wishListData.addAll(value.data!.wishlistData!);
+        wishListItems.addAll(value.data!.wishlistData!);
         update();
         return true;
       }

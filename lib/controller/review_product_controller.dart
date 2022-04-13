@@ -55,9 +55,9 @@ class ReviewProductController extends GetxController {
   }
 
   Future<void> rateProduct(language) async {
-    loading = true;
-    update();
+    Helper.showLoading();
     await api.addCustomerReview(token, userId,productId,commentController.text,currentRating, language).then((value) {
+      Helper.hideLoading(context);
       if (value.statusCode == 200) {
         Helper.showGetSnackBar(value.message!);
         Get.delete<ReviewProductController>();
@@ -68,10 +68,10 @@ class ReviewProductController extends GetxController {
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       }
-      loading = false;
+
       update();
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });

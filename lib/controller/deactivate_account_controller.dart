@@ -42,10 +42,10 @@ class DeactivateAccountController extends GetxController {
   }
 
   Future<void> deActivate(language) async {
-    loading = true;
-    update();
+    Helper.showLoading();
     await api.deactivateAccount(token, userId,passwordController.text, language).then((value) {
       if (value.statusCode == 200) {
+        Helper.hideLoading(context);
         MySharedPreferences.instance
             .addStringToSF(SharedPreferencesKeys.address, "");
         MySharedPreferences.instance.addStringToSF(SharedPreferencesKeys.image, "");
@@ -54,16 +54,16 @@ class DeactivateAccountController extends GetxController {
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       } else if (value.statusCode == 401) {
+        Helper.hideLoading(context);
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       }
       Helper.showGetSnackBar(value.message!);
-      loading = false;
       update();
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });

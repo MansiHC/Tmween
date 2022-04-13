@@ -4,10 +4,12 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/controller/wishlist_controller.dart';
 import 'package:tmween/model/get_customer_data_model.dart';
+import 'package:tmween/model/user_local_model.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 import 'package:tmween/screens/drawer/profile/update_profile_screen.dart';
 import 'package:tmween/screens/drawer/profile/your_addresses_screen.dart';
 
+import '../database/db_helper.dart';
 import '../service/api.dart';
 import '../utils/global.dart';
 import '../utils/helper.dart';
@@ -49,21 +51,57 @@ class MyAccountController extends GetxController {
     super.onInit();
   }
 
+  Future<void> fetchEmployeesFromDatabase() async {
+    var dbHelper = DBHelper();
+
+   await dbHelper.getuserLocalModels().then((value) {
+      profileData = ProfileData(
+          id: int.parse(value[0].id!),
+          fullname: value[0].fullname,
+          countryName: value[0].countryName,
+          stateName: value[0].stateName,
+          cityName: value[0].cityName,
+          largeImageUrl: value[0].largeImageUrl,
+          mobile1: value[0].mobile1,
+          zip: value[0].zip,
+          phone: value[0].phone,
+          email: value[0].email,
+          yourName: value[0].yourName,
+          image: value[0].image);
+      
+      return profileData;
+    });
+
+  }
+
   Future<void> getCustomerData(language) async {
-    loading = true;
-    update();
+    /* loading = true;
+    update();*/
+    Helper.showLoading();
     await api.getCustomerData(token, userId, language).then((value) {
       if (value.statusCode == 200) {
         profileData = value.data![0];
-
-        if (profileData!.cityName != null){
+        Helper.hideLoading(context);
+        var dbHelper = DBHelper();
+        dbHelper.saveUser(UserLocalModel(
+            id: profileData!.id.toString(),
+            fullname: profileData!.fullname,
+            mobile1: profileData!.mobile1,
+            zip: profileData!.zip,
+            yourName: profileData!.yourName,
+            phone: profileData!.phone,
+            email: profileData!.email,
+            image: profileData!.image,
+            countryName: profileData!.countryName,
+            stateName: profileData!.stateName,
+            cityName: profileData!.cityName,
+            largeImageUrl: profileData!.largeImageUrl));
+        if (profileData!.cityName != null) {
           MySharedPreferences.instance.addStringToSF(
               SharedPreferencesKeys.address,
               "${profileData!.cityName} - ${profileData!.zip}");
           MySharedPreferences.instance.addStringToSF(
-              SharedPreferencesKeys.addressId,
-              profileData!.id.toString());
-
+              SharedPreferencesKeys.addressId, profileData!.id.toString());
         }
         MySharedPreferences.instance.addStringToSF(
             SharedPreferencesKeys.image, profileData!.largeImageUrl);
@@ -75,21 +113,21 @@ class MyAccountController extends GetxController {
       } else {
         Helper.showGetSnackBar(value.message!);
       }
-      loading = false;
+
       update();
     }).catchError((error) {
-      loading = false;
-      update();
+      Helper.hideLoading(context);
+      fetchEmployeesFromDatabase().then((value) => update());
+     //update();
       print('error....$error');
     });
   }
 
   void doLogout(language) async {
-    loading = true;
-    update();
+    Helper.showLoading();
     print('.......$userId....$loginLogId');
     await api.logout(token, userId, loginLogId, language).then((value) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
 
       if (value.statusCode == 401 && value.statusCode == 200) {
@@ -99,7 +137,7 @@ class MyAccountController extends GetxController {
       }
       navigateToDashBoardScreen();
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });

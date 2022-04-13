@@ -35,20 +35,20 @@ class ForgotPasswordController extends GetxController {
   generateOTP(from, frm, language) async {
     FocusScope.of(context).unfocus();
     if (formKey.currentState!.validate()) {
-      loading = true;
-      update();
+      Helper.showLoading();
       await api
           .generateForgotPasswordOTP(emailMobileController.text, language)
           .then((value) {
+        Helper.hideLoading(context);
         if (value.statusCode == 200) {
           submit(from, frm, value.data!.otp.toString());
         } else {
           Helper.showGetSnackBar(value.message!);
         }
-        loading = false;
+
         update();
       }).catchError((error) {
-        loading = false;
+        Helper.hideLoading(context);
         update();
         print('error....$error');
       });

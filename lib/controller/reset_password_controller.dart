@@ -37,19 +37,19 @@ class ResetPasswordController extends GetxController {
   resetPassword(from, frm, email, language) async {
     FocusScope.of(context).unfocus();
     if (formKey.currentState!.validate()) {
-      loading = true;
-      update();
+      Helper.showLoading();
       await api
           .resetPassword(email, confirmPasswordController.text, language)
           .then((value) {
+        Helper.hideLoading(context);
         if (value.statusCode == 200) {
           submit(from, frm);
         }
-        loading = false;
+
         update();
         Helper.showGetSnackBar(value.message!);
       }).catchError((error) {
-        loading = false;
+        Helper.hideLoading(context);
         update();
         print('error....$error');
       });

@@ -67,8 +67,9 @@ class DashboardController extends GetxController {
   }
 
   Future<void> getDashboardData(language) async {
-    loading = true;
-    update();
+    //Helper.showLoading();
+loading = true;
+update();
     await api.getHomePageMobileData(language).then((value) {
       if (value.statusCode == 200) {
         recentlyViewProduct = value.data!.recentlyViewProduct;
@@ -85,9 +86,11 @@ class DashboardController extends GetxController {
       } else {
         Helper.showGetSnackBar(value.message!);
       }
+     // Helper.hideLoading();
       loading = false;
       update();
     }).catchError((error) {
+      //Helper.hideLoading();
       loading = false;
       update();
       print('error....$error');

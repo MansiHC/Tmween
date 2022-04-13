@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/address_type_model.dart';
@@ -30,6 +32,96 @@ class AddAddressScreen extends StatelessWidget {
   Future<bool> _onWillPop(AddAddressController addressController) async {
     addressController.exitScreen();
     return true;
+  }
+
+  Future<Position> _getGeoLocationPosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      await Geolocator.openLocationSettings();
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+  }
+
+  String location = 'Null, Press Button';
+  String addressData = 'search';
+
+  Future<void> GetAddressFromLatLong(Position position) async {
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+    print(placemarks);
+    Placemark place = placemarks[0];
+    addressData =
+        '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
+    addressController.areaStreetController.text = place.street!;
+    addressController.pincodeController.text = place.postalCode!;
+    addressController.currentCountry = place.country!;
+    addressController.currentState = place.administrativeArea!;
+    addressController.currentCity = place.subAdministrativeArea!;
+
+    for (var i = 0; i < addressController.countries.length; i++) {
+      if (addressController.countries[i].countryName!.toLowerCase() ==
+          addressController.currentCountry.toLowerCase()) {
+        addressController.countryValue = addressController.countries[i];
+        addressController.countrySearchController.text =
+            addressController.countries[i].countryName!;
+        addressController.getState(
+            addressController.countries[i].countryCode, language);
+        for (var i = 0; i < addressController.states.length; i++) {
+          if (addressController.states[i].stateName!.toLowerCase() ==
+              addressController.currentState.toLowerCase()) {
+            addressController.stateValue = addressController.states[i];
+            addressController.stateSearchController.text =
+                addressController.states[i].stateName!;
+            addressController.getCity(addressController.states[i].countryCode,
+                addressController.states[i].stateCode, language);
+            for (var i = 0; i < addressController.cities.length; i++) {
+              if (addressController.cities[i].cityName!.toLowerCase() ==
+                  addressController.currentCity.toLowerCase()) {
+                addressController.cityValue = addressController.cities[i];
+                addressController.citySearchController.text =
+                    addressController.cities[i].cityName!;
+                break;
+              }
+            }
+            break;
+          }
+        }
+        break;
+      }
+    }
+    addressController.update();
+  }
+
+  getAddress() async {
+    Position position = await _getGeoLocationPosition();
+    location = 'Lat: ${position.latitude} , Long: ${position.longitude}';
+    GetAddressFromLatLong(position);
   }
 
   @override
@@ -73,51 +165,21 @@ class AddAddressScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        /*  DropdownButtonHideUnderline(
-                          child: DropdownButton2(
-                            buttonDecoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(2),
-                                border: Border.all(
-                                  color: Color(0xFFA7A7A7),
-                                ),
-                                color: Color(0xFFEEEEEE)),
-                            isExpanded: true,
-                            hint: Text(
-                              LocaleKeys.selectCountry.tr,
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            items: addressController.countries
-                                .map((item) => DropdownMenuItem<Country>(
-                                      value: item,
-                                      child: Text(
-                                        item.countryName!,
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ))
-                                .toList(),
-                            value: addressController.countryValue,
-                            onChanged: (value) {
-                              var val = value as Country;
-                              addressController.updateCountry(val, language);
-                            },
-                            icon: const Icon(
-                              Icons.keyboard_arrow_down_sharp,
-                              color: Colors.black45,
-                            ),
-                            iconSize: 24,
-                            buttonHeight: 40,
-                            buttonPadding:
-                                const EdgeInsets.only(left: 10, right: 10),
-                            dropdownDecoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(2),
-                            ),
-                            offset: const Offset(0, 0),
-                          ),
-                        ),*/
+                        CustomButton(
+                            text: 'USE CURRENT LOCATION',
+                            fontSize: 16,
+                            onPressed: () {
+                              getAddress();
+                            }),
+                        10.heightBox,
+                        Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              LocaleKeys.or.tr,
+                              style: TextStyle(
+                                  color: Colors.black87, fontSize: 16),
+                            )),
+                        10.heightBox,
                         Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(2),

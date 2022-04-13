@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tmween/controller/store_owner_signup_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/authentication/signup/otp_screen.dart';
 import 'package:tmween/service/api.dart';
@@ -26,8 +27,7 @@ class SignUpController extends GetxController {
   bool loading = false;
 
   doRequest(language) async {
-    loading = true;
-    update();
+    Helper.showLoading();
     await api
         .request(
             firstNameController.text,
@@ -38,6 +38,7 @@ class SignUpController extends GetxController {
             agreeTo,
             language)
         .then((value) {
+          Helper.hideLoading(context);
       if (value.statusCode == 200) {
         Helper.isIndividual = true;
         Helper.showGetSnackBar(value.message!);
@@ -45,10 +46,10 @@ class SignUpController extends GetxController {
       } else {
         Helper.showGetSnackBar(value.message!);
       }
-      loading = false;
+
       update();
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });
@@ -70,6 +71,8 @@ class SignUpController extends GetxController {
   }
 
   void exitScreen() {
+    Get.delete<SignUpController>();
+    Get.delete<StoreOwnerSignUpController>();
     Navigator.of(context).pop();
   }
 

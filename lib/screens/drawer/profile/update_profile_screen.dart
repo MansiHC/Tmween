@@ -378,15 +378,17 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       editAccountController.generateOTP(
                           editAccountController.mobileNumberController.text,
                           language,
-                          true);
-                      readSMS(editAccountController,true);
-                      editAccountController.filled = false;
-                      print('jjjjj.....${editAccountController.mobileNumberController.text}');
-                      _showOtpVerificationDialog(
-                          editAccountController,
-                          editAccountController.mobileNumberController.text,
-                          language == 'ar' ? 340 : 350,
-                          false);
+                          true).then((value) {
+                        readSMS(editAccountController,true);
+                        editAccountController.filled = false;
+                        print('jjjjj.....${editAccountController.mobileNumberController.text}');
+                        _showOtpVerificationDialog(
+                            editAccountController,
+                            editAccountController.mobileNumberController.text,
+                            language == 'ar' ? 340 : 350,
+                            false);
+                      });
+
                     },
                     child: Padding(
                         padding:
@@ -435,14 +437,16 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       editAccountController.generateOTP(
                           editAccountController.emailController.text,
                           language,
-                          false);
-                      readSMS(editAccountController,false);
-                      editAccountController.filled = false;
-                      _showOtpVerificationDialog(
-                          editAccountController,
-                          editAccountController.emailController.text,
-                          language == 'ar' ? 340 : 350,
-                          true);
+                          false).then((value){
+                        readSMS(editAccountController,false);
+                        editAccountController.filled = false;
+                        _showOtpVerificationDialog(
+                            editAccountController,
+                            editAccountController.emailController.text,
+                            language == 'ar' ? 340 : 350,
+                            true);
+                      });
+
                     },
                     child: Padding(
                         padding:
@@ -601,7 +605,7 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         5.heightBox,
-                        if (!editProfileController.loadingDialog)
+                        if (editProfileController.otpValue.isNotEmpty)
                           Text(
                             'Otp is : ${editProfileController.otpValue}',
                             textAlign: TextAlign.start,
@@ -694,11 +698,11 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             fieldHeight: 50,
                             fieldWidth: 40,
                             activeFillColor: AppColors.primaryColor,
-                            activeColor: AppColors.primaryColor,
-                            selectedColor: AppColors.primaryColor,
+                            activeColor: Colors.grey[300],
+                            selectedColor: Colors.grey[300],
                             selectedFillColor: AppColors.primaryColor,
                             inactiveFillColor: AppColors.lightGrayColor,
-                            inactiveColor: AppColors.lightGrayColor,
+                            inactiveColor: Colors.grey[300],
                           ),
                           animationDuration: const Duration(milliseconds: 300),
                           enableActiveFill: true,

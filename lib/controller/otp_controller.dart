@@ -35,9 +35,9 @@ class OtpController extends GetxController {
     otp = otpController.text;
 
     //    navigateToDrawerScreen();
-    loading = true;
-    update();
+    Helper.showLoading();
     await api.verifyOTP(phone, otp).then((value) {
+      Helper.hideLoading(context);
       if (value.statusCode == 200) {
         Get.delete<SignUpController>();
         Get.delete<OtpController>();
@@ -48,10 +48,10 @@ class OtpController extends GetxController {
       } else {
         Helper.showGetSnackBar(value.statusMessage!);
       }
-      loading = false;
+
       update();
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });
@@ -143,12 +143,12 @@ class OtpController extends GetxController {
   verifyLoginOTP(String language) async {
     FocusScope.of(context).nextFocus();
     otp = otpController.text;
-    loading = true;
-    update();
+    Helper.showLoading();
     await api
         .verifyLoginOTP(phone, otp, uuid, deviceNo, deviceName, platform, model,
             version, language)
         .then((value) {
+      Helper.hideLoading(context);
       if (value.statusCode == 200) {
         MySharedPreferences.instance.addIntToSF(
             SharedPreferencesKeys.loginLogId, value.data!.loginLogId);
@@ -174,10 +174,10 @@ class OtpController extends GetxController {
       } else {
         Helper.showGetSnackBar(value.statusMessage!);
       }
-      loading = false;
+
       update();
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });
@@ -189,11 +189,11 @@ class OtpController extends GetxController {
   isStorePasswordScreen) async {
     FocusScope.of(context).nextFocus();
     otp = otpController.text;
-    loading = true;
-    update();
+    Helper.showLoading();
     await api
         .reactivateAccount(phone, otp, language)
         .then((value) {
+      Helper.hideLoading(context);
       if (value.statusCode == 200) {
         Get.delete<LoginController>();
         navigateToLoginScreen(
@@ -205,10 +205,10 @@ class OtpController extends GetxController {
       } else {
         Helper.showGetSnackBar(value.message!);
       }
-      loading = false;
+
       update();
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });
@@ -218,19 +218,19 @@ class OtpController extends GetxController {
 
   resendOTP(String phone) async {
     print('hdf.....$phone');
-    loading = true;
     otpExpired = false;
-    update();
+    Helper.showLoading();
     await api.resendOTP(phone).then((value) {
+      Helper.hideLoading(context);
       if (value.statusCode == 200) {
         otpValue = value.data!.otp.toString();
         update();
       }
       Helper.showGetSnackBar(value.message!);
-      loading = false;
+
       update();
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });
@@ -238,18 +238,18 @@ class OtpController extends GetxController {
 
   individualLoginResendOTP(String phone) async {
     print('hdf.....$phone');
-    loading = true;
     otpExpired = false;
-    update();
+    Helper.showLoading();
     await api.resendLoginOTPLogin(phone).then((value) {
+      Helper.hideLoading(context);
       if (value.statusCode == 200) {
         otpValue = value.data!.otp.toString();
       }
       Helper.showGetSnackBar(value.message!);
-      loading = false;
+
       update();
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });

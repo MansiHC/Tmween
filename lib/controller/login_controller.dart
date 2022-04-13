@@ -177,12 +177,12 @@ class LoginController extends GetxController {
     FocusScope.of(context).unfocus();
     // navigateToDrawerScreen();
     if (formKey2.currentState!.validate()) {
-      loading = true;
-      update();
+      Helper.showLoading();
       await api
           .login(phoneEmailController.text, passwordController.text, uuid,
               deviceNo, deviceName, platform, model, version, language)
           .then((value) {
+        Helper.hideLoading(context);
         if (value.statusCode == 200) {
           MySharedPreferences.instance.addIntToSF(
               SharedPreferencesKeys.loginLogId, value.data!.loginLogId);
@@ -213,10 +213,10 @@ class LoginController extends GetxController {
         } else {
           Helper.showGetSnackBar(value.message!);
         }
-        loading = false;
+
         update();
       }).catchError((error) {
-        loading = false;
+        Helper.hideLoading(context);
         update();
         print('error....$error');
       });
@@ -266,21 +266,21 @@ class LoginController extends GetxController {
     // navigateToDrawerScreen();
 
     update();
-    loading = true;
-    update();
+    Helper.showLoading();
     await api
         .generateMobileOtpLogin(phoneEmailController.text, language)
         .then((value) async {
+      Helper.hideLoading(context);
       if (value.statusCode == 200) {
         navigateToOTPScreen(value.data!.otp.toString(),
             value.data!.loginWithPasswordFlag!, from, frm, isFromReActivate);
       } else {
         Helper.showGetSnackBar(value.message!);
       }
-      loading = false;
+
       update();
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });

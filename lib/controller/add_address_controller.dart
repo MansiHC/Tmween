@@ -15,36 +15,6 @@ import '../utils/global.dart';
 import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
 
-class CountryModel2 {
-  const CountryModel2({required this.name});
-
-  final String name;
-
-  static fromJson(responseJson) {
-    return null;
-  }
-}
-
-class StateModel2 {
-  const StateModel2({required this.name});
-
-  final String name;
-
-  static fromJson(responseJson) {
-    return null;
-  }
-}
-
-class CityModel2 {
-  const CityModel2({required this.name});
-
-  final String name;
-
-  static fromJson(responseJson) {
-    return null;
-  }
-}
-
 class AddAddressController extends GetxController {
   late BuildContext context;
 
@@ -68,19 +38,15 @@ class AddAddressController extends GetxController {
   final List<String> countryNames = [];
 
   late List<Country> countries = [];
-  late List<CountryModel2> countries2 = [];
   Country? countryValue;
-  CountryModel2? countryValue2;
+
+  String currentCountry = "", currentState = "", currentCity = "";
 
   late List<States> states = [];
-  late List<StateModel2> states2 = [];
   States? stateValue;
-  StateModel2? stateValue2;
 
   late List<City> cities = [];
-  late List<CityModel2> cities2 = [];
   City? cityValue;
-  CityModel2? cityValue2;
 
   late List<AddressTypeModel> addressTypes;
   AddressTypeModel? addressTypeValue;
@@ -93,32 +59,6 @@ class AddAddressController extends GetxController {
 
   @override
   void onInit([Address? address]) {
-    if (!Helper.isIndividual) {
-      countries2 = <CountryModel2>[
-        CountryModel2(
-          name: 'India',
-        ),
-        CountryModel2(
-          name: 'Sudan',
-        ),
-      ];
-      states2 = <StateModel2>[
-        StateModel2(
-          name: 'Gujarat',
-        ),
-        StateModel2(
-          name: 'Ahmedabad',
-        ),
-      ];
-      cities2 = <CityModel2>[
-        CityModel2(
-          name: 'Gujarat',
-        ),
-        CityModel2(
-          name: 'Ahmedabad',
-        ),
-      ];
-    }
     addressTypes = <AddressTypeModel>[
       AddressTypeModel(
         id: '1',
@@ -129,7 +69,6 @@ class AddAddressController extends GetxController {
         name: LocaleKeys.officeAddress.tr,
       ),
     ];
-    //  if (Helper.isIndividual) {
     this.address = address;
     MySharedPreferences.instance
         .getStringValuesSF(SharedPreferencesKeys.token)
@@ -150,11 +89,7 @@ class AddAddressController extends GetxController {
     var language = Get.locale!.languageCode;
     getCountry(language);
     if (address != null) {
-      /*countryValue = Country(countryCode: address.countryCode,countryName: address.countryName);
-      stateValue = States(stateCode: address.stateCode,stateName: address.stateName,countryCode:  address.countryCode);
-      cityValue = City(cityCode: address.cityCode,cityName: address.cityName,stateCode: address.stateCode,countryCode: address.countryCode);
-      addressTypeValue = AddressTypeModel(name: address.addressType!);
-*/
+
       for (var i = 0; i < addressTypes.length; i++) {
         if (addressTypes[i].id == address.addressType) {
           addressTypeValue = addressTypes[i];
@@ -172,7 +107,6 @@ class AddAddressController extends GetxController {
           ? address.deliveryInstruction!
           : '';
     }
-    // }
     super.onInit();
   }
 
@@ -181,10 +115,22 @@ class AddAddressController extends GetxController {
       countries = value.data!.country!;
       for (var i = 0; i < value.data!.country!.length; i++) {
         countryNames.add(value.data!.country![i].countryName!);
+        if(address!=null)
         if (value.data!.country![i].countryName == address!.countryName &&
             value.data!.country![i].countryCode == address!.countryCode) {
           countryValue = value.data!.country![i];
           countrySearchController.text = countryValue!.countryName!;
+          stateSearchController.clear();
+          getState(value.data!.country![i].countryCode, language);
+          break;
+        }
+        if (currentCountry.isNotEmpty) if (countries[i]
+                .countryName!
+                .toLowerCase() ==
+            currentCountry.toLowerCase()) {
+          countryValue = countries[i];
+          countrySearchController.text = countries[i].countryName!;
+          stateSearchController.clear();
           getState(value.data!.country![i].countryCode, language);
           break;
         }
@@ -201,16 +147,29 @@ class AddAddressController extends GetxController {
       states = value.data!.state!;
 
       for (var i = 0; i < value.data!.state!.length; i++) {
+        if(address!=null)
         if (value.data!.state![i].stateName == address!.stateName &&
             value.data!.state![i].stateCode == address!.stateCode &&
             value.data!.state![i].countryCode == address!.countryCode) {
           stateValue = value.data!.state![i];
           stateSearchController.text = stateValue!.stateName!;
+          citySearchController.clear();
           getCity(value.data!.state![i].countryCode,
               value.data!.state![i].stateCode, language);
           break;
         }
-      }
+        if(currentState.isNotEmpty)
+          if (states[i].stateName!.toLowerCase() ==
+              currentState.toLowerCase()) {
+            stateValue = states[i];
+           stateSearchController.text =
+           states[i].stateName!;
+            citySearchController.clear();
+            getCity(value.data!.state![i].countryCode,
+                value.data!.state![i].stateCode, language);
+            break;
+          }
+          }
       update();
     }).catchError((error) {
       update();
@@ -223,6 +182,7 @@ class AddAddressController extends GetxController {
     await api.getCity(countryCode, stateCode, language).then((value) {
       cities = value.data!.city!;
       for (var i = 0; i < value.data!.city!.length; i++) {
+        if(address!=null)
         if (value.data!.city![i].cityName == address!.cityName &&
             value.data!.city![i].cityCode == address!.cityCode &&
             value.data!.city![i].stateCode == address!.stateCode &&
@@ -231,6 +191,15 @@ class AddAddressController extends GetxController {
           citySearchController.text = cityValue!.cityName!;
           break;
         }
+        if(currentCity.isNotEmpty)
+          if (cities[i].cityName!.toLowerCase() ==
+              currentCity.toLowerCase()) {
+           cityValue =cities[i];
+            citySearchController.text =
+            cities[i].cityName!;
+           break;
+
+      }
       }
       update();
     }).catchError((error) {
@@ -254,8 +223,9 @@ class AddAddressController extends GetxController {
       } else if (addressTypeValue == null) {
         Helper.showGetSnackBar('Please Select Address Type');
       } else {
-        loading = true;
-        update();
+        //loading = true;
+        Helper.showLoading();
+       // update();
         await api
             .addCustomerAddress(
                 token,
@@ -274,20 +244,23 @@ class AddAddressController extends GetxController {
                 defaultValue,
                 language)
             .then((value) {
-          loading = false;
-          update();
+
+
           if (value.statusCode == 200) {
+            Helper.hideLoading(context);
             Get.delete<AddAddressController>();
             Navigator.of(context).pop(true);
           } else if (value.statusCode == 401) {
+            Helper.hideLoading(context);
             MySharedPreferences.instance
                 .addBoolToSF(SharedPreferencesKeys.isLogin, false);
             Get.deleteAll();
             Get.offAll(DrawerScreen());
           }
+          update();
           Helper.showGetSnackBar(value.message!);
         }).catchError((error) {
-          loading = false;
+          Helper.hideLoading(context);
           update();
           print('error....$error');
         });
@@ -309,8 +282,9 @@ class AddAddressController extends GetxController {
       } else if (addressTypeValue == null) {
         Helper.showGetSnackBar('Please Select Address Type');
       } else {
-        loading = true;
-        update();
+        print(
+            '........${countryValue!.countryCode}...${stateValue!.stateCode}.....${cityValue!.cityCode}');
+        Helper.showLoading();
         await api
             .editCustomerAddress(
                 token,
@@ -330,20 +304,23 @@ class AddAddressController extends GetxController {
                 defaultValue,
                 language)
             .then((value) {
-          loading = false;
-          update();
+
+
           if (value.statusCode == 200) {
+            Helper.hideLoading(context);
             Get.delete<AddAddressController>();
             Navigator.of(context).pop(true);
           } else if (value.statusCode == 401) {
+            Helper.hideLoading(context);
             MySharedPreferences.instance
                 .addBoolToSF(SharedPreferencesKeys.isLogin, false);
             Get.deleteAll();
             Get.offAll(DrawerScreen());
           }
+          update();
           Helper.showGetSnackBar(value.message!);
         }).catchError((error) {
-          loading = false;
+          Helper.hideLoading(context);
           update();
           print('error....$error');
         });
@@ -358,6 +335,8 @@ class AddAddressController extends GetxController {
     stateValue = null;
     update();
     countrySearchController.text = value.countryName!;
+    stateSearchController.clear();
+    citySearchController.clear();
     getState(value.countryCode, language);
     update();
   }
@@ -368,6 +347,7 @@ class AddAddressController extends GetxController {
     cityValue = null;
     update();
     stateSearchController.text = value.stateName!;
+    citySearchController.clear();
     getCity(value.countryCode, value.stateCode, language);
     update();
   }

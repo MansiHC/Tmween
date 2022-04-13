@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen>
 
   @override
   void initState() {
-    print('......${widget.frmReset}');
+    print('......${widget.frm}.....${widget.from}');
     if (widget.from != null) {
       if (widget.from == SharedPreferencesKeys.isDrawer) {
         loginController.isPasswordScreen = widget.isPassword!;
@@ -59,7 +59,13 @@ class _LoginScreenState extends State<LoginScreen>
         loginController.isStorePasswordScreen = widget.isStorePassword!;
       }
     }
-    loginController.tabController = TabController(
+    if (widget.frm != null) {
+      if (widget.frm == AppConstants.individual) {
+        loginController.currentTabIndex = 0;
+      }else{
+        loginController.currentTabIndex = 1;
+      }}
+        loginController.tabController = TabController(
         vsync: this,
         length: loginController.tabList.length,
         initialIndex: loginController.currentTabIndex);

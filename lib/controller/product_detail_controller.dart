@@ -5,17 +5,13 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/model/AttributeModel.dart';
-import 'package:tmween/model/review_model.dart';
-import 'package:tmween/model/seller_on_tmween_model.dart';
 import 'package:tmween/screens/drawer/dashboard/product_detail_screen.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 import 'package:tmween/utils/global.dart';
-import 'package:tmween/utils/views/transparent_page.dart';
 
 import '../model/attribute_combination_model.dart';
 import '../model/get_customer_address_list_model.dart';
 import '../model/product_detail_model.dart';
-import '../model/recently_viewed_model.dart';
 import '../service/api.dart';
 import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
@@ -37,6 +33,7 @@ class ProductDetailController extends GetxController {
   int userId = 0;
   String token = '';
   int loginLogId = 0;
+  bool addressFromCurrentLocation = false;
   final api = Api();
   bool loading = false;
   bool detailLoading = false;
@@ -48,7 +45,7 @@ class ProductDetailController extends GetxController {
   ProductOtherInfo? bottomRightInfo;
   List<Address> addressList = [];
   bool isLogin = true;
-  String image = "", address = "",addressId="";
+  String image = "", address = "", addressId = "";
   List<String> attributeTypeArr = [];
   List<String> attributeValueArray = [];
   final List<AttributeModel> attributeItems = [];
@@ -103,8 +100,7 @@ class ProductDetailController extends GetxController {
   }
 
   Future<void> getProductDetails(language) async {
-    detailLoading = true;
-    update();
+    Helper.showLoading();
     attributeTypeArr = [];
     attributeValueArray = [];
     await api
@@ -134,13 +130,13 @@ class ProductDetailController extends GetxController {
             a.setSecondaryIndex = 0;
             attributeItems.add(a);
           }
-          if(attributeTypeArr.length==0){
-            getAttributeWithoutCombination(packId, language);
-          }else {
-            getAttributeCombination(packId, language);
+          if (attributeTypeArr.length == 0) {
+            getAttributeWithoutCombination(packId, language, 0);
+          } else {
+            getAttributeCombination(packId, language, 0);
           }
         } else {
-          detailLoading = false;
+          Helper.hideLoading(context);
           update();
         }
         for (var i = 0; i < productDetailData!.productOtherInfo!.length; i++) {
@@ -163,10 +159,11 @@ class ProductDetailController extends GetxController {
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       } else {
+        Helper.hideLoading(context);
         Helper.showGetSnackBar(value.message!);
       }
     }).catchError((error) {
-      detailLoading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });
@@ -200,17 +197,10 @@ class ProductDetailController extends GetxController {
 
       update();
     }
-    Navigator.of(context).push(
-      PageRouteBuilder(
-        opaque: false,
-        pageBuilder: (_, __, ___) {
-          return TransparentPage();
-        },
-      ),
-    );
-    if(attributeTypeArr.length==0){
-      getAttributeWithoutCombination(packId, language);
-    }else {
+    Helper.showLoading();
+    if (attributeTypeArr.length == 0) {
+      getAttributeWithoutCombination(packId, language, 1);
+    } else {
       final Map<String, dynamic> attrData = {
         "attribute_type": attributeTypeArr,
         "attribute_value": attributeValueArray
@@ -218,27 +208,26 @@ class ProductDetailController extends GetxController {
       print('$attrData.....$productId....$packId');
       await api
           .getItemIdByAttributeCombination(
-          packId, productId, attrData, language)
+              packId, productId, attrData, language)
           .then((value) {
+        Helper.hideLoading(context);
         if (value.statusCode == 200) {
           attributeData = value.data;
         } else {
           Helper.showGetSnackBar(value.message!);
         }
-        pop();
+
         update();
       }).catchError((error) {
-        pop();
+        Helper.hideLoading(context);
         update();
         print('error....$error');
       });
     }
   }
 
-  Future<void> getAttributeCombination(productPackId, language) async {
-    detailLoading = true;
-    update();
-
+  Future<void> getAttributeCombination(productPackId, language, int i) async {
+    if (i == 1) Helper.showLoading();
     final Map<String, dynamic> attrData = {
       "attribute_type": attributeTypeArr,
       "attribute_value": attributeValueArray
@@ -248,37 +237,37 @@ class ProductDetailController extends GetxController {
         .getItemIdByAttributeCombination(
             productPackId, productId, attrData, language)
         .then((value) {
+      Helper.hideLoading(context);
       if (value.statusCode == 200) {
         attributeData = value.data;
       } else {
         Helper.showGetSnackBar(value.message!);
       }
-      detailLoading = false;
+
       update();
     }).catchError((error) {
-      detailLoading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });
   }
 
-Future<void> getAttributeWithoutCombination(productPackId, language) async {
-    detailLoading = true;
-    update();
-
-   await api
-        .getProductSupplier(
-            productPackId, productId,  language)
+  Future<void> getAttributeWithoutCombination(
+      productPackId, language, int i) async {
+    if (i == 1) Helper.showLoading();
+    await api
+        .getProductSupplier(productPackId, productId, language)
         .then((value) {
+      Helper.hideLoading(context);
       if (value.statusCode == 200) {
         attributeData = value.data;
       } else {
         Helper.showGetSnackBar(value.message!);
       }
-      detailLoading = false;
+
       update();
     }).catchError((error) {
-      detailLoading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });
@@ -312,13 +301,14 @@ Future<void> getAttributeWithoutCombination(productPackId, language) async {
     });
   }
 
-  Future<bool> addToCart(productItemId,supplierId,
-      supplierBranchId,language) async {
+  Future<bool> addToCart(
+      productItemId, supplierId, supplierBranchId, language) async {
     addressList = [];
-    print('add......$productId,$packId,$productItemId,$userId,$quntity,$addressId,$supplierId,$supplierBranchId');
+    print(
+        'add......$productId,$packId,$productItemId,$userId,$quntity,$addressId,$supplierId,$supplierBranchId');
     await api
-        .addToCart(token, productId,packId,productItemId,userId,quntity,addressId,supplierId,
-        supplierBranchId, language)
+        .addToCart(token, productId, packId, productItemId, userId, quntity,
+            addressId, supplierId, supplierBranchId, language)
         .then((value) {
       if (value.statusCode == 200) {
         return true;
@@ -365,9 +355,9 @@ Future<void> getAttributeWithoutCombination(productPackId, language) async {
 
   Future<void> getAddressList(language) async {
     addressList = [];
-    loading = true;
-    update();
+    Helper.showLoading();
     await api.getCustomerAddressList(token, userId, language).then((value) {
+      Helper.hideLoading(context);
       if (value.statusCode == 200) {
         addressList = value.data!;
       } else if (value.statusCode == 401) {
@@ -376,10 +366,10 @@ Future<void> getAttributeWithoutCombination(productPackId, language) async {
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       }
-      loading = false;
+
       update();
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });
@@ -400,8 +390,7 @@ Future<void> getAttributeWithoutCombination(productPackId, language) async {
       deliveryInstruction,
       defaultValue,
       language) async {
-    loading = true;
-    update();
+    Helper.showLoading();
     await api
         .editCustomerAddress(
             token,
@@ -421,7 +410,7 @@ Future<void> getAttributeWithoutCombination(productPackId, language) async {
             defaultValue,
             language)
         .then((value) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       if (value.statusCode == 200) {
         Get.delete<ProductDetailController>();
@@ -441,14 +430,13 @@ Future<void> getAttributeWithoutCombination(productPackId, language) async {
         Get.offAll(DrawerScreen());
       }
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });
   }
 
   final List<String> items = ['Sofa', 'Bed'];
-
 
   int val = 1;
 
@@ -486,11 +474,6 @@ Future<void> getAttributeWithoutCombination(productPackId, language) async {
     isDeliveryReturnExpanded = !isDeliveryReturnExpanded;
     update();
   }
-
-
-
-
-
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));

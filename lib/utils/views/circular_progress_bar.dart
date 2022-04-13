@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tmween/utils/extensions.dart';
+import 'package:tmween/utils/views/transparent_page.dart';
 
 import '../global.dart';
 
@@ -8,6 +9,7 @@ class CircularProgressBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // _showDialog(context);
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

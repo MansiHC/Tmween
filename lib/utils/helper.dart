@@ -14,6 +14,31 @@ class Helper {
         fontSize: 14.0);
   }
 
+  static void showLoading() {
+    Get.dialog(
+      Material(
+        type: MaterialType.transparency,
+        child: Center(
+          child: Container(
+              padding: EdgeInsets.all(10),
+              /*  decoration: BoxDecoration(
+                color: Colors.white,
+              shape: BoxShape.circle
+            ),*/
+              child: CircularProgressIndicator(
+                backgroundColor: AppColors.primaryColor,
+              )),
+        ),
+      ),
+      barrierDismissible: false,
+    );
+  }
+
+  static void hideLoading(context) {
+    //Get.back();
+    Navigator.of(context).pop();
+  }
+
   /*static void showSnackBar(BuildContext context, String message) {
     var snackBar = SnackBar(
       animation: null,
@@ -38,7 +63,8 @@ class Helper {
     Get.snackbar(
       message,
       "",
-      duration: 2.seconds,
+      animationDuration: 100.milliseconds,
+      duration: 1.seconds,
       snackPosition: SnackPosition.BOTTOM,
       showProgressIndicator: false,
       isDismissible: false,

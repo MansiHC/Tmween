@@ -32,7 +32,9 @@ class DrawerControllers extends GetxController {
   late List<LanguageModel> languages;
   late LanguageModel languageValue;
   bool isLogin = true;
+  bool addressFromCurrentLocation = true;
   String image = "", address = "";
+
 
   ListQueue<int> navigationQueue = ListQueue();
 
@@ -108,26 +110,26 @@ class DrawerControllers extends GetxController {
 
   Future<void> getAddressList(language) async {
     addressList = [];
-    dialogLoading = true;
-    update();
+    Helper.showLoading();
     await api.getCustomerAddressList(token, userId, language).then((value) {
       if (value.statusCode == 200) {
         addressList = value.data!;
-        dialogLoading = false;
-        update();
+        Helper.hideLoading(context);
+
       } else if (value.statusCode == 401) {
+        Helper.hideLoading(context);
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       } else {
+        Helper.hideLoading(context);
         Helper.showGetSnackBar(value.message!);
-        dialogLoading = false;
-        update();
-      }
 
+      }
+update();
     }).catchError((error) {
-      dialogLoading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });
@@ -148,8 +150,7 @@ class DrawerControllers extends GetxController {
       deliveryInstruction,
       defaultValue,
       language) async {
-    loading = true;
-    update();
+    Helper.showLoading();
     await api
         .editCustomerAddress(
             token,
@@ -169,21 +170,28 @@ class DrawerControllers extends GetxController {
             defaultValue,
             language)
         .then((value) {
-      loading = false;
-      update();
+
       if (value.statusCode == 200) {
+        Helper.hideLoading(context);
+        MySharedPreferences.instance
+            .addBoolToSF(
+            SharedPreferencesKeys
+                .addressFromCurrentLocation,
+            false);
         Get.delete<DrawerControllers>();
         Get.delete<DashboardController>();
         Get.offAll(DrawerScreen());
       } else if (value.statusCode == 401) {
+        Helper.hideLoading(context);
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       }
-      Helper.showGetSnackBar(value.message!);
+      update();
+    //  Helper.showGetSnackBar(value.message!);
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });

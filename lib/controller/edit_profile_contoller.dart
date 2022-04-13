@@ -41,7 +41,7 @@ class EditProfileController extends GetxController {
   int userId = 0;
   int loginLogId = 0;
   String token = '';
-  late String otpValue;
+   String otpValue="";
 
   final api = Api();
   bool loading = false;
@@ -75,52 +75,51 @@ class EditProfileController extends GetxController {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
   }
 
-  generateOTP(emailMobile, language, isMobile) async {
+  Future<void> generateOTP(emailMobile, language, isMobile) async {
     FocusScope.of(context).unfocus();
     // navigateToDrawerScreen();
-    update();
-    loadingDialog = true;
-    update();
+    Helper.showLoading();
+
     await api
         .generateMobileOtp(emailMobile, userId, isMobile, language)
         .then((value) {
+      Helper.hideLoading(context);
       if (value.statusCode == 200) {
+
         otpValue = value.data!.otp.toString();
       }
       Helper.showGetSnackBar(value.message!);
-
-      loadingDialog = false;
       update();
     }).catchError((error) {
-      loadingDialog = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });
   }
 
   resendOTP(emailMobile, isMobile) async {
-    loadingDialog = true;
     otpExpired = false;
-    update();
+    Helper.showLoading();
     await api.resendLoginOTP(userId, emailMobile, isMobile).then((value) {
+      Helper.hideLoading(context);
       if (value.statusCode == 200) {
         otpValue = value.data!.otp.toString();
       }
       Helper.showGetSnackBar(value.message!);
 
-      loadingDialog = false;
       update();
     }).catchError((error) {
-      loadingDialog = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });
   }
 
   Future<void> updateNameImage(oldImage, language) async {
-    loadingImageName = true;
+  //  loadingImageName = true;
+    Helper.showLoading();
     FocusScope.of(context).unfocus();
-    update();
+    //update();
     MySharedPreferences.instance
         .getStringValuesSF(SharedPreferencesKeys.token)
         .then((value) async {
@@ -141,20 +140,23 @@ class EditProfileController extends GetxController {
                 language)
             .then((value) {
           if (value.statusCode == 200) {
+            Helper.hideLoading(context);
             Helper.showGetSnackBar(value.message!);
             exitScreen();
           } else if (value.statusCode == 401) {
+            Helper.hideLoading(context);
             MySharedPreferences.instance
                 .addBoolToSF(SharedPreferencesKeys.isLogin, false);
             Get.deleteAll();
             Get.offAll(DrawerScreen());
           } else {
+            Helper.hideLoading(context);
             Helper.showGetSnackBar(value.message!);
           }
-          loadingImageName = false;
+
           update();
         }).catchError((error) {
-          loadingImageName = false;
+          Helper.hideLoading(context);
           update();
           print('error....$error');
         });
@@ -176,41 +178,39 @@ class EditProfileController extends GetxController {
 
   Future<void> updateMobileNumber( langCode) async {
 
-    loadingDialog = true;
-    update();
+    Helper.showLoading();
     await api
         .updateMobile(token, userId, mobileNumberController.text, otpValue, langCode)
         .then((value) {
+      Helper.hideLoading(context);
       if (value.statusCode == 200) {
        // pop();
         exitScreen();
       }
       Helper.showGetSnackBar(value.message!);
-      loadingDialog = false;
       //update();
     }).catchError((error) {
-      loadingDialog = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });
   }
 
   Future<void> updateEmail(langCode) async {
-    loadingDialog = true;
-    update();
+    Helper.showLoading();
     await api
         .updateEmail(token, userId, emailController.text, otpValue, langCode)
         .then((value) {
+      Helper.hideLoading(context);
       if (value.statusCode == 200) {
       //  pop();
         exitScreen();
       }
       Helper.showGetSnackBar(value.message!);
-      loadingDialog = false;
      // update();
     }).catchError((error) {
-      loadingDialog = false;
-     // update();
+      Helper.hideLoading(context);
+      update();
       print('error....$error');
     });
   }

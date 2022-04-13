@@ -70,8 +70,7 @@ class AllReviewController extends GetxController {
   }
 
   Future<void> getAllReviews(language) async {
-    loading = true;
-    update();
+    Helper.showLoading();
     await api.getProductReviewsList(productId,language).then((value) {
       if (value.statusCode == 200) {
         reviewsList =  value.data!.reviewProductData!;
@@ -113,16 +112,18 @@ class AllReviewController extends GetxController {
            percent5 = averageRating5*100;
 
         }
+        Helper.hideLoading(context);
       } else if (value.statusCode == 401) {
+        Helper.hideLoading(context);
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       }
-      loading = false;
+
       update();
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });

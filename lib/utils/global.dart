@@ -227,6 +227,7 @@ abstract class SharedPreferencesKeys {
   static const String homeCountryDetails = 'homeCountry';
   static const isLogin = "isLogin";
  static const address = "address";
+ static const addressFromCurrentLocation = "addressFromCurrentLocation";
   static const addressId = "addressId";
   static const image = "image";
   static const isDashboard = "isDashboard";

@@ -26,17 +26,16 @@ class StoreOtpController extends GetxController {
 
     navigateToDrawerScreen();
     /*
-    loading = true;
-    update();
+   Helper.showLoading();
     await api.verifyOTP(context, 1, phone, otp).then((value) {
-      loading = false;
+     Helper.hideLoading();
       update();
       Helper.showSnackBar(context, value.status_message!);
       if(value.message==AppConstants.success) {
       doRegister( name, email, phone, password,deviceType,langCode,agreeTerms);
       }
     }).catchError((error) {
-      loading = false;
+    Helper.hideLoading();
       update();
       print('error....$error');
     });*/
@@ -51,12 +50,11 @@ class StoreOtpController extends GetxController {
 
   doRegister(String name, String email, String phone, String password,
       String deviceType, String langCode, String agreeTerms) async {
-    loading = true;
-    update();
+    Helper.showLoading();
     await api
         .register(name, password, email, phone, agreeTerms, langCode)
         .then((value) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('value....${value.toString()}');
       Helper.showGetSnackBar(value.message!);
@@ -65,7 +63,7 @@ class StoreOtpController extends GetxController {
       }*/
       navigateToDrawerScreen();
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });
@@ -73,16 +71,15 @@ class StoreOtpController extends GetxController {
 
   resendOTP() async {
     otpExpired = false;
-    /* loading = true;
-    update();
+    /* Helper.showLoading();
 
     await api.resendOTP(context, "1", phone).then((value) {
-      loading = false;
+     Helper.hideLoading();
       update();
       Helper.showSnackBar(context, value.status_message!);
       if (value.message == AppConstants.success) {}
     }).catchError((error) {
-      loading = false;
+     Helper.hideLoading();
       update();
       print('error....$error');
     });*/

@@ -12,6 +12,7 @@ import '../model/search_history_model.dart';
 import '../screens/drawer/drawer_screen.dart';
 import '../service/api.dart';
 import '../utils/global.dart';
+import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
 
 class SearchController extends GetxController {
@@ -87,16 +88,17 @@ class SearchController extends GetxController {
 
   Future<void> getFilterData(language) async {
     await api.getFilterData('1','fresh', language).then((value) {
+      Helper.hideLoading(context);
       if (value.statusCode == 200) {
 
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
       }
-      historyLoading = false;
+
       update();
     }).catchError((error) {
-      historyLoading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });
@@ -119,9 +121,11 @@ Future<void> getHistoryList(language) async {
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       }
+      // Helper.hideLoading();
       historyLoading = false;
       update();
     }).catchError((error) {
+      // Helper.hideLoading();
       historyLoading = false;
       update();
       print('error....$error');
@@ -148,6 +152,7 @@ Future<void> getHistoryList(language) async {
 
   Future<void> getPopularList(language) async {
     popularList = [];
+  //  Helper.showLoading();
     historyLoading = true;
     update();
     await api.getPopularSearch(language).then((value) {
@@ -156,11 +161,13 @@ Future<void> getHistoryList(language) async {
         if (isLogin)
           getHistoryList(Get.locale!.languageCode);
         else {
+         // Helper.hideLoading();
           historyLoading = false;
           update();
         }
       }
     }).catchError((error) {
+     // Helper.hideLoading();
       historyLoading = false;
       update();
       print('error....$error');

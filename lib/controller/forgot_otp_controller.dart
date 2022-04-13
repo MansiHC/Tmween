@@ -119,21 +119,21 @@ class ForgotOtpController extends GetxController {
     if (otpController.text.isEmpty) {
       Helper.showGetSnackBar('Please Enter Otp First.');
     } else {
-      loading = true;
-      update();
+      Helper.showLoading();
       await api
           .verifyForgotPasswordOTP(otpController.text, email, uuid, deviceNo,
               deviceName, platform, model, version, language)
           .then((value) {
+        Helper.hideLoading(context);
         if (value.statusCode == 200) {
           submit(from, frm, email);
         } else {
           Helper.showGetSnackBar(value.message!);
         }
-        loading = false;
+
         update();
       }).catchError((error) {
-        loading = false;
+        Helper.hideLoading(context);
         update();
         print('error....$error');
       });
@@ -143,18 +143,17 @@ class ForgotOtpController extends GetxController {
   resendOTP(from, frm, language, email) async {
     FocusScope.of(context).unfocus();
     otpExpired = false;
-    loading = true;
-    update();
+    Helper.showLoading();
     await api.resendForgotPasswordOTP(email, language).then((value) {
+      Helper.hideLoading(context);
       if (value.statusCode == 200) {
         otpValue = value.data!.otp.toString();
       } else {
         Helper.showGetSnackBar(value.message!);
       }
-      loading = false;
       update();
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });

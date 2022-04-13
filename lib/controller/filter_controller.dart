@@ -7,6 +7,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import '../lang/locale_keys.g.dart';
 import '../model/get_filter_data_model.dart';
 import '../service/api.dart';
+import '../utils/helper.dart';
 
 class League {
   String leagueName;
@@ -54,16 +55,16 @@ class FilterController extends GetxController {
   late GetFilterData filteredData;
 
   Future<void> getFilterData(language) async {
-    loading = true;
-    update();
+    Helper.showLoading();
     await api.getFilterData("1", catId, language).then((value) {
+
       if (value.statusCode == 200) {
 filteredData = value.data!;
       }
-      loading = false;
+      Helper.hideLoading(context);
       update();
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });

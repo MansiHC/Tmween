@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/model/popular_search_model.dart';
+import 'package:tmween/screens/drawer/product_listing_screen.dart';
 import 'package:tmween/screens/drawer/search_screen.dart';
 
 import '../model/get_customer_address_list_model.dart';
@@ -13,6 +14,7 @@ import '../screens/drawer/drawer_screen.dart';
 import '../service/api.dart';
 import '../utils/animations.dart';
 import '../utils/global.dart';
+import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
 
 class ProductListingController extends GetxController {
@@ -22,6 +24,7 @@ class ProductListingController extends GetxController {
 
   int val = 1;
   var searchedString = '';
+  var from = '';
 
   int userId = 0;
   String token = '';
@@ -29,6 +32,7 @@ class ProductListingController extends GetxController {
   final api = Api();
   bool loading = false;
   bool searchLoading = false;
+  bool addressFromCurrentLocation = false;
   List<Address> addressList = [];
   List<ProductData> productList = [];
   int totalPages = 0;
@@ -54,6 +58,7 @@ class ProductListingController extends GetxController {
         .getStringValuesSF(SharedPreferencesKeys.address)
         .then((value) async {
       if (value != null) address = value;
+      print('......$value');
       update();
     });
     MySharedPreferences.instance
@@ -68,9 +73,9 @@ class ProductListingController extends GetxController {
 
   Future<void> getAddressList(language) async {
     addressList = [];
-    loading = true;
-    update();
+    Helper.showLoading();
     await api.getCustomerAddressList(token, userId, language).then((value) {
+      Helper.hideLoading(context);
       if (value.statusCode == 200) {
         addressList = value.data!;
       } else if (value.statusCode == 401) {
@@ -79,10 +84,10 @@ class ProductListingController extends GetxController {
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       }
-      loading = false;
+
       update();
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });
@@ -90,12 +95,12 @@ class ProductListingController extends GetxController {
 
   Future<void> getProductList(searchString,language) async {
     productList = [];
-    searchLoading = true;
-    update();
+    Helper.showLoading();
     await api
         .topSearchSuggestionProductList(
             "1", searchString, userId, isLogin, language)
         .then((value) {
+      Helper.hideLoading(context);
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
         prev =
@@ -109,10 +114,10 @@ class ProductListingController extends GetxController {
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       }
-      searchLoading = false;
+
       update();
     }).catchError((error) {
-      searchLoading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });
@@ -158,8 +163,7 @@ class ProductListingController extends GetxController {
       deliveryInstruction,
       defaultValue,
       language) async {
-    loading = true;
-    update();
+    Helper.showLoading();
     await api
         .editCustomerAddress(
             token,
@@ -179,11 +183,18 @@ class ProductListingController extends GetxController {
             defaultValue,
             language)
         .then((value) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       if (value.statusCode == 200) {
         Get.delete<ProductListingController>();
         Navigator.of(context).pop(true);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ProductListingScreen(
+                  from: from,
+                  searchString: searchedString,
+                )));
         update();
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
@@ -192,7 +203,7 @@ class ProductListingController extends GetxController {
         Get.offAll(DrawerScreen());
       }
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });

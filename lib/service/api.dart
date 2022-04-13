@@ -471,7 +471,7 @@ class Api {
   }
 
   Future<GetCustomerDataModel> getCustomerData(token, userId, langCode) async {
-    late GetCustomerDataModel result;
+     GetCustomerDataModel result = GetCustomerDataModel();
     try {
       final response = await http.post(Uri.parse(UrlConstants.getCustomerData),
           headers: {
@@ -487,7 +487,6 @@ class Api {
             "lang_code": langCode
           }));
       var responseJson = _returnResponse(response);
-
       result = GetCustomerDataModel.fromJson(responseJson);
     } on SocketException {
       Helper.showGetSnackBar(LocaleKeys.noInternet.tr);
@@ -1200,7 +1199,6 @@ class Api {
           },
           body: json.encode({
             "data-request": ["country"],
-            "country_code": "IN",
           }));
       var responseJson = _returnResponse(response);
       result = CountryModel.fromJson(responseJson);

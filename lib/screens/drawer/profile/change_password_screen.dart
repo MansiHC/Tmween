@@ -63,7 +63,7 @@ class ChangePasswordScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (!changePasswordController.loading)
+                    if (changePasswordController.otpValue.isNotEmpty)
                       Text(
                         'Otp is : ${changePasswordController.otpValue}',
                         style: TextStyle(fontSize: 14, color: Colors.black54),
@@ -264,11 +264,13 @@ class ChangePasswordScreen extends StatelessWidget {
                           appContext: changePasswordController.context,
                         )),
                     10.heightBox,
+                    if (changePasswordController.otpExpired)
                     Text(
                       LocaleKeys.notReceivedOtp.tr,
                       style: TextStyle(fontSize: 15, color: Colors.black),
                     ),
                     5.heightBox,
+                    if (changePasswordController.otpExpired)
                     InkWell(
                         onTap: () {
                           changePasswordController.resendOtp(language);

@@ -26,8 +26,7 @@ class StoreOwnerSignUpController extends GetxController {
   bool loading = false;
 
   doRequest() async {
-    loading = true;
-    update();
+    Helper.showLoading();
     await api
         .request(
             firstNameController.text,
@@ -38,7 +37,7 @@ class StoreOwnerSignUpController extends GetxController {
             agreeTo,
             "en")
         .then((value) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('value....${value.toString()}');
       Helper.showGetSnackBar(value.message!);
@@ -47,7 +46,7 @@ class StoreOwnerSignUpController extends GetxController {
       }*/
       navigateToOtpScreen();
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });

@@ -35,6 +35,11 @@ class _SignUpScreenState extends State<SignUpScreen>
     super.initState();
   }
 
+  Future<bool> _onWillPop(SignUpController signUpController) async {
+    signUpController.exitScreen();
+    return true;
+  }
+
   @override
   void dispose() {
     _tabController.dispose();
@@ -50,7 +55,9 @@ class _SignUpScreenState extends State<SignUpScreen>
             init: SignUpController(),
             builder: (contet) {
               signUpController.context = context;
-              return DefaultTabController(
+              return WillPopScope(
+                  onWillPop: () => _onWillPop(signUpController),
+              child:DefaultTabController(
                   length: 2,
                   child: Scaffold(
                       body: NestedScrollView(
@@ -101,7 +108,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                         StoreOwnerSignUpScreen()
                       ],
                     ),
-                  )));
+                  ))));
             }));
   }
 

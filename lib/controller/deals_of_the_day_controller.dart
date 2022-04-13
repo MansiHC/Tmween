@@ -26,10 +26,10 @@ class DealsOfTheDayController extends GetxController {
   }
 
   Future<void> getData(language) async {
-    loading = true;
-    update();
+    Helper.showLoading();
     await api.getDealsOfTheDay("1", language).then((value) {
       if (value.statusCode == 200) {
+        Helper.hideLoading(context);
         totalPages = value.data!.totalPages!;
         prev =
             value.data!.previous.runtimeType == int ? value.data!.previous : 0;
@@ -37,14 +37,15 @@ class DealsOfTheDayController extends GetxController {
         totalRecords = value.data!.totalRecords!;
         dailyDealsData = value.data!.dailyDealsData;
 
-        update();
+
       } else {
+        Helper.hideLoading(context);
         Helper.showGetSnackBar(value.message!);
       }
-      loading = false;
+
       update();
     }).catchError((error) {
-      loading = false;
+      Helper.hideLoading(context);
       update();
       print('error....$error');
     });

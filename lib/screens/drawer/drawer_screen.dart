@@ -3,6 +3,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/drawer_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
@@ -15,6 +17,7 @@ import 'package:tmween/screens/drawer/sold_by_tmween_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
+import '../../controller/dashboard_controller.dart';
 import '../../controller/search_controller.dart';
 import '../../model/get_customer_address_list_model.dart';
 import '../../utils/my_shared_preferences.dart';
@@ -33,14 +36,13 @@ class DrawerScreen extends StatefulWidget {
   State<StatefulWidget> createState() {
     return DrawerScreenState();
   }
-
 }
-class DrawerScreenState extends State<DrawerScreen>{
+
+class DrawerScreenState extends State<DrawerScreen> {
   final drawerController = Get.put(DrawerControllers());
   final searchController = Get.put(SearchController());
 
   late var language;
-
 
   @override
   Widget build(BuildContext context) {
@@ -72,22 +74,23 @@ class DrawerScreenState extends State<DrawerScreen>{
                         ? InkWell(
                             onTap: () {
                               if (drawerController.isLogin) {
-                                drawerController.getAddressList(language).then((value) {
-
-                                    showModalBottomSheet<void>(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return _bottomSheetView(drawerController);
-                                        });
+                                drawerController
+                                    .getAddressList(language)
+                                    .then((value) {
+                                  showModalBottomSheet<void>(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return _bottomSheetView(
+                                            drawerController);
+                                      });
                                 });
-                              }else{
+                              } else {
                                 showModalBottomSheet<void>(
                                     context: context,
                                     builder: (BuildContext context) {
                                       return _bottomSheetView(drawerController);
                                     });
                               }
-
                             },
                             child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -291,7 +294,7 @@ class DrawerScreenState extends State<DrawerScreen>{
         init: DrawerControllers(),
         builder: (contet) {
           return Container(
-              height: drawerController.isLogin?310:200,
+              height: drawerController.isLogin ? 350 : 200,
               padding: EdgeInsets.all(15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -358,7 +361,15 @@ class DrawerScreenState extends State<DrawerScreen>{
                                             1,
                                         scrollDirection: Axis.horizontal,
                                         itemBuilder: (context, index) {
-                                          return (index !=
+                                          MySharedPreferences.instance
+                                              .getBoolValuesSF(
+                                                  SharedPreferencesKeys.addressFromCurrentLocation)
+                                              .then((value) async {
+                                            drawerController
+                                                    .addressFromCurrentLocation =
+                                                value!;
+                                          });
+                                           return (index !=
                                                   drawerController
                                                       .addressList.length)
                                               ? InkWell(
@@ -372,6 +383,11 @@ class DrawerScreenState extends State<DrawerScreen>{
                                                                 .address,
                                                             "${address.cityName} - ${address.zip}");
 
+                                                    MySharedPreferences.instance
+                                                        .addBoolToSF(
+                                                            SharedPreferencesKeys
+                                                                .addressFromCurrentLocation,
+                                                            false);
                                                     drawerController.editAddress(
                                                         address.id,
                                                         address.fullname,
@@ -390,8 +406,12 @@ class DrawerScreenState extends State<DrawerScreen>{
                                                         language);
                                                   },
                                                   child: AddressContainer(
-                                                      address: drawerController
-                                                          .addressList[index]))
+                                                    address: drawerController
+                                                        .addressList[index],
+                                                    addressFromCurrentLocation:
+                                                        drawerController
+                                                            .addressFromCurrentLocation,
+                                                  ))
                                               : InkWell(
                                                   onTap: () {
                                                     drawerController.pop();
@@ -413,11 +433,34 @@ class DrawerScreenState extends State<DrawerScreen>{
                                                                   Radius.circular(
                                                                       2))),
                                                       child: Center(
-                                                          child: Text(
-                                                              LocaleKeys.addAddressText.tr,
-                                                              textAlign: TextAlign.center,
-                                                              style: TextStyle(color: AppColors.primaryColor, fontSize: 15, fontWeight: FontWeight.bold)))));
-                                        })))
+                                                          child: Text(LocaleKeys.addAddressText.tr,
+                                                              textAlign: TextAlign
+                                                                  .center,
+                                                              style: TextStyle(
+                                                                  color: AppColors.primaryColor,
+                                                                  fontSize: 15,
+                                                                  fontWeight: FontWeight.bold)))));
+                                        }))),
+                            10.heightBox,
+                            InkWell(
+                                onTap: () {
+                                  getAddress();
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.gps_fixed,
+                                      color: AppColors.primaryColor,
+                                    ),
+                                    5.widthBox,
+                                    Text(
+                                      'Use my current location',
+                                      style: TextStyle(
+                                          color: AppColors.primaryColor,
+                                          fontSize: 16),
+                                    ),
+                                  ],
+                                ))
                           ],
                         )
                       : CustomButton(
@@ -431,6 +474,67 @@ class DrawerScreenState extends State<DrawerScreen>{
                 ],
               ));
         });
+  }
+
+  Future<Position> _getGeoLocationPosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      await Geolocator.openLocationSettings();
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+  }
+
+  String location = 'Null, Press Button';
+  String addressData = 'search';
+
+  Future<void> GetAddressFromLatLong(Position position) async {
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+    print(placemarks);
+    Placemark place = placemarks[0];
+    addressData =
+        '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
+
+    MySharedPreferences.instance.addStringToSF(SharedPreferencesKeys.address,
+        "${place.locality} - ${place.postalCode}");
+    MySharedPreferences.instance
+        .addBoolToSF(SharedPreferencesKeys.addressFromCurrentLocation, true);
+
+    Get.delete<DrawerControllers>();
+    Get.delete<DashboardController>();
+    Get.offAll(DrawerScreen());
+  }
+
+  getAddress() async {
+    Position position = await _getGeoLocationPosition();
+    location = 'Lat: ${position.latitude} , Long: ${position.longitude}';
+    GetAddressFromLatLong(position);
   }
 
   _buildBottomNavBar(DrawerControllers drawerController) {
