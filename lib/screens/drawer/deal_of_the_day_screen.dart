@@ -8,11 +8,12 @@ import 'package:tmween/screens/drawer/dashboard/deals_of_the_day_container.dart'
 import '../../utils/global.dart';
 import '../../utils/views/circular_progress_bar.dart';
 import '../../utils/views/custom_text_form_field.dart';
-import 'dashboard/product_detail_screen.dart';
+import 'dashboard/productDetail/product_detail_screen.dart';
 
 class DealsOfTheDayScreen extends StatelessWidget {
   final dealOfTheDayController = Get.put(DealsOfTheDayController());
-var language;
+  var language;
+
   Future<bool> _onWillPop(
       DealsOfTheDayController dealsOfTheDayController) async {
     dealOfTheDayController.exitScreen();
@@ -21,7 +22,7 @@ var language;
 
   @override
   Widget build(BuildContext context) {
-    language= Get.locale!.languageCode;
+    language = Get.locale!.languageCode;
     return GetBuilder<DealsOfTheDayController>(
         init: DealsOfTheDayController(),
         builder: (contet) {
@@ -93,57 +94,68 @@ var language;
                         : Expanded(
                             child: RefreshIndicator(
                                 onRefresh: () =>
-                                    dealOfTheDayController.onRefresh(language)
-                                ,
-                                child:Container(
-                                margin: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(4)),
-                                ),
-                                padding: EdgeInsets.all(1.5),
-                                child: NotificationListener<ScrollNotification>(
-                                    onNotification:
-                                        (ScrollNotification scrollInfo) {
-                                      if (scrollInfo is ScrollEndNotification &&
-                                          scrollInfo.metrics.pixels ==scrollInfo.metrics.maxScrollExtent) {
-                                        if (dealOfTheDayController.next != 0) {
-                                          dealOfTheDayController.loadMore(language);
-                                        }
-                                      }
+                                    dealOfTheDayController.onRefresh(language),
+                                child: Container(
+                                    margin: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(4)),
+                                    ),
+                                    padding: EdgeInsets.all(1.5),
+                                    child: NotificationListener<
+                                            ScrollNotification>(
+                                        onNotification:
+                                            (ScrollNotification scrollInfo) {
+                                          if (scrollInfo
+                                                  is ScrollEndNotification &&
+                                              scrollInfo.metrics.pixels ==
+                                                  scrollInfo.metrics
+                                                      .maxScrollExtent) {
+                                            if (dealOfTheDayController.next !=
+                                                0) {
+                                              dealOfTheDayController
+                                                  .loadMore(language);
+                                            }
+                                          }
 
-                                      return false;
-                                    },
-                                    child: GridView.builder(
-                                        shrinkWrap: true,
-                                        itemCount: dealOfTheDayController
-                                            .dailyDealsData!.length,
-                                        physics: ScrollPhysics(),
-                                        gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          crossAxisSpacing: 10,
-                                          mainAxisSpacing: 5,
-                                          childAspectRatio: 0.66,
-                                        ),
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return InkWell(
-                                              onTap: () {
-                                                dealOfTheDayController
-                                                    .navigateTo(
-                                                        ProductDetailScreen(productId: dealOfTheDayController
-                                                            .dailyDealsData![index].id,
-                                                            productslug:dealOfTheDayController
-                                                                .dailyDealsData![index].productSlug));
-                                              },
-                                              child: DealsOfTheDayContainer(
-                                                deal: dealOfTheDayController
-                                                    .dailyDealsData![index],
-                                                from: SharedPreferencesKeys
-                                                    .isDashboard,
-                                              ));
-                                        })))))
+                                          return false;
+                                        },
+                                        child: GridView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: dealOfTheDayController
+                                                .dailyDealsData!.length,
+                                            physics: ScrollPhysics(),
+                                            gridDelegate:
+                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 2,
+                                              crossAxisSpacing: 10,
+                                              mainAxisSpacing: 5,
+                                              childAspectRatio: 0.66,
+                                            ),
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return InkWell(
+                                                  onTap: () {
+                                                    dealOfTheDayController.navigateTo(
+                                                        ProductDetailScreen(
+                                                            productId:
+                                                                dealOfTheDayController
+                                                                    .dailyDealsData![
+                                                                        index]
+                                                                    .id,
+                                                            productslug:
+                                                                dealOfTheDayController
+                                                                    .dailyDealsData![
+                                                                        index]
+                                                                    .productSlug));
+                                                  },
+                                                  child: DealsOfTheDayContainer(
+                                                    deal: dealOfTheDayController
+                                                        .dailyDealsData![index],
+                                                    from: SharedPreferencesKeys
+                                                        .isDashboard,
+                                                  ));
+                                            })))))
                   ],
                 ),
               ));

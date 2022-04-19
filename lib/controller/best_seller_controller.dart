@@ -5,6 +5,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 import '../model/dashboard_model.dart';
 import '../service/api.dart';
+import '../utils/global.dart';
 import '../utils/helper.dart';
 
 class BestSellerController extends GetxController {
@@ -40,7 +41,7 @@ class BestSellerController extends GetxController {
         update();
       } else {
         Helper.hideLoading(context);
-        Helper.showGetSnackBar(value.message!);
+        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
 
       update();
@@ -50,12 +51,13 @@ class BestSellerController extends GetxController {
       print('error....$error');
     });
   }
+
   Future<void> onRefresh(language) async {
     await api.getBestSeller("1", language).then((value) {
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
         prev =
-        value.data!.previous.runtimeType == int ? value.data!.previous : 0;
+            value.data!.previous.runtimeType == int ? value.data!.previous : 0;
         next = value.data!.next.runtimeType == int ? value.data!.next : 0;
         totalRecords = value.data!.totalRecords!;
         bestSellerData = value.data!.bestSellerData;

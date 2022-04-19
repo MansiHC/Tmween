@@ -11,8 +11,8 @@ class ProductListingModel {
     statusCode = json['status_code'];
     statusMessage = json['status_message'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
-
+    if (statusCode == 200)
+      data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -36,10 +36,10 @@ class Data {
 
   Data(
       {this.productData,
-        this.totalPages,
-        this.next,
-        this.previous,
-        this.totalRecords});
+      this.totalPages,
+      this.next,
+      this.previous,
+      this.totalRecords});
 
   Data.fromJson(Map<String, dynamic> json) {
     if (json['product_data'] != null) {
@@ -123,57 +123,57 @@ class ProductData {
 
   ProductData(
       {this.id,
-        this.attributeSetId,
-        this.productCategoryId,
-        this.upc,
-        this.sku,
-        this.productName,
-        this.finalPrice,
-        this.retailPrice,
-        this.stock,
-        this.inStock,
-        this.isCombinationAvailable,
-        this.reviewsAvg,
-        this.brandId,
-        this.manufacturerNumber,
-        this.countryCode,
-        this.vehicleTypeCode,
-        this.taxClass,
-        this.shortDescription,
-        this.longDescription,
-        this.specification,
-        this.image,
-        this.isBestSellers,
-        this.isTopSelection,
-        this.autogenerateSeo,
-        this.metaTitle,
-        this.metaKeywords,
-        this.metaDescription,
-        this.specialTransportId,
-        this.weightUnitId,
-        this.singleProductWeight,
-        this.singleProductDimensionsUnitId,
-        this.singleProductHeight,
-        this.singleProductWidth,
-        this.singleProductLength,
-        this.packProductDimensionsUnitId,
-        this.packProductHeight,
-        this.packProductWidth,
-        this.packProductLength,
-        this.packProductWeightUnitId,
-        this.packProductWeight,
-        this.productInOnePack,
-        this.expirable,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.attributeSetName,
-        this.categoryName,
-        this.productSlug,
-        this.percentage,
-        this.productImage,
-        this.prodImage,
-        this.largeImageUrl});
+      this.attributeSetId,
+      this.productCategoryId,
+      this.upc,
+      this.sku,
+      this.productName,
+      this.finalPrice,
+      this.retailPrice,
+      this.stock,
+      this.inStock,
+      this.isCombinationAvailable,
+      this.reviewsAvg,
+      this.brandId,
+      this.manufacturerNumber,
+      this.countryCode,
+      this.vehicleTypeCode,
+      this.taxClass,
+      this.shortDescription,
+      this.longDescription,
+      this.specification,
+      this.image,
+      this.isBestSellers,
+      this.isTopSelection,
+      this.autogenerateSeo,
+      this.metaTitle,
+      this.metaKeywords,
+      this.metaDescription,
+      this.specialTransportId,
+      this.weightUnitId,
+      this.singleProductWeight,
+      this.singleProductDimensionsUnitId,
+      this.singleProductHeight,
+      this.singleProductWidth,
+      this.singleProductLength,
+      this.packProductDimensionsUnitId,
+      this.packProductHeight,
+      this.packProductWidth,
+      this.packProductLength,
+      this.packProductWeightUnitId,
+      this.packProductWeight,
+      this.productInOnePack,
+      this.expirable,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.attributeSetName,
+      this.categoryName,
+      this.productSlug,
+      this.percentage,
+      this.productImage,
+      this.prodImage,
+      this.largeImageUrl});
 
   ProductData.fromJson(Map<String, dynamic> json) {
     id = json['id'];

@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/model/popular_search_model.dart';
-import 'package:tmween/screens/drawer/product_listing_screen.dart';
+import 'package:tmween/screens/drawer/search/product_listing_screen.dart';
 import 'package:tmween/utils/animations.dart';
 
 import '../model/product_listing_model.dart';
@@ -45,9 +45,9 @@ class SearchController extends GetxController {
   @override
   void onInit() {
     print('...........#############################');
-    searchList=[];
+    searchList = [];
     getPopularList(Get.locale!.languageCode);
-   // getFilterData(Get.locale!.languageCode);
+    // getFilterData(Get.locale!.languageCode);
     MySharedPreferences.instance
         .getBoolValuesSF(SharedPreferencesKeys.isLogin)
         .then((value) async {
@@ -87,10 +87,9 @@ class SearchController extends GetxController {
   }
 
   Future<void> getFilterData(language) async {
-    await api.getFilterData('1','fresh', language).then((value) {
+    await api.getFilterData('1', 'fresh', language).then((value) {
       Helper.hideLoading(context);
       if (value.statusCode == 200) {
-
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
@@ -104,15 +103,14 @@ class SearchController extends GetxController {
     });
   }
 
-
-Future<void> getHistoryList(language) async {
+  Future<void> getHistoryList(language) async {
     historyList = [];
     searchList = [];
 
     await api.getSearchHistory(token, userId, language).then((value) {
       if (value.statusCode == 200) {
         historyList = value.data!.searchHistoryData!;
-        for(var i=0;i<historyList.length;i++) {
+        for (var i = 0; i < historyList.length; i++) {
           searchList.add(historyList[i].keyword!);
         }
       } else if (value.statusCode == 401) {
@@ -152,7 +150,7 @@ Future<void> getHistoryList(language) async {
 
   Future<void> getPopularList(language) async {
     popularList = [];
-  //  Helper.showLoading();
+    //  Helper.showLoading();
     historyLoading = true;
     update();
     await api.getPopularSearch(language).then((value) {
@@ -161,13 +159,13 @@ Future<void> getHistoryList(language) async {
         if (isLogin)
           getHistoryList(Get.locale!.languageCode);
         else {
-         // Helper.hideLoading();
+          // Helper.hideLoading();
           historyLoading = false;
           update();
         }
       }
     }).catchError((error) {
-     // Helper.hideLoading();
+      // Helper.hideLoading();
       historyLoading = false;
       update();
       print('error....$error');
@@ -179,38 +177,39 @@ Future<void> getHistoryList(language) async {
     searchController.text = searchedString;
     update();
     Get.delete<SearchController>();
+    print('...ff......${searchController.text}');
     Navigator.pushReplacement(
         context,
-        CustomPageRoute(
-             ProductListingScreen(
-                  from: from,
-                  searchString: searchController.text,
-                )));
+        CustomPageRoute(ProductListingScreen(
+          from: from,
+          searchString: searchController.text,
+        )));
   }
 
   void popp() {
     Navigator.pop(context);
   }
 
-  Future<List<String>> getProductList(searchString,language) async {
+  Future<List<String>> getProductList(searchString, language) async {
     productList = [];
     await api
         .topSearchSuggestionProductList(
-        "1", searchString, userId, false, language)
+            "1", searchString, userId, false, language)
         .then((value) {
       if (value.statusCode == 200) {
         productList = value.data!.productData!;
 
-       for(var i=0;i<productList.length;i++){
-         if(productList[i].productSlug==null){
-         //  productList.removeAt(i);
-         }else{
-           print('....gffg...$searchString....${searchList.toSet().toList().toString()}');
-           searchList.add(productList[i].productName!);
-         }
-       }
+        for (var i = 0; i < productList.length; i++) {
+          if (productList[i].productSlug == null) {
+            //  productList.removeAt(i);
+          } else {
+            print(
+                '....gffg...$searchString....${searchList.toSet().toList().toString()}');
+            searchList.add(productList[i].productName!);
+          }
+        }
 
-       print('......${searchList.toSet().toList().toString()}');
+        print('......${searchList.toSet().toList().toString()}');
 
         return searchList.toSet().toList();
       } else if (value.statusCode == 401) {
@@ -219,9 +218,7 @@ Future<void> getHistoryList(language) async {
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       }
-
-    }).catchError((error) {
-    });
+    }).catchError((error) {});
     return searchList.toSet().toList();
   }
 
@@ -232,7 +229,7 @@ Future<void> getHistoryList(language) async {
 
   void exitScreen() {
     Get.delete<SearchController>();
-    Navigator.of(context).pop();
+    Navigator.of(context).pop(true);
   }
 
   void exit() {

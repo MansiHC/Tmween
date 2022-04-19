@@ -9,7 +9,10 @@ import '../../../model/dashboard_model.dart';
 
 class SelectCategoryContainer extends StatelessWidget {
   SelectCategoryContainer(
-      {Key? key, required this.category,required this.image, this.offerVisible = true})
+      {Key? key,
+      required this.category,
+      required this.image,
+      this.offerVisible = true})
       : super(key: key);
   final ShopByCategory category;
   final String image;
@@ -75,7 +78,7 @@ class SelectCategoryContainer extends StatelessWidget {
                         ),
                       )
                     : Container(
-                    height: MediaQuery.of(context).size.width / 5.3,
+                        height: MediaQuery.of(context).size.width / 5.3,
                         child: Icon(
                           Icons.image_not_supported,
                           color: Colors.grey,

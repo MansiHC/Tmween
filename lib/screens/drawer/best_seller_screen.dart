@@ -8,11 +8,11 @@ import '../../utils/global.dart';
 import '../../utils/views/circular_progress_bar.dart';
 import '../../utils/views/custom_text_form_field.dart';
 import 'dashboard/best_seller_container.dart';
-import 'dashboard/product_detail_screen.dart';
+import 'dashboard/productDetail/product_detail_screen.dart';
 
 class BestSellerScreen extends StatelessWidget {
   final bestSellerController = Get.put(BestSellerController());
-  var language ;
+  var language;
 
   Future<bool> _onWillPop(BestSellerController bestSellerController) async {
     bestSellerController.exitScreen();
@@ -21,7 +21,7 @@ class BestSellerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    language= Get.locale!.languageCode;
+    language = Get.locale!.languageCode;
     return GetBuilder<BestSellerController>(
         init: BestSellerController(),
         builder: (contet) {
@@ -93,55 +93,71 @@ class BestSellerScreen extends StatelessWidget {
                         : Expanded(
                             child: RefreshIndicator(
                                 onRefresh: () =>
-                                    bestSellerController.onRefresh(language)
-                                ,
-                                child:Container(
-                                margin: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(4)),
-                                ),
-                                padding: EdgeInsets.all(1.5),
-                                child: NotificationListener<ScrollNotification>(
-                                    onNotification:
-                                        (ScrollNotification scrollInfo) {
-                                      if (scrollInfo is ScrollEndNotification &&
-                                          scrollInfo.metrics.pixels ==scrollInfo.metrics.maxScrollExtent) {
-                                        if (bestSellerController.next != 0) {
-                                          bestSellerController.loadMore(language);
-                                        }
-                                      }
-                                      return false;
-                                    },
-                                    child: GridView.builder(
-                                        shrinkWrap: true,
-                                        itemCount: bestSellerController
-                                            .bestSellerData!.length,
-                                        physics: ScrollPhysics(),
-                                        gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          crossAxisSpacing: 10,
-                                          mainAxisSpacing: 5,
-                                          childAspectRatio: 0.66,
-                                        ),
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return InkWell(
-                                              onTap: () {
-                                                bestSellerController.navigateTo(
-                                                    ProductDetailScreen(productId: bestSellerController
-                                                        .bestSellerData![index].id,
-                                                    productslug:bestSellerController
-                                                        .bestSellerData![index].productSlug ,));
-                                              },
-                                              child: BestSellerContainer(
-                                                bestSeller: bestSellerController
-                                                    .bestSellerData![index],
-                                                from: SharedPreferencesKeys
-                                                    .isDashboard,
-                                              ));
-                                        })))))
+                                    bestSellerController.onRefresh(language),
+                                child: Container(
+                                    margin: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(4)),
+                                    ),
+                                    padding: EdgeInsets.all(1.5),
+                                    child: NotificationListener<
+                                            ScrollNotification>(
+                                        onNotification:
+                                            (ScrollNotification scrollInfo) {
+                                          if (scrollInfo
+                                                  is ScrollEndNotification &&
+                                              scrollInfo.metrics.pixels ==
+                                                  scrollInfo.metrics
+                                                      .maxScrollExtent) {
+                                            if (bestSellerController.next !=
+                                                0) {
+                                              bestSellerController
+                                                  .loadMore(language);
+                                            }
+                                          }
+                                          return false;
+                                        },
+                                        child: GridView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: bestSellerController
+                                                .bestSellerData!.length,
+                                            physics: ScrollPhysics(),
+                                            gridDelegate:
+                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 2,
+                                              crossAxisSpacing: 10,
+                                              mainAxisSpacing: 5,
+                                              childAspectRatio: 0.66,
+                                            ),
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return InkWell(
+                                                  onTap: () {
+                                                    bestSellerController
+                                                        .navigateTo(
+                                                            ProductDetailScreen(
+                                                      productId:
+                                                          bestSellerController
+                                                              .bestSellerData![
+                                                                  index]
+                                                              .id,
+                                                      productslug:
+                                                          bestSellerController
+                                                              .bestSellerData![
+                                                                  index]
+                                                              .productSlug,
+                                                    ));
+                                                  },
+                                                  child: BestSellerContainer(
+                                                    bestSeller:
+                                                        bestSellerController
+                                                                .bestSellerData![
+                                                            index],
+                                                    from: SharedPreferencesKeys
+                                                        .isDashboard,
+                                                  ));
+                                            })))))
                   ],
                 ),
               ));

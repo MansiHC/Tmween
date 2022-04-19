@@ -11,7 +11,8 @@ class DashboardModel {
     statusCode = json['status_code'];
     statusMessage = json['status_message'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    if (statusCode == 200)
+      data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -139,7 +140,7 @@ class SoldByTmweenProductData {
   int? stock;
   int? inStock;
   int? isCombinationAvailable;
- double? reviewsAvg;
+  double? reviewsAvg;
   int? brandId;
   String? manufacturerNumber;
   String? countryCode;
@@ -581,7 +582,7 @@ class TopSelectionData {
   int? stock;
   int? inStock;
   int? isCombinationAvailable;
- double? reviewsAvg;
+  double? reviewsAvg;
   int? brandId;
   String? manufacturerNumber;
   String? countryCode;
@@ -871,7 +872,7 @@ class BestSellerData {
   int? stock;
   int? inStock;
   int? isCombinationAvailable;
- double? reviewsAvg;
+  double? reviewsAvg;
   int? brandId;
   String? manufacturerNumber;
   String? countryCode;
@@ -1168,7 +1169,7 @@ class DailyDealsData {
   int? stock;
   int? inStock;
   int? isCombinationAvailable;
- double? reviewsAvg;
+  double? reviewsAvg;
   int? brandId;
   String? manufacturerNumber;
   String? countryCode;
@@ -1464,7 +1465,7 @@ class RecentlyViewProduct {
   int? stock;
   int? inStock;
   int? isCombinationAvailable;
- double? reviewsAvg;
+  double? reviewsAvg;
   int? brandId;
   String? manufacturerNumber;
   String? countryCode;
@@ -1708,16 +1709,16 @@ class ShopByCategory {
   String? largeImageUrl;
   String? smallImageUrl;
 
-  ShopByCategory(
-      {this.id,
-      this.categoryName,
-      this.parentId,
-      this.showInTopMenu,
-      this.image,
-      this.slugName,
-        this.smallImageUrl,
-      this.largeImageUrl,
-});
+  ShopByCategory({
+    this.id,
+    this.categoryName,
+    this.parentId,
+    this.showInTopMenu,
+    this.image,
+    this.slugName,
+    this.smallImageUrl,
+    this.largeImageUrl,
+  });
 
   ShopByCategory.fromJson(Map<String, dynamic> json) {
     id = json['id'];

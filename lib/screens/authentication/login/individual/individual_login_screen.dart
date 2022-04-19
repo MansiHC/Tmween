@@ -49,7 +49,8 @@ class IndividualLoginScreen extends StatelessWidget {
                                           color: AppColors.primaryColor,
                                         ),
                                         onSubmitted: (term) {
-                                          loginController.individuaLogin();
+                                          loginController
+                                              .individuaLogin(language);
                                         },
                                         validator: (value) {
                                           if (value!.isEmpty) {
@@ -136,7 +137,7 @@ class IndividualLoginScreen extends StatelessWidget {
         CustomButton(
             text: LocaleKeys.login,
             onPressed: () {
-              loginController.individuaLogin();
+              loginController.individuaLogin(language);
             }),
         Visibility(
           visible: loginController.loading,

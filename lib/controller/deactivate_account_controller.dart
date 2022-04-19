@@ -13,7 +13,6 @@ class DeactivateAccountController extends GetxController {
   late BuildContext context;
   TextEditingController passwordController = TextEditingController();
 
-
   int userId = 0;
   int loginLogId = 0;
   String token = '';
@@ -43,14 +42,18 @@ class DeactivateAccountController extends GetxController {
 
   Future<void> deActivate(language) async {
     Helper.showLoading();
-    await api.deactivateAccount(token, userId,passwordController.text, language).then((value) {
+    await api
+        .deactivateAccount(token, userId, passwordController.text, language)
+        .then((value) {
       if (value.statusCode == 200) {
         Helper.hideLoading(context);
         MySharedPreferences.instance
             .addStringToSF(SharedPreferencesKeys.address, "");
-        MySharedPreferences.instance.addStringToSF(SharedPreferencesKeys.image, "");
+        MySharedPreferences.instance
+            .addStringToSF(SharedPreferencesKeys.image, "");
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       } else if (value.statusCode == 401) {
@@ -59,8 +62,9 @@ class DeactivateAccountController extends GetxController {
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
+      } else {
+        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
-      Helper.showGetSnackBar(value.message!);
       update();
     }).catchError((error) {
       Helper.hideLoading(context);
@@ -72,5 +76,4 @@ class DeactivateAccountController extends GetxController {
   void exitScreen() {
     Navigator.of(context).pop();
   }
-
 }

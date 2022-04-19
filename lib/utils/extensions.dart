@@ -127,7 +127,6 @@ extension WidgetExtension on Widget {
   }
 }
 
-
 // This is the source of mapped Flutter colors
 const Map<String, Color> SOURCE = {
   "transparent": Colors.transparent,
@@ -174,10 +173,13 @@ const Map<String, Color> SOURCE = {
 extension StringToColor on String {
   // substring start to find the real hexa value
   static final start = 1;
+
   // substring end to find the real hexa value
   static final end = 7;
+
   // hexa base
   static final radix = 16;
+
   // complement to the 32-bits number
   static final complement = 0xFF000000;
 
@@ -204,6 +206,7 @@ extension StringToColor on String {
 extension ContrastToColor on Color {
   // half brightness to compute luminance
   static final brightness = 0.5;
+
   // The function that calculate human brightness perception to expose better contrast against the color
   contrast() {
     try {

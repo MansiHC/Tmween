@@ -7,7 +7,7 @@ class TransparentPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.grey[100]!.withOpacity(0.1),
-      child:  Center(
+      child: Center(
         child: CircularProgressBar(),
       ),
     );

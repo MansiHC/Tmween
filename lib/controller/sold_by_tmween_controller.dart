@@ -6,6 +6,7 @@ import 'package:tmween/utils/helper.dart';
 
 import '../model/dashboard_model.dart';
 import '../service/api.dart';
+import '../utils/global.dart';
 
 class SoldByTmweenController extends GetxController {
   late BuildContext context;
@@ -37,9 +38,8 @@ class SoldByTmweenController extends GetxController {
         next = value.data!.next.runtimeType == int ? value.data!.next : 0;
         totalRecords = value.data!.totalRecords!;
         soldByTmweenProductData = value.data!.soldByTmweenProductData;
-
       } else {
-        Helper.showGetSnackBar(value.message!);
+        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
 
       update();
@@ -49,12 +49,13 @@ class SoldByTmweenController extends GetxController {
       print('error....$error');
     });
   }
+
   Future<void> onRefresh(language) async {
     await api.getSoldByTmween("1", language).then((value) {
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
         prev =
-        value.data!.previous.runtimeType == int ? value.data!.previous : 0;
+            value.data!.previous.runtimeType == int ? value.data!.previous : 0;
         next = value.data!.next.runtimeType == int ? value.data!.next : 0;
         totalRecords = value.data!.totalRecords!;
         soldByTmweenProductData = value.data!.soldByTmweenProductData;

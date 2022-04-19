@@ -62,16 +62,16 @@ class _LoginScreenState extends State<LoginScreen>
     if (widget.frm != null) {
       if (widget.frm == AppConstants.individual) {
         loginController.currentTabIndex = 0;
-      }else{
+      } else {
         loginController.currentTabIndex = 1;
-      }}
-        loginController.tabController = TabController(
+      }
+    }
+    loginController.tabController = TabController(
         vsync: this,
         length: loginController.tabList.length,
         initialIndex: loginController.currentTabIndex);
 
-    if(widget.fromReset!)
-      loginController.passwordController.clear();
+    if (widget.fromReset!) loginController.passwordController.clear();
     super.initState();
   }
 

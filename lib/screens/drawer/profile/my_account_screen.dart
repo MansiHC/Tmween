@@ -5,15 +5,15 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/my_account_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
-import 'package:tmween/screens/drawer/profile/notification_screen.dart';
-import 'package:tmween/screens/drawer/profile/your_order_screen.dart';
+import 'package:tmween/screens/drawer/profile/notification/notification_screen.dart';
+import 'package:tmween/screens/drawer/profile/order/your_order_screen.dart';
 import 'package:tmween/screens/drawer/wishlist_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/custom_list_tile.dart';
 
 import '../../../utils/views/circular_progress_bar.dart';
-import 'my_wallet_screen.dart';
+import 'wallet/my_wallet_screen.dart';
 
 class MyAccountScreen extends StatelessWidget {
   late String language;

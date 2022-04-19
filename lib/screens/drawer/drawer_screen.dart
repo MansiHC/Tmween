@@ -11,12 +11,12 @@ import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/language_model.dart';
 import 'package:tmween/screens/drawer/categories_screen.dart';
 import 'package:tmween/screens/drawer/deal_of_the_day_screen.dart';
-import 'package:tmween/screens/drawer/profile/your_addresses_screen.dart';
-import 'package:tmween/screens/drawer/search_screen.dart';
+import 'package:tmween/screens/drawer/profile/address/your_addresses_screen.dart';
 import 'package:tmween/screens/drawer/sold_by_tmween_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
+import '../../controller/cart_controller.dart';
 import '../../controller/dashboard_controller.dart';
 import '../../controller/search_controller.dart';
 import '../../model/get_customer_address_list_model.dart';
@@ -40,6 +40,8 @@ class DrawerScreen extends StatefulWidget {
 
 class DrawerScreenState extends State<DrawerScreen> {
   final drawerController = Get.put(DrawerControllers());
+  final cartController = Get.put(CartController());
+
   final searchController = Get.put(SearchController());
 
   late var language;
@@ -237,9 +239,8 @@ class DrawerScreenState extends State<DrawerScreen> {
                                     onTap: () {
                                       //drawerController.changePage(2);
                                       Get.delete<SearchController>();
-                                      drawerController.navigateTo(SearchScreen(
-                                        from: SharedPreferencesKeys.isDrawer,
-                                      ));
+                                      drawerController.navigateToSearchScreen(
+                                          SharedPreferencesKeys.isDrawer);
                                     },
                                     child: CustomTextFormField(
                                         isDense: true,
@@ -363,13 +364,14 @@ class DrawerScreenState extends State<DrawerScreen> {
                                         itemBuilder: (context, index) {
                                           MySharedPreferences.instance
                                               .getBoolValuesSF(
-                                                  SharedPreferencesKeys.addressFromCurrentLocation)
+                                                  SharedPreferencesKeys
+                                                      .addressFromCurrentLocation)
                                               .then((value) async {
                                             drawerController
                                                     .addressFromCurrentLocation =
                                                 value!;
                                           });
-                                           return (index !=
+                                          return (index !=
                                                   drawerController
                                                       .addressList.length)
                                               ? InkWell(
@@ -546,10 +548,17 @@ class DrawerScreenState extends State<DrawerScreen> {
       currentIndex: drawerController.pageIndex,
       onTap: (index) {
         if (index == 2) {
-          drawerController.navigateTo(SearchScreen(
-            from: AppConstants.bottomBar,
-          ));
+          drawerController.navigateToSearchScreen(AppConstants.bottomBar);
         } else if (index == 3 && !drawerController.isLogin) {
+          MySharedPreferences.instance
+              .getBoolValuesSF(SharedPreferencesKeys.isLogin)
+              .then((value) async {
+            bool isLogin = value!;
+            if (!isLogin) {
+              _loginFirstDialog(drawerController);
+            }
+          });
+        } else if (index == 4 && !drawerController.isLogin) {
           MySharedPreferences.instance
               .getBoolValuesSF(SharedPreferencesKeys.isLogin)
               .then((value) async {
@@ -619,18 +628,23 @@ class DrawerScreenState extends State<DrawerScreen> {
             ),
             label: LocaleKeys.wishLists.tr),
         BottomNavigationBarItem(
-            icon: Badge(
-                badgeContent: Text('2'),
-                badgeColor: Colors.white,
-                animationType: BadgeAnimationType.fade,
-                child: SvgPicture.asset(
-                  ImageConstanst.shoppingCartIcon,
-                  color: drawerController.pageIndex == 4
-                      ? AppColors.primaryColor
-                      : Colors.white,
-                  height: 24,
-                  width: 24,
-                )),
+            icon: GetBuilder<CartController>(
+                init: CartController(),
+                builder: (contet) {
+                  return Badge(
+                      badgeContent: Text(cartController.cartCount.toString()),
+                      badgeColor: Colors.white,
+                      showBadge: cartController.cartCount != 0 ? true : false,
+                      animationType: BadgeAnimationType.fade,
+                      child: SvgPicture.asset(
+                        ImageConstanst.shoppingCartIcon,
+                        color: drawerController.pageIndex == 4
+                            ? AppColors.primaryColor
+                            : Colors.white,
+                        height: 24,
+                        width: 24,
+                      ));
+                }),
             label: LocaleKeys.cart.tr),
         //TextStyle(fontSize: 12, fontWeight: FontWeight.w600))),
       ],

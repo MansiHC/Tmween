@@ -145,14 +145,6 @@ class LoginController extends GetxController {
     };*/
   }
 
-  void individuaLogin() {
-    FocusScope.of(context).unfocus();
-    if (formKey.currentState!.validate()) {
-      isPasswordScreen = true;
-      update();
-    }
-  }
-
   void storeLogin() {
     FocusScope.of(context).unfocus();
     isStorePasswordScreen = true;
@@ -200,18 +192,15 @@ class LoginController extends GetxController {
               0) if (value.data!.customerAddressData![0].cityName != null) {
             MySharedPreferences.instance.addStringToSF(
                 SharedPreferencesKeys.address,
-                "${value.data!.customerAddressData![0].cityName} - ${value.data!
-                    .customerAddressData![0].zip}");
-           MySharedPreferences.instance.addStringToSF(
+                "${value.data!.customerAddressData![0].cityName} - ${value.data!.customerAddressData![0].zip}");
+            MySharedPreferences.instance.addStringToSF(
                 SharedPreferencesKeys.addressId,
                 value.data!.customerAddressData![0].id);
           }
 
           navigateToDrawerScreen();
-        } else if (value.statusCode == 426) {
-          _accountDeactivatedDialog(from, language);
         } else {
-          Helper.showGetSnackBar(value.message!);
+          Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
         }
 
         update();
@@ -223,7 +212,43 @@ class LoginController extends GetxController {
     }
   }
 
-  void _accountDeactivatedDialog(from, language) async {
+  /* void individuaLogin() {
+    FocusScope.of(context).unfocus();
+    if (formKey.currentState!.validate()) {
+      isPasswordScreen = true;
+      update();
+    }
+  }*/
+
+  individuaLogin(language) async {
+    FocusScope.of(context).unfocus();
+    // navigateToDrawerScreen();
+    if (formKey.currentState!.validate()) {
+      Helper.showLoading();
+      await api
+          .checkAccountStatus(phoneEmailController.text, uuid, deviceNo,
+              deviceName, platform, model, version, language)
+          .then((value) {
+        Helper.hideLoading(context);
+        if (value.statusCode == 200) {
+          isPasswordScreen = true;
+          update();
+        } else if (value.statusCode == 426) {
+          _accountDeactivatedDialog(language);
+        } else {
+          Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        }
+
+        update();
+      }).catchError((error) {
+        Helper.hideLoading(context);
+        update();
+        print('error....$error');
+      });
+    }
+  }
+
+  void _accountDeactivatedDialog(language) async {
     await showDialog(
         context: context,
         builder: (_) => AlertDialog(
@@ -241,6 +266,7 @@ class LoginController extends GetxController {
                     style: TextStyle(fontSize: 16, color: Colors.black54),
                   ),
                   onPressed: () {
+                    phoneEmailController.clear();
                     Navigator.of(context).pop(false);
                   },
                 ),
@@ -252,8 +278,8 @@ class LoginController extends GetxController {
                   ),
                   onPressed: () {
                     Navigator.of(context).pop(false);
-                    doIndividualLoginWithOtp(
-                        language, AppConstants.individual, from, true);
+                    doIndividualLoginWithOtp(language,  AppConstants.individual,
+                         AppConstants.individual, true);
                   },
                 ),
               ],
@@ -275,7 +301,7 @@ class LoginController extends GetxController {
         navigateToOTPScreen(value.data!.otp.toString(),
             value.data!.loginWithPasswordFlag!, from, frm, isFromReActivate);
       } else {
-        Helper.showGetSnackBar(value.message!);
+        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
 
       update();
@@ -310,9 +336,9 @@ class LoginController extends GetxController {
     // Get.delete<LoginController>();
     //Navigator.of(context).pop();
     var phoneEmail;
-    if (from == AppConstants.individual) {
+    if (from ==  AppConstants.individual) {
       phoneEmail = phoneEmailController.text;
-    } else if (from == AppConstants.store) {
+    } else if (from ==  AppConstants.store) {
       phoneEmail = storePhoneEmailController.text;
     }
 
@@ -394,7 +420,7 @@ class LoginController extends GetxController {
       Get.delete<LoginController>();
 
       if (frm == SharedPreferencesKeys.isDrawer &&
-          from == AppConstants.forgotPassword) {
+          from ==  AppConstants.forgotPassword) {
         Get.deleteAll();
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => DrawerScreen()),

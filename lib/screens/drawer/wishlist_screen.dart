@@ -4,14 +4,13 @@ import 'package:get/get.dart';
 import 'package:tmween/controller/wishlist_controller.dart';
 import 'package:tmween/model/get_wishlist_details_model.dart';
 import 'package:tmween/screens/drawer/wishlist_container.dart';
-import 'package:tmween/utils/helper.dart';
 
 import '../../lang/locale_keys.g.dart';
 import '../../utils/global.dart';
 import '../../utils/my_shared_preferences.dart';
 import '../../utils/views/circular_progress_bar.dart';
 import '../../utils/views/custom_text_form_field.dart';
-import 'dashboard/product_detail_screen.dart';
+import 'dashboard/productDetail/product_detail_screen.dart';
 
 class WishlistScreen extends StatefulWidget {
   final bool fromProfile;
@@ -63,24 +62,19 @@ class WishlistScreenState extends State<WishlistScreen> {
 
   void filterSearchResults(String query) {
     List<WishlistData> dummySearchList = [];
-    dummySearchList.addAll( wishlistController
-        .wishListData);
+    dummySearchList.addAll(wishlistController.wishListData);
     List<WishlistData> dummyListData = [];
-    if(query.isNotEmpty) {
+    if (query.isNotEmpty) {
       dummySearchList.forEach((item) {
-        if(item.productName!.toLowerCase().contains(query.toLowerCase())) {
+        if (item.productName!.toLowerCase().contains(query.toLowerCase())) {
           dummyListData.add(item);
         }
       });
-        wishlistController
-            .wishListItems=dummyListData;
-     wishlistController.update();
+      wishlistController.wishListItems = dummyListData;
+      wishlistController.update();
       return;
     } else {
-
-      wishlistController
-          .wishListItems=wishlistController
-          .wishListData;
+      wishlistController.wishListItems = wishlistController.wishListData;
       wishlistController.update();
     }
   }
@@ -118,50 +112,44 @@ class WishlistScreenState extends State<WishlistScreen> {
                                 borderRadius: BorderRadius.circular(2)),
                             margin: EdgeInsets.only(
                                 bottom: 10, left: 15, right: 15),
-                            child:
-                        CustomTextFormField(
-                        isDense: true,
-                        controller:
-                        wishlistController.searchController,
-                        keyboardType: TextInputType.text,
-                        hintText: LocaleKeys.searchProducts.tr,
-                        textInputAction: TextInputAction.search,
-                        onSubmitted: (term) {
-                          FocusScope.of(context).unfocus();
-                        },
-                        onChanged: (value) {
-                          filterSearchResults(value);
-                        },
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color:
-                                AppColors.lightGrayColor),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color:
-                                AppColors.lightGrayColor),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color:
-                                AppColors.lightGrayColor),
-                          ),
-                          isDense: true,
-                          hintText:
-                          LocaleKeys.searchProducts.tr,
-                          prefixIcon: Icon(
-                            Icons.search,
-                            color: AppColors.primaryColor,
-                            size: 32,
-                          ),
-                        ),
-                        validator: (value) {
-                          return null;
-                        }))),
+                            child: CustomTextFormField(
+                                isDense: true,
+                                controller: wishlistController.searchController,
+                                keyboardType: TextInputType.text,
+                                hintText: LocaleKeys.searchProducts.tr,
+                                textInputAction: TextInputAction.search,
+                                onSubmitted: (term) {
+                                  FocusScope.of(context).unfocus();
+                                },
+                                onChanged: (value) {
+                                  filterSearchResults(value);
+                                },
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 10),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: AppColors.lightGrayColor),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: AppColors.lightGrayColor),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: AppColors.lightGrayColor),
+                                  ),
+                                  isDense: true,
+                                  hintText: LocaleKeys.searchProducts.tr,
+                                  prefixIcon: Icon(
+                                    Icons.search,
+                                    color: AppColors.primaryColor,
+                                    size: 32,
+                                  ),
+                                ),
+                                validator: (value) {
+                                  return null;
+                                }))),
                     if (wishlistController.loading)
                       Expanded(
                         child: CircularProgressBar(),

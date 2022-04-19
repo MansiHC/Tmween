@@ -50,6 +50,7 @@ class FilterController extends GetxController {
     isShowOnlyExpanded = !isShowOnlyExpanded;
     update();
   }
+
   final api = Api();
   bool loading = false;
   late GetFilterData filteredData;
@@ -57,9 +58,8 @@ class FilterController extends GetxController {
   Future<void> getFilterData(language) async {
     Helper.showLoading();
     await api.getFilterData("1", catId, language).then((value) {
-
       if (value.statusCode == 200) {
-filteredData = value.data!;
+        filteredData = value.data!;
       }
       Helper.hideLoading(context);
       update();
@@ -69,7 +69,6 @@ filteredData = value.data!;
       print('error....$error');
     });
   }
-
 
   final List<Map> categoryList = [
     {'title': 'Mobile Phone Accessories', 'isChecked': false},

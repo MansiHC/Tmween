@@ -11,6 +11,7 @@ class WalletHistoryModel {
     return null;
   }
 }
+
 class HistoryItem {
   const HistoryItem({
     required this.title,

@@ -11,7 +11,8 @@ class GetReviewsModel {
     statusCode = json['status_code'];
     statusMessage = json['status_message'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    if (statusCode == 200)
+      data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -75,23 +76,23 @@ class ReviewProductData {
 
   ReviewProductData(
       {this.id,
-        this.customerId,
-        this.productId,
-        this.reviewTitle,
-        this.review,
-        this.rating,
-        this.ip,
-        this.reviewDate,
-        this.addedByType,
-        this.addedById,
-        this.status,
-        this.reviewApprovedDate,
-        this.reviewApprovedId,
-        this.createdAt,
-        this.image,
-        this.fullname,
-        this.smallImageUrl,
-        this.largeImageUrl});
+      this.customerId,
+      this.productId,
+      this.reviewTitle,
+      this.review,
+      this.rating,
+      this.ip,
+      this.reviewDate,
+      this.addedByType,
+      this.addedById,
+      this.status,
+      this.reviewApprovedDate,
+      this.reviewApprovedId,
+      this.createdAt,
+      this.image,
+      this.fullname,
+      this.smallImageUrl,
+      this.largeImageUrl});
 
   ReviewProductData.fromJson(Map<String, dynamic> json) {
     id = json['id'];

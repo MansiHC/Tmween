@@ -59,29 +59,16 @@ class Helper {
 
   static bool isIndividual = false;
 
-  static void showGetSnackBar(String message) {
+  static void showGetSnackBar(String message, Color color) {
     Get.snackbar(
       message,
       "",
       animationDuration: 100.milliseconds,
-      duration: 1.seconds,
+      duration: 2.seconds,
       snackPosition: SnackPosition.BOTTOM,
       showProgressIndicator: false,
       isDismissible: false,
-      backgroundColor: AppColors.appBarColor,
-      colorText: Colors.white,
-    );
-  }
-
-  static void showGetSnackBar2(String message) {
-    Get.snackbar(
-      message,
-      "",
-      duration: 6.seconds,
-      snackPosition: SnackPosition.BOTTOM,
-      showProgressIndicator: false,
-      isDismissible: false,
-      backgroundColor: AppColors.appBarColor,
+      backgroundColor: color,
       colorText: Colors.white,
     );
   }

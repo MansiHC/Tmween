@@ -35,7 +35,6 @@ class WishlistController extends GetxController {
 
   @override
   void onInit() {
-
     MySharedPreferences.instance
         .getStringValuesSF(SharedPreferencesKeys.token)
         .then((value) async {
@@ -79,7 +78,7 @@ class WishlistController extends GetxController {
       Navigator.of(context).pop(false);
       update();
     }).catchError((error) {
-     // Helper.hideLoading();
+      // Helper.hideLoading();
       Navigator.of(context).pop(false);
       update();
       print('error....$error');
@@ -130,14 +129,16 @@ class WishlistController extends GetxController {
     //  if (Helper.isIndividual) {
     await api.deleteWishListDetails(token, id, userId, language).then((value) {
       if (value.statusCode == 200) {
+        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
         getWishListData(Get.locale!.languageCode);
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
+      } else {
+        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
-      Helper.showGetSnackBar(value.message!);
       update();
     }).catchError((error) {
       print('error....$error');

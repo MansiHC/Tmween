@@ -22,7 +22,7 @@ class ChangePasswordController extends GetxController {
   final api = Api();
   bool loading = false;
   bool otpExpired = false;
-   String otpValue="";
+  String otpValue = "";
 
   void exitScreen() {
     Get.delete<ChangePasswordController>();
@@ -54,20 +54,20 @@ class ChangePasswordController extends GetxController {
   Future<void> generateOtp(language) async {
     Helper.showLoading();
     await api.generateSendOtp(token, userId, language).then((value) {
-
       if (value.statusCode == 200) {
         Helper.hideLoading(context);
         otpValue = value.data!.otp.toString();
-
+        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
       } else if (value.statusCode == 401) {
         Helper.hideLoading(context);
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
+      } else {
+        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
       update();
-      Helper.showGetSnackBar(value.message!);
     }).catchError((error) {
       Helper.hideLoading(context);
       update();
@@ -79,20 +79,20 @@ class ChangePasswordController extends GetxController {
     otpExpired = false;
     Helper.showLoading();
     await api.resendMobileOtp(token, userId, language).then((value) {
-
       if (value.statusCode == 200) {
         Helper.hideLoading(context);
         otpValue = value.data!.otp.toString();
-
+        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
       } else if (value.statusCode == 401) {
         Helper.hideLoading(context);
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
+      } else {
+        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
       update();
-      Helper.showGetSnackBar(value.message!);
     }).catchError((error) {
       Helper.hideLoading(context);
       update();
@@ -117,9 +117,9 @@ class ChangePasswordController extends GetxController {
         .verifyMobileChangePassword(
             token, userId, otpValue, newPasswordController.text, language)
         .then((value) {
-
       if (value.statusCode == 200) {
         Helper.hideLoading(context);
+        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
         navigateToDashBoardScreen();
       } else if (value.statusCode == 401) {
         Helper.hideLoading(context);
@@ -127,9 +127,10 @@ class ChangePasswordController extends GetxController {
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
+      } else {
+        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
       update();
-      Helper.showGetSnackBar(value.message!);
     }).catchError((error) {
       Helper.hideLoading(context);
       update();

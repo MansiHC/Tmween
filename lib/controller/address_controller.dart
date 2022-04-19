@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/model/get_customer_address_list_model.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
-import 'package:tmween/screens/drawer/profile/add_address_screen.dart';
+import 'package:tmween/screens/drawer/profile/address/add_address_screen.dart';
 
 import '../service/api.dart';
 import '../utils/global.dart';
@@ -133,6 +133,7 @@ class AddressController extends GetxController {
     await api.deleteCustomerAddress(token, id, userId, language).then((value) {
       if (value.statusCode == 200) {
         Helper.hideLoading(context);
+        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
         getAddressList(Get.locale!.languageCode);
       } else if (value.statusCode == 401) {
         Helper.hideLoading(context);
@@ -140,8 +141,9 @@ class AddressController extends GetxController {
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
+      } else {
+        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
-      Helper.showGetSnackBar(value.message!);
 
       update();
     }).catchError((error) {

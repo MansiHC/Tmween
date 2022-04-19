@@ -92,13 +92,20 @@ class DBHelper {
     List<UserLocalModel> userLocalModels = [];
 
     for (int i = 0; i < list.length; i++) {
-      userLocalModels.add(new UserLocalModel(id:list[i]["userId"],
-        fullname:list[i]["fullname"],countryName: list[i]["countryName"], stateName:list[i]["stateName"],
-        cityName:   list[i]["cityName"],largeImageUrl: list[i]["largeImageUrl"],mobile1: list[i]["mobile1"],
-        zip:  list[i]["zip"], phone:list[i]["phone"],email: list[i]["email"],
-        yourName: list[i]["yourName"],image: list[i]["image"],
+      userLocalModels.add(new UserLocalModel(
+        id: list[i]["userId"],
+        fullname: list[i]["fullname"],
+        countryName: list[i]["countryName"],
+        stateName: list[i]["stateName"],
+        cityName: list[i]["cityName"],
+        largeImageUrl: list[i]["largeImageUrl"],
+        mobile1: list[i]["mobile1"],
+        zip: list[i]["zip"],
+        phone: list[i]["phone"],
+        email: list[i]["email"],
+        yourName: list[i]["yourName"],
+        image: list[i]["image"],
       ));
-
     }
     print(userLocalModels.length);
     return userLocalModels;

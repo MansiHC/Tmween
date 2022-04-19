@@ -37,7 +37,7 @@ class LoginOtpScreen extends StatefulWidget {
   }
 }
 
-class LoginOtpScreenState extends State<LoginOtpScreen>  {
+class LoginOtpScreenState extends State<LoginOtpScreen> {
   late String language;
   final otpController = Get.put(OtpController());
   final loginController = Get.put(LoginController());
@@ -50,29 +50,31 @@ class LoginOtpScreenState extends State<LoginOtpScreen>  {
       comingSms = 'Failed to get Sms.';
     }
     if (!mounted) return;
-    if(comingSms.contains('Tmween')) {
+    if (comingSms.contains('Tmween')) {
       otpController.comingSms = comingSms;
       print("====>Message: ${otpController.comingSms}");
       final intInStr = RegExp(r'\d+');
-      otpController.otpController.text =
-          intInStr.allMatches(otpController.comingSms).map((m) => m.group(0)).toString().replaceAll('(', '').replaceAll(')','');
+      otpController.otpController.text = intInStr
+          .allMatches(otpController.comingSms)
+          .map((m) => m.group(0))
+          .toString()
+          .replaceAll('(', '')
+          .replaceAll(')', '');
       otpController.update();
     }
   }
 
-
   @override
   void initState() {
     otpController.otpValue = widget.otp;
-   initSmsListener(otpController);
-
+    initSmsListener(otpController);
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-     language = Get.locale!.languageCode;
+    language = Get.locale!.languageCode;
     return GetBuilder<OtpController>(
         init: OtpController(),
         builder: (contet) {
@@ -260,13 +262,15 @@ class LoginOtpScreenState extends State<LoginOtpScreen>  {
               textStyle: TextStyle(color: Colors.white),
               controller: otpController.otpController,
               onCompleted: (v) {
-                if(widget.isFromReActivate)
-                  otpController.reActivateLoginOTP(language, widget.from,
+                if (widget.isFromReActivate)
+                  otpController.reActivateLoginOTP(
+                      language,
+                      widget.from,
                       widget.frm,
                       loginController.isPasswordScreen,
                       loginController.isStorePasswordScreen);
                 else
-                otpController.verifyLoginOTP(language);
+                  otpController.verifyLoginOTP(language);
               },
               onChanged: (value) {
                 debugPrint(value);
@@ -329,22 +333,22 @@ class LoginOtpScreenState extends State<LoginOtpScreen>  {
           ],
         ),
         10.heightBox,
-        if(widget.isLoginWithPassword==1)
-        GetBuilder<LoginController>(
-            init: LoginController(),
-            builder: (contet) {
-              loginController.context = otpController.context;
-              return CustomButton(
-                  text: LocaleKeys.loginWithPassword.tr,
-                  onPressed: () {
-                    otpController.navigateToLoginScreen(
-                        widget.from,
-                        widget.frm,
-                        loginController.isPasswordScreen,
-                        loginController.isStorePasswordScreen);
-                    // otpController.exitScreen();
-                  });
-            })
+        if (widget.isLoginWithPassword == 1)
+          GetBuilder<LoginController>(
+              init: LoginController(),
+              builder: (contet) {
+                loginController.context = otpController.context;
+                return CustomButton(
+                    text: LocaleKeys.loginWithPassword.tr,
+                    onPressed: () {
+                      otpController.navigateToLoginScreen(
+                          widget.from,
+                          widget.frm,
+                          loginController.isPasswordScreen,
+                          loginController.isStorePasswordScreen);
+                      // otpController.exitScreen();
+                    });
+              })
       ],
     );
   }
@@ -395,6 +399,4 @@ class LoginOtpScreenState extends State<LoginOtpScreen>  {
               ));
         });
   }
-
-
 }

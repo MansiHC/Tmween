@@ -29,7 +29,7 @@ class ReviewProductController extends GetxController {
   int userId = 0;
   String token = '';
   int loginLogId = 0;
-  int productId=0;
+  int productId = 0;
   final api = Api();
   bool loading = false;
 
@@ -56,10 +56,13 @@ class ReviewProductController extends GetxController {
 
   Future<void> rateProduct(language) async {
     Helper.showLoading();
-    await api.addCustomerReview(token, userId,productId,commentController.text,currentRating, language).then((value) {
+    await api
+        .addCustomerReview(token, userId, productId, commentController.text,
+            currentRating, language)
+        .then((value) {
       Helper.hideLoading(context);
       if (value.statusCode == 200) {
-        Helper.showGetSnackBar(value.message!);
+        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
         Get.delete<ReviewProductController>();
         Navigator.of(context).pop(true);
       } else if (value.statusCode == 401) {
@@ -67,6 +70,8 @@ class ReviewProductController extends GetxController {
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
+      } else {
+        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
 
       update();
@@ -76,7 +81,6 @@ class ReviewProductController extends GetxController {
       print('error....$error');
     });
   }
-
 
   void exitScreen() {
     Get.delete<ReviewProductController>();

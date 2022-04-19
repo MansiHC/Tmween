@@ -5,6 +5,7 @@ import 'package:tmween/controller/store_owner_signup_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/authentication/signup/otp_screen.dart';
 import 'package:tmween/service/api.dart';
+import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/helper.dart';
 
 import 'otp_controller.dart';
@@ -38,13 +39,13 @@ class SignUpController extends GetxController {
             agreeTo,
             language)
         .then((value) {
-          Helper.hideLoading(context);
+      Helper.hideLoading(context);
       if (value.statusCode == 200) {
         Helper.isIndividual = true;
-        Helper.showGetSnackBar(value.message!);
+        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
         navigateToOtpScreen(value.data!.otp);
       } else {
-        Helper.showGetSnackBar(value.message!);
+        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
 
       update();
@@ -92,12 +93,12 @@ class SignUpController extends GetxController {
   }
 
   void signUpIndividual(language) {
-
     if (formKey.currentState!.validate()) {
       if (agree) {
         doRequest(language);
       } else {
-        Helper.showGetSnackBar(LocaleKeys.emptyAgreeTerms.tr);
+        Helper.showGetSnackBar(
+            LocaleKeys.emptyAgreeTerms.tr,  AppColors.errorColor);
       }
     }
   }

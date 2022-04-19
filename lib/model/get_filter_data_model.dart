@@ -1,4 +1,3 @@
-
 import 'package:tmween/model/dashboard_model.dart';
 
 class GetFilterDataModel {
@@ -14,7 +13,10 @@ class GetFilterDataModel {
     statusCode = json['status_code'];
     statusMessage = json['status_message'];
     message = json['message'];
-    data = json['data'] != null ? new GetFilterData.fromJson(json['data']) : null;
+    if (statusCode == 200)
+      data = json['data'] != null
+          ? new GetFilterData.fromJson(json['data'])
+          : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -42,14 +44,14 @@ class GetFilterData {
 
   GetFilterData(
       {this.categoryName,
-        this.categoryId,
-        this.suppliersData,
-        this.brand,
-        this.productCategory,
-        this.dailyDealsData,
-        this.productData,
-        this.pagination,
-        this.maxPrice});
+      this.categoryId,
+      this.suppliersData,
+      this.brand,
+      this.productCategory,
+      this.dailyDealsData,
+      this.productData,
+      this.pagination,
+      this.maxPrice});
 
   GetFilterData.fromJson(Map<String, dynamic> json) {
     categoryName = json['category_name'];
@@ -128,9 +130,9 @@ class SuppliersData {
 
   SuppliersData(
       {this.supplierId,
-        this.productId,
-        this.isSystemSupplier,
-        this.supplierName});
+      this.productId,
+      this.isSystemSupplier,
+      this.supplierName});
 
   SuppliersData.fromJson(Map<String, dynamic> json) {
     supplierId = json['supplier_id'];
@@ -183,13 +185,13 @@ class ProductCategory {
 
   ProductCategory(
       {this.id,
-        this.categoryName,
-        this.parentId,
-        this.showInTopMenu,
-        this.image,
-        this.slugName,
-        this.count,
-        this.mainCategory});
+      this.categoryName,
+      this.parentId,
+      this.showInTopMenu,
+      this.image,
+      this.slugName,
+      this.count,
+      this.mainCategory});
 
   ProductCategory.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -277,62 +279,62 @@ class ProductData {
 
   ProductData(
       {this.id,
-        this.attributeSetId,
-        this.productCategoryId,
-        this.upc,
-        this.sku,
-        this.productName,
-        this.finalPrice,
-        this.retailPrice,
-        this.stock,
-        this.inStock,
-        this.isCombinationAvailable,
-        this.reviewsAvg,
-        this.brandId,
-        this.manufacturerNumber,
-        this.countryCode,
-        this.vehicleTypeCode,
-        this.taxClass,
-        this.shortDescription,
-        this.longDescription,
-        this.specification,
-        this.image,
-        this.isBestSellers,
-        this.isTopSelection,
-        this.autogenerateSeo,
-        this.metaTitle,
-        this.metaKeywords,
-        this.metaDescription,
-        this.specialTransportId,
-        this.weightUnitId,
-        this.singleProductWeight,
-        this.singleProductDimensionsUnitId,
-        this.singleProductHeight,
-        this.singleProductWidth,
-        this.singleProductLength,
-        this.packProductDimensionsUnitId,
-        this.packProductHeight,
-        this.packProductWidth,
-        this.packProductLength,
-        this.packProductWeightUnitId,
-        this.packProductWeight,
-        this.productInOnePack,
-        this.expirable,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.productSlug,
-        this.smallImageUrl,
-        this.largeImageUrl,
-        this.statusLabel,
-        this.isWishlist,
-        this.rating,
-        this.productReview,
-        this.discountValuePercentage,
-        this.discountValue,
-        this.discountValueDisp,
-        this.retailPriceDisp,
-        this.finalPriceDisp});
+      this.attributeSetId,
+      this.productCategoryId,
+      this.upc,
+      this.sku,
+      this.productName,
+      this.finalPrice,
+      this.retailPrice,
+      this.stock,
+      this.inStock,
+      this.isCombinationAvailable,
+      this.reviewsAvg,
+      this.brandId,
+      this.manufacturerNumber,
+      this.countryCode,
+      this.vehicleTypeCode,
+      this.taxClass,
+      this.shortDescription,
+      this.longDescription,
+      this.specification,
+      this.image,
+      this.isBestSellers,
+      this.isTopSelection,
+      this.autogenerateSeo,
+      this.metaTitle,
+      this.metaKeywords,
+      this.metaDescription,
+      this.specialTransportId,
+      this.weightUnitId,
+      this.singleProductWeight,
+      this.singleProductDimensionsUnitId,
+      this.singleProductHeight,
+      this.singleProductWidth,
+      this.singleProductLength,
+      this.packProductDimensionsUnitId,
+      this.packProductHeight,
+      this.packProductWidth,
+      this.packProductLength,
+      this.packProductWeightUnitId,
+      this.packProductWeight,
+      this.productInOnePack,
+      this.expirable,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.productSlug,
+      this.smallImageUrl,
+      this.largeImageUrl,
+      this.statusLabel,
+      this.isWishlist,
+      this.rating,
+      this.productReview,
+      this.discountValuePercentage,
+      this.discountValue,
+      this.discountValueDisp,
+      this.retailPriceDisp,
+      this.finalPriceDisp});
 
   ProductData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -482,7 +484,6 @@ class Pagination {
     return data;
   }
 }
-
 
 /*
 import 'package:tmween/model/dashboard_model.dart';
@@ -705,7 +706,7 @@ class ProductData {
       this.previous,
       this.totalRecords,
       */
-/*this.productDetailData*//*
+/*this.productDetailData*/ /*
 });
 
   ProductData.fromJson(Map<String, dynamic> json) {
@@ -720,7 +721,7 @@ class ProductData {
             : null;
         count++;
       }
-    } while (!json.containsKey(count.toString()));*//*
+    } while (!json.containsKey(count.toString()));*/ /*
 
     totalPages = json['total_pages'];
     next = json['next'];
@@ -738,7 +739,7 @@ class ProductData {
    */
 /* if (this.productDetailData != null) {
       data[count.toString()] = this.productDetailData!.toJson();
-    }*//*
+    }*/ /*
 
     return data;
   }
@@ -802,7 +803,7 @@ class ProductDetailData {
   int? discountValue;
   String? discountValueDisp;
   String? retailPriceDisp;
-  String? finalPriceDisp;*//*
+  String? finalPriceDisp;*/ /*
 
 
   ProductDetailData(
@@ -863,7 +864,7 @@ class ProductDetailData {
       this.discountValue,
       this.discountValueDisp,
       this.retailPriceDisp,
-      this.finalPriceDisp*//*
+      this.finalPriceDisp*/ /*
 });
 
   ProductDetailData.fromJson(Map<String, dynamic> json) {
@@ -924,7 +925,7 @@ class ProductDetailData {
     discountValue = json['discount_value'];
     discountValueDisp = json['discount_value_disp'];
     retailPriceDisp = json['retail_price_disp'];
-    finalPriceDisp = json['final_price_disp'];*//*
+    finalPriceDisp = json['final_price_disp'];*/ /*
 
   }
 
@@ -988,7 +989,7 @@ class ProductDetailData {
     data['discount_value'] = this.discountValue;
     data['discount_value_disp'] = this.discountValueDisp;
     data['retail_price_disp'] = this.retailPriceDisp;
-    data['final_price_disp'] = this.finalPriceDisp;*//*
+    data['final_price_disp'] = this.finalPriceDisp;*/ /*
 
     return data;
   }

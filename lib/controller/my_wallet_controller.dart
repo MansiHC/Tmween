@@ -19,25 +19,57 @@ class MyWalletController extends GetxController {
     'October 2021'
   ];
 
-
-
-
-
   List<WalletHistoryModel> walletHistoryList = const <WalletHistoryModel>[
-    WalletHistoryModel(title: 'December 2021',historyItemList:[HistoryItem(title: 'Added to Wallet', date: '10 Nov, 9:05 AM', isSuccess: true, successText: 'Received in Wallet'),
-      HistoryItem(title: 'Paid for order', date: '10 Nov, 9:05 AM', isSuccess: false, successText: 'Paid from Waller'),
-      HistoryItem(title: 'Paid for order', date: '10 Nov, 9:05 AM', isSuccess: false, successText: 'Failed'),
-    ] ),
-    WalletHistoryModel(title:'November 2021',historyItemList: [
-      HistoryItem(title: 'Added to Wallet', date: '10 Nov, 9:05 AM', isSuccess: true, successText: 'Received in Wallet'),
-      HistoryItem(title: 'Paid for order', date: '10 Nov, 9:05 AM', isSuccess: false, successText: 'Paid from Waller'),
-      HistoryItem(title: 'Paid for order', date: '10 Nov, 9:05 AM', isSuccess: false, successText: 'Failed'),
-
+    WalletHistoryModel(title: 'December 2021', historyItemList: [
+      HistoryItem(
+          title: 'Added to Wallet',
+          date: '10 Nov, 9:05 AM',
+          isSuccess: true,
+          successText: 'Received in Wallet'),
+      HistoryItem(
+          title: 'Paid for order',
+          date: '10 Nov, 9:05 AM',
+          isSuccess: false,
+          successText: 'Paid from Waller'),
+      HistoryItem(
+          title: 'Paid for order',
+          date: '10 Nov, 9:05 AM',
+          isSuccess: false,
+          successText: 'Failed'),
     ]),
-    WalletHistoryModel(title:'October 2021',historyItemList:
-    [HistoryItem(title: 'Added to Wallet', date: '10 Nov, 9:05 AM', isSuccess: true, successText: 'Received in Wallet'),
-      HistoryItem(title: 'Paid for order', date: '10 Nov, 9:05 AM', isSuccess: false, successText: 'Paid from Waller'),
-      HistoryItem(title: 'Paid for order', date: '10 Nov, 9:05 AM', isSuccess: false, successText: 'Failed'),
+    WalletHistoryModel(title: 'November 2021', historyItemList: [
+      HistoryItem(
+          title: 'Added to Wallet',
+          date: '10 Nov, 9:05 AM',
+          isSuccess: true,
+          successText: 'Received in Wallet'),
+      HistoryItem(
+          title: 'Paid for order',
+          date: '10 Nov, 9:05 AM',
+          isSuccess: false,
+          successText: 'Paid from Waller'),
+      HistoryItem(
+          title: 'Paid for order',
+          date: '10 Nov, 9:05 AM',
+          isSuccess: false,
+          successText: 'Failed'),
+    ]),
+    WalletHistoryModel(title: 'October 2021', historyItemList: [
+      HistoryItem(
+          title: 'Added to Wallet',
+          date: '10 Nov, 9:05 AM',
+          isSuccess: true,
+          successText: 'Received in Wallet'),
+      HistoryItem(
+          title: 'Paid for order',
+          date: '10 Nov, 9:05 AM',
+          isSuccess: false,
+          successText: 'Paid from Waller'),
+      HistoryItem(
+          title: 'Paid for order',
+          date: '10 Nov, 9:05 AM',
+          isSuccess: false,
+          successText: 'Failed'),
     ]),
   ];
   final List<String> amounts = [

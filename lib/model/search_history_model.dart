@@ -11,7 +11,8 @@ class SearchHistoryModel {
     statusCode = json['status_code'];
     statusMessage = json['status_message'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    if (statusCode == 200)
+      data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -63,14 +64,14 @@ class SearchHistoryData {
 
   SearchHistoryData(
       {this.id,
-        this.keyword,
-        this.searchCount,
-        this.defaultLangCode,
-        this.createdAt,
-        this.updatedAt,
-        this.userSearchKeywordId,
-        this.searchByUserId,
-        this.ip});
+      this.keyword,
+      this.searchCount,
+      this.defaultLangCode,
+      this.createdAt,
+      this.updatedAt,
+      this.userSearchKeywordId,
+      this.searchByUserId,
+      this.ip});
 
   SearchHistoryData.fromJson(Map<String, dynamic> json) {
     id = json['id'];

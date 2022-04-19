@@ -7,16 +7,15 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/controller/dashboard_controller.dart';
 import 'package:tmween/controller/search_controller.dart';
-import 'package:tmween/model/address_model.dart';
 import 'package:tmween/model/language_model.dart';
 import 'package:tmween/screens/drawer/categories_screen.dart';
 import 'package:tmween/screens/drawer/dashboard/dashboard_screen.dart';
-import 'package:tmween/screens/drawer/search_screen.dart';
+import 'package:tmween/screens/drawer/search/search_screen.dart';
 import 'package:tmween/screens/drawer/wishlist_screen.dart';
 
 import '../lang/locale_keys.g.dart';
 import '../model/get_customer_address_list_model.dart';
-import '../screens/drawer/cart_screen.dart';
+import '../screens/drawer/cart/cart_screen.dart';
 import '../screens/drawer/drawer_screen.dart';
 import '../screens/drawer/profile/my_account_screen.dart';
 import '../service/api.dart';
@@ -35,9 +34,7 @@ class DrawerControllers extends GetxController {
   bool addressFromCurrentLocation = true;
   String image = "", address = "";
 
-
   ListQueue<int> navigationQueue = ListQueue();
-
 
   int userId = 0;
   String token = '';
@@ -52,7 +49,8 @@ class DrawerControllers extends GetxController {
     CategoriesScreen(),
     /*SearchScreen(
       from: SharedPreferencesKeys.isDrawer,
-    )*/Container(),
+    )*/
+    Container(),
     WishlistScreen(),
     CartScreen(
       from: SharedPreferencesKeys.isDrawer,
@@ -115,7 +113,6 @@ class DrawerControllers extends GetxController {
       if (value.statusCode == 200) {
         addressList = value.data!;
         Helper.hideLoading(context);
-
       } else if (value.statusCode == 401) {
         Helper.hideLoading(context);
         MySharedPreferences.instance
@@ -124,10 +121,9 @@ class DrawerControllers extends GetxController {
         Get.offAll(DrawerScreen());
       } else {
         Helper.hideLoading(context);
-        Helper.showGetSnackBar(value.message!);
-
+        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
-update();
+      update();
     }).catchError((error) {
       Helper.hideLoading(context);
       update();
@@ -170,14 +166,10 @@ update();
             defaultValue,
             language)
         .then((value) {
-
       if (value.statusCode == 200) {
         Helper.hideLoading(context);
-        MySharedPreferences.instance
-            .addBoolToSF(
-            SharedPreferencesKeys
-                .addressFromCurrentLocation,
-            false);
+        MySharedPreferences.instance.addBoolToSF(
+            SharedPreferencesKeys.addressFromCurrentLocation, false);
         Get.delete<DrawerControllers>();
         Get.delete<DashboardController>();
         Get.offAll(DrawerScreen());
@@ -189,7 +181,7 @@ update();
         Get.offAll(DrawerScreen());
       }
       update();
-    //  Helper.showGetSnackBar(value.message!);
+      //  Helper.showGetSnackBar(value.message!);
     }).catchError((error) {
       Helper.hideLoading(context);
       update();
@@ -221,6 +213,21 @@ update();
             .getStringValuesSF(SharedPreferencesKeys.image)
             .then((value) async {
           image = value!;
+          update();
+        });
+      }
+    });
+  }
+
+  void navigateToSearchScreen(from) {
+    Navigator.push(context,
+            MaterialPageRoute(builder: (context) => SearchScreen(from: from)))
+        .then((value) {
+      if (value) {
+        MySharedPreferences.instance
+            .getStringValuesSF(SharedPreferencesKeys.address)
+            .then((value) async {
+          address = value!;
           update();
         });
       }

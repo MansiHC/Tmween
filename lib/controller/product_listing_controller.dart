@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:tmween/model/popular_search_model.dart';
-import 'package:tmween/screens/drawer/product_listing_screen.dart';
-import 'package:tmween/screens/drawer/search_screen.dart';
+import 'package:tmween/screens/drawer/search/search_screen.dart';
 
 import '../model/get_customer_address_list_model.dart';
 import '../model/product_listing_model.dart';
-import '../model/search_history_model.dart';
+import '../screens/drawer/dashboard/productDetail/product_detail_screen.dart';
 import '../screens/drawer/drawer_screen.dart';
 import '../service/api.dart';
 import '../utils/animations.dart';
@@ -43,9 +41,33 @@ class ProductListingController extends GetxController {
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
   }
+
   void navigateToSearchScreen(String from) {
     Get.delete<ProductListingController>();
-    Navigator.pushReplacement(context,CustomPageRoute( SearchScreen(from: from,searchText: searchedString,)));
+    Navigator.pushReplacement(
+        context,
+        CustomPageRoute(SearchScreen(
+          from: from,
+          searchText: searchedString,
+        )));
+  }
+
+  void navigateToProductDetailScreen(int productId, String productSlug) {
+    Get.delete<ProductListingController>();
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ProductDetailScreen(
+                productId: productId, productslug: productSlug))).then((value) {
+      if (value) {
+        MySharedPreferences.instance
+            .getStringValuesSF(SharedPreferencesKeys.address)
+            .then((value) async {
+          address = value!;
+          update();
+        });
+      }
+    });
   }
 
   bool isLogin = true;
@@ -53,7 +75,6 @@ class ProductListingController extends GetxController {
 
   @override
   void onInit() {
-
     MySharedPreferences.instance
         .getStringValuesSF(SharedPreferencesKeys.address)
         .then((value) async {
@@ -93,7 +114,7 @@ class ProductListingController extends GetxController {
     });
   }
 
-  Future<void> getProductList(searchString,language) async {
+  Future<void> getProductList(searchString, language) async {
     productList = [];
     Helper.showLoading();
     await api
@@ -186,16 +207,22 @@ class ProductListingController extends GetxController {
       Helper.hideLoading(context);
       update();
       if (value.statusCode == 200) {
-        Get.delete<ProductListingController>();
+        // Get.delete<ProductListingController>();
         Navigator.of(context).pop(true);
-        Navigator.pushReplacement(
+        /*Navigator.pushReplacement(
             context,
             MaterialPageRoute(
                 builder: (context) => ProductListingScreen(
                   from: from,
                   searchString: searchedString,
                 )));
-        update();
+        update();*/
+        MySharedPreferences.instance
+            .getStringValuesSF(SharedPreferencesKeys.address)
+            .then((value) async {
+          address = value!;
+          update();
+        });
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);

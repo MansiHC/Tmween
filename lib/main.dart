@@ -44,7 +44,8 @@ void main() async {
           isDrawer = value ?? false;
           SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
               .then((_) {
-            runApp(/*MyApp2()*/
+            runApp(
+              /*MyApp2()*/
               MyApp(
                 isLogin: isLogin,
                 isSplash: isSplash,
@@ -74,7 +75,6 @@ class MyApp2 extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -82,12 +82,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String link = "";
 
-
   @override
   void initState() {
-    initUniLinks().then((value) =>setState(() {
-      link = value!;
-    }));
+    initUniLinks().then((value) => setState(() {
+          link = value!;
+        }));
     super.initState();
   }
 
@@ -114,9 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-                link == null ? "" : link
-            ),
+            Text(link == null ? "" : link),
           ],
         ),
       ),

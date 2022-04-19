@@ -6,6 +6,7 @@ import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/service/api.dart';
 
 import '../screens/authentication/login/login_screen.dart';
+import '../utils/global.dart';
 import '../utils/helper.dart';
 import 'forgot_otp_controller.dart';
 
@@ -43,11 +44,13 @@ class ResetPasswordController extends GetxController {
           .then((value) {
         Helper.hideLoading(context);
         if (value.statusCode == 200) {
+          Helper.showGetSnackBar(value.message!,  AppColors.successColor);
           submit(from, frm);
+        } else {
+          Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
         }
 
         update();
-        Helper.showGetSnackBar(value.message!);
       }).catchError((error) {
         Helper.hideLoading(context);
         update();
@@ -69,7 +72,7 @@ class ResetPasswordController extends GetxController {
                   from: LocaleKeys.forgotPassword,
                   frm: frm,
                   frmReset: from,
-              fromReset: true,
+                  fromReset: true,
                 )),
         (Route<dynamic> route) => false);
   }

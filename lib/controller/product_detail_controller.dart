@@ -4,14 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:tmween/controller/cart_controller.dart';
 import 'package:tmween/model/AttributeModel.dart';
-import 'package:tmween/screens/drawer/dashboard/product_detail_screen.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
+import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
 import '../model/attribute_combination_model.dart';
 import '../model/get_customer_address_list_model.dart';
 import '../model/product_detail_model.dart';
+import '../screens/drawer/dashboard/productDetail/product_detail_screen.dart';
 import '../service/api.dart';
 import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
@@ -19,7 +21,10 @@ import '../utils/my_shared_preferences.dart';
 class ProductDetailController extends GetxController {
   late BuildContext context;
   TextEditingController searchController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey2 = GlobalKey<FormState>();
 
   late bool visibleList = false;
   late bool isLiked = false;
@@ -28,6 +33,8 @@ class ProductDetailController extends GetxController {
   int current = 0;
   int productId = 0;
   String productSlug = '';
+  String reviewMessage = '';
+  String reportMessage = '';
   final CarouselController controller = CarouselController();
   late String selectedColor;
   int userId = 0;
@@ -37,6 +44,7 @@ class ProductDetailController extends GetxController {
   final api = Api();
   bool loading = false;
   bool detailLoading = false;
+  bool addedToCart = false;
   ProductDetailData? productDetailData;
   AttributeData? attributeData;
   ProductOtherInfo? topLeftInfo;
@@ -49,13 +57,18 @@ class ProductDetailController extends GetxController {
   List<String> attributeTypeArr = [];
   List<String> attributeValueArray = [];
   final List<AttributeModel> attributeItems = [];
+  final List<int> reviewModelItems = [];
+  final List<int> reviewModelReportItems = [];
   int packId = 0;
+  int supplierBranchId = 0;
   int quntity = 1;
+   List<int> radioPackItems = [];
+
 
   @override
   void onInit() {
     isLiked = false;
-
+    addedToCart = false;
     MySharedPreferences.instance
         .getStringValuesSF(SharedPreferencesKeys.address)
         .then((value) async {
@@ -102,6 +115,7 @@ class ProductDetailController extends GetxController {
   Future<void> getProductDetails(language) async {
     Helper.showLoading();
     attributeTypeArr = [];
+    radioPackItems =[];
     attributeValueArray = [];
     await api
         .getProductDetailsMobile(productSlug, isLogin, userId, language)
@@ -109,6 +123,10 @@ class ProductDetailController extends GetxController {
       if (value.statusCode == 200) {
         productDetailData = value.data!;
         packId = productDetailData!.productData![0].productPack![0].id!;
+        for(var i=0;i<productDetailData!.productData![0].productPack!.length;i++){
+          radioPackItems.add(productDetailData!.productData![0].productPack![i].id!);
+        }
+
         if (productDetailData!.productAssociateAttribute != null) {
           for (var i = 0;
               i < productDetailData!.productAssociateAttribute!.length;
@@ -118,7 +136,7 @@ class ProductDetailController extends GetxController {
               attributeTypeArr.add(productDetailData!
                   .productAssociateAttribute![i].attributeName!);
               if (productDetailData!.productAssociateAttribute![i].options![0]
-                      .attributeOptionValue ==
+                      .attributeOptionValue !=
                   null)
                 attributeValueArray.add(productDetailData!
                     .productAssociateAttribute![i]
@@ -131,9 +149,9 @@ class ProductDetailController extends GetxController {
             attributeItems.add(a);
           }
           if (attributeTypeArr.length == 0) {
-            getAttributeWithoutCombination(packId, language, 0);
+            getAttributeWithoutCombination(language, 0);
           } else {
-            getAttributeCombination(packId, language, 0);
+            getAttributeCombination(language, 0);
           }
         } else {
           Helper.hideLoading(context);
@@ -160,7 +178,7 @@ class ProductDetailController extends GetxController {
         Get.offAll(DrawerScreen());
       } else {
         Helper.hideLoading(context);
-        Helper.showGetSnackBar(value.message!);
+        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
     }).catchError((error) {
       Helper.hideLoading(context);
@@ -186,6 +204,8 @@ class ProductDetailController extends GetxController {
   changeItemSelection(index, index2, language) async {
     attributeItems[index].setPrimaryIndex = index;
     attributeItems[index].setSecondaryIndex = index2;
+    print(
+        "object${attributeTypeArr.toString()}....${attributeValueArray.toString()}");
     for (var i = 0; i < attributeTypeArr.length; i++) {
       if (productDetailData!.productAssociateAttribute![index].attributeName ==
           attributeTypeArr[i]) {
@@ -199,7 +219,7 @@ class ProductDetailController extends GetxController {
     }
     Helper.showLoading();
     if (attributeTypeArr.length == 0) {
-      getAttributeWithoutCombination(packId, language, 1);
+      getAttributeWithoutCombination(language, 1);
     } else {
       final Map<String, dynamic> attrData = {
         "attribute_type": attributeTypeArr,
@@ -214,7 +234,7 @@ class ProductDetailController extends GetxController {
         if (value.statusCode == 200) {
           attributeData = value.data;
         } else {
-          Helper.showGetSnackBar(value.message!);
+          Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
         }
 
         update();
@@ -226,22 +246,27 @@ class ProductDetailController extends GetxController {
     }
   }
 
-  Future<void> getAttributeCombination(productPackId, language, int i) async {
+  Future<void> getAttributeCombination(language, int i) async {
     if (i == 1) Helper.showLoading();
     final Map<String, dynamic> attrData = {
       "attribute_type": attributeTypeArr,
       "attribute_value": attributeValueArray
     };
-    print('$attrData.....$productId....$productPackId');
+    print('$attrData.....$productId....$packId');
+    radioPackItems = [];
     await api
-        .getItemIdByAttributeCombination(
-            productPackId, productId, attrData, language)
+        .getItemIdByAttributeCombination(packId, productId, attrData, language)
         .then((value) {
       Helper.hideLoading(context);
       if (value.statusCode == 200) {
         attributeData = value.data;
+        packId = attributeData!.productQtyPackData![0].productPackId!;
+        supplierBranchId = attributeData!.productQtyPackData![0].supplierBranchId!;
+        for(var i=0;i< attributeData!.productQtyPackData!.length;i++){
+          radioPackItems.add(attributeData!.productQtyPackData![i].productPackId!);
+        }
       } else {
-        Helper.showGetSnackBar(value.message!);
+        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
 
       update();
@@ -252,17 +277,22 @@ class ProductDetailController extends GetxController {
     });
   }
 
-  Future<void> getAttributeWithoutCombination(
-      productPackId, language, int i) async {
+  Future<void> getAttributeWithoutCombination(language, int i) async {
     if (i == 1) Helper.showLoading();
-    await api
-        .getProductSupplier(productPackId, productId, language)
-        .then((value) {
+    print('....$productId....$packId');
+    radioPackItems=[];
+    await api.getProductSupplier(packId, productId, language).then((value) {
       Helper.hideLoading(context);
       if (value.statusCode == 200) {
         attributeData = value.data;
+        packId = attributeData!.productQtyPackData![0].productPackId!;
+        supplierBranchId = attributeData!.productQtyPackData![0].supplierBranchId!;
+
+        for(var i=0;i< attributeData!.productQtyPackData!.length;i++){
+          radioPackItems.add(attributeData!.productQtyPackData![i].productPackId!);
+        }
       } else {
-        Helper.showGetSnackBar(value.message!);
+        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
 
       update();
@@ -287,23 +317,69 @@ class ProductDetailController extends GetxController {
       if (value.statusCode == 200) {
         isLiked = true;
         update();
-        Helper.showGetSnackBar(value.message!);
+        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       } else {
-        Helper.showGetSnackBar(value.message!);
+        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
     }).catchError((error) {
       print('error....$error');
     });
   }
 
-  Future<bool> addToCart(
-      productItemId, supplierId, supplierBranchId, language) async {
+  Future<void> addReviewHelpful(reviewId, language, index) async {
+    Helper.showLoading();
+    await api
+        .addReviewHelpful(token, userId, productId, reviewId, language)
+        .then((value) {
+      if (value.statusCode == 401) {
+        Helper.hideLoading(context);
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        Get.deleteAll();
+        Get.offAll(DrawerScreen());
+      } else {
+        Helper.hideLoading(context);
+        reviewMessage = value.message!;
+        reviewModelItems.add(index);
+      }
+      update();
+    }).catchError((error) {
+      print('error....$error');
+    });
+  }
+
+  Future<void> addReviewReport(reviewId, language, index) async {
+    Helper.showLoading();
+    await api
+        .addReviewReportAbuse(token, userId, productId, reviewId,
+            titleController.text, descriptionController.text, language)
+        .then((value) {
+      if (value.statusCode == 401) {
+        Helper.hideLoading(context);
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        Get.deleteAll();
+        Get.offAll(DrawerScreen());
+      } else {
+        Helper.hideLoading(context);
+        reportMessage = value.message!;
+        reviewModelReportItems.add(index);
+      }
+      update();
+    }).catchError((error) {
+      print('error....$error');
+    });
+  }
+
+  Future<void> addToCart(
+      productItemId, supplierId,  language) async {
     addressList = [];
+    Helper.showLoading();
     print(
         'add......$productId,$packId,$productItemId,$userId,$quntity,$addressId,$supplierId,$supplierBranchId');
     await api
@@ -311,21 +387,63 @@ class ProductDetailController extends GetxController {
             addressId, supplierId, supplierBranchId, language)
         .then((value) {
       if (value.statusCode == 200) {
-        return true;
+        addedToCart = true;
+        Helper.hideLoading(context);
+        _showDialog();
       } else if (value.statusCode == 401) {
+        addedToCart = false;
+        Helper.hideLoading(context);
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
-        return false;
       } else {
-        Helper.showGetSnackBar(value.message!);
-        return false;
+        addedToCart = false;
+        Helper.hideLoading(context);
+        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
+      update();
     }).catchError((error) {
       print('error....$error');
     });
-    return false;
+  }
+
+  void _showDialog() async {
+    await showDialog(
+        context: context,
+        builder: (_) {
+          Future.delayed(Duration(milliseconds: 1500), () {
+            Navigator.of(context).pop(true);
+          });
+          return Center(
+              child: Material(
+                  type: MaterialType.transparency,
+                  child: Container(
+                    width: 160,
+                    height: 50,
+                    decoration: BoxDecoration(
+                        color: AppColors.appBarColor,
+                        borderRadius: BorderRadius.circular(4)),
+                    padding: EdgeInsets.all(10),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          CupertinoIcons.checkmark_circle_fill,
+                          color: Colors.white,
+                        ),
+                        10.widthBox,
+                        Text(
+                          'Added To Cart',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                  )));
+        });
   }
 
   Future<void> removeWishlistProduct(language) async {
@@ -337,14 +455,14 @@ class ProductDetailController extends GetxController {
       if (value.statusCode == 200) {
         isLiked = false;
         update();
-        Helper.showGetSnackBar(value.message!);
+        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       } else {
-        Helper.showGetSnackBar(value.message!);
+        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
       update();
     }).catchError((error) {
@@ -413,16 +531,28 @@ class ProductDetailController extends GetxController {
       Helper.hideLoading(context);
       update();
       if (value.statusCode == 200) {
-        Get.delete<ProductDetailController>();
+        //   Get.delete<ProductDetailController>();
         Navigator.of(context).pop(true);
-        Navigator.pushReplacement(
+        /* Navigator.pushReplacement(
             context,
             MaterialPageRoute(
                 builder: (context) => ProductDetailScreen(
                       productId: productId,
                       productslug: productSlug,
-                    )));
-        update();
+                    )));*/
+        MySharedPreferences.instance
+            .getStringValuesSF(SharedPreferencesKeys.address)
+            .then((value) async {
+          address = value!;
+          update();
+        });
+        MySharedPreferences.instance
+            .getStringValuesSF(SharedPreferencesKeys.addressId)
+            .then((value) async {
+          if (value != null) addressId = value;
+          update();
+        });
+        // update();
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
@@ -436,9 +566,26 @@ class ProductDetailController extends GetxController {
     });
   }
 
+  void navigateToProductDetailScreen(int productId, String productSlug) {
+    Get.delete<ProductDetailController>();
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ProductDetailScreen(
+                productId: productId, productslug: productSlug))).then((value) {
+      if (value) {
+        MySharedPreferences.instance
+            .getStringValuesSF(SharedPreferencesKeys.address)
+            .then((value) async {
+          address = value!;
+          update();
+        });
+      }
+    });
+  }
+
   final List<String> items = ['Sofa', 'Bed'];
 
-  int val = 1;
 
   bool isQuantityDiscountExpanded = true;
 
@@ -483,7 +630,7 @@ class ProductDetailController extends GetxController {
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
             builder: (context) => DrawerScreen(
-                  from: AppConstants.productDetail,
+                  from:  AppConstants.productDetail,
                 )),
         (Route<dynamic> route) => false);
   }
@@ -492,9 +639,10 @@ class ProductDetailController extends GetxController {
     Navigator.pop(context);
   }
 
-  void exitScreen() {
+  void exitScreen(CartController cartController) {
     Get.delete<ProductDetailController>();
-    Navigator.of(context).pop();
+    cartController.update();
+    Navigator.of(context).pop(true);
   }
 
   void pop() {

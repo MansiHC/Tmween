@@ -163,8 +163,7 @@ const Map<String, String> en_US = {
   "whenDeactivate": "When you deactivate the account",
   "whenDeactivateText1": "We will miss you.",
   "whenDeactivateText2": "You want be able to access your Wish list.",
-  "whenDeactivateText3":
-      "You will not get updates.",
+  "whenDeactivateText3": "You will not get updates.",
   "whenDeactivateText4":
       "You will have to fill your details while checking out over and over again.",
   "whenDeactivateText5": "You won't be able to check your past orders.",

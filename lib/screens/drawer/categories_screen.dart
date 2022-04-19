@@ -11,7 +11,8 @@ import 'dashboard/select_category_container.dart';
 
 class CategoriesScreen extends StatelessWidget {
   final bool fromDrawer;
-var language;
+  var language;
+
   CategoriesScreen({Key? key, this.fromDrawer = false}) : super(key: key);
 
   final categoriesController = Get.put(CategoriesController());
@@ -23,7 +24,7 @@ var language;
 
   @override
   Widget build(BuildContext context) {
-    language= Get.locale!.languageCode;
+    language = Get.locale!.languageCode;
     return GetBuilder<CategoriesController>(
         init: CategoriesController(),
         builder: (contet) {
@@ -41,10 +42,9 @@ var language;
                         LocaleKeys.shopByCategorySmall.tr,
                         style: TextStyle(color: Colors.white),
                       ),
-                    /*  leading: BackButton(onPressed: () {
+                      /*  leading: BackButton(onPressed: () {
                         categoriesController.exitScreen();
                       }),*/
-
                     )
                   : PreferredSize(child: Container(), preferredSize: Size.zero),
               body: WillPopScope(
@@ -101,52 +101,57 @@ var language;
                     categoriesController.loading
                         ? Center(child: CircularProgressBar())
                         : Expanded(
-                            child:RefreshIndicator(
+                            child: RefreshIndicator(
                                 onRefresh: () =>
-                                    categoriesController.onRefresh(language)
-                                ,
+                                    categoriesController.onRefresh(language),
                                 child: Container(
-                                margin: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: AppColors.lightGrayColor,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(4)),
-                                ),
-                                padding: EdgeInsets.all(1.5),
-                                child: NotificationListener<ScrollNotification>(
-                                    onNotification:
-                                        (ScrollNotification scrollInfo) {
-                                      if (scrollInfo is ScrollEndNotification &&
-                                          scrollInfo.metrics.pixels ==
-                                              scrollInfo.metrics.maxScrollExtent) {
-                                        if (categoriesController.next != 0) {
-                                          categoriesController.loadMore(language);
-                                        }
-                                      }
-                                      return false;
-                                    },
-                                    child: GridView.builder(
-                                        shrinkWrap: true,
-                                        itemCount: categoriesController
-                                            .shopByCategory!.length,
-                                        physics: ScrollPhysics(),
-                                        gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisSpacing: 1.5,
-                                          mainAxisSpacing: 1.5,
-                                          crossAxisCount: 3,
-                                          childAspectRatio: 0.73,
-                                        ),
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return SelectCategoryContainer(
-                                            category: categoriesController
-                                                .shopByCategory![index],
-                                            offerVisible: false,
-                                            image: categoriesController
-                                                .shopByCategory![index].largeImageUrl!,
-                                          );
-                                        })))))
+                                    margin: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.lightGrayColor,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(4)),
+                                    ),
+                                    padding: EdgeInsets.all(1.5),
+                                    child: NotificationListener<
+                                            ScrollNotification>(
+                                        onNotification:
+                                            (ScrollNotification scrollInfo) {
+                                          if (scrollInfo
+                                                  is ScrollEndNotification &&
+                                              scrollInfo.metrics.pixels ==
+                                                  scrollInfo.metrics
+                                                      .maxScrollExtent) {
+                                            if (categoriesController.next !=
+                                                0) {
+                                              categoriesController
+                                                  .loadMore(language);
+                                            }
+                                          }
+                                          return false;
+                                        },
+                                        child: GridView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: categoriesController
+                                                .shopByCategory!.length,
+                                            physics: ScrollPhysics(),
+                                            gridDelegate:
+                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisSpacing: 1.5,
+                                              mainAxisSpacing: 1.5,
+                                              crossAxisCount: 3,
+                                              childAspectRatio: 0.73,
+                                            ),
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return SelectCategoryContainer(
+                                                category: categoriesController
+                                                    .shopByCategory![index],
+                                                offerVisible: false,
+                                                image: categoriesController
+                                                    .shopByCategory![index]
+                                                    .largeImageUrl!,
+                                              );
+                                            })))))
                   ],
                 ),
               ));

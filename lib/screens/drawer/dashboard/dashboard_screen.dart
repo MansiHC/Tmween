@@ -5,12 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/dashboard_controller.dart';
-import 'package:tmween/controller/product_detail_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/drawer/categories_screen.dart';
 import 'package:tmween/screens/drawer/dashboard/best_seller_container.dart';
 import 'package:tmween/screens/drawer/dashboard/deals_of_the_day_container.dart';
-import 'package:tmween/screens/drawer/dashboard/product_detail_screen.dart';
+import 'package:tmween/screens/drawer/dashboard/productDetail/product_detail_screen.dart';
 import 'package:tmween/screens/drawer/dashboard/recently_viewed_container.dart';
 import 'package:tmween/screens/drawer/dashboard/select_category_container.dart';
 import 'package:tmween/screens/drawer/dashboard/sold_by_tmween_container.dart';
@@ -27,19 +26,18 @@ import '../top_selection_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   final dashboardController = Get.put(DashboardController());
-var language;
+  var language;
+
   @override
   Widget build(BuildContext context) {
-    language= Get.locale!.languageCode;
+    language = Get.locale!.languageCode;
     return GetBuilder<DashboardController>(
         init: DashboardController(),
         builder: (contet) {
           dashboardController.context = context;
 
           return RefreshIndicator(
-              onRefresh: () =>
-                dashboardController.onRefresh(language)
-              ,
+              onRefresh: () => dashboardController.onRefresh(language),
               child: dashboardController.loading
                   ? Center(child: CircularProgressBar())
                   : SingleChildScrollView(
@@ -50,8 +48,8 @@ var language;
                             padding: EdgeInsets.symmetric(horizontal: 15),
                             child: _shopByCategory(dashboardController)),
                         20.heightBox,
-                        if(dashboardController.dailyDealsData!=null)
-                        _dealsOfTheDay(dashboardController),
+                        if (dashboardController.dailyDealsData != null)
+                          _dealsOfTheDay(dashboardController),
                         _centerBanner(dashboardController),
                         _bestSeller(dashboardController),
                         _soldByTmween(dashboardController),
@@ -82,7 +80,7 @@ var language;
                       imageUrl: item.largeImageUrl!,
                       width: double.maxFinite,
                       height: double.maxFinite,
-                      fit: BoxFit.fill ,
+                      fit: BoxFit.fill,
                       placeholder: (context, url) =>
                           Center(child: CupertinoActivityIndicator()),
                       errorWidget: (context, url, error) => Icon(
@@ -385,8 +383,10 @@ var language;
                     childAspectRatio: 0.73),
                 itemBuilder: (context, index) {
                   return SelectCategoryContainer(
-                      category: dashboardController.shopByCategory![index],
-                  image: dashboardController.shopByCategory![index].smallImageUrl! ,);
+                    category: dashboardController.shopByCategory![index],
+                    image: dashboardController
+                        .shopByCategory![index].smallImageUrl!,
+                  );
                 }))
         /*  Container(
             decoration: BoxDecoration(
@@ -440,7 +440,6 @@ var language;
                       fontWeight: FontWeight.bold,
                       color: Colors.white),
                 ),
-
                 Visibility(
                     visible: dashboardController.dailyDealsData!.length > 4,
                     child: InkWell(
@@ -482,11 +481,10 @@ var language;
                   return InkWell(
                       onTap: () {
                         dashboardController.navigateTo(ProductDetailScreen(
-                          productId:
-                              dashboardController.dailyDealsData![index].productId,
-                            productslug:dashboardController
-                                .dailyDealsData![index].productSlug
-                        ));
+                            productId: dashboardController
+                                .dailyDealsData![index].productId,
+                            productslug: dashboardController
+                                .dailyDealsData![index].productSlug));
                       },
                       child: DealsOfTheDayContainer(
                           deal: dashboardController.dailyDealsData![index]));
@@ -549,9 +547,8 @@ var language;
             Container(
                 height: 244,
                 child: ListView.builder(
-                    itemCount: dashboardController
-                        .bestSellerData!.length >
-                        AppConstants.cardsPerPage
+                    itemCount: dashboardController.bestSellerData!.length >
+                            AppConstants.cardsPerPage
                         ? AppConstants.cardsPerPage
                         : dashboardController.bestSellerData!.length,
                     scrollDirection: Axis.horizontal,
@@ -559,11 +556,10 @@ var language;
                       return InkWell(
                           onTap: () {
                             dashboardController.navigateTo(ProductDetailScreen(
-                              productId:
-                                  dashboardController.bestSellerData![index].id,
-                                productslug:dashboardController
-                                    .bestSellerData![index].productSlug
-                            ));
+                                productId: dashboardController
+                                    .bestSellerData![index].id,
+                                productslug: dashboardController
+                                    .bestSellerData![index].productSlug));
                           },
                           child: BestSellerContainer(
                               bestSeller:
@@ -638,11 +634,11 @@ var language;
                       return InkWell(
                           onTap: () {
                             dashboardController.navigateTo(ProductDetailScreen(
-                              productId: dashboardController
-                                  .soldByTmweenProductData![index].id,
-                                productslug:dashboardController
-                                    .soldByTmweenProductData![index].productSlug
-                            ));
+                                productId: dashboardController
+                                    .soldByTmweenProductData![index].id,
+                                productslug: dashboardController
+                                    .soldByTmweenProductData![index]
+                                    .productSlug));
                           },
                           child: SoldByTmweenContainer(
                               soldByTmween: dashboardController
@@ -715,11 +711,10 @@ var language;
                       return InkWell(
                           onTap: () {
                             dashboardController.navigateTo(ProductDetailScreen(
-                              productId:
-                                  dashboardController.topSelectionData![index].id,
-                                productslug:dashboardController
-                                    .topSelectionData![index].productSlug
-                            ));
+                                productId: dashboardController
+                                    .topSelectionData![index].id,
+                                productslug: dashboardController
+                                    .topSelectionData![index].productSlug));
                           },
                           child: TopSelectionContainer(
                               topSelection: dashboardController
@@ -793,11 +788,10 @@ var language;
                       return InkWell(
                           onTap: () {
                             dashboardController.navigateTo(ProductDetailScreen(
-                              productId: dashboardController
-                                  .recentlyViewProduct![index].productId,
-                                productslug:dashboardController
-                                    .recentlyViewProduct![index].productSlug
-                            ));
+                                productId: dashboardController
+                                    .recentlyViewProduct![index].productId,
+                                productslug: dashboardController
+                                    .recentlyViewProduct![index].productSlug));
                           },
                           child: RecentlyViewedContainer(
                               recentlyViewed: dashboardController

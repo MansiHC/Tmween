@@ -13,8 +13,10 @@ class ProductDetailModel {
     statusCode = json['status_code'];
     statusMessage = json['status_message'];
     message = json['message'];
-    if(statusCode==200)
-    data = json['data'] != null ? new ProductDetailData.fromJson(json['data']) : null;
+    if (statusCode == 200)
+      data = json['data'] != null
+          ? new ProductDetailData.fromJson(json['data'])
+          : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -31,11 +33,12 @@ class ProductDetailModel {
 
 class ProductDetailData {
   List<int>? options;
- List<ProductOtherInfo>? productOtherInfo;
+  List<ProductOtherInfo>? productOtherInfo;
+
 //  List<SuppliersData>? suppliersData;
   List<ProductData>? productData;
   CustomerProductReview? customerProductReview;
- List<ProductAssociateAttribute>? productAssociateAttribute;
+  List<ProductAssociateAttribute>? productAssociateAttribute;
   List<AttributeImageCombArr>? attributeImageCombArr;
   List<SimilarProduct>? similarProduct;
 
@@ -44,19 +47,20 @@ class ProductDetailData {
 
   List<CustomerViewedProducts>? customerViewedProducts;*/
 
-  ProductDetailData(
-      {this.options,
-        this.productOtherInfo,
-        //this.suppliersData,
-        this.productData,
-        this.customerProductReview,
-       this.productAssociateAttribute,
-        this.attributeImageCombArr,
-        /* this.packDetails,
+  ProductDetailData({
+    this.options,
+    this.productOtherInfo,
+    //this.suppliersData,
+    this.productData,
+    this.customerProductReview,
+    this.productAssociateAttribute,
+    this.attributeImageCombArr,
+    /* this.packDetails,
 
 
 
-        this.customerViewedProducts*/});
+        this.customerViewedProducts*/
+  });
 
   ProductDetailData.fromJson(Map<String, dynamic> json) {
     options = json['options'].cast<int>();
@@ -81,7 +85,7 @@ class ProductDetailData {
     customerProductReview = json['customer_product_review'] != null
         ? new CustomerProductReview.fromJson(json['customer_product_review'])
         : null;
- if (json['product_associate_attribute'] != null) {
+    if (json['product_associate_attribute'] != null) {
       productAssociateAttribute = <ProductAssociateAttribute>[];
       json['product_associate_attribute'].forEach((v) {
         productAssociateAttribute!
@@ -120,7 +124,7 @@ class ProductDetailData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-   data['options'] = this.options;
+    data['options'] = this.options;
     if (this.productOtherInfo != null) {
       data['product_other_info'] =
           this.productOtherInfo!.map((v) => v.toJson()).toList();
@@ -135,7 +139,7 @@ class ProductDetailData {
     if (this.customerProductReview != null) {
       data['customer_product_review'] = this.customerProductReview!.toJson();
     }
-  if (this.productAssociateAttribute != null) {
+    if (this.productAssociateAttribute != null) {
       data['product_associate_attribute'] =
           this.productAssociateAttribute!.map((v) => v.toJson()).toList();
     }
@@ -175,15 +179,15 @@ class PackDetails {
 
   PackDetails(
       {this.id,
-        this.productId,
-        this.marketPrice,
-        this.packSize,
-        this.weightUnitId,
-        this.weight,
-        this.dimensionUnitId,
-        this.height,
-        this.width,
-        this.length});
+      this.productId,
+      this.marketPrice,
+      this.packSize,
+      this.weightUnitId,
+      this.weight,
+      this.dimensionUnitId,
+      this.height,
+      this.width,
+      this.length});
 
   PackDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -225,12 +229,12 @@ class ProductOtherInfo {
 
   ProductOtherInfo(
       {this.id,
-        this.productId,
-        this.caption,
-        this.position,
-        this.color,
-        this.createdAt,
-        this.updatedAt});
+      this.productId,
+      this.caption,
+      this.position,
+      this.color,
+      this.createdAt,
+      this.updatedAt});
 
   ProductOtherInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -263,9 +267,9 @@ class SuppliersData {
 
   SuppliersData(
       {this.supplierId,
-        this.productId,
-        this.isSystemSupplier,
-        this.supplierName});
+      this.productId,
+      this.isSystemSupplier,
+      this.supplierName});
 
   SuppliersData.fromJson(Map<String, dynamic> json) {
     supplierId = json['supplier_id'];
@@ -350,67 +354,67 @@ class ProductData {
 
   ProductData(
       {this.id,
-        this.attributeSetId,
-        this.productCategoryId,
-        this.upc,
-        this.sku,
-        this.productName,
-        this.finalPrice,
-        this.retailPrice,
-        this.stock,
-        this.inStock,
-        this.isCombinationAvailable,
-        this.reviewsAvg,
-        this.brandId,
-        this.manufacturerNumber,
-        this.countryCode,
-        this.vehicleTypeCode,
-        this.taxClass,
-        this.shortDescription,
-        this.longDescription,
-        this.specification,
-        this.image,
-        this.isBestSellers,
-        this.isTopSelection,
-        this.autogenerateSeo,
-        this.metaTitle,
-        this.metaKeywords,
-        this.metaDescription,
-        this.specialTransportId,
-        this.weightUnitId,
-        this.singleProductWeight,
-        this.singleProductDimensionsUnitId,
-        this.singleProductHeight,
-        this.singleProductWidth,
-        this.singleProductLength,
-        this.packProductDimensionsUnitId,
-        this.packProductHeight,
-        this.packProductWidth,
-        this.packProductLength,
-        this.packProductWeightUnitId,
-        this.packProductWeight,
-        this.productInOnePack,
-        this.expirable,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.pLanguage,
-        this.productCategory,
-        this.productGallery,
-        this.productPack,
-        this.productSupplier,
-        this.mainCategory,
-        this.categorySlug,
-        this.smallImageUrl,
-        this.largeImageUrl,
-        this.discountValuePercentage,
-        this.discountValue,
-        this.discountValueDisp,
-        this.retailPriceDisp,
-        this.finalPriceDisp,
-        this.brandName,
-        this.isWhishlist,
-        this.fullfilledByTmween});
+      this.attributeSetId,
+      this.productCategoryId,
+      this.upc,
+      this.sku,
+      this.productName,
+      this.finalPrice,
+      this.retailPrice,
+      this.stock,
+      this.inStock,
+      this.isCombinationAvailable,
+      this.reviewsAvg,
+      this.brandId,
+      this.manufacturerNumber,
+      this.countryCode,
+      this.vehicleTypeCode,
+      this.taxClass,
+      this.shortDescription,
+      this.longDescription,
+      this.specification,
+      this.image,
+      this.isBestSellers,
+      this.isTopSelection,
+      this.autogenerateSeo,
+      this.metaTitle,
+      this.metaKeywords,
+      this.metaDescription,
+      this.specialTransportId,
+      this.weightUnitId,
+      this.singleProductWeight,
+      this.singleProductDimensionsUnitId,
+      this.singleProductHeight,
+      this.singleProductWidth,
+      this.singleProductLength,
+      this.packProductDimensionsUnitId,
+      this.packProductHeight,
+      this.packProductWidth,
+      this.packProductLength,
+      this.packProductWeightUnitId,
+      this.packProductWeight,
+      this.productInOnePack,
+      this.expirable,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.pLanguage,
+      this.productCategory,
+      this.productGallery,
+      this.productPack,
+      this.productSupplier,
+      this.mainCategory,
+      this.categorySlug,
+      this.smallImageUrl,
+      this.largeImageUrl,
+      this.discountValuePercentage,
+      this.discountValue,
+      this.discountValueDisp,
+      this.retailPriceDisp,
+      this.finalPriceDisp,
+      this.brandName,
+      this.isWhishlist,
+      this.fullfilledByTmween});
 
   ProductData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -596,13 +600,13 @@ class PLanguage {
 
   PLanguage(
       {this.id,
-        this.productId,
-        this.langCode,
-        this.productName,
-        this.productSlug,
-        this.shortDescription,
-        this.longDescription,
-        this.specification});
+      this.productId,
+      this.langCode,
+      this.productName,
+      this.productSlug,
+      this.shortDescription,
+      this.longDescription,
+      this.specification});
 
   PLanguage.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -639,11 +643,11 @@ class ProductGallery {
 
   ProductGallery(
       {this.productId,
-        this.image,
-        this.fancyBoxUrl,
-        this.smallImageUrl,
-        this.largeImageUrl,
-        this.orderBy});
+      this.image,
+      this.fancyBoxUrl,
+      this.smallImageUrl,
+      this.largeImageUrl,
+      this.orderBy});
 
   ProductGallery.fromJson(Map<String, dynamic> json) {
     productId = json['product_id'];
@@ -680,15 +684,15 @@ class ProductPack {
 
   ProductPack(
       {this.id,
-        this.productId,
-        this.marketPrice,
-        this.packSize,
-        this.weightUnitId,
-        this.weight,
-        this.dimensionUnitId,
-        this.height,
-        this.width,
-        this.length});
+      this.productId,
+      this.marketPrice,
+      this.packSize,
+      this.weightUnitId,
+      this.weight,
+      this.dimensionUnitId,
+      this.height,
+      this.width,
+      this.length});
 
   ProductPack.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -729,11 +733,11 @@ class ProductSupplier {
 
   ProductSupplier(
       {this.id,
-        this.productId,
-        this.supplierId,
-        this.addedById,
-        this.addedDate,
-        this.supplierName});
+      this.productId,
+      this.supplierId,
+      this.addedById,
+      this.addedDate,
+      this.supplierName});
 
   ProductSupplier.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -815,11 +819,11 @@ class AttributeImageCombArr {
 
   AttributeImageCombArr(
       {this.id,
-        this.image,
-        this.status,
-        this.fancyBoxUrl,
-        this.smallImageUrl,
-        this.largeImageUrl});
+      this.image,
+      this.status,
+      this.fancyBoxUrl,
+      this.smallImageUrl,
+      this.largeImageUrl});
 
   AttributeImageCombArr.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -899,58 +903,58 @@ class SimilarProduct {
 
   SimilarProduct(
       {this.id,
-        this.attributeSetId,
-        this.productCategoryId,
-        this.upc,
-        this.sku,
-        this.productName,
-        this.finalPrice,
-        this.retailPrice,
-        this.stock,
-        this.inStock,
-        this.isCombinationAvailable,
-        this.reviewsAvg,
-        this.brandId,
-        this.manufacturerNumber,
-        this.countryCode,
-        this.vehicleTypeCode,
-        this.taxClass,
-        this.shortDescription,
-        this.longDescription,
-        this.specification,
-        this.image,
-        this.isBestSellers,
-        this.isTopSelection,
-        this.autogenerateSeo,
-        this.metaTitle,
-        this.metaKeywords,
-        this.metaDescription,
-        this.specialTransportId,
-        this.weightUnitId,
-        this.singleProductWeight,
-        this.singleProductDimensionsUnitId,
-        this.singleProductHeight,
-        this.singleProductWidth,
-        this.singleProductLength,
-        this.packProductDimensionsUnitId,
-        this.packProductHeight,
-        this.packProductWidth,
-        this.packProductLength,
-        this.packProductWeightUnitId,
-        this.packProductWeight,
-        this.productInOnePack,
-        this.expirable,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.productSlug,
-        this.smallImageUrl,
-        this.largeImageUrl,
-        this.discountValuePercentage,
-        this.discountValue,
-        this.discountValueDisp,
-        this.retailPriceDisp,
-        this.finalPriceDisp});
+      this.attributeSetId,
+      this.productCategoryId,
+      this.upc,
+      this.sku,
+      this.productName,
+      this.finalPrice,
+      this.retailPrice,
+      this.stock,
+      this.inStock,
+      this.isCombinationAvailable,
+      this.reviewsAvg,
+      this.brandId,
+      this.manufacturerNumber,
+      this.countryCode,
+      this.vehicleTypeCode,
+      this.taxClass,
+      this.shortDescription,
+      this.longDescription,
+      this.specification,
+      this.image,
+      this.isBestSellers,
+      this.isTopSelection,
+      this.autogenerateSeo,
+      this.metaTitle,
+      this.metaKeywords,
+      this.metaDescription,
+      this.specialTransportId,
+      this.weightUnitId,
+      this.singleProductWeight,
+      this.singleProductDimensionsUnitId,
+      this.singleProductHeight,
+      this.singleProductWidth,
+      this.singleProductLength,
+      this.packProductDimensionsUnitId,
+      this.packProductHeight,
+      this.packProductWidth,
+      this.packProductLength,
+      this.packProductWeightUnitId,
+      this.packProductWeight,
+      this.productInOnePack,
+      this.expirable,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.productSlug,
+      this.smallImageUrl,
+      this.largeImageUrl,
+      this.discountValuePercentage,
+      this.discountValue,
+      this.discountValueDisp,
+      this.retailPriceDisp,
+      this.finalPriceDisp});
 
   SimilarProduct.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -1077,9 +1081,10 @@ class CustomerProductReview {
 
   CustomerProductReview(
       {this.data,
-        this.customerProductReviewCount,
-        this.customerProductReviewRating,this.customerReviewHelpfulCount,
-        this.customerReviewReportAbuse});
+      this.customerProductReviewCount,
+      this.customerProductReviewRating,
+      this.customerReviewHelpfulCount,
+      this.customerReviewReportAbuse});
 
   CustomerProductReview.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
@@ -1092,11 +1097,11 @@ class CustomerProductReview {
     customerProductReviewRating = json['customer_product_review_rating'];
     customerReviewHelpfulCount = json['customer_review_helpful_count'] != null
         ? new CustomerReviewHelpfulCount.fromJson(
-        json['customer_review_helpful_count'])
+            json['customer_review_helpful_count'])
         : null;
     customerReviewReportAbuse = json['customer_review_report_abuse'] != null
         ? new CustomerReviewHelpfulCount.fromJson(
-        json['customer_review_report_abuse'])
+            json['customer_review_report_abuse'])
         : null;
   }
 
@@ -1146,7 +1151,8 @@ class CustomeReviewData {
   String? message;
   int? isHelpful;
   int? isAbuse;
-  CustomeReviewData({this.message, this.isHelpful,this.isAbuse});
+
+  CustomeReviewData({this.message, this.isHelpful, this.isAbuse});
 
   CustomeReviewData.fromJson(Map<String, dynamic> json) {
     message = json['message'];
@@ -1183,7 +1189,25 @@ class CustomerProductReviewData {
   String? smallImageUrl;
   String? largeImageUrl;
 
-  CustomerProductReviewData({this.id, this.customerId, this.productId, this.reviewTitle, this.review, this.rating, this.ip, this.reviewDate, this.addedByType, this.addedById, this.status, this.reviewApprovedDate, this.reviewApprovedId, this.createdAt, this.image, this.fullname, this.smallImageUrl, this.largeImageUrl});
+  CustomerProductReviewData(
+      {this.id,
+      this.customerId,
+      this.productId,
+      this.reviewTitle,
+      this.review,
+      this.rating,
+      this.ip,
+      this.reviewDate,
+      this.addedByType,
+      this.addedById,
+      this.status,
+      this.reviewApprovedDate,
+      this.reviewApprovedId,
+      this.createdAt,
+      this.image,
+      this.fullname,
+      this.smallImageUrl,
+      this.largeImageUrl});
 
   CustomerProductReviewData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -1229,7 +1253,6 @@ class CustomerProductReviewData {
     return data;
   }
 }
-
 
 class CustomerViewedProducts {
   int? id;
@@ -1283,53 +1306,53 @@ class CustomerViewedProducts {
 
   CustomerViewedProducts(
       {this.id,
-        this.attributeSetId,
-        this.productCategoryId,
-        this.upc,
-        this.sku,
-        this.productName,
-        this.finalPrice,
-        this.retailPrice,
-        this.stock,
-        this.inStock,
-        this.isCombinationAvailable,
-        this.reviewsAvg,
-        this.brandId,
-        this.manufacturerNumber,
-        this.countryCode,
-        this.vehicleTypeCode,
-        this.taxClass,
-        this.shortDescription,
-        this.longDescription,
-        this.specification,
-        this.image,
-        this.isBestSellers,
-        this.isTopSelection,
-        this.autogenerateSeo,
-        this.metaTitle,
-        this.metaKeywords,
-        this.metaDescription,
-        this.specialTransportId,
-        this.weightUnitId,
-        this.singleProductWeight,
-        this.singleProductDimensionsUnitId,
-        this.singleProductHeight,
-        this.singleProductWidth,
-        this.singleProductLength,
-        this.packProductDimensionsUnitId,
-        this.packProductHeight,
-        this.packProductWidth,
-        this.packProductLength,
-        this.packProductWeightUnitId,
-        this.packProductWeight,
-        this.productInOnePack,
-        this.expirable,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.productId,
-        this.customerId,
-        this.productSlug});
+      this.attributeSetId,
+      this.productCategoryId,
+      this.upc,
+      this.sku,
+      this.productName,
+      this.finalPrice,
+      this.retailPrice,
+      this.stock,
+      this.inStock,
+      this.isCombinationAvailable,
+      this.reviewsAvg,
+      this.brandId,
+      this.manufacturerNumber,
+      this.countryCode,
+      this.vehicleTypeCode,
+      this.taxClass,
+      this.shortDescription,
+      this.longDescription,
+      this.specification,
+      this.image,
+      this.isBestSellers,
+      this.isTopSelection,
+      this.autogenerateSeo,
+      this.metaTitle,
+      this.metaKeywords,
+      this.metaDescription,
+      this.specialTransportId,
+      this.weightUnitId,
+      this.singleProductWeight,
+      this.singleProductDimensionsUnitId,
+      this.singleProductHeight,
+      this.singleProductWidth,
+      this.singleProductLength,
+      this.packProductDimensionsUnitId,
+      this.packProductHeight,
+      this.packProductWidth,
+      this.packProductLength,
+      this.packProductWeightUnitId,
+      this.packProductWeight,
+      this.productInOnePack,
+      this.expirable,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.productId,
+      this.customerId,
+      this.productSlug});
 
   CustomerViewedProducts.fromJson(Map<String, dynamic> json) {
     id = json['id'];

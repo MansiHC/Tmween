@@ -6,6 +6,7 @@ import 'package:tmween/screens/authentication/signup/otp_screen.dart';
 import 'package:tmween/service/api.dart';
 import 'package:tmween/utils/helper.dart';
 
+import '../utils/global.dart';
 import 'otp_controller.dart';
 
 class StoreOwnerSignUpController extends GetxController {
@@ -40,8 +41,12 @@ class StoreOwnerSignUpController extends GetxController {
       Helper.hideLoading(context);
       update();
       print('value....${value.toString()}');
-      Helper.showGetSnackBar(value.message!);
-      /* if(value.message==AppConstants.success) {
+      if (value.statusCode == 200) {
+        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+      } else {
+        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+      }
+      /* if(value.message== AppColors.success) {
         navigateToOtpScreen();
       }*/
       navigateToOtpScreen();

@@ -8,11 +8,12 @@ import 'package:tmween/screens/drawer/dashboard/recently_viewed_container.dart';
 import '../../utils/global.dart';
 import '../../utils/views/circular_progress_bar.dart';
 import '../../utils/views/custom_text_form_field.dart';
-import 'dashboard/product_detail_screen.dart';
+import 'dashboard/productDetail/product_detail_screen.dart';
 
 class RecentlyViewedScreen extends StatelessWidget {
   final recentlyProviderController = Get.put(RecentlyViewedController());
-var language;
+  var language;
+
   Future<bool> _onWillPop(
       RecentlyViewedController recentlyViewedController) async {
     recentlyProviderController.exitScreen();
@@ -21,7 +22,7 @@ var language;
 
   @override
   Widget build(BuildContext context) {
-    language= Get.locale!.languageCode;
+    language = Get.locale!.languageCode;
     return GetBuilder<RecentlyViewedController>(
         init: RecentlyViewedController(),
         builder: (contet) {
@@ -91,62 +92,75 @@ var language;
                         ? Center(child: CircularProgressBar())
                         : Expanded(
                             child: RefreshIndicator(
-                                onRefresh: () =>
-                                    recentlyProviderController.onRefresh(language)
-                                ,
-                                child:Container(
-                                margin: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(4)),
-                                ),
-                                padding: EdgeInsets.all(1.5),
-                                child: NotificationListener<ScrollNotification>(
-                                    onNotification:
-                                        (ScrollNotification scrollInfo) {
-                                      if (scrollInfo is ScrollEndNotification &&
-                                          scrollInfo.metrics.pixels ==scrollInfo.metrics.maxScrollExtent) {
-                                        if (recentlyProviderController.next !=
-                                            0) {
-                                          recentlyProviderController.loadMore(language);
-                                        }
-                                      }
+                                onRefresh: () => recentlyProviderController
+                                    .onRefresh(language),
+                                child: Container(
+                                    margin: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(4)),
+                                    ),
+                                    padding: EdgeInsets.all(1.5),
+                                    child: NotificationListener<
+                                            ScrollNotification>(
+                                        onNotification:
+                                            (ScrollNotification scrollInfo) {
+                                          if (scrollInfo
+                                                  is ScrollEndNotification &&
+                                              scrollInfo.metrics.pixels ==
+                                                  scrollInfo.metrics
+                                                      .maxScrollExtent) {
+                                            if (recentlyProviderController
+                                                    .next !=
+                                                0) {
+                                              recentlyProviderController
+                                                  .loadMore(language);
+                                            }
+                                          }
 
-                                      return false;
-                                    },
-                                    child: GridView.builder(
-                                        shrinkWrap: true,
-                                        itemCount: recentlyProviderController
-                                            .recentlyViewProduct!.length,
-                                        physics: ScrollPhysics(),
-                                        gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          crossAxisSpacing: 10,
-                                          mainAxisSpacing: 5,
-                                          childAspectRatio: 0.66,
-                                        ),
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return InkWell(
-                                              onTap: () {
+                                          return false;
+                                        },
+                                        child: GridView.builder(
+                                            shrinkWrap: true,
+                                            itemCount:
                                                 recentlyProviderController
-                                                    .navigateTo(
-                                                        ProductDetailScreen(productId:recentlyProviderController
-                                                            .recentlyViewProduct![
-                                                        index].id ,
-                                                            productslug:recentlyProviderController
-                                                                .recentlyViewProduct![index].productSlug));
-                                              },
-                                              child: RecentlyViewedContainer(
-                                                from: SharedPreferencesKeys
-                                                    .isDashboard,
-                                                recentlyViewed:
+                                                    .recentlyViewProduct!
+                                                    .length,
+                                            physics: ScrollPhysics(),
+                                            gridDelegate:
+                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 2,
+                                              crossAxisSpacing: 10,
+                                              mainAxisSpacing: 5,
+                                              childAspectRatio: 0.66,
+                                            ),
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return InkWell(
+                                                  onTap: () {
                                                     recentlyProviderController
-                                                            .recentlyViewProduct![
-                                                        index],
-                                              ));
-                                        })))))
+                                                        .navigateTo(ProductDetailScreen(
+                                                            productId:
+                                                                recentlyProviderController
+                                                                    .recentlyViewProduct![
+                                                                        index]
+                                                                    .id,
+                                                            productslug:
+                                                                recentlyProviderController
+                                                                    .recentlyViewProduct![
+                                                                        index]
+                                                                    .productSlug));
+                                                  },
+                                                  child:
+                                                      RecentlyViewedContainer(
+                                                    from: SharedPreferencesKeys
+                                                        .isDashboard,
+                                                    recentlyViewed:
+                                                        recentlyProviderController
+                                                                .recentlyViewProduct![
+                                                            index],
+                                                  ));
+                                            })))))
                   ],
                 ),
               ));

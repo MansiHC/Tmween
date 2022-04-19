@@ -3,11 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:tmween/controller/search_controller.dart';
 
 import '../model/dashboard_model.dart';
-import '../model/select_category_model.dart';
 import '../service/api.dart';
+import '../utils/global.dart';
 import '../utils/helper.dart';
 
 class DashboardController extends GetxController {
@@ -24,8 +23,6 @@ class DashboardController extends GetxController {
     update();
   }
 
-
-
   final api = Api();
   bool loading = false;
   List<SoldByTmweenProductData>? soldByTmweenProductData = [];
@@ -41,8 +38,7 @@ class DashboardController extends GetxController {
 
   @override
   void onInit() {
-
-   getDashboardData(Get.locale!.languageCode);
+    getDashboardData(Get.locale!.languageCode);
     super.onInit();
   }
 
@@ -68,8 +64,8 @@ class DashboardController extends GetxController {
 
   Future<void> getDashboardData(language) async {
     //Helper.showLoading();
-loading = true;
-update();
+    loading = true;
+    update();
     await api.getHomePageMobileData(language).then((value) {
       if (value.statusCode == 200) {
         recentlyViewProduct = value.data!.recentlyViewProduct;
@@ -84,9 +80,9 @@ update();
         centerDownBanners = value.data!.banners!.cENTERDOWN;
         update();
       } else {
-        Helper.showGetSnackBar(value.message!);
+        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
-     // Helper.hideLoading();
+      // Helper.hideLoading();
       loading = false;
       update();
     }).catchError((error) {

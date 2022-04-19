@@ -11,7 +11,10 @@ class AttributeCombinationModel {
     statusCode = json['status_code'];
     statusMessage = json['status_message'];
     message = json['message'];
-    data = json['data'] != null ? new AttributeData.fromJson(json['data']) : null;
+    if (statusCode == 200)
+      data = json['data'] != null
+          ? new AttributeData.fromJson(json['data'])
+          : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -32,15 +35,17 @@ class AttributeData {
   List<ProductQtyPackData>? productQtyPackData;
   ProductDeliveryData? productDeliveryData;
   int? selectAttributeWiseImageShow;
+
   //List<Null>? productAssociateAttributeData;
 
-  AttributeData(
-      {this.productMainSupplier,
-        this.productOtherSupplier,
-        this.productQtyPackData,
-        this.productDeliveryData,
-        this.selectAttributeWiseImageShow,
-       /* this.productAssociateAttributeData*/});
+  AttributeData({
+    this.productMainSupplier,
+    this.productOtherSupplier,
+    this.productQtyPackData,
+    this.productDeliveryData,
+    this.selectAttributeWiseImageShow,
+    /* this.productAssociateAttributeData*/
+  });
 
   AttributeData.fromJson(Map<String, dynamic> json) {
     if (json['product_main_supplier'] != null) {
@@ -49,7 +54,7 @@ class AttributeData {
         productMainSupplier!.add(new ProductMainSupplier.fromJson(v));
       });
     }
-    if(productMainSupplier!.length!=0) {
+    if (productMainSupplier!.length != 0) {
       if (json['product_other_supplier'] != null) {
         productOtherSupplier = <ProductOtherSupplier>[];
         json['product_other_supplier'].forEach((v) {
@@ -66,8 +71,7 @@ class AttributeData {
         productDeliveryData = json['product_delivery_data'] != null
             ? new ProductDeliveryData.fromJson(json['product_delivery_data'])
             : null;
-      }catch(e){
-        print('dghghsgdhdgjhgjh.........');
+      } catch (e) {
         productDeliveryData = null;
       }
       selectAttributeWiseImageShow = json['select_attribute_wise_image_show'];
@@ -99,7 +103,7 @@ class AttributeData {
     }
     data['select_attribute_wise_image_show'] =
         this.selectAttributeWiseImageShow;
-   /* if (this.productAssociateAttributeData != null) {
+    /* if (this.productAssociateAttributeData != null) {
       data['product_associate_attribute_data'] =
           this.productAssociateAttributeData!.map((v) => v.toJson()).toList();
     }*/
@@ -125,19 +129,19 @@ class ProductMainSupplier {
 
   ProductMainSupplier(
       {this.id,
-        this.productItemId,
-        this.supplierId,
-        this.supplierSku,
-        this.productPackId,
-        this.pack,
-        this.price,
-        this.status,
-        this.supplierName,
-        this.priority,
-        this.supplierPakageId,
-        this.supplierPakagePlanId,
-        this.isSystemSupplier,
-        this.priceDisp});
+      this.productItemId,
+      this.supplierId,
+      this.supplierSku,
+      this.productPackId,
+      this.pack,
+      this.price,
+      this.status,
+      this.supplierName,
+      this.priority,
+      this.supplierPakageId,
+      this.supplierPakagePlanId,
+      this.isSystemSupplier,
+      this.priceDisp});
 
   ProductMainSupplier.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -194,19 +198,19 @@ class ProductOtherSupplier {
 
   ProductOtherSupplier(
       {this.id,
-        this.productItemId,
-        this.supplierId,
-        this.supplierSku,
-        this.productPackId,
-        this.pack,
-        this.price,
-        this.status,
-        this.supplierName,
-        this.priority,
-        this.supplierPakageId,
-        this.supplierPakagePlanId,
-        this.isSystemSupplier,
-        this.priceDisp});
+      this.productItemId,
+      this.supplierId,
+      this.supplierSku,
+      this.productPackId,
+      this.pack,
+      this.price,
+      this.status,
+      this.supplierName,
+      this.priority,
+      this.supplierPakageId,
+      this.supplierPakagePlanId,
+      this.isSystemSupplier,
+      this.priceDisp});
 
   ProductOtherSupplier.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -256,12 +260,12 @@ class ProductQtyPackData {
 
   ProductQtyPackData(
       {this.supplierId,
-        this.productPackId,
-        this.pack,
-        this.qty,
-        this.supplierBranchId,
-        this.price,
-        this.priceDisp});
+      this.productPackId,
+      this.pack,
+      this.qty,
+      this.supplierBranchId,
+      this.price,
+      this.priceDisp});
 
   ProductQtyPackData.fromJson(Map<String, dynamic> json) {
     supplierId = json['supplier_id'];
@@ -309,24 +313,24 @@ class ProductDeliveryData {
 
   ProductDeliveryData(
       {this.id,
-        this.daId,
-        this.address1,
-        this.address2,
-        this.address3,
-        this.countryCode,
-        this.stateCode,
-        this.cityCode,
-        this.zoneCode,
-        this.zip,
-        this.latitude,
-        this.longitude,
-        this.plusCode,
-        this.deliveryAgencyName,
-        this.daMarginAmount,
-        this.distanceData,
-        this.deliveryPrice,
-        this.deliveryPriceLabel,
-        this.deliveryDurationLabel});
+      this.daId,
+      this.address1,
+      this.address2,
+      this.address3,
+      this.countryCode,
+      this.stateCode,
+      this.cityCode,
+      this.zoneCode,
+      this.zip,
+      this.latitude,
+      this.longitude,
+      this.plusCode,
+      this.deliveryAgencyName,
+      this.daMarginAmount,
+      this.distanceData,
+      this.deliveryPrice,
+      this.deliveryPriceLabel,
+      this.deliveryDurationLabel});
 
   ProductDeliveryData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -347,7 +351,7 @@ class ProductDeliveryData {
     distanceData = json['distance_data'] != null
         ? new DistanceData.fromJson(json['distance_data'])
         : null;
-    deliveryPrice = json['delivery_price'];
+    deliveryPrice = double.parse(json['delivery_price'].toString());
     deliveryPriceLabel = json['delivery_price_label'];
     deliveryDurationLabel = json['delivery_duration_label'];
   }

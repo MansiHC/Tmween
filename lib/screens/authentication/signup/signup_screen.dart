@@ -57,58 +57,60 @@ class _SignUpScreenState extends State<SignUpScreen>
               signUpController.context = context;
               return WillPopScope(
                   onWillPop: () => _onWillPop(signUpController),
-              child:DefaultTabController(
-                  length: 2,
-                  child: Scaffold(
-                      body: NestedScrollView(
-                    physics: NeverScrollableScrollPhysics(),
-                    headerSliverBuilder:
-                        (BuildContext context, bool innerBoxIsScrolled) {
-                      return [
-                        SliverAppBar(
-                            toolbarHeight: language == 'ar'
-                                ? (MediaQuery.of(context).size.height / 4)
-                                : (MediaQuery.of(context).size.height / 4.4),
-                            automaticallyImplyLeading: false,
-                            titleSpacing: 0,
-                            title: topView(signUpController),
-                            flexibleSpace: Stack(
-                              children: <Widget>[
-                                Positioned.fill(
-                                    child: Image.asset(
-                                  ImageConstanst.loginBackground,
-                                  fit: BoxFit.cover,
-                                ))
-                              ],
-                            ),
-                            floating: true,
-                            pinned: true,
-                            snap: true,
-                            bottom: PreferredSize(
-                                preferredSize: Size.fromHeight(50),
-                                child: ColoredBox(
-                                    color: Color.fromRGBO(195, 208, 225, 1),
-                                    child: TabBar(
-                                        controller: _tabController,
-                                        indicator: BoxDecoration(
-                                            color: AppColors.primaryColor),
-                                        indicatorSize: TabBarIndicatorSize.tab,
-                                        labelStyle: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                        labelColor: Colors.white,
-                                        unselectedLabelColor: Colors.black,
-                                        tabs: signUpController.tabList)))),
-                      ];
-                    },
-                    body: TabBarView(
-                      controller: _tabController,
-                      children: [
-                        IndividualSignUpScreen(),
-                        StoreOwnerSignUpScreen()
-                      ],
-                    ),
-                  ))));
+                  child: DefaultTabController(
+                      length: 2,
+                      child: Scaffold(
+                          body: NestedScrollView(
+                        physics: NeverScrollableScrollPhysics(),
+                        headerSliverBuilder:
+                            (BuildContext context, bool innerBoxIsScrolled) {
+                          return [
+                            SliverAppBar(
+                                toolbarHeight: language == 'ar'
+                                    ? (MediaQuery.of(context).size.height / 4)
+                                    : (MediaQuery.of(context).size.height /
+                                        4.4),
+                                automaticallyImplyLeading: false,
+                                titleSpacing: 0,
+                                title: topView(signUpController),
+                                flexibleSpace: Stack(
+                                  children: <Widget>[
+                                    Positioned.fill(
+                                        child: Image.asset(
+                                      ImageConstanst.loginBackground,
+                                      fit: BoxFit.cover,
+                                    ))
+                                  ],
+                                ),
+                                floating: true,
+                                pinned: true,
+                                snap: true,
+                                bottom: PreferredSize(
+                                    preferredSize: Size.fromHeight(50),
+                                    child: ColoredBox(
+                                        color: Color.fromRGBO(195, 208, 225, 1),
+                                        child: TabBar(
+                                            controller: _tabController,
+                                            indicator: BoxDecoration(
+                                                color: AppColors.primaryColor),
+                                            indicatorSize:
+                                                TabBarIndicatorSize.tab,
+                                            labelStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold),
+                                            labelColor: Colors.white,
+                                            unselectedLabelColor: Colors.black,
+                                            tabs: signUpController.tabList)))),
+                          ];
+                        },
+                        body: TabBarView(
+                          controller: _tabController,
+                          children: [
+                            IndividualSignUpScreen(),
+                            StoreOwnerSignUpScreen()
+                          ],
+                        ),
+                      ))));
             }));
   }
 

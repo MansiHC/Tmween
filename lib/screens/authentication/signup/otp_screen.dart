@@ -36,12 +36,16 @@ class OtpScreenState extends State<OtpScreen> {
       comingSms = 'Failed to get Sms.';
     }
     if (!mounted) return;
-    if(comingSms.contains('Tmween')) {
+    if (comingSms.contains('Tmween')) {
       otpController.comingSms = comingSms;
       print("====>Message: ${otpController.comingSms}");
       final intInStr = RegExp(r'\d+');
-      otpController.otpController.text =
-          intInStr.allMatches(otpController.comingSms).map((m) => m.group(0)).toString().replaceAll('(', '').replaceAll(')','');
+      otpController.otpController.text = intInStr
+          .allMatches(otpController.comingSms)
+          .map((m) => m.group(0))
+          .toString()
+          .replaceAll('(', '')
+          .replaceAll(')', '');
       otpController.update();
     }
   }

@@ -41,7 +41,7 @@ class EditProfileController extends GetxController {
   int userId = 0;
   int loginLogId = 0;
   String token = '';
-   String otpValue="";
+  String otpValue = "";
 
   final api = Api();
   bool loading = false;
@@ -85,10 +85,20 @@ class EditProfileController extends GetxController {
         .then((value) {
       Helper.hideLoading(context);
       if (value.statusCode == 200) {
-
         otpValue = value.data!.otp.toString();
       }
-      Helper.showGetSnackBar(value.message!);
+      //Helper.showGetSnackBar(value.message!);
+      Get.snackbar(
+        value.message!,
+        "",
+        animationDuration: 100.milliseconds,
+        duration: 2.seconds,
+        snackPosition: SnackPosition.BOTTOM,
+        showProgressIndicator: false,
+        isDismissible: false,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
       update();
     }).catchError((error) {
       Helper.hideLoading(context);
@@ -104,9 +114,10 @@ class EditProfileController extends GetxController {
       Helper.hideLoading(context);
       if (value.statusCode == 200) {
         otpValue = value.data!.otp.toString();
+        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+      } else {
+        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
-      Helper.showGetSnackBar(value.message!);
-
       update();
     }).catchError((error) {
       Helper.hideLoading(context);
@@ -116,7 +127,7 @@ class EditProfileController extends GetxController {
   }
 
   Future<void> updateNameImage(oldImage, language) async {
-  //  loadingImageName = true;
+    //  loadingImageName = true;
     Helper.showLoading();
     FocusScope.of(context).unfocus();
     //update();
@@ -129,7 +140,7 @@ class EditProfileController extends GetxController {
           .getIntValuesSF(SharedPreferencesKeys.userId)
           .then((value) async {
         userId = value!;
-
+        print('filename.......${finalImage!.path}');
         await api
             .updateProfileMobile(
                 token,
@@ -141,7 +152,7 @@ class EditProfileController extends GetxController {
             .then((value) {
           if (value.statusCode == 200) {
             Helper.hideLoading(context);
-            Helper.showGetSnackBar(value.message!);
+            Helper.showGetSnackBar(value.message!,  AppColors.successColor);
             exitScreen();
           } else if (value.statusCode == 401) {
             Helper.hideLoading(context);
@@ -151,7 +162,7 @@ class EditProfileController extends GetxController {
             Get.offAll(DrawerScreen());
           } else {
             Helper.hideLoading(context);
-            Helper.showGetSnackBar(value.message!);
+            Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
           }
 
           update();
@@ -176,18 +187,21 @@ class EditProfileController extends GetxController {
     update();
   }
 
-  Future<void> updateMobileNumber( langCode) async {
-
+  Future<void> updateMobileNumber(langCode) async {
     Helper.showLoading();
     await api
-        .updateMobile(token, userId, mobileNumberController.text, otpValue, langCode)
+        .updateMobile(
+            token, userId, mobileNumberController.text, otpValue, langCode)
         .then((value) {
       Helper.hideLoading(context);
       if (value.statusCode == 200) {
-       // pop();
+        // pop();
+        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
         exitScreen();
+      } else {
+        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
-      Helper.showGetSnackBar(value.message!);
+
       //update();
     }).catchError((error) {
       Helper.hideLoading(context);
@@ -203,11 +217,13 @@ class EditProfileController extends GetxController {
         .then((value) {
       Helper.hideLoading(context);
       if (value.statusCode == 200) {
-      //  pop();
+        //  pop();
+        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
         exitScreen();
+      } else {
+        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
-      Helper.showGetSnackBar(value.message!);
-     // update();
+      // update();
     }).catchError((error) {
       Helper.hideLoading(context);
       update();

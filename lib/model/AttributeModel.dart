@@ -17,6 +17,4 @@ class AttributeModel {
   set setSecondaryIndex(int index) {
     secondaryIndex = index;
   }
-
-
 }

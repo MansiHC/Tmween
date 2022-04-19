@@ -30,8 +30,6 @@ class AllReviewController extends GetxController {
   double percent4 = 0;
   double percent5 = 0;
 
-
-
   bool isCreditChecked = false;
 
   List<String> walletActivitys = const <String>[
@@ -43,7 +41,7 @@ class AllReviewController extends GetxController {
   int userId = 0;
   String token = '';
   int loginLogId = 0;
-  int productId=0;
+  int productId = 0;
   final api = Api();
   bool loading = false;
   List<ReviewProductData> reviewsList = [];
@@ -70,17 +68,35 @@ class AllReviewController extends GetxController {
   }
 
   Future<void> getAllReviews(language) async {
-    Helper.showLoading();
-    await api.getProductReviewsList(productId,language).then((value) {
+    //Helper.showLoading();
+    loading = true;
+    update();
+    await api.getProductReviewsList(productId, language).then((value) {
       if (value.statusCode == 200) {
-        reviewsList =  value.data!.reviewProductData!;
+        reviewsList = value.data!.reviewProductData!;
         List<double> ratings = reviewsList.map((e) => e.rating!).toList();
-        List<double> ratings1 = reviewsList.map((e) => e.rating!).where((element) => element==0.5 || element==1 || element==1.5).toList();
-        List<double> ratings2 = reviewsList.map((e) => e.rating!).where((element) => element==2 || element==2.5).toList();
-        List<double> ratings3 = reviewsList.map((e) => e.rating!).where((element) => element==3 || element==3.5).toList();
-        List<double> ratings4 = reviewsList.map((e) => e.rating!).where((element) => element==4 || element==4.5).toList();
-        List<double> ratings5 = reviewsList.map((e) => e.rating!).where((element) => element==5).toList();
-       print('object.....${ratings4.length}');
+        List<double> ratings1 = reviewsList
+            .map((e) => e.rating!)
+            .where(
+                (element) => element == 0.5 || element == 1 || element == 1.5)
+            .toList();
+        List<double> ratings2 = reviewsList
+            .map((e) => e.rating!)
+            .where((element) => element == 2 || element == 2.5)
+            .toList();
+        List<double> ratings3 = reviewsList
+            .map((e) => e.rating!)
+            .where((element) => element == 3 || element == 3.5)
+            .toList();
+        List<double> ratings4 = reviewsList
+            .map((e) => e.rating!)
+            .where((element) => element == 4 || element == 4.5)
+            .toList();
+        List<double> ratings5 = reviewsList
+            .map((e) => e.rating!)
+            .where((element) => element == 5)
+            .toList();
+
         double sum = ratings.fold(0, (p, c) => p + c);
         double sum1 = ratings1.fold(0, (p, c) => p + c);
         double sum2 = ratings2.fold(0, (p, c) => p + c);
@@ -88,33 +104,40 @@ class AllReviewController extends GetxController {
         double sum4 = ratings4.fold(0, (p, c) => p + c);
         double sum5 = ratings5.fold(0, (p, c) => p + c);
         if (sum > 0) {
-           averageRating = sum / ratings.length;
-           currentRating = averageRating;
-        }if (sum1 > 0) {
-           averageRating1 = sum1 / ratings.length;
-           averageRating1 = averageRating1/5;
-           percent1 = averageRating1*100;
-        }if (sum2 > 0) {
-           averageRating2 = sum2 / ratings.length;
-           averageRating2 = averageRating2/5;
-           percent2 = averageRating2*100;
-        }if (sum3 > 0) {
-           averageRating3 = sum3 / ratings.length;
-           averageRating3 = averageRating3/5;
-           percent3 = averageRating3*100;
-        }if (sum4 > 0) {
-           averageRating4 = sum4 / ratings.length;
-           averageRating4 = averageRating4/5;
-           percent4 = averageRating4*100;
-        }if (sum5 > 0) {
-           averageRating5 = sum5 / ratings.length;
-           averageRating5 = averageRating5/5;
-           percent5 = averageRating5*100;
-
+          averageRating = sum / ratings.length;
+          currentRating = averageRating;
         }
-        Helper.hideLoading(context);
+        if (sum1 > 0) {
+          averageRating1 = sum1 / ratings.length;
+          averageRating1 = averageRating1 / 5;
+          percent1 = averageRating1 * 100;
+        }
+        if (sum2 > 0) {
+          averageRating2 = sum2 / ratings.length;
+          averageRating2 = averageRating2 / 5;
+          percent2 = averageRating2 * 100;
+        }
+        if (sum3 > 0) {
+          averageRating3 = sum3 / ratings.length;
+          averageRating3 = averageRating3 / 5;
+          print('object.....${ratings3.length}.....$sum3.....$averageRating3');
+          percent3 = averageRating3 * 100;
+        }
+        if (sum4 > 0) {
+          averageRating4 = sum4 / ratings.length;
+          averageRating4 = averageRating4 / 5;
+          percent4 = averageRating4 * 100;
+        }
+        if (sum5 > 0) {
+          averageRating5 = sum5 / ratings.length;
+          averageRating5 = averageRating5 / 5;
+          percent5 = averageRating5 * 100;
+        }
+        //   Helper.hideLoading(context);
+        loading = false;
       } else if (value.statusCode == 401) {
-        Helper.hideLoading(context);
+        // Helper.hideLoading(context);
+        loading = false;
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
@@ -128,7 +151,6 @@ class AllReviewController extends GetxController {
       print('error....$error');
     });
   }
-
 
   void exitScreen() {
     Get.delete<AllReviewController>();

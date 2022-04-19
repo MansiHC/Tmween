@@ -8,11 +8,12 @@ import 'package:tmween/screens/drawer/dashboard/top_selection_container.dart';
 import '../../utils/global.dart';
 import '../../utils/views/circular_progress_bar.dart';
 import '../../utils/views/custom_text_form_field.dart';
-import 'dashboard/product_detail_screen.dart';
+import 'dashboard/productDetail/product_detail_screen.dart';
 
 class TopSelectionScreen extends StatelessWidget {
   final topSelectionController = Get.put(TopSelectionController());
-var language;
+  var language;
+
   Future<bool> _onWillPop(TopSelectionController categoriesController) async {
     categoriesController.exitScreen();
     return true;
@@ -20,7 +21,7 @@ var language;
 
   @override
   Widget build(BuildContext context) {
-    language= Get.locale!.languageCode;
+    language = Get.locale!.languageCode;
     return GetBuilder<TopSelectionController>(
         init: TopSelectionController(),
         builder: (contet) {
@@ -92,29 +93,33 @@ var language;
                         : Expanded(
                             child: RefreshIndicator(
                                 onRefresh: () =>
-                                    topSelectionController.onRefresh(language)
-                                ,
-                                child:Container(
-                                margin: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(4)),
-                                ),
-                                padding: EdgeInsets.all(1.5),
-                                child: NotificationListener<ScrollNotification>(
-                                    onNotification:
-                                        (ScrollNotification scrollInfo) {
-                                      if (scrollInfo is ScrollEndNotification &&
-                                          scrollInfo.metrics.pixels ==scrollInfo.metrics.maxScrollExtent) {
-                                        if (topSelectionController.next != 0) {
-                                          topSelectionController.loadMore(language);
+                                    topSelectionController.onRefresh(language),
+                                child: Container(
+                                    margin: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(4)),
+                                    ),
+                                    padding: EdgeInsets.all(1.5),
+                                    child: NotificationListener<
+                                            ScrollNotification>(
+                                        onNotification:
+                                            (ScrollNotification scrollInfo) {
+                                          if (scrollInfo
+                                                  is ScrollEndNotification &&
+                                              scrollInfo.metrics.pixels ==
+                                                  scrollInfo.metrics
+                                                      .maxScrollExtent) {
+                                            if (topSelectionController.next !=
+                                                0) {
+                                              topSelectionController
+                                                  .loadMore(language);
+                                            }
+                                          }
 
-                                        }
-                                      }
-
-                                      return false;
-                                    },
-                                    child:  GridView.builder(
+                                          return false;
+                                        },
+                                        child: GridView.builder(
                                             shrinkWrap: true,
                                             itemCount: topSelectionController
                                                 .topSelectionData!.length,
@@ -130,13 +135,18 @@ var language;
                                                 int index) {
                                               return InkWell(
                                                   onTap: () {
-                                                    topSelectionController
-                                                        .navigateTo(
-                                                            ProductDetailScreen(productId:topSelectionController
-                                                                .topSelectionData![
-                                                            index].id ,
-                                                                productslug:topSelectionController
-                                                                    .topSelectionData![index].productSlug));
+                                                    topSelectionController.navigateTo(
+                                                        ProductDetailScreen(
+                                                            productId:
+                                                                topSelectionController
+                                                                    .topSelectionData![
+                                                                        index]
+                                                                    .id,
+                                                            productslug:
+                                                                topSelectionController
+                                                                    .topSelectionData![
+                                                                        index]
+                                                                    .productSlug));
                                                   },
                                                   child: TopSelectionContainer(
                                                     topSelection:

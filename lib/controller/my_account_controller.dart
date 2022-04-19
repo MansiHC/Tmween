@@ -6,8 +6,8 @@ import 'package:tmween/controller/wishlist_controller.dart';
 import 'package:tmween/model/get_customer_data_model.dart';
 import 'package:tmween/model/user_local_model.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
-import 'package:tmween/screens/drawer/profile/update_profile_screen.dart';
-import 'package:tmween/screens/drawer/profile/your_addresses_screen.dart';
+import 'package:tmween/screens/drawer/profile/updateProfile/update_profile_screen.dart';
+import 'package:tmween/screens/drawer/profile/address/your_addresses_screen.dart';
 
 import '../database/db_helper.dart';
 import '../service/api.dart';
@@ -54,7 +54,7 @@ class MyAccountController extends GetxController {
   Future<void> fetchEmployeesFromDatabase() async {
     var dbHelper = DBHelper();
 
-   await dbHelper.getuserLocalModels().then((value) {
+    await dbHelper.getuserLocalModels().then((value) {
       profileData = ProfileData(
           id: int.parse(value[0].id!),
           fullname: value[0].fullname,
@@ -68,10 +68,9 @@ class MyAccountController extends GetxController {
           email: value[0].email,
           yourName: value[0].yourName,
           image: value[0].image);
-      
+
       return profileData;
     });
-
   }
 
   Future<void> getCustomerData(language) async {
@@ -111,14 +110,14 @@ class MyAccountController extends GetxController {
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       } else {
-        Helper.showGetSnackBar(value.message!);
+        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
 
       update();
     }).catchError((error) {
       Helper.hideLoading(context);
       fetchEmployeesFromDatabase().then((value) => update());
-     //update();
+      //update();
       print('error....$error');
     });
   }

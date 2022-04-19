@@ -11,7 +11,8 @@ class PopularSearchModel {
     statusCode = json['status_code'];
     statusMessage = json['status_message'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    if (statusCode == 200)
+      data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -60,11 +61,11 @@ class PopularSearches {
 
   PopularSearches(
       {this.id,
-        this.keyword,
-        this.searchCount,
-        this.defaultLangCode,
-        this.createdAt,
-        this.updatedAt});
+      this.keyword,
+      this.searchCount,
+      this.defaultLangCode,
+      this.createdAt,
+      this.updatedAt});
 
   PopularSearches.fromJson(Map<String, dynamic> json) {
     id = json['id'];

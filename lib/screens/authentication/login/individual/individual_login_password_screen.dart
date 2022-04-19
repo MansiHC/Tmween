@@ -114,7 +114,7 @@ class IndividualLoginPasswordScreen extends StatelessWidget {
                                             onSubmitted: (term) {
                                               loginController
                                                   .doIndividualLoginWithPassword(
-                                                      language,from);
+                                                      language, from);
                                             },
                                             validator: (value) {
                                               if (value!.isEmpty) {
@@ -219,7 +219,7 @@ class IndividualLoginPasswordScreen extends StatelessWidget {
         CustomButton(
             text: LocaleKeys.login,
             onPressed: () {
-              loginController.doIndividualLoginWithPassword(language,from);
+              loginController.doIndividualLoginWithPassword(language, from);
             }),
         Visibility(
           visible: loginController.loading,
@@ -261,7 +261,7 @@ class IndividualLoginPasswordScreen extends StatelessWidget {
             text: LocaleKeys.loginWithOTP,
             onPressed: () {
               loginController.doIndividualLoginWithOtp(
-                  language, AppConstants.individual, from,false);
+                  language, AppConstants.individual, from, false);
             })
       ],
     );

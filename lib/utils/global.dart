@@ -1,4 +1,6 @@
 import 'dart:ui';
+
+import 'package:flutter/material.dart';
 /*
 
 final client = Client();
@@ -23,6 +25,8 @@ abstract class AppColors {
   static const lightBlue = Color(0xFFABD9E4);
   static const blue = Color(0xFF5BABD0);
   static const darkblue = Color(0xFF369ED2);
+  static Color successColor = Colors.green;
+  static Color errorColor = Colors.red[400]!;
 }
 
 abstract class AppConstants {
@@ -39,6 +43,7 @@ abstract class AppConstants {
   static String store = 'store';
   static int timer = 30;
   static int cardsPerPage = 6;
+
 }
 
 abstract class UrlConstants {
@@ -51,6 +56,8 @@ abstract class UrlConstants {
   static const String request = '$baseUrl/customer/request';
   static const String register = '$baseUrl/customer/register';
   static const String login = '$baseUrl/customer/login';
+  static const String checkAccountStatus =
+      '$baseUrl/customer/check-account-status';
   static const String generateMobileOtp =
       '$baseUrl/customer/generate-mobile-otp';
   static const String generateMobileOtpLogin =
@@ -96,8 +103,7 @@ abstract class UrlConstants {
       '$baseUrl/customer/update-customer-address-mobile';
   static const String addCustomerAddress =
       '$baseUrl/customer/add-customer-address';
-  static const String getSearchHistory =
-      '$baseUrl/customer/get-search-history';
+  static const String getSearchHistory = '$baseUrl/customer/get-search-history';
   static const String clearSearchHistory =
       '$baseUrl/customer/clear-search-history';
   static const String updateAccountStatus =
@@ -106,16 +112,18 @@ abstract class UrlConstants {
       '$baseUrl/customer/reactivate-user-account';
   static const String addCustomerReview =
       '$baseUrl/customer/add-customer-review';
-  static const String addToCart =
-      '$baseUrl/customer/add-to-cart';
+  static const String addToCart = '$baseUrl/customer/add-to-cart';
+  static const String updateCartItem = '$baseUrl/customer/update-cart-item-quantity';
+  static const String removeCartItem = '$baseUrl/customer/remove-cart-items';
+  static const String getCartItems = '$baseUrl/customer/get-cart-items';
   static const String addReviewReportAbuse =
       '$baseUrl/customer/add-review-report-abuse';
-  static const String addReviewHelpful =
-      '$baseUrl/customer/add-review-helpful';
+  static const String addReviewHelpful = '$baseUrl/customer/add-review-helpful';
 
   //e-commerce
   static const String getMasterData = '$baseUrl/get-master-data';
-  static const String getProductReviewsList = '$baseUrl/get-product-review-list-mobile';
+  static const String getProductReviewsList =
+      '$baseUrl/get-product-review-list-mobile';
   static const String getHomePageMobileData =
       '$baseUrl/get-home-page-mobile-data';
   static const String getMobileMasterViewData =
@@ -128,8 +136,7 @@ abstract class UrlConstants {
       '$baseUrl/get-product-details-mobile';
   static const String getItemIdByAttributeCombination =
       '$baseUrl/get-itemid-by-attribute-combination';
-  static const String getProductSupplier =
-      '$baseUrl/get-product-suppliers';
+  static const String getProductSupplier = '$baseUrl/get-product-suppliers';
   static const String dealOfTheDay = '$baseUrl/get-dailydeal-list';
   static const String soldByTmween = '$baseUrl/get-soldby-system-product-list';
   static const String topSelection = '$baseUrl/get-top-selected-product';
@@ -174,12 +181,9 @@ abstract class ImageConstanst {
   static const String pinIcon = 'asset/image/pin.svg';
   static const String deliveryInstructionIcon =
       'asset/image/delivery_instruction.svg';
-  static const String walletTickMarkIcon =
-      'asset/image/wallet_tickmark.svg';
-  static const String walletCrossIcon =
-      'asset/image/wallet_cross.svg';
-  static const String syberPay =
-      'asset/image/syberpay.svg';
+  static const String walletTickMarkIcon = 'asset/image/wallet_tickmark.svg';
+  static const String walletCrossIcon = 'asset/image/wallet_cross.svg';
+  static const String syberPay = 'asset/image/syberpay.svg';
   static const String user = 'asset/image/user.svg';
   static const String original = 'asset/image/original.svg';
   static const String like = 'asset/image/like.svg';
@@ -218,16 +222,17 @@ abstract class ImageConstanst {
   static const String deactivateUserIcon = 'asset/image/deactivate_user.svg';
   static const String accountSettingIcon =
       'asset/image/account_setting_icon.svg';
-  static const String walletLogoIcon =
-      'asset/image/wallet_logo.png';
+  static const String walletLogoIcon = 'asset/image/wallet_logo.png';
+  static const String payIcon = 'asset/image/pay_icon.svg';
+  static const String cashOnDelivertIcon = 'asset/image/cash_on_delivery_icon.svg';
 }
 
 abstract class SharedPreferencesKeys {
   static const String isDarkTheme = 'isDarkTheme';
   static const String homeCountryDetails = 'homeCountry';
   static const isLogin = "isLogin";
- static const address = "address";
- static const addressFromCurrentLocation = "addressFromCurrentLocation";
+  static const address = "address";
+  static const addressFromCurrentLocation = "addressFromCurrentLocation";
   static const addressId = "addressId";
   static const image = "image";
   static const isDashboard = "isDashboard";

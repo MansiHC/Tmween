@@ -89,7 +89,6 @@ class AddAddressController extends GetxController {
     var language = Get.locale!.languageCode;
     getCountry(language);
     if (address != null) {
-
       for (var i = 0; i < addressTypes.length; i++) {
         if (addressTypes[i].id == address.addressType) {
           addressTypeValue = addressTypes[i];
@@ -115,8 +114,8 @@ class AddAddressController extends GetxController {
       countries = value.data!.country!;
       for (var i = 0; i < value.data!.country!.length; i++) {
         countryNames.add(value.data!.country![i].countryName!);
-        if(address!=null)
-        if (value.data!.country![i].countryName == address!.countryName &&
+        if (address != null) if (value.data!.country![i].countryName ==
+                address!.countryName &&
             value.data!.country![i].countryCode == address!.countryCode) {
           countryValue = value.data!.country![i];
           countrySearchController.text = countryValue!.countryName!;
@@ -147,8 +146,8 @@ class AddAddressController extends GetxController {
       states = value.data!.state!;
 
       for (var i = 0; i < value.data!.state!.length; i++) {
-        if(address!=null)
-        if (value.data!.state![i].stateName == address!.stateName &&
+        if (address != null) if (value.data!.state![i].stateName ==
+                address!.stateName &&
             value.data!.state![i].stateCode == address!.stateCode &&
             value.data!.state![i].countryCode == address!.countryCode) {
           stateValue = value.data!.state![i];
@@ -158,18 +157,16 @@ class AddAddressController extends GetxController {
               value.data!.state![i].stateCode, language);
           break;
         }
-        if(currentState.isNotEmpty)
-          if (states[i].stateName!.toLowerCase() ==
-              currentState.toLowerCase()) {
-            stateValue = states[i];
-           stateSearchController.text =
-           states[i].stateName!;
-            citySearchController.clear();
-            getCity(value.data!.state![i].countryCode,
-                value.data!.state![i].stateCode, language);
-            break;
-          }
-          }
+        if (currentState.isNotEmpty) if (states[i].stateName!.toLowerCase() ==
+            currentState.toLowerCase()) {
+          stateValue = states[i];
+          stateSearchController.text = states[i].stateName!;
+          citySearchController.clear();
+          getCity(value.data!.state![i].countryCode,
+              value.data!.state![i].stateCode, language);
+          break;
+        }
+      }
       update();
     }).catchError((error) {
       update();
@@ -182,8 +179,8 @@ class AddAddressController extends GetxController {
     await api.getCity(countryCode, stateCode, language).then((value) {
       cities = value.data!.city!;
       for (var i = 0; i < value.data!.city!.length; i++) {
-        if(address!=null)
-        if (value.data!.city![i].cityName == address!.cityName &&
+        if (address != null) if (value.data!.city![i].cityName ==
+                address!.cityName &&
             value.data!.city![i].cityCode == address!.cityCode &&
             value.data!.city![i].stateCode == address!.stateCode &&
             value.data!.city![i].countryCode == address!.countryCode) {
@@ -191,15 +188,12 @@ class AddAddressController extends GetxController {
           citySearchController.text = cityValue!.cityName!;
           break;
         }
-        if(currentCity.isNotEmpty)
-          if (cities[i].cityName!.toLowerCase() ==
-              currentCity.toLowerCase()) {
-           cityValue =cities[i];
-            citySearchController.text =
-            cities[i].cityName!;
-           break;
-
-      }
+        if (currentCity.isNotEmpty) if (cities[i].cityName!.toLowerCase() ==
+            currentCity.toLowerCase()) {
+          cityValue = cities[i];
+          citySearchController.text = cities[i].cityName!;
+          break;
+        }
       }
       update();
     }).catchError((error) {
@@ -214,18 +208,19 @@ class AddAddressController extends GetxController {
     // if (Helper.isIndividual) {
     print('gdhgdhgh.......');
     if (countryValue == null) {
-      Helper.showGetSnackBar('Please Select Country');
+      Helper.showGetSnackBar('Please Select Country',  AppColors.errorColor);
     } else if (formKey.currentState!.validate()) {
       if (stateValue == null) {
-        Helper.showGetSnackBar('Please Select State');
+        Helper.showGetSnackBar('Please Select State',  AppColors.errorColor);
       } else if (cityValue == null) {
-        Helper.showGetSnackBar('Please Select City');
+        Helper.showGetSnackBar('Please Select City',  AppColors.errorColor);
       } else if (addressTypeValue == null) {
-        Helper.showGetSnackBar('Please Select Address Type');
+        Helper.showGetSnackBar(
+            'Please Select Address Type',  AppColors.errorColor);
       } else {
         //loading = true;
         Helper.showLoading();
-       // update();
+        // update();
         await api
             .addCustomerAddress(
                 token,
@@ -244,21 +239,21 @@ class AddAddressController extends GetxController {
                 defaultValue,
                 language)
             .then((value) {
-
-
           if (value.statusCode == 200) {
             Helper.hideLoading(context);
             Get.delete<AddAddressController>();
             Navigator.of(context).pop(true);
+            Helper.showGetSnackBar(value.message!,  AppColors.successColor);
           } else if (value.statusCode == 401) {
             Helper.hideLoading(context);
             MySharedPreferences.instance
                 .addBoolToSF(SharedPreferencesKeys.isLogin, false);
             Get.deleteAll();
             Get.offAll(DrawerScreen());
+          } else {
+            Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
           }
           update();
-          Helper.showGetSnackBar(value.message!);
         }).catchError((error) {
           Helper.hideLoading(context);
           update();
@@ -273,14 +268,15 @@ class AddAddressController extends GetxController {
     // if (Helper.isIndividual) {
 
     if (countryValue == null) {
-      Helper.showGetSnackBar('Please Select Country');
+      Helper.showGetSnackBar('Please Select Country',  AppColors.errorColor);
     } else if (formKey.currentState!.validate()) {
       if (stateValue == null) {
-        Helper.showGetSnackBar('Please Select State');
+        Helper.showGetSnackBar('Please Select State',  AppColors.errorColor);
       } else if (cityValue == null) {
-        Helper.showGetSnackBar('Please Select City');
+        Helper.showGetSnackBar('Please Select City',  AppColors.errorColor);
       } else if (addressTypeValue == null) {
-        Helper.showGetSnackBar('Please Select Address Type');
+        Helper.showGetSnackBar(
+            'Please Select Address Type',  AppColors.errorColor);
       } else {
         print(
             '........${countryValue!.countryCode}...${stateValue!.stateCode}.....${cityValue!.cityCode}');
@@ -304,10 +300,9 @@ class AddAddressController extends GetxController {
                 defaultValue,
                 language)
             .then((value) {
-
-
           if (value.statusCode == 200) {
             Helper.hideLoading(context);
+            Helper.showGetSnackBar(value.message!,  AppColors.successColor);
             Get.delete<AddAddressController>();
             Navigator.of(context).pop(true);
           } else if (value.statusCode == 401) {
@@ -316,9 +311,10 @@ class AddAddressController extends GetxController {
                 .addBoolToSF(SharedPreferencesKeys.isLogin, false);
             Get.deleteAll();
             Get.offAll(DrawerScreen());
+          } else {
+            Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
           }
           update();
-          Helper.showGetSnackBar(value.message!);
         }).catchError((error) {
           Helper.hideLoading(context);
           update();

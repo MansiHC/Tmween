@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/controller/forgot_password_controller.dart';
 import 'package:tmween/service/api.dart';
+import 'package:tmween/utils/global.dart';
 
 import '../screens/authentication/login/forgot_password/reset_password_screen.dart';
 import '../utils/helper.dart';
@@ -117,7 +118,8 @@ class ForgotOtpController extends GetxController {
   verifyOTP(from, frm, language, email) async {
     FocusScope.of(context).unfocus();
     if (otpController.text.isEmpty) {
-      Helper.showGetSnackBar('Please Enter Otp First.');
+      Helper.showGetSnackBar(
+          'Please Enter Otp First.',  AppColors.errorColor);
     } else {
       Helper.showLoading();
       await api
@@ -128,7 +130,7 @@ class ForgotOtpController extends GetxController {
         if (value.statusCode == 200) {
           submit(from, frm, email);
         } else {
-          Helper.showGetSnackBar(value.message!);
+          Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
         }
 
         update();
@@ -148,8 +150,9 @@ class ForgotOtpController extends GetxController {
       Helper.hideLoading(context);
       if (value.statusCode == 200) {
         otpValue = value.data!.otp.toString();
+        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
       } else {
-        Helper.showGetSnackBar(value.message!);
+        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
       update();
     }).catchError((error) {

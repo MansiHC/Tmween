@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/product_detail_model.dart';
-import 'package:tmween/model/recently_viewed_model.dart';
 import 'package:tmween/utils/extensions.dart';
 
 import '../../../utils/global.dart';
@@ -38,49 +37,51 @@ class SimilarProductsContainer extends StatelessWidget {
                 children: [
                   products.reviewsAvg == 0
                       ? Container(
-                    width: 10,
-                  )
-                      :
-                  Container(
-                      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                      decoration: BoxDecoration(
-                          color: AppColors.offerGreen,
-                          borderRadius: BorderRadius.all(Radius.circular(4))),
-                      child: Wrap(
-                        alignment: WrapAlignment.center,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                         Text(products.reviewsAvg.toString(),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold)),
-                          Icon(
-                            Icons.star,
-                            color: Colors.white,
-                            size: 11,
-                          )
-                        ],
-                      )),
+                          width: 10,
+                        )
+                      : Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                          decoration: BoxDecoration(
+                              color: AppColors.offerGreen,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4))),
+                          child: Wrap(
+                            alignment: WrapAlignment.center,
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              Text(products.reviewsAvg.toString(),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold)),
+                              Icon(
+                                Icons.star,
+                                color: Colors.white,
+                                size: 11,
+                              )
+                            ],
+                          )),
                   if (products.discountValuePercentage != 0)
-                  Container(
-                      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                      decoration: BoxDecoration(
-                          color: Color(0xFFFF9529),
-                          borderRadius: BorderRadius.all(Radius.circular(4))),
-                      child: Row(
-                        children: [
-                          Text('${products.discountValuePercentage}%',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold)),
-                          2.widthBox,
-                          Text(LocaleKeys.off.tr,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 11)),
-                        ],
-                      )),
+                    Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                        decoration: BoxDecoration(
+                            color: Color(0xFFFF9529),
+                            borderRadius: BorderRadius.all(Radius.circular(4))),
+                        child: Row(
+                          children: [
+                            Text('${products.discountValuePercentage}%',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold)),
+                            2.widthBox,
+                            Text(LocaleKeys.off.tr,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 11)),
+                          ],
+                        )),
                 ])),
         5.heightBox,
         Expanded(
@@ -132,21 +133,21 @@ class SimilarProductsContainer extends StatelessWidget {
             children: [
               Expanded(
                   child: Wrap(children: [
-                    Text('${products.finalPriceDisp!}',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            color: Color(0xFF000000),
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold)),
-                    2.widthBox,
-                    Text('${products.retailPriceDisp!}',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            decoration: TextDecoration.lineThrough,
-                            decorationThickness: 3,
-                            color: Color(0xFF7B7B7B),
-                            fontSize: 10))
-                  ])),
+                Text('${products.finalPriceDisp!}',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                        color: Color(0xFF000000),
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold)),
+                2.widthBox,
+                Text('${products.retailPriceDisp!}',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                        decoration: TextDecoration.lineThrough,
+                        decorationThickness: 3,
+                        color: Color(0xFF7B7B7B),
+                        fontSize: 10))
+              ])),
               2.widthBox,
               Align(
                 alignment: Alignment.topRight,

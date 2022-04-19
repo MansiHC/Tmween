@@ -1,10 +1,10 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:1:1-53:12
-INJECTED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:1:1-53:12
-INJECTED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:1:1-53:12
-INJECTED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:1:1-53:12
-MERGED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:1:1-53:12
+ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:1:1-56:12
+INJECTED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:1:1-56:12
+INJECTED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:1:1-56:12
+INJECTED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:1:1-56:12
+MERGED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:1:1-56:12
 MERGED from [:alt_sms_autofill] /Users/development/StudioProjects/Tmween/build/alt_sms_autofill/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-11:12
 MERGED from [:geolocator_android] /Users/development/StudioProjects/Tmween/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-17:12
 MERGED from [:image_picker] /Users/development/StudioProjects/Tmween/build/image_picker/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-19:12
@@ -56,11 +56,11 @@ INJECTED from /Users/development/StudioProjects/Tmween/android/app/src/debug/And
 		INJECTED from /Users/development/StudioProjects/Tmween/android/app/src/debug/AndroidManifest.xml
 	android:versionName
 		INJECTED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml
-		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:1:1-53:12
+		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:1:1-56:12
 		INJECTED from /Users/development/StudioProjects/Tmween/android/app/src/debug/AndroidManifest.xml
 	android:versionCode
 		INJECTED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml
-		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:1:1-53:12
+		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:1:1-56:12
 		INJECTED from /Users/development/StudioProjects/Tmween/android/app/src/debug/AndroidManifest.xml
 	xmlns:android
 		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:1:11-69
@@ -79,7 +79,7 @@ ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/Android
 	android:name
 		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:6:22-76
 application
-ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:8:5-52:19
+ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:8:5-55:19
 MERGED from [:geolocator_android] /Users/development/StudioProjects/Tmween/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:9:5-15:19
 MERGED from [:geolocator_android] /Users/development/StudioProjects/Tmween/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:9:5-15:19
 MERGED from [:image_picker] /Users/development/StudioProjects/Tmween/build/image_picker/intermediates/merged_manifest/debug/AndroidManifest.xml:7:5-17:19
@@ -111,7 +111,7 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/deve
 	android:icon
 		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:9:9-45
 activity#com.tmween.tmween.MainActivity
-ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:11:9-46:20
+ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:11:9-49:20
 	android:launchMode
 		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:15:13-43
 	android:hardwareAccelerated
@@ -137,43 +137,43 @@ ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/Android
 	android:name
 		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:31:17-81
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:33:13-36:29
+ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:34:13-37:29
 action#android.intent.action.MAIN
-ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:34:17-69
+ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:35:17-69
 	android:name
-		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:34:25-66
+		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:35:25-66
 category#android.intent.category.LAUNCHER
-ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:35:17-77
+ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:36:17-77
 	android:name
-		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:35:27-74
+		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:36:27-74
 intent-filter#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+category:name:android.intent.category.DEFAULT+data:host:tmween.example+data:pathPrefix:/+data:scheme:https
-ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:37:13-45:29
+ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:38:13-48:29
 action#android.intent.action.VIEW
-ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:38:17-69
+ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:39:17-69
 	android:name
-		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:38:25-66
+		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:39:25-66
 category#android.intent.category.DEFAULT
-ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:39:17-76
+ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:41:17-76
 	android:name
-		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:39:27-73
+		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:41:27-73
 category#android.intent.category.BROWSABLE
-ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:40:17-78
+ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:42:17-78
 	android:name
-		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:40:27-75
+		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:42:27-75
 data
-ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:41:17-44:46
+ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:44:17-47:46
 	android:host
-		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:42:21-50
+		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:45:21-50
 	android:scheme
-		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:44:21-43
+		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:47:21-43
 	android:pathPrefix
-		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:43:21-43
+		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:46:21-43
 meta-data#flutterEmbedding
-ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:49:9-51:33
+ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:52:9-54:33
 	android:value
-		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:51:13-30
+		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:54:13-30
 	android:name
-		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:50:13-44
+		ADDED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml:53:13-44
 uses-sdk
 INJECTED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /Users/development/StudioProjects/Tmween/android/app/src/main/AndroidManifest.xml
