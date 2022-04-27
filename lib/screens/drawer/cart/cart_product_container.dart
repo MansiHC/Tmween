@@ -15,7 +15,7 @@ class CartProductContainer extends StatelessWidget {
   CartProductContainer(
       {Key? key, required this.cartProductModel, required this.index})
       : super(key: key);
-  final CartDetails cartProductModel;
+  final CartItemDetails cartProductModel;
   int index;
 
   var language;
@@ -24,6 +24,8 @@ class CartProductContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
+    print('....${cartController
+        .cartQuantityList.length}....$index');
     return GetBuilder<CartController>(
         init: CartController(),
         builder: (contet) {
@@ -192,10 +194,10 @@ class CartProductContainer extends StatelessWidget {
                                      cartController.update();
 */
                                       cartController.editCartProductDecrease(
+                                          cartProductModel.id,
                                           cartProductModel.productId,
                                           cartProductModel.quoteId,
                                           qty,
-                                          cartProductModel.customerAddressId,
                                           language,
                                           cartProductModel.quantity,
                                           index);
@@ -240,10 +242,10 @@ class CartProductContainer extends StatelessWidget {
                                         .setQuantity = qty++;
                                     cartController.update();*/
                                     cartController.editCartProductIncrease(
+                                        cartProductModel.id,
                                         cartProductModel.productId,
                                         cartProductModel.quoteId,
                                         qty,
-                                        cartProductModel.customerAddressId,
                                         language,
                                         cartProductModel.quantity,
                                         index);
@@ -307,12 +309,15 @@ class CartProductContainer extends StatelessWidget {
                       10.widthBox,
                       InkWell(
                           onTap: () {
+                            print('..${cartProductModel.productId}...${
+                                cartProductModel.quoteId}....${
+                                cartProductModel.productItemId}....${
+                                cartProductModel.customerAddressId}....');
                             cartController.deleteCartProduct(
-                                cartProductModel.productId,
                                 cartProductModel.quoteId,
-                                cartProductModel.productItemId,
-                                cartProductModel.customerAddressId,
-                                language);
+                                cartProductModel.id,
+                                language,cartProductModel.quantity!);
+
                           },
                           child: SvgPicture.asset(
                             ImageConstanst.delete,

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/controller/cart_controller.dart';
 import 'package:tmween/model/AttributeModel.dart';
+import 'package:tmween/screens/drawer/cart/cart_screen.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
@@ -13,7 +14,7 @@ import 'package:tmween/utils/global.dart';
 import '../model/attribute_combination_model.dart';
 import '../model/get_customer_address_list_model.dart';
 import '../model/product_detail_model.dart';
-import '../screens/drawer/dashboard/productDetail/product_detail_screen.dart';
+import '../screens/drawer/productDetail/product_detail_screen.dart';
 import '../service/api.dart';
 import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
@@ -29,6 +30,7 @@ class ProductDetailController extends GetxController {
   late bool visibleList = false;
   late bool isLiked = false;
   bool descTextShowFlag = false;
+  bool isWithAttribute = false;
 
   int current = 0;
   int productId = 0;
@@ -62,69 +64,102 @@ class ProductDetailController extends GetxController {
   int packId = 0;
   int supplierBranchId = 0;
   int quntity = 1;
-   List<int> radioPackItems = [];
+  int cartCount = 0;
+  List<int> radioPackItems = [];
 
+  List<String> galleryImages = [];
+  List<String> attributeImages = [];
+  List<String> images = [];
 
   @override
   void onInit() {
     isLiked = false;
     addedToCart = false;
+
     MySharedPreferences.instance
-        .getStringValuesSF(SharedPreferencesKeys.address)
+        .getBoolValuesSF(SharedPreferencesKeys.isLogin)
         .then((value) async {
-      if (value != null) address = value;
-      update();
-    });
-    MySharedPreferences.instance
-        .getStringValuesSF(SharedPreferencesKeys.addressId)
-        .then((value) async {
-      if (value != null) addressId = value;
-      update();
-    });
-    MySharedPreferences.instance
-        .getStringValuesSF(SharedPreferencesKeys.address)
-        .then((value) async {
-      if (value != null) address = value;
-      update();
-    });
-    MySharedPreferences.instance
-        .getStringValuesSF(SharedPreferencesKeys.image)
-        .then((value) async {
-      image = value!;
-      update();
-    });
-    MySharedPreferences.instance
-        .getStringValuesSF(SharedPreferencesKeys.token)
-        .then((value) async {
-      token = value!;
-      print('dhsh.....$token');
-      MySharedPreferences.instance
-          .getIntValuesSF(SharedPreferencesKeys.userId)
-          .then((value) async {
-        userId = value!;
+      var isLogin = value!;
+      if (isLogin) {
+
         MySharedPreferences.instance
-            .getIntValuesSF(SharedPreferencesKeys.loginLogId)
+            .getStringValuesSF(SharedPreferencesKeys.address)
             .then((value) async {
-          loginLogId = value!;
+          if (value != null) address = value;
+          update();
         });
-      });
+        MySharedPreferences.instance
+            .getStringValuesSF(SharedPreferencesKeys.addressId)
+            .then((value) async {
+          if (value != null) addressId = value;
+          update();
+        });
+        MySharedPreferences.instance
+            .getStringValuesSF(SharedPreferencesKeys.address)
+            .then((value) async {
+          if (value != null) address = value;
+          update();
+        });
+        MySharedPreferences.instance
+            .getStringValuesSF(SharedPreferencesKeys.image)
+            .then((value) async {
+          image = value!;
+          update();
+        });
+        MySharedPreferences.instance
+            .getStringValuesSF(SharedPreferencesKeys.token)
+            .then((value) async {
+          token = value!;
+          print('dhsh.....$token');
+          MySharedPreferences.instance
+              .getIntValuesSF(SharedPreferencesKeys.userId)
+              .then((value) async {
+            userId = value!;
+            addToRecent(productId, Get.locale!.languageCode);
+            MySharedPreferences.instance
+                .getIntValuesSF(SharedPreferencesKeys.loginLogId)
+                .then((value) async {
+              loginLogId = value!;
+            });
+          });
+        });
+
+      }
     });
+
+
     super.onInit();
+  }
+
+  Future<void> addToRecent(productId, language) async {
+    await api
+        .addToRecent(userId, productId, language)
+        .then((value) {})
+        .catchError((error) {
+      print('error....$error');
+    });
   }
 
   Future<void> getProductDetails(language) async {
     Helper.showLoading();
     attributeTypeArr = [];
-    radioPackItems =[];
+    radioPackItems = [];
     attributeValueArray = [];
+    images=[];
     await api
         .getProductDetailsMobile(productSlug, isLogin, userId, language)
         .then((value) {
       if (value.statusCode == 200) {
         productDetailData = value.data!;
         packId = productDetailData!.productData![0].productPack![0].id!;
-        for(var i=0;i<productDetailData!.productData![0].productPack!.length;i++){
-          radioPackItems.add(productDetailData!.productData![0].productPack![i].id!);
+        for (var i = 0;
+            i < productDetailData!.productData![0].productPack!.length;
+            i++) {
+          radioPackItems
+              .add(productDetailData!.productData![0].productPack![i].id!);
+        }
+        for(var i=0; i<productDetailData!.productData![0].productGallery!.length;i++){
+          galleryImages.add(productDetailData!.productData![0].productGallery![i].largeImageUrl!);
         }
 
         if (productDetailData!.productAssociateAttribute != null) {
@@ -137,11 +172,14 @@ class ProductDetailController extends GetxController {
                   .productAssociateAttribute![i].attributeName!);
               if (productDetailData!.productAssociateAttribute![i].options![0]
                       .attributeOptionValue !=
-                  null)
+                  null) {
                 attributeValueArray.add(productDetailData!
                     .productAssociateAttribute![i]
                     .options![0]
                     .attributeOptionValue!);
+              } else {
+                attributeValueArray.add("");
+              }
             }
             var a = AttributeModel();
             a.setPrimaryIndex = i;
@@ -149,8 +187,12 @@ class ProductDetailController extends GetxController {
             attributeItems.add(a);
           }
           if (attributeTypeArr.length == 0) {
+            isWithAttribute=false;
+            images.addAll(galleryImages);
             getAttributeWithoutCombination(language, 0);
           } else {
+            isWithAttribute=true;
+
             getAttributeCombination(language, 0);
           }
         } else {
@@ -171,14 +213,9 @@ class ProductDetailController extends GetxController {
         if (isLogin) if (productDetailData!.productData![0].isWhishlist == 1) {
           isLiked = true;
         }
-      } else if (value.statusCode == 401) {
-        MySharedPreferences.instance
-            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-        Get.deleteAll();
-        Get.offAll(DrawerScreen());
       } else {
         Helper.hideLoading(context);
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
     }).catchError((error) {
       Helper.hideLoading(context);
@@ -233,8 +270,25 @@ class ProductDetailController extends GetxController {
         Helper.hideLoading(context);
         if (value.statusCode == 200) {
           attributeData = value.data;
+          if (attributeData!.productQtyPackData != null) {
+            packId = attributeData!.productQtyPackData![0].productPackId!;
+            supplierBranchId =
+                attributeData!.productQtyPackData![0].supplierBranchId!;
+            for (var i = 0;
+                i < attributeData!.productQtyPackData!.length;
+                i++) {
+              radioPackItems
+                  .add(attributeData!.productQtyPackData![i].productPackId!);
+            }
+          }
+          for(var i=0; i<attributeData!.galleryAndAttributeComArr!.length;i++){
+            attributeImages.add(attributeData!.galleryAndAttributeComArr![i].largeImageUrl!);
+          }
+          print('.......${attributeImages.length}....${galleryImages.length}');
+          images.addAll(attributeImages);
+          images.addAll(galleryImages);
         } else {
-          Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+          Helper.showGetSnackBar(value.message!, AppColors.errorColor);
         }
 
         update();
@@ -254,19 +308,31 @@ class ProductDetailController extends GetxController {
     };
     print('$attrData.....$productId....$packId');
     radioPackItems = [];
+    attributeImages=[];
     await api
         .getItemIdByAttributeCombination(packId, productId, attrData, language)
         .then((value) {
       Helper.hideLoading(context);
       if (value.statusCode == 200) {
         attributeData = value.data;
-        packId = attributeData!.productQtyPackData![0].productPackId!;
-        supplierBranchId = attributeData!.productQtyPackData![0].supplierBranchId!;
-        for(var i=0;i< attributeData!.productQtyPackData!.length;i++){
-          radioPackItems.add(attributeData!.productQtyPackData![i].productPackId!);
+        if (attributeData!.productQtyPackData != null) {
+          packId = attributeData!.productQtyPackData![0].productPackId!;
+          supplierBranchId =
+              attributeData!.productQtyPackData![0].supplierBranchId!;
+          for (var i = 0; i < attributeData!.productQtyPackData!.length; i++) {
+            radioPackItems
+                .add(attributeData!.productQtyPackData![i].productPackId!);
+          }
+
         }
+        for(var i=0; i<attributeData!.galleryAndAttributeComArr!.length;i++){
+          attributeImages.add(attributeData!.galleryAndAttributeComArr![i].largeImageUrl!);
+        }
+        print('.......${attributeImages.length}....${galleryImages.length}');
+        images.addAll(attributeImages);
+        images.addAll(galleryImages);
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
 
       update();
@@ -280,19 +346,23 @@ class ProductDetailController extends GetxController {
   Future<void> getAttributeWithoutCombination(language, int i) async {
     if (i == 1) Helper.showLoading();
     print('....$productId....$packId');
-    radioPackItems=[];
+    radioPackItems = [];
     await api.getProductSupplier(packId, productId, language).then((value) {
       Helper.hideLoading(context);
       if (value.statusCode == 200) {
         attributeData = value.data;
-        packId = attributeData!.productQtyPackData![0].productPackId!;
-        supplierBranchId = attributeData!.productQtyPackData![0].supplierBranchId!;
+        if (attributeData!.productQtyPackData != null) {
+          packId = attributeData!.productQtyPackData![0].productPackId!;
+          supplierBranchId =
+              attributeData!.productQtyPackData![0].supplierBranchId!;
 
-        for(var i=0;i< attributeData!.productQtyPackData!.length;i++){
-          radioPackItems.add(attributeData!.productQtyPackData![i].productPackId!);
+          for (var i = 0; i < attributeData!.productQtyPackData!.length; i++) {
+            radioPackItems
+                .add(attributeData!.productQtyPackData![i].productPackId!);
+          }
         }
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
 
       update();
@@ -317,14 +387,14 @@ class ProductDetailController extends GetxController {
       if (value.statusCode == 200) {
         isLiked = true;
         update();
-        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
     }).catchError((error) {
       print('error....$error');
@@ -376,8 +446,7 @@ class ProductDetailController extends GetxController {
     });
   }
 
-  Future<void> addToCart(
-      productItemId, supplierId,  language) async {
+  Future<void> addToCart(productItemId, supplierId, language) async {
     addressList = [];
     Helper.showLoading();
     print(
@@ -388,6 +457,7 @@ class ProductDetailController extends GetxController {
         .then((value) {
       if (value.statusCode == 200) {
         addedToCart = true;
+        cartCount = value.data!.cartTotalItems!;
         Helper.hideLoading(context);
         _showDialog();
       } else if (value.statusCode == 401) {
@@ -400,7 +470,39 @@ class ProductDetailController extends GetxController {
       } else {
         addedToCart = false;
         Helper.hideLoading(context);
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
+      }
+      update();
+    }).catchError((error) {
+      print('error....$error');
+    });
+  }
+  Future<void> addToCartBuyNow(productItemId, supplierId, language) async {
+    addressList = [];
+    Helper.showLoading();
+    print(
+        'add......$productId,$packId,$productItemId,$userId,$quntity,$addressId,$supplierId,$supplierBranchId');
+    await api
+        .addToCart(token, productId, packId, productItemId, userId, quntity,
+            addressId, supplierId, supplierBranchId, language)
+        .then((value) {
+      if (value.statusCode == 200) {
+        addedToCart = true;
+        cartCount = value.data!.cartTotalItems!;
+        Helper.hideLoading(context);
+        navigateToCartScreen();
+      //  _showDialog();
+      } else if (value.statusCode == 401) {
+        addedToCart = false;
+        Helper.hideLoading(context);
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        Get.deleteAll();
+        Get.offAll(DrawerScreen());
+      } else {
+        addedToCart = false;
+        Helper.hideLoading(context);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
       update();
     }).catchError((error) {
@@ -455,14 +557,14 @@ class ProductDetailController extends GetxController {
       if (value.statusCode == 200) {
         isLiked = false;
         update();
-        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
       update();
     }).catchError((error) {
@@ -586,7 +688,6 @@ class ProductDetailController extends GetxController {
 
   final List<String> items = ['Sofa', 'Bed'];
 
-
   bool isQuantityDiscountExpanded = true;
 
   void updateQuantityDiscountExpanded() {
@@ -630,7 +731,7 @@ class ProductDetailController extends GetxController {
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
             builder: (context) => DrawerScreen(
-                  from:  AppConstants.productDetail,
+                  from: AppConstants.productDetail,
                 )),
         (Route<dynamic> route) => false);
   }
@@ -639,10 +740,15 @@ class ProductDetailController extends GetxController {
     Navigator.pop(context);
   }
 
-  void exitScreen(CartController cartController) {
-    Get.delete<ProductDetailController>();
+  void exitScreen(CartController cartController,bool fromDeepLink) {
+
+   if(fromDeepLink){
+     Get.deleteAll();
+     Get.offAll(DrawerScreen());
+   } else{
+     Get.delete<ProductDetailController>();
     cartController.update();
-    Navigator.of(context).pop(true);
+    Navigator.of(context).pop(true);}
   }
 
   void pop() {

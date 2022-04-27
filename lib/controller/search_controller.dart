@@ -40,68 +40,13 @@ class SearchController extends GetxController {
   }
 
   bool isLogin = true;
-  String image = "", address = "";
 
   @override
   void onInit() {
-    print('...........#############################');
-    searchList = [];
-    getPopularList(Get.locale!.languageCode);
-    // getFilterData(Get.locale!.languageCode);
-    MySharedPreferences.instance
-        .getBoolValuesSF(SharedPreferencesKeys.isLogin)
-        .then((value) async {
-      isLogin = value!;
 
-      update();
-    });
-    MySharedPreferences.instance
-        .getStringValuesSF(SharedPreferencesKeys.address)
-        .then((value) async {
-      if (value != null) address = value;
-      update();
-    });
-    MySharedPreferences.instance
-        .getStringValuesSF(SharedPreferencesKeys.image)
-        .then((value) async {
-      image = value!;
-      update();
-    });
-    MySharedPreferences.instance
-        .getStringValuesSF(SharedPreferencesKeys.token)
-        .then((value) async {
-      token = value!;
-      print('dhsh.....$token');
-      MySharedPreferences.instance
-          .getIntValuesSF(SharedPreferencesKeys.userId)
-          .then((value) async {
-        userId = value!;
-        MySharedPreferences.instance
-            .getIntValuesSF(SharedPreferencesKeys.loginLogId)
-            .then((value) async {
-          loginLogId = value!;
-        });
-      });
-    });
     super.onInit();
   }
 
-  Future<void> getFilterData(language) async {
-    await api.getFilterData('1', 'fresh', language).then((value) {
-      Helper.hideLoading(context);
-      if (value.statusCode == 200) {
-      } else if (value.statusCode == 401) {
-        MySharedPreferences.instance
-            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-      }
-
-      update();
-    }).catchError((error) {
-      Helper.hideLoading(context);
-      update();
-      print('error....$error');
-    });
-  }
 
   Future<void> getHistoryList(language) async {
     historyList = [];

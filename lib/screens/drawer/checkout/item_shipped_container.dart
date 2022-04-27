@@ -5,17 +5,17 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/review_order_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
+import 'package:tmween/model/review_order_model.dart';
 import 'package:tmween/utils/extensions.dart';
 
 import '../../../utils/global.dart';
 
 class ItemShippedContainer extends StatelessWidget {
-  /* ItemShippedContainer(
-      {Key? key, required this.cartProductModel, required this.index})
+  ItemShippedContainer(
+      {Key? key, required this.quoteItemData, required this.index})
       : super(key: key);
-  final CartDetails cartProductModel;
+  final QuoteItemData quoteItemData;
   int index;
-*/
   var language;
   final reviewOrderController = Get.put(ReviewOrderController());
 
@@ -29,7 +29,7 @@ class ItemShippedContainer extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Item will ship from Tmween',
+              Text('Item will ship from ${quoteItemData.supplierName}',
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       color: Colors.grey[700]!,
@@ -43,203 +43,237 @@ class ItemShippedContainer extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        "https://s3.me-south-1.amazonaws.com/tmween-stag/product/3/1645184496_ksix_oppo_a15_full_glue_2.5d_tempered_glass_9h.jpg"
-                                .isNotEmpty
+                        quoteItemData.largeImageUrl!.isNotEmpty
                             ? CachedNetworkImage(
-                                imageUrl:
-                                    "https://s3.me-south-1.amazonaws.com/tmween-stag/product/3/1645184496_ksix_oppo_a15_full_glue_2.5d_tempered_glass_9h.jpg",
-                                height: MediaQuery.of(context).size.width / 4.5,
-                                placeholder: (context, url) =>
-                                    Center(child: CupertinoActivityIndicator()),
-                                errorWidget: (context, url, error) => Icon(
-                                  Icons.image_not_supported,
-                                  color: Colors.grey,
-                                ),
-                              )
+                          imageUrl:
+                          quoteItemData.largeImageUrl!, height: MediaQuery
+                            .of(context)
+                            .size
+                            .width / 4.5,
+                          placeholder: (context, url) =>
+                              Center(child: CupertinoActivityIndicator()),
+                          errorWidget: (context, url, error) =>
+                              Icon(
+                                Icons.image_not_supported,
+                                color: Colors.grey,
+                              ),
+                        )
                             : Container(
-                                height: MediaQuery.of(context).size.width / 5.3,
-                                child: Icon(
-                                  Icons.image_not_supported,
-                                  color: Colors.grey,
-                                ))
+                            height: MediaQuery
+                                .of(context)
+                                .size
+                                .width / 5.3,
+                            child: Icon(
+                              Icons.image_not_supported,
+                              color: Colors.grey,
+                            ))
                       ],
                     ),
                     5.widthBox,
                     Expanded(
                         child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("ProductName",
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold)),
-                        3.heightBox,
-                        Wrap(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('SAR 26',
+                            Text(quoteItemData.productName!,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
-                                    color: Color(0xFF666666),
-                                    fontSize: 13,
-                                    decoration: TextDecoration.lineThrough)),
-                            10.widthBox,
-                            Text('SAR 26',
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    color: Color(0xFFF57051),
-                                    fontSize: 13,
+                                    color: Colors.black,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.bold)),
-                          ],
-                        ),
-                        3.heightBox,
-                        if (true)
-                          Text(LocaleKeys.inStock.tr,
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                color: Color(0xFF3B963C),
-                                fontSize: 13,
-                              )),
-                        3.heightBox,
-                        Text('Sold by: Vatsal Shah',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              color: Color(0xFF666666),
-                              fontSize: 13,
-                            )),
-                        3.heightBox,
-                        Wrap(children: [
-                          Text('Quantity: 1',
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  color: Colors.grey[700]!,
+                            3.heightBox,
+                            Wrap(
+                              children: [
+                                Text('SAR ${quoteItemData.finalPrice}',
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      color: Color(0xFF666666),
+                                      fontSize: 13,
+                                      decoration: TextDecoration.lineThrough,
+                                      decorationThickness: 2,)),
+                                10.widthBox,
+                                Text('SAR ${quoteItemData.retailPrice}',
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        color: Color(0xFFF57051),
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                            3.heightBox,
+                            if (true)
+                              Text(LocaleKeys.inStock.tr,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    color: Color(0xFF3B963C),
+                                    fontSize: 13,
+                                  )),
+                            3.heightBox,
+                            Text('Sold by: ${quoteItemData.supplierName}',
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  color: Color(0xFF666666),
                                   fontSize: 13,
-                                  fontWeight: FontWeight.w700)),
-                          5.widthBox,
-                          Text('Change',
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                color: AppColors.primaryColor,
-                                fontSize: 13,
-                              )),
-                        ]),
-                        10.heightBox,
-                        Text("Choose a delivery speed:",
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold)),
-                        5.heightBox,
-                        InkWell(
-                            onTap: (){
-                              reviewOrderController.radioCurrentValue =
-                              1;
-                              reviewOrderController.update();
-                            },
-                            child:
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              height: 20,
-                              child: Radio(
-                                value: 1,
-                                groupValue:
-                                    reviewOrderController.radioCurrentValue,
-                                visualDensity: const VisualDensity(
-                                  horizontal: VisualDensity.minimumDensity,
-                                  vertical: VisualDensity.minimumDensity,
-                                ),
-                                activeColor: Color(0xFF1992CE),
-                                onChanged: (int? value) {
-                                  reviewOrderController.radioCurrentValue =
-                                      value!;
+                                )),
+                            3.heightBox,
+                            Wrap(children: [
+                              Text('Quantity: ${quoteItemData.quantity}',
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      color: Colors.grey[700]!,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w700)),
+                              5.widthBox,
+                              InkWell(
+                                  onTap: () {
+                                    reviewOrderController.pop();
+                                    reviewOrderController.pop();
+                                    reviewOrderController.pop();
+                                  },
+                                  child: Text('Change',
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                        color: AppColors.primaryColor,
+                                        fontSize: 13,
+                                      ))),
+                            ]),
+                            10.heightBox,
+                            Text("Choose a delivery speed:",
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold)),
+                            5.heightBox,
+                            InkWell(
+                                onTap: () {
+                                  reviewOrderController.radioValue[index]
+                                      .currentId =
+                                  reviewOrderController.radioValue[index].id[0];
                                   reviewOrderController.update();
+                                  reviewOrderController.changeDeliverySpeed(
+                                      quoteItemData.id, 1, language);
                                 },
-                              ),
-                            ),
-                            5.widthBox,
-                            Expanded(
-                                child: Wrap(children: [
-                              Text('Standard Delivery',
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    color: Color(0xFF3B963C),
-                                    fontSize: 13,
-                                  )),
-                              Text(' - Delivery Price: ',
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    color: Color(0xFF666666),
-                                    fontSize: 13,
-                                  )),
+                                child:
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      height: 20,
+                                      child: Radio(
+                                        value: reviewOrderController
+                                            .radioValue[index].id[0],
+                                        groupValue:
+                                        reviewOrderController.radioValue[index]
+                                            .currentId,
+                                        visualDensity: const VisualDensity(
+                                          horizontal: VisualDensity
+                                              .minimumDensity,
+                                          vertical: VisualDensity
+                                              .minimumDensity,
+                                        ),
+                                        activeColor: Color(0xFF1992CE),
+                                        onChanged: (int? value) {
+                                          reviewOrderController
+                                              .radioValue[index].currentId =
+                                          value!;
+                                          reviewOrderController.update();
+                                          reviewOrderController.changeDeliverySpeed(
+                                              quoteItemData.id, 1, language);
+                                        },
+                                      ),
+                                    ),
+                                    5.widthBox,
+                                    Expanded(
+                                        child: Wrap(children: [
+                                          Text('Standard Delivery',
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                color: Color(0xFF3B963C),
+                                                fontSize: 13,
+                                              )),
+                                          Text(' - Delivery Price: ',
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                color: Color(0xFF666666),
+                                                fontSize: 13,
+                                              )),
 
-                              Text(" SAR 2111.22",
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold)),
-                            ]))
-                          ],
-                        )),
-                        3.heightBox,
-                        InkWell(
-                        onTap: (){
-                        reviewOrderController.radioCurrentValue =
-                        2;
-                        reviewOrderController.update();
-                        },
-                        child:Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              height: 20,
-                              child: Radio(
-                                value: 2,
-                                groupValue:
-                                    reviewOrderController.radioCurrentValue,
-                                visualDensity: const VisualDensity(
-                                  horizontal: VisualDensity.minimumDensity,
-                                  vertical: VisualDensity.minimumDensity,
-                                ),
-                                activeColor: Color(0xFF1992CE),
-                                onChanged: (int? value) {
-                                  reviewOrderController.radioCurrentValue =
-                                      value!;
+                                          Text("SAR ${quoteItemData
+                                              .normalDeliveryPrice}",
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.bold)),
+                                        ]))
+                                  ],
+                                )),
+                            3.heightBox,
+                            InkWell(
+                                onTap: () {
+                                  reviewOrderController.radioValue[index]
+                                      .currentId =
+                                  reviewOrderController.radioValue[index].id[1];
                                   reviewOrderController.update();
+                                  reviewOrderController.changeDeliverySpeed(
+                                      quoteItemData.id, 2, language);
                                 },
-                              ),
-                            ),
-                            5.widthBox,
-                            Expanded(
-                                child: Wrap(children: [
-                              Text('Quick Delivery',
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    color: Color(0xFF3B963C),
-                                    fontSize: 13,
-                                  )),
-                              Text(' - Delivery Price: ',
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    color: Color(0xFF666666),
-                                    fontSize: 13,
-                                  )),
-                              Text("SAR 2111.22",
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold)),
-                            ]))
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      height: 20,
+                                      child: Radio(
+                                        value: reviewOrderController
+                                            .radioValue[index].id[1],
+                                        groupValue:
+                                        reviewOrderController.radioValue[index]
+                                            .currentId,
+                                        visualDensity: const VisualDensity(
+                                          horizontal: VisualDensity
+                                              .minimumDensity,
+                                          vertical: VisualDensity
+                                              .minimumDensity,
+                                        ),
+                                        activeColor: Color(0xFF1992CE),
+                                        onChanged: (int? value) {
+                                          reviewOrderController
+                                              .radioValue[index].currentId =
+                                          value!;
+                                          reviewOrderController.update();
+                                          reviewOrderController.changeDeliverySpeed(
+                                              quoteItemData.id, 2, language);
+                                        },
+                                      ),
+                                    ),
+                                    5.widthBox,
+                                    Expanded(
+                                        child: Wrap(children: [
+                                          Text('Quick Delivery',
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                color: Color(0xFF3B963C),
+                                                fontSize: 13,
+                                              )),
+                                          Text(' - Delivery Price: ',
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                color: Color(0xFF666666),
+                                                fontSize: 13,
+                                              )),
+                                          Text("SAR ${quoteItemData
+                                              .quickDeliveryPrice}",
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.bold)),
+                                        ]))
+                                  ],
+                                )),
+                            10.heightBox
                           ],
                         )),
-                        10.heightBox
-                      ],
-                    )),
                   ])
             ],
           );

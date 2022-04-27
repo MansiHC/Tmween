@@ -46,6 +46,7 @@ class ReviewOrderScreen extends StatelessWidget {
                               padding: EdgeInsets.only(top: 20),
                               child: topView(reviewOrderController)),
                           5.heightBox,
+                          if(reviewOrderController.reviewOrderData!=null)
                           Expanded(
                               child: SingleChildScrollView(
                                   child: _bottomView(reviewOrderController))),
@@ -63,12 +64,8 @@ class ReviewOrderScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Visibility(
-              visible: reviewOrderController.loading,
-              child: CircularProgressBar(),
-            ),
-            Visibility(
                 visible: !reviewOrderController.loading &&
-                    reviewOrderController.addressList.length > 0,
+                    reviewOrderController.reviewOrderData!=null,
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -166,6 +163,7 @@ class ReviewOrderScreen extends StatelessWidget {
                     border: Border.all(color: Colors.grey[300]!),
                     borderRadius: BorderRadius.all(Radius.circular(2))),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
                         padding: EdgeInsets.all(10),
@@ -183,14 +181,14 @@ class ReviewOrderScreen extends StatelessWidget {
                                     children: [
                                       TextSpan(
                                         text:
-                                            'Salim Akka 24 Water View Way, Reno,nv,8,ghgh',
+                                            '${reviewOrderController.addressDetails!.fullname!} ${reviewOrderController.addressDetails!.address1!} ${reviewOrderController.addressDetails!.address2!}',
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 15),
                                       )
                                     ])),
-                            3.heightBox,
+                           /* 3.heightBox,
                             RichText(
                                 textAlign: TextAlign.start,
                                 maxLines: 1,
@@ -207,7 +205,7 @@ class ReviewOrderScreen extends StatelessWidget {
                                             fontWeight: FontWeight.bold,
                                             fontSize: 15),
                                       )
-                                    ])),
+                                    ])),*/
                           ],
                         )),
                     Divider(
@@ -239,7 +237,7 @@ class ReviewOrderScreen extends StatelessWidget {
                       height: 1,
                       thickness: 1,
                     ),
-                    //   for (var i = 0; i < cartData!.cartDetails!.length; i++)
+                       for (var i = 0; i < reviewOrderController.quoteItemDetails!.length; i++)
                     Column(children: [
                       Padding(
                           padding: EdgeInsets.all(10),
@@ -247,12 +245,12 @@ class ReviewOrderScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
-                                  child: Text('Dream Choice',
+                                  child: Text(reviewOrderController.quoteItemDetails![i].productName!,
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
                                           color: Color(0xFF666666),
                                           fontSize: 15))),
-                              Text('SAR 33',
+                              Text(reviewOrderController.quoteItemDetails![i].finalPrice!,
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                     color: Color(0xFF666666),
@@ -265,11 +263,11 @@ class ReviewOrderScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('Item(2)',
+                              Text('Item(${reviewOrderController.quoteItemDetails![i].quantity})',
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                       color: Color(0xFF666666), fontSize: 15)),
-                              Text('SAR 343',
+                              Text( '${reviewOrderController.reviewOrderData!.cartDetail!.currencyCode} ${reviewOrderController.quoteItemDetails![i].itemFinalTotal!.toString()}',
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                     color: Color(0xFF666666),
@@ -292,7 +290,8 @@ class ReviewOrderScreen extends StatelessWidget {
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Color(0xFF666666), fontSize: 15)),
-                            Text('SAR 10',
+                            Text(  '${reviewOrderController.reviewOrderData!.cartDetail!.currencyCode} ${reviewOrderController.reviewOrderData!.cartDetail!.totalDeliveryPrice!}',
+
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Color(0xFF666666), fontSize: 15)),
@@ -307,7 +306,8 @@ class ReviewOrderScreen extends StatelessWidget {
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Color(0xFF666666), fontSize: 15)),
-                            Text('SAR 2.6',
+                            Text( '${reviewOrderController.reviewOrderData!.cartDetail!.currencyCode} ${reviewOrderController.reviewOrderData!.cartDetail!.totalTaxAmount!}',
+
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Color(0xFF666666), fontSize: 15)),
@@ -330,7 +330,8 @@ class ReviewOrderScreen extends StatelessWidget {
                                     color: Colors.black,
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold)),
-                            Text('SAR 344',
+                            Text( '${reviewOrderController.reviewOrderData!.cartDetail!.currencyCode} ${reviewOrderController.reviewOrderData!.cartDetail!.totalPrice!}',
+
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -341,6 +342,11 @@ class ReviewOrderScreen extends StatelessWidget {
                   ],
                 )),
             20.heightBox,
+            InkWell(
+                onTap: (){
+                  reviewOrderController.pop();
+                },
+                child:
             Container(
                 width: double.maxFinite,
                 decoration: BoxDecoration(
@@ -362,7 +368,7 @@ class ReviewOrderScreen extends StatelessWidget {
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold)),
                             6.heightBox,
-                            Text('Cash on Delivery',
+                            Text(reviewOrderController.reviewOrderData!.quotesData!.quoteDetails!.paymentMethod!,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Color(0xFF666666), fontSize: 15)),
@@ -373,9 +379,14 @@ class ReviewOrderScreen extends StatelessWidget {
                           color: Color(0xFF666666),
                         )
                       ],
-                    ))),
+                    )))),
             20.heightBox,
-            Container(
+           InkWell(
+               onTap: (){
+                 reviewOrderController.pop();
+                 reviewOrderController.pop();
+               },
+               child:  Container(
                 width: double.maxFinite,
                 decoration: BoxDecoration(
                     color: Colors.white,
@@ -397,13 +408,13 @@ class ReviewOrderScreen extends StatelessWidget {
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold)),
                             6.heightBox,
-                            Text('Salim Akka',
+                            Text(reviewOrderController.addressDetails!.fullname!,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold)),
-                            Text('24 water view way, rengshjgshgsdhjgshjdghsg',
+                            Text('${reviewOrderController.addressDetails!.address1!}, ${reviewOrderController.addressDetails!.address2!}',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.start,
@@ -416,8 +427,16 @@ class ReviewOrderScreen extends StatelessWidget {
                           color: Color(0xFF666666),
                         )
                       ],
-                    ))),
+                    )))),
             20.heightBox,
+        ListView.builder(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            physics: ScrollPhysics(),
+            itemCount: reviewOrderController.quoteItemDetails!.length,
+            itemBuilder: (context, index) {
+
+              return
             Container(
                 width: double.maxFinite,
                 decoration: BoxDecoration(
@@ -426,7 +445,8 @@ class ReviewOrderScreen extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(2))),
                 child: Padding(
                     padding: EdgeInsets.all(10),
-                    child: ItemShippedContainer())),
+                    child: ItemShippedContainer(quoteItemData: reviewOrderController.quoteItemDetails![index],index: index,)));
+            }),
             25.heightBox,
             Container(
                 width: double.maxFinite,
@@ -455,22 +475,6 @@ class ReviewOrderScreen extends StatelessWidget {
             25.heightBox,
           ],
         ));
-  }
-
-  _itemShippedContainer(
-      ReviewOrderController reviewOrderController) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Item shipped from Tmween',
-            textAlign: TextAlign.start,
-            style: TextStyle(
-                color: Colors.black,
-                fontSize: 15,
-                fontWeight: FontWeight.bold)),
-
-      ],
-    );
   }
 
   Widget topView(ReviewOrderController reviewOrderController) {

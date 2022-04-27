@@ -6,10 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/dashboard_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
-import 'package:tmween/screens/drawer/categories_screen.dart';
+import 'package:tmween/screens/drawer/category/categories_screen.dart';
 import 'package:tmween/screens/drawer/dashboard/best_seller_container.dart';
 import 'package:tmween/screens/drawer/dashboard/deals_of_the_day_container.dart';
-import 'package:tmween/screens/drawer/dashboard/productDetail/product_detail_screen.dart';
 import 'package:tmween/screens/drawer/dashboard/recently_viewed_container.dart';
 import 'package:tmween/screens/drawer/dashboard/select_category_container.dart';
 import 'package:tmween/screens/drawer/dashboard/sold_by_tmween_container.dart';
@@ -21,6 +20,7 @@ import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/circular_progress_bar.dart';
 
 import '../best_seller_screen.dart';
+import '../productDetail/product_detail_screen.dart';
 import '../recently_viewed_screen.dart';
 import '../top_selection_screen.dart';
 
@@ -56,6 +56,7 @@ class DashboardScreen extends StatelessWidget {
                         _centerUpBanner(dashboardController),
                         _topSelection(dashboardController),
                         _centerDownBanner(dashboardController),
+                        if(dashboardController.recentlyViewProduct!=null)
                         _recentlyViewed(dashboardController),
                         10.heightBox,
                         Text(
@@ -747,6 +748,7 @@ class DashboardScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
                     ),
+                    if(dashboardController.recentlyViewProduct!=null)
                     Visibility(
                         visible:
                             dashboardController.recentlyViewProduct!.length >
@@ -776,6 +778,7 @@ class DashboardScreen extends StatelessWidget {
                   ],
                 )),
             5.heightBox,
+            if(dashboardController.recentlyViewProduct!=null)
             Container(
                 height: 244,
                 child: ListView.builder(

@@ -7,6 +7,7 @@ import '../model/dashboard_model.dart';
 import '../service/api.dart';
 import '../utils/global.dart';
 import '../utils/helper.dart';
+import '../utils/my_shared_preferences.dart';
 
 class RecentlyViewedController extends GetxController {
   late BuildContext context;
@@ -20,17 +21,48 @@ class RecentlyViewedController extends GetxController {
   int prev = 0;
   int next = 0;
   int totalRecords = 0;
+  int userId = 0;
+  String token = '';
+  int loginLogId = 0;
+  bool isLogin = true;
 
   @override
   void onInit() {
-    getData(Get.locale!.languageCode);
+    MySharedPreferences.instance
+        .getBoolValuesSF(SharedPreferencesKeys.isLogin)
+        .then((value) async {
+      isLogin = value!;
+      print('...cart....$isLogin');
+      if (isLogin)
+        MySharedPreferences.instance
+            .getStringValuesSF(SharedPreferencesKeys.token)
+            .then((value) async {
+          token = value!;
+          print('dhsh.....$token');
+          MySharedPreferences.instance
+              .getIntValuesSF(SharedPreferencesKeys.userId)
+              .then((value) async {
+            userId = value!;
+            getData(Get.locale!.languageCode);
+            MySharedPreferences.instance
+                .getIntValuesSF(SharedPreferencesKeys.loginLogId)
+                .then((value) async {
+              loginLogId = value!;
+            });
+          });
+        });
+    });
+
     super.onInit();
   }
 
   Future<void> getData(language) async {
-    Helper.showLoading();
-    await api.getRecentlyViewed("1", language).then((value) {
-      Helper.hideLoading(context);
+    //Helper.showLoading();
+    loading =true;
+    update();
+    await api.getRecentlyViewed(userId,"1", language).then((value) {
+    //  Helper.hideLoading(context);
+      loading=false;
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
         prev =
@@ -38,22 +70,21 @@ class RecentlyViewedController extends GetxController {
         next = value.data!.next.runtimeType == int ? value.data!.next : 0;
         totalRecords = value.data!.totalRecords!;
         recentlyViewProduct = value.data!.recentlyViewProduct;
-
-        update();
       } else {
         Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
 
       update();
     }).catchError((error) {
-      Helper.hideLoading(context);
+     // Helper.hideLoading(context);
+      loading=false;
       update();
       print('error....$error');
     });
   }
 
   Future<void> onRefresh(language) async {
-    await api.getRecentlyViewed("1", language).then((value) {
+    await api.getRecentlyViewed(userId,"1", language).then((value) {
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
         prev =
@@ -71,7 +102,7 @@ class RecentlyViewedController extends GetxController {
 
   Future<bool> loadMore(language) async {
     update();
-    await api.getRecentlyViewed(next, language).then((value) {
+    await api.getRecentlyViewed(userId,next, language).then((value) {
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
         prev =

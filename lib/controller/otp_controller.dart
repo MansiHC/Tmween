@@ -165,7 +165,7 @@ class OtpController extends GetxController {
               "${value.data!.customerAddressData![0].cityName} - ${value.data!.customerAddressData![0].zip}");
           MySharedPreferences.instance.addStringToSF(
               SharedPreferencesKeys.addressId,
-              value.data!.customerAddressData![0].id);
+              value.data!.customerAddressData![0].id.toString());
         }
         Helper.isIndividual = true;
         navigateToDrawerScreen();

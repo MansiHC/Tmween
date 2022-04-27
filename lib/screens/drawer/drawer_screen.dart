@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:tmween/controller/drawer_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/language_model.dart';
-import 'package:tmween/screens/drawer/categories_screen.dart';
+import 'package:tmween/screens/drawer/category/categories_screen.dart';
 import 'package:tmween/screens/drawer/deal_of_the_day_screen.dart';
 import 'package:tmween/screens/drawer/profile/address/your_addresses_screen.dart';
 import 'package:tmween/screens/drawer/sold_by_tmween_screen.dart';
@@ -384,6 +384,12 @@ class DrawerScreenState extends State<DrawerScreen> {
                                                             SharedPreferencesKeys
                                                                 .address,
                                                             "${address.cityName} - ${address.zip}");
+                                                    MySharedPreferences.instance
+                                                        .addStringToSF(
+                                                            SharedPreferencesKeys
+                                                                .addressId,
+                                                            address.id
+                                                                .toString());
 
                                                     MySharedPreferences.instance
                                                         .addBoolToSF(
@@ -711,8 +717,9 @@ class DrawerScreenState extends State<DrawerScreen> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          20.heightBox,
+          30.heightBox,
           ListTile(
+            dense: true,
             leading: Image.asset(
               ImageConstanst.dashboardIcon,
               height: 24,
@@ -727,8 +734,12 @@ class DrawerScreenState extends State<DrawerScreen> {
               drawerController.changePage(0);
             },
           ),
-          20.heightBox,
+          Divider(
+            thickness: 1,
+            color: Colors.white24,
+          ),
           ListTile(
+            dense: true,
             leading: SvgPicture.asset(
               ImageConstanst.shopByCategoryIcon,
               width: 24,
@@ -748,6 +759,7 @@ class DrawerScreenState extends State<DrawerScreen> {
             },
           ),
           ListTile(
+            dense: true,
             leading: SvgPicture.asset(
               ImageConstanst.dealsOfTheDayIcon,
               width: 24,
@@ -763,6 +775,7 @@ class DrawerScreenState extends State<DrawerScreen> {
             },
           ),
           ListTile(
+            dense: true,
             leading: SvgPicture.asset(
               ImageConstanst.soldByTmweenIcon,
               width: 24,
@@ -782,6 +795,7 @@ class DrawerScreenState extends State<DrawerScreen> {
             color: Colors.white24,
           ),
           ListTile(
+            dense: true,
             leading: SvgPicture.asset(
               ImageConstanst.sellingOnTmweenIcon,
               width: 24,
@@ -794,11 +808,8 @@ class DrawerScreenState extends State<DrawerScreen> {
               drawerController.closeDrawer();
             },
           ),
-          Divider(
-            thickness: 1,
-            color: Colors.white24,
-          ),
           ListTile(
+            dense: true,
             leading: SvgPicture.asset(
               ImageConstanst.deliveryOnTmweenIcon,
               width: 24,
@@ -816,6 +827,7 @@ class DrawerScreenState extends State<DrawerScreen> {
             color: Colors.white24,
           ),
           ListTile(
+            dense: true,
             leading: SvgPicture.asset(
               ImageConstanst.customerServiceIcon,
               width: 24,
@@ -846,7 +858,7 @@ class DrawerScreenState extends State<DrawerScreen> {
               items: drawerController.languages.map((LanguageModel items) {
                 return DropdownMenuItem(
                   value: items,
-                  child: Text(items.name.tr),
+                  child: Padding(padding:EdgeInsets.only(left: 20),child:Text(items.name.tr)),
                 );
               }).toList(),
               onChanged: (LanguageModel? value) async {

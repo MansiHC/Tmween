@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/best_seller_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
+import 'package:tmween/screens/drawer/productDetail/product_detail_screen.dart';
 
 import '../../utils/global.dart';
 import '../../utils/views/circular_progress_bar.dart';
 import '../../utils/views/custom_text_form_field.dart';
 import 'dashboard/best_seller_container.dart';
-import 'dashboard/productDetail/product_detail_screen.dart';
 
 class BestSellerScreen extends StatelessWidget {
   final bestSellerController = Get.put(BestSellerController());
@@ -89,7 +89,7 @@ class BestSellerScreen extends StatelessWidget {
                                   return null;
                                 }))),
                     bestSellerController.loading
-                        ? Center(child: CircularProgressBar())
+                        ? Expanded(child: Center(child: CircularProgressBar()))
                         : Expanded(
                             child: RefreshIndicator(
                                 onRefresh: () =>

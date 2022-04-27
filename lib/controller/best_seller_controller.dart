@@ -28,25 +28,32 @@ class BestSellerController extends GetxController {
   }
 
   Future<void> getData(language) async {
-    Helper.showLoading();
+   // Helper.showLoading();
+    loading =true;
+    update();
     await api.getBestSeller("1", language).then((value) {
       if (value.statusCode == 200) {
-        Helper.hideLoading(context);
+
         totalPages = value.data!.totalPages!;
         prev =
             value.data!.previous.runtimeType == int ? value.data!.previous : 0;
         next = value.data!.next.runtimeType == int ? value.data!.next : 0;
         totalRecords = value.data!.totalRecords!;
         bestSellerData = value.data!.bestSellerData;
-        update();
+       // Helper.hideLoading(context);
+        loading=false;
+
       } else {
-        Helper.hideLoading(context);
+       // Helper.hideLoading(context);
+        loading=false;
+
         Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
       }
 
       update();
     }).catchError((error) {
-      Helper.hideLoading(context);
+    //  Helper.hideLoading(context);
+      loading=false;
       update();
       print('error....$error');
     });

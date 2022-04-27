@@ -6,6 +6,7 @@ import 'package:tmween/model/get_customer_address_list_model.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 import 'package:tmween/screens/drawer/profile/address/add_address_screen.dart';
 
+import '../model/get_cart_products_model.dart';
 import '../service/api.dart';
 import '../utils/global.dart';
 import '../utils/helper.dart';
@@ -32,6 +33,12 @@ class ShippingAddressController extends GetxController {
   int radioCurrentValue = 1;
   int countPersonalAddress = 0;
   int countOfficeAddress = 0;
+  CartDetails? cartData;
+  List<RecommendationProducts>? recommendedProductsData;
+  List<RecentlyViewedProducts>? recentlyViewedProducts;
+  late double totalAmount;
+  late double shippingAmount;
+  late double taxAmount;
 
   @override
   void onInit() {
@@ -61,6 +68,67 @@ class ShippingAddressController extends GetxController {
     super.onInit();
   }
 
+  Future<void> getCartProducts(language) async {
+    cartData = null;
+    await api.getCartItems(token, userId, language).then((value) {
+      Helper.hideLoading(context);
+      if (value.statusCode == 200) {
+        cartData = value.data!.cartDetails;
+
+        recommendedProductsData = value.data!.recommendationProducts;
+        recentlyViewedProducts = value.data!.recentlyViewedProducts;
+        totalAmount=cartData!.totalPrice!.toPrecision(1);
+        shippingAmount=cartData!.totalDeliveryPrice!.toPrecision(1);
+        taxAmount=cartData!.totalTaxAmount!;
+        for(var i=0;i<addressList.length;i++){
+          if(addressList[i].id==value.data!.cartDetails!.customerAddressDetails![0].id!){
+            radioCurrentValue = addressList[i].id!;
+          }
+        }
+        update();
+      } else if (value.statusCode == 401) {
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        Get.deleteAll();
+        Get.offAll(DrawerScreen());
+      }else{
+        update();
+      }
+
+
+    }).catchError((error) {
+      Helper.hideLoading(context);
+      update();
+      print('error....$error');
+    });
+  }
+
+
+  Future<void> changeAddress(addressId,language) async {
+    Helper.showLoading();
+    cartData = null;
+    await api.updateQuoteAddress(token, userId,addressId, language).then((value) {
+      Helper.hideLoading(context);
+      if (value.statusCode == 200) {
+       getAddressList(language);
+      } else if (value.statusCode == 401) {
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        Get.deleteAll();
+        Get.offAll(DrawerScreen());
+      }else{
+        update();
+      }
+
+
+    }).catchError((error) {
+      Helper.hideLoading(context);
+      update();
+      print('error....$error');
+    });
+  }
+
+
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
   }
@@ -69,16 +137,18 @@ class ShippingAddressController extends GetxController {
     countPersonalAddress = 0;
     countOfficeAddress = 0;
     addressList = [];
+    radioValue =[];
     Helper.showLoading();
     await api.getCustomerAddressList(token, userId, language).then((value) {
       if (value.statusCode == 200) {
-        Helper.hideLoading(context);
-        addressList = value.data!;
+         addressList = value.data!;
         if (addressList.length > 0) {
+          radioCurrentValue = addressList[0].id!;
           for (var i = 0; i < addressList.length; i++) {
-            radioValue.add(i + 1);
+            radioValue.add(addressList[i].id!);
           }
         }
+        getCartProducts(Get.locale!.languageCode);
       } else if (value.statusCode == 401) {
         Helper.hideLoading(context);
         MySharedPreferences.instance
@@ -87,66 +157,12 @@ class ShippingAddressController extends GetxController {
         Get.offAll(DrawerScreen());
       }
 
-      update();
     }).catchError((error) {
       Helper.hideLoading(context);
       update();
       print('error....$error');
     });
   }
-
-  Future<void> onRefresh(language) async {
-    await api.getCustomerAddressList(token, userId, language).then((value) {
-      if (value.statusCode == 200) {
-        addressList = value.data!;
-        if (addressList.length > 0) {
-          if (addressList[0].addressType == "1") {
-            addressList.sort((a, b) {
-              return int.parse(a.addressType!)
-                  .compareTo(int.parse(b.addressType!));
-            });
-          } else {
-            addressList
-              ..sort((a, b) => int.parse(b.addressType!)
-                  .compareTo(int.parse(a.addressType!)));
-          }
-        }
-        update();
-      }
-    }).catchError((error) {
-      print('error....$error');
-    });
-  }
-
-  Future<void> removeAddress(id, language) async {
-    //  if (Helper.isIndividual) {
-
-    countPersonalAddress = 0;
-    countOfficeAddress = 0;
-    Helper.showLoading();
-    await api.deleteCustomerAddress(token, id, userId, language).then((value) {
-      if (value.statusCode == 200) {
-        Helper.hideLoading(context);
-        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
-        getAddressList(Get.locale!.languageCode);
-      } else if (value.statusCode == 401) {
-        Helper.hideLoading(context);
-        MySharedPreferences.instance
-            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-        Get.deleteAll();
-        Get.offAll(DrawerScreen());
-      } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
-      }
-      update();
-    }).catchError((error) {
-      Helper.hideLoading(context);
-      update();
-      print('error....$error');
-    });
-    //  }
-  }
-
   void exitScreen() {
     Get.delete<ShippingAddressController>();
     Navigator.of(context).pop(true);
@@ -174,7 +190,7 @@ class ShippingAddressController extends GetxController {
       if (value) {
         countPersonalAddress = 0;
         countOfficeAddress = 0;
-        getAddressList(Get.locale!.languageCode);
+        getCartProducts(Get.locale!.languageCode);
       }
     });
   }

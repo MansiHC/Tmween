@@ -11,6 +11,8 @@ import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/circular_progress_bar.dart';
 
 import '../../../../utils/views/expandable_text.dart';
+import '../../../utils/views/custom_button.dart';
+import '../../../utils/views/custom_text_form_field.dart';
 
 class AllReviewScreen extends StatefulWidget {
   final int? productId;
@@ -385,7 +387,7 @@ class AllReviewScreenState extends State<AllReviewScreen> {
                                                   children: <InlineSpan>[
                                                     TextSpan(
                                                         text:
-                                                            ' - ${allReviewController.reviewsList[index].createdAt!.split(' ')[0]}',
+                                                            ' - ${allReviewController.reviewsList[index].reviewDate!.split(' ')[0]}',
                                                         style: TextStyle(
                                                           color:
                                                               Color(0xFF888888),
@@ -412,24 +414,116 @@ class AllReviewScreenState extends State<AllReviewScreen> {
                                           trimLines: 4,
                                         ),
                                       5.heightBox,
-                                      Row(
+                                      Wrap(
+                                        spacing: 5,
                                         children: [
-                                          Text('Helpful',
-                                              style: TextStyle(
-                                                color: Color(0xFF333333),
-                                                fontSize: 12,
+                                          InkWell(
+                                              onTap: () {
+                                                if (!allReviewController
+                                                    .reviewModelItems
+                                                    .contains(allReviewController
+                                                    .reviewsList[index]
+                                                    .id))
+                                                  allReviewController.addReviewHelpful(
+                                                      allReviewController
+                                                          .reviewsList[index]
+                                                          .id,
+                                                      language,
+                                                      allReviewController
+                                                          .reviewsList[index]
+                                                          .id);
+                                              },
+                                              child: (!allReviewController
+                                                  .reviewModelItems
+                                                  .contains(allReviewController
+                                                  .reviewsList[index]
+                                                  .id))
+                                                  ? Text('Helpful',
+                                                  style: TextStyle(
+                                                    color: Color(
+                                                        0xFF333333),
+                                                    fontSize: 12,
+                                                  ))
+                                                  : Wrap(
+                                                children: [
+                                                  Icon(
+                                                    CupertinoIcons
+                                                        .checkmark_circle_fill,
+                                                    color:
+                                                    Colors.green,
+                                                    size: 16,
+                                                  ),
+                                                  Text(
+                                                      allReviewController
+                                                          .reviewMessage,
+                                                      style:
+                                                      TextStyle(
+                                                        color: Colors
+                                                            .green,
+                                                        fontSize: 12,
+                                                      ))
+                                                ],
                                               )),
-                                          5.widthBox,
-                                          Container(
-                                            width: 1,
-                                            height: 12,
-                                            color: Color(0xFF333333),
-                                          ),
-                                          5.widthBox,
-                                          Text('Report abuse',
-                                              style: TextStyle(
-                                                color: Color(0xFF333333),
-                                                fontSize: 12,
+                                          3.widthBox,
+                                          if (!allReviewController
+                                              .reviewModelItems
+                                              .contains(
+                                              allReviewController
+                                                  .reviewsList[index]
+                                                  .id))
+                                            Container(
+                                              width: 1,
+                                              height: 12,
+                                              color: Color(0xFF333333),
+                                              margin: EdgeInsets.only(top: 3),
+                                            ),
+                                          3.widthBox,
+                                          InkWell(
+                                              onTap: () {
+                                                if (!allReviewController
+                                                    .reviewModelReportItems
+                                                    .contains(allReviewController
+                                                    .reviewsList[index]
+                                                    .id))
+                                                  _showReportAbuseDialog(
+                                                      allReviewController,
+                                                      allReviewController
+                                                          .reviewsList[index]
+                                                          .id!,
+                                                      allReviewController
+                                                          .reviewsList[index]
+                                                          .id!);
+                                              },
+                                              child: (!allReviewController
+                                                  .reviewModelReportItems
+                                                  .contains(allReviewController
+                                                  .reviewsList[index]
+                                                  .id))
+                                                  ? Text('Report abuse',
+                                                  style: TextStyle(
+                                                    color: Color(
+                                                        0xFF333333),
+                                                    fontSize: 12,
+                                                  ))
+                                                  : Wrap(
+                                                children: [
+                                                  Icon(
+                                                    CupertinoIcons
+                                                        .checkmark_circle_fill,
+                                                    color:
+                                                    Colors.green,
+                                                    size: 16,
+                                                  ),
+                                                  Text(
+                                                      allReviewController
+                                                          .reportMessage,
+                                                      style:
+                                                      TextStyle(
+                                                        color: Colors
+                                                            .green,
+                                                        fontSize: 12,
+                                                      ))
+                                                ],
                                               )),
                                         ],
                                       ),
@@ -452,6 +546,102 @@ class AllReviewScreenState extends State<AllReviewScreen> {
                   ],
                 ))));
   }
+
+  void _showReportAbuseDialog(AllReviewController allReviewController,
+      int reviewId, int position) async {
+    await showDialog(
+        context: allReviewController.context,
+        builder: (_) => AlertDialog(
+            contentPadding: EdgeInsets.symmetric(horizontal: 15),
+            buttonPadding: EdgeInsets.zero,
+            actions: [],
+            content: GetBuilder<AllReviewController>(
+                init: AllReviewController(),
+                builder: (contet) {
+                  return Form(
+                      key: allReviewController.formKey,
+                      child: Container(
+                        height: 260,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            15.heightBox,
+                            Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Add Report Abuse',
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF7C7C7C)),
+                                  ),
+                                  ClipOval(
+                                    child: Material(
+                                      color: Colors.grey, // Button color
+                                      child: InkWell(
+                                        onTap: () {
+                                          allReviewController.pop();
+                                        },
+                                        child: SizedBox(
+                                            width: 24,
+                                            height: 24,
+                                            child: Icon(
+                                              Icons.clear,
+                                              color: Colors.white,
+                                            )),
+                                      ),
+                                    ),
+                                  ),
+                                ]),
+                            15.heightBox,
+                            CustomBoxTextFormField(
+                                controller:
+                                allReviewController.titleController,
+                                keyboardType: TextInputType.name,
+                                hintText: 'Add Title',
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Please Enter Title';
+                                  }
+                                }),
+                            10.heightBox,
+                            CustomBoxTextFormField(
+                                controller: allReviewController
+                                    .descriptionController,
+                                keyboardType: TextInputType.name,
+                                hintText: 'Add Description',
+                                maxLines: 3,
+                                textInputAction: TextInputAction.done,
+                                onSubmitted: (term) {
+                                  FocusScope.of(allReviewController.context)
+                                      .unfocus();
+                                },
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Please Enter Description';
+                                  }
+                                }),
+                            10.heightBox,
+                            CustomButton(
+                              onPressed: () {
+                                allReviewController.pop();
+                                allReviewController.addReviewReport(
+                                    reviewId, language, position);
+                              },
+                              text: 'Report',
+                              width: 120,
+                              fontSize: 12,
+                              horizontalPadding: 5,
+                            ),
+                          ],
+                        ),
+                      ));
+                })));
+  }
+
 
   Widget topView(AllReviewController allReviewController) {
     return Padding(

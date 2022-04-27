@@ -4,9 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:tmween/screens/drawer/search/search_container.dart';
 import 'package:tmween/screens/drawer/profile/address/your_addresses_screen.dart';
 import 'package:tmween/screens/drawer/search/filter_screen.dart';
+import 'package:tmween/screens/drawer/search/search_container.dart';
 import 'package:tmween/utils/extensions.dart';
 
 import '../../../controller/product_listing_controller.dart';
@@ -278,8 +278,9 @@ class ProductListingScreenState extends State<ProductListingScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(
+                          /*Expanded(
                             child: RichText(
+                              maxLines: 1,
                               text: TextSpan(
                                   text:
                                       '${productListingController.searchedString} ',
@@ -297,7 +298,24 @@ class ProductListingScreenState extends State<ProductListingScreen> {
                                     ),
                                   ]),
                             ),
-                          ),
+                          ),*/
+                          Expanded(child: Row(children: [
+                            Expanded(child: Text('${productListingController.searchedString} ',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: Color(0xFF5A5A5A),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold))),
+                            Text(
+
+                              '(${productListingController.productList.length} ${LocaleKeys.items.tr})',
+                              style: TextStyle(
+                                  color: Color(0xFF838383),
+                                  fontSize: 14),
+                            ),
+                          ],)),
+                          5.widthBox,
                           Wrap(
                             children: [
                               InkWell(
@@ -531,7 +549,11 @@ class ProductListingScreenState extends State<ProductListingScreen> {
                                                           SharedPreferencesKeys
                                                               .address,
                                                           "${address.cityName} - ${address.zip}");
-
+                                                  MySharedPreferences.instance
+                                                      .addStringToSF(
+                                                      SharedPreferencesKeys
+                                                          .addressId,
+                                                      address.id.toString());
                                                   MySharedPreferences.instance
                                                       .addBoolToSF(
                                                           SharedPreferencesKeys

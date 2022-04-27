@@ -4,11 +4,11 @@ import 'package:get/get.dart';
 import 'package:tmween/controller/sold_by_tmween_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/drawer/dashboard/sold_by_tmween_container.dart';
+import 'package:tmween/screens/drawer/productDetail/product_detail_screen.dart';
 
 import '../../utils/global.dart';
 import '../../utils/views/circular_progress_bar.dart';
 import '../../utils/views/custom_text_form_field.dart';
-import 'dashboard/productDetail/product_detail_screen.dart';
 
 class SoldByTmweenScreen extends StatelessWidget {
   final soldByTmweenController = Get.put(SoldByTmweenController());
@@ -89,7 +89,7 @@ class SoldByTmweenScreen extends StatelessWidget {
                                   return null;
                                 }))),
                     soldByTmweenController.loading
-                        ? Center(child: CircularProgressBar())
+                        ? Expanded(child: Center(child: CircularProgressBar()))
                         : Expanded(
                             child: RefreshIndicator(
                                 onRefresh: () =>

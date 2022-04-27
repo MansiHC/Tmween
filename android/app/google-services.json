@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "119125775457",
+    "project_id": "tmween-711ff",
+    "storage_bucket": "tmween-711ff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:119125775457:android:044602fd14b58edbedc620",
+        "android_client_info": {
+          "package_name": "com.tmween.tmween"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "119125775457-puv4qro4d4c4lj8vam7mslm7vcea0cba.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tmween.tmween",
+            "certificate_hash": "3f708bd4933760910b5d8362f5f233d297bfcf54"
+          }
+        },
+        {
+          "client_id": "119125775457-34cqbs7tci7mq4evtah3tk59c4ljsmn2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4NQH4UZfK6xswIGI22qrMguOOqC3QDoE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "119125775457-34cqbs7tci7mq4evtah3tk59c4ljsmn2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

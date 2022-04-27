@@ -68,6 +68,21 @@ extension StringExtension on String {
             color: Colors.grey,
           ),
         );
+ setNetworkImageProvider() => toString().isNotEmpty
+      ? CachedNetworkImageProvider(
+      toString(),
+          errorListener: () => Icon(
+            Icons.image_not_supported,
+            color: Colors.grey,
+          ),
+        )
+      : Center(
+          child: Icon(
+            Icons.image_not_supported,
+            color: Colors.grey,
+          ),
+        );
+
 }
 
 extension IterableExtensions<E> on Iterable<E> {
@@ -132,6 +147,7 @@ const Map<String, Color> SOURCE = {
   "transparent": Colors.transparent,
   "black": Colors.black,
   "white": Colors.white,
+  "multi color": Colors.white,
   "green": Colors.green,
   "greenAccent": Colors.greenAccent,
   "lightGreen": Colors.lightGreen,

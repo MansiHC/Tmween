@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/UserDataModel.dart';
+import 'package:tmween/model/add_to_cart_model.dart';
 import 'package:tmween/model/attribute_combination_model.dart';
 import 'package:tmween/model/best_seller_model.dart';
 import 'package:tmween/model/city_model.dart';
@@ -15,6 +16,7 @@ import 'package:tmween/model/get_cart_products_model.dart';
 import 'package:tmween/model/get_customer_address_list_model.dart';
 import 'package:tmween/model/get_customer_data_model.dart';
 import 'package:tmween/model/get_filter_data_model.dart';
+import 'package:tmween/model/get_recommended_product_model.dart';
 import 'package:tmween/model/get_reviews_model.dart';
 import 'package:tmween/model/get_wishlist_details_model.dart';
 import 'package:tmween/model/login_otp_model.dart';
@@ -22,10 +24,12 @@ import 'package:tmween/model/popular_search_model.dart';
 import 'package:tmween/model/product_detail_model.dart';
 import 'package:tmween/model/product_listing_model.dart';
 import 'package:tmween/model/recently_viewed_model.dart';
+import 'package:tmween/model/review_order_model.dart';
 import 'package:tmween/model/search_history_model.dart';
 import 'package:tmween/model/signup_model.dart';
 import 'package:tmween/model/sold_by_tmween_model.dart';
 import 'package:tmween/model/state_model.dart';
+import 'package:tmween/model/sub_category_product_listing_model.dart';
 import 'package:tmween/model/success_model.dart';
 import 'package:tmween/model/top_selection_model.dart';
 import 'package:tmween/model/verify_forgot_password_otp_model.dart';
@@ -33,7 +37,10 @@ import 'package:tmween/model/verify_otp_model.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/helper.dart';
 
+import '../model/edit_cart_quanity_model.dart';
 import '../model/get_categories_model.dart';
+import '../model/get_payment_option_model.dart';
+import '../model/get_sub_category_model.dart';
 import 'app_exception.dart';
 
 class Api {
@@ -660,6 +667,61 @@ class Api {
     return result;
   }
 
+  Future<SuccessModel> setPaymentOptions(token,userId,paymentId, langCode) async {
+    late SuccessModel result;
+    try {
+      final response =
+      await http.post(Uri.parse(UrlConstants.setPaymentOption),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            'username': token,
+            HttpHeaders.authorizationHeader:
+            "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "lang_code": langCode,
+            "user_id": userId,
+            "payment_method_id": paymentId
+          }));
+      var responseJson = _returnResponse(response);
+      result = SuccessModel.fromJson(responseJson);
+
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+    }
+    return result;
+  }
+
+  Future<SuccessModel> addToRecent(userId,productId, langCode) async {
+    late SuccessModel result;
+    try {
+      final response =
+      await http.post(Uri.parse(UrlConstants.addRecentlyViewed),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader:
+            "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "lang_code": langCode,
+            "user_id": userId,
+            "product_id": productId
+          }));
+      var responseJson = _returnResponse(response);
+      result = SuccessModel.fromJson(responseJson);
+
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+    }
+    return result;
+  }
+
+
+
   Future<GetCustomerDataModel> updateProfileMobileImage(
       token, userId, name, oldImage, image, langCode) async {
     late GetCustomerDataModel result;
@@ -792,6 +854,35 @@ class Api {
     return result;
   }
 
+  Future<SuccessModel> changeDeliverySpeed(
+      token, userId, quoteItemId,deliveryMode, langCode) async {
+    late SuccessModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.changeDeliverySpeed),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                'username': token,
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "user_id": userId,
+                "customer_id": userId,
+                "qiid": quoteItemId,
+                "delivery_mode": deliveryMode,
+                "lang_code": langCode
+              }));
+      var responseJson = _returnResponse(response);
+      result = SuccessModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+    }
+    return result;
+  }
+
   Future<SuccessModel> addReviewHelpful(
       token, userId, productId, reviewId, langCode) async {
     late SuccessModel result;
@@ -873,8 +964,8 @@ class Api {
     return result;
   }
 
-  Future<GetCartProducts> getCartItems(token, userId, langCode) async {
-    late GetCartProducts result;
+  Future<GetCartProductsModel> getCartItems(token, userId, langCode) async {
+    late GetCartProductsModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.getCartItems),
           headers: {
@@ -890,7 +981,32 @@ class Api {
             "lang_code": langCode
           }));
       var responseJson = _returnResponse(response);
-      result = GetCartProducts.fromJson(responseJson);
+      result = GetCartProductsModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+    }
+    return result;
+  }
+
+  Future<SuccessModel> updateQuoteAddress(token, userId,addressId, langCode) async {
+    late SuccessModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.updateQuoteAddress),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            'username': token,
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "user_id": userId,
+            "customer_address_id": addressId,
+            "lang_code": langCode
+          }));
+      var responseJson = _returnResponse(response);
+      result = SuccessModel.fromJson(responseJson);
     } on SocketException {
       Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
     }
@@ -918,6 +1034,33 @@ class Api {
               }));
       var responseJson = _returnResponse(response);
       result = GetCustomerAddressListModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+    }
+    return result;
+  }
+
+  Future<ReviewOrderModel> getReviewOrder(
+      token, userId, langCode) async {
+    late ReviewOrderModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.getReviewOrder),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                'username': token,
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "user_id": userId,
+                "customer_id": userId,
+                "lang_code": langCode
+              }));
+      var responseJson = _returnResponse(response);
+      result = ReviewOrderModel.fromJson(responseJson);
     } on SocketException {
       Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
     }
@@ -1180,7 +1323,7 @@ class Api {
     return result;
   }
 
-  Future<SuccessModel> addToCart(
+  Future<AddToCartModel> addToCart(
       token,
       productId,
       productPackId,
@@ -1191,7 +1334,7 @@ class Api {
       supplierId,
       supplierBranchId,
       langCode) async {
-    late SuccessModel result;
+    late AddToCartModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.addToCart),
           headers: {
@@ -1215,22 +1358,21 @@ class Api {
             "lang_code": langCode
           }));
       var responseJson = _returnResponse(response);
-      result = SuccessModel.fromJson(responseJson);
+      result = AddToCartModel.fromJson(responseJson);
     } on SocketException {
       Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
     }
     return result;
   }
 
-  Future<SuccessModel> editCartItem(
+  Future<EditCartQuantityModel> editCartItem(
       token,
-      productId,
+      quoteItemId,
       quoteId,
       userId,
       qty,
-      customerAddressId,
       langCode) async {
-    late SuccessModel result;
+    late EditCartQuantityModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.updateCartItem),
           headers: {
@@ -1242,15 +1384,14 @@ class Api {
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
             "device_type": AppConstants.device_type,
-            "product_id": productId,
+            "quote_item_id": quoteItemId,
             "quote_id": quoteId,
             "user_id": userId,
-            "quantity": qty,
-            "customer_address_id": customerAddressId,
+            "item_quantity": qty,
             "lang_code": langCode
           }));
       var responseJson = _returnResponse(response);
-      result = SuccessModel.fromJson(responseJson);
+      result = EditCartQuantityModel.fromJson(responseJson);
     } on SocketException {
       Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
     }
@@ -1259,11 +1400,9 @@ class Api {
 
   Future<SuccessModel> removeCartItem(
       token,
-      productId,
       quoteId,
       userId,
-      productItemId,
-      customerAddressId,
+      quoteItemId,
       langCode) async {
     late SuccessModel result;
     try {
@@ -1277,11 +1416,9 @@ class Api {
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
             "device_type": AppConstants.device_type,
-            "product_id": productId,
+            "quote_item_id": quoteItemId,
             "quote_id": quoteId,
             "user_id": userId,
-            "product_item_id": productItemId,
-            "customer_address_id": customerAddressId,
             "lang_code": langCode
           }));
       var responseJson = _returnResponse(response);
@@ -1382,7 +1519,7 @@ class Api {
     return result;
   }
 
-  Future<DashboardModel> getHomePageMobileData(language) async {
+  Future<DashboardModel> getHomePageMobileData(userId,language) async {
     late DashboardModel result;
     try {
       final response =
@@ -1396,6 +1533,7 @@ class Api {
                 "entity_type_id": AppConstants.entity_type_id_customer,
                 "device_type": AppConstants.device_type,
                 "lang_code": language,
+                "customer_id": userId,
                 "pagination": "1",
                 "page": "MOBILE-HOME"
               }));
@@ -1519,6 +1657,39 @@ class Api {
     return result;
   }
 
+  Future<SubCategoryProductListingModel> categoryProductList(
+      page, categorySlug,categoryId, langCode) async {
+    late SubCategoryProductListingModel result;
+    try {
+      final response = await http.post(
+          Uri.parse(UrlConstants.categoryProductList),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "lang_code": langCode,
+            "search_arr": {
+              "slug_name":categorySlug,
+              "product_category_id": [categoryId],
+            },
+            "pagination": "1",
+            "page": page,
+            "records_per_page": "10",
+            "sort_by": "product_name",
+            "sort_order": "desc",
+          }));
+      var responseJson = _returnResponse(response);
+      result = SubCategoryProductListingModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+    }
+    return result;
+  }
+
   Future<ProductDetailModel> getProductDetailsMobile(
       slug, isLogin, userId, langCode) async {
     late ProductDetailModel result;
@@ -1609,36 +1780,8 @@ class Api {
     return result;
   }
 
-  Future<ProductListingModel> getCategoryMobileFilterData(
-      page, catSlug, sortOrder, langCode) async {
-    late ProductListingModel result;
-    try {
-      final response =
-          await http.post(Uri.parse(UrlConstants.getCategoryMobileFilterData),
-              headers: {
-                HttpHeaders.contentTypeHeader: "application/json",
-                HttpHeaders.authorizationHeader:
-                    "Bearer ${AppConstants.customer_token}"
-              },
-              body: json.encode({
-                "entity_type_id": AppConstants.entity_type_id_customer,
-                "device_type": AppConstants.device_type,
-                "lang_code": langCode,
-                "pagination": "1",
-                "page": page,
-                "category_slug": "boys-fashion",
-                "sort": "final_price",
-                "sort_order": sortOrder
-              }));
-      var responseJson = _returnResponse(response);
-      result = ProductListingModel.fromJson(responseJson);
-    } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
-    }
-    return result;
-  }
-
-  Future<GetFilterDataModel> getFilterData(page, catId, langCode) async {
+  Future<GetFilterDataModel> getCategoryMobileFilterData(
+      catSlug,  langCode) async {
     late GetFilterDataModel result;
     try {
       final response =
@@ -1652,9 +1795,9 @@ class Api {
                 "entity_type_id": AppConstants.entity_type_id_customer,
                 "device_type": AppConstants.device_type,
                 "lang_code": langCode,
-                "pagination": "1",
-                "page": page,
-                "category_id": catId,
+                "pagination": 0,
+                "page": 1,
+                "category_slug": catSlug,
               }));
       var responseJson = _returnResponse(response);
       result = GetFilterDataModel.fromJson(responseJson);
@@ -1663,6 +1806,48 @@ class Api {
     }
     return result;
   }
+
+  Future<SubCategoryProductListingModel> setCategoryMobileFilterData(
+      page,catSlug,catList,brandList,sellerList,fromPrice,toPrice,  langCode) async {
+    late SubCategoryProductListingModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.categoryProductList),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "lang_code": langCode,
+                "pagination": 1,
+                "page": page,
+                "category_slug": catSlug,
+                "records_per_page": "10",
+                "sort_by": "product_name",
+                "sort_order": "desc",
+                "search_arr": {
+                    "category_id":"",
+                    "product_category_id": catList,
+                    "brand_id": brandList,
+                    "supplier_id":sellerList,
+                    "slug_name":catSlug,
+                    "keyword": "",
+                    "price_from": fromPrice,
+                    "price_to":toPrice
+                  },
+
+              }));
+      var responseJson = _returnResponse(response);
+      result = SubCategoryProductListingModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+    }
+    return result;
+  }
+
 
   Future<GetCategoriesModel> getAllCategories(page, langCode) async {
     late GetCategoriesModel result;
@@ -1689,6 +1874,31 @@ class Api {
     }
     return result;
   }
+
+  Future<GetSubCategoryModel> getSubCategories(categoryId, langCode) async {
+    late GetSubCategoryModel result;
+    try {
+      final response =
+      await http.post(Uri.parse(UrlConstants.getSubCategoriesData),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader:
+            "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "lang_code": langCode,
+            "category_id": categoryId
+          }));
+      var responseJson = _returnResponse(response);
+      result = GetSubCategoryModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+    }
+    return result;
+  }
+
 
   Future<DealsOfTheDayModel> getDealsOfTheDay(page, langCode) async {
     late DealsOfTheDayModel result;
@@ -1742,6 +1952,33 @@ class Api {
     return result;
   }
 
+  Future<GetRecommendedProductModel> getRecommendedProduct(productId,page, langCode) async {
+    late GetRecommendedProductModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.getRecommendedProduct),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "lang_code": langCode,
+                "pagination": "1",
+                "page": page,
+                "product_id": productId,
+                "records_per_page": 10
+              }));
+      var responseJson = _returnResponse(response);
+      result = GetRecommendedProductModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+    }
+    return result;
+  }
+
   Future<SoldByTmweenModel> getSoldByTmween(page, langCode) async {
     late SoldByTmweenModel result;
     try {
@@ -1767,6 +2004,35 @@ class Api {
     }
     return result;
   }
+
+  Future<GetPaymentOptionModel> getPaymentOptions(userId, langCode) async {
+    late GetPaymentOptionModel result;
+    try {
+      final response =
+      await http.post(Uri.parse(UrlConstants.getPaymentOptions),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader:
+            "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "lang_code": langCode,
+            "user_id": userId
+          }));
+      var responseJson = _returnResponse(response);
+      result = GetPaymentOptionModel.fromJson(responseJson);
+     /* for(Map<String,dynamic> i in responseJson){
+        result.add(GetPaymentOptionModel.fromJson(i));
+      }*/
+      } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+    }
+    return result;
+  }
+
+
 
   Future<TopSelectionModel> getTopSelection(page, langCode) async {
     late TopSelectionModel result;
@@ -1794,7 +2060,7 @@ class Api {
     return result;
   }
 
-  Future<RecentlyViewedModel> getRecentlyViewed(page, langCode) async {
+  Future<RecentlyViewedModel> getRecentlyViewed(userId,page, langCode) async {
     late RecentlyViewedModel result;
     try {
       final response =
@@ -1810,6 +2076,8 @@ class Api {
                 "data-request": ["recently_view_product"],
                 "lang_code": langCode,
                 "pagination": "1",
+                "customer_id": userId,
+                "records_per_page": 10,
                 "page": page
               }));
       var responseJson = _returnResponse(response);

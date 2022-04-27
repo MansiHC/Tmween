@@ -3,19 +3,35 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 
-import '../../controller/categories_controller.dart';
-import '../../utils/global.dart';
-import '../../utils/views/circular_progress_bar.dart';
-import '../../utils/views/custom_text_form_field.dart';
-import 'dashboard/select_category_container.dart';
+import '../../../controller/categories_controller.dart';
+import '../../../utils/global.dart';
+import '../../../utils/views/circular_progress_bar.dart';
+import '../../../utils/views/custom_text_form_field.dart';
+import '../dashboard/select_category_container.dart';
 
-class CategoriesScreen extends StatelessWidget {
+class CategoriesScreen extends StatefulWidget {
   final bool fromDrawer;
-  var language;
+
 
   CategoriesScreen({Key? key, this.fromDrawer = false}) : super(key: key);
 
+  @override
+  State<StatefulWidget> createState() {
+   return CategoriesScreenState();
+  }
+
+}
+class CategoriesScreenState extends State<CategoriesScreen> {
+  var language;
   final categoriesController = Get.put(CategoriesController());
+
+
+  @override
+  void initState() {
+    categoriesController.getCategories(Get.locale!.languageCode);
+
+    super.initState();
+  }
 
   Future<bool> _onWillPop(CategoriesController categoriesController) async {
     categoriesController.exitScreen();
@@ -31,7 +47,7 @@ class CategoriesScreen extends StatelessWidget {
           categoriesController.context = context;
 
           return Scaffold(
-              appBar: fromDrawer
+              appBar: widget.fromDrawer
                   ? AppBar(
                       elevation: 0.0,
                       iconTheme: IconThemeData(color: Colors.white),
@@ -52,7 +68,7 @@ class CategoriesScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Visibility(
-                        visible: fromDrawer,
+                        visible: widget.fromDrawer,
                         child: Container(
                             color: AppColors.appBarColor,
                             child: Container(
@@ -99,7 +115,7 @@ class CategoriesScreen extends StatelessWidget {
                                       return null;
                                     })))),
                     categoriesController.loading
-                        ? Center(child: CircularProgressBar())
+                        ? Expanded(child: Center(child: CircularProgressBar()))
                         : Expanded(
                             child: RefreshIndicator(
                                 onRefresh: () =>

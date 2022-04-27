@@ -35,7 +35,7 @@ class MySharedPreferences {
   Future<bool?> getBoolValuesSF(var key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool? boolValue = prefs.getBool(key);
-    return boolValue;
+    return boolValue??false;
   }
 
   Future<int?> getIntValuesSF(var key) async {

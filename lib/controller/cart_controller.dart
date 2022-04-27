@@ -20,50 +20,21 @@ class CartController extends GetxController {
   String token = '';
   int loginLogId = 0;
   bool freeChecked = false;
-   List<CartQuantityModel> cartQuantityList = [];
-   List<int> wishListedProduct = [];
+  List<CartQuantityModel> cartQuantityList = [];
+  List<int> wishListedProduct = [];
 
-  List<CartRecentViewedProductModel> cartRecentViewedProducts =
-      const <CartRecentViewedProductModel>[
-    const CartRecentViewedProductModel(
-        title:
-            'Canon EOS 1300D 18MP Digital SLR Camera (Black) with 18-55mm ISII Lens, 16GB Card and Carry Case',
-        rating: '4.1',
-        offerPrice: '120',
-        price: '1340',
-        isFulFilled: true,
-        isYouSave: true,
-        saveOffer: '39',
-        savePrice: '4,000',
-        image: 'asset/image/my_cart_images/my_cart_img.jpg'),
-    const CartRecentViewedProductModel(
-        title:
-            'Canon EOS 1300D 18MP Digital SLR Camera (Black) with 18-55mm ISII Lens, 16GB Card and Carry Case',
-        rating: '4.1',
-        offerPrice: '120',
-        price: '1340',
-        isFulFilled: true,
-        isYouSave: true,
-        saveOffer: '39',
-        savePrice: '4,000',
-        image: 'asset/image/my_cart_images/my_cart_img.jpg'),
-    const CartRecentViewedProductModel(
-        title:
-            'Canon EOS 1300D 18MP Digital SLR Camera (Black) with 18-55mm ISII Lens, 16GB Card and Carry Case',
-        rating: '4.1',
-        offerPrice: '120',
-        price: '1340',
-        isFulFilled: true,
-        isYouSave: true,
-        saveOffer: '39',
-        savePrice: '4,000',
-        image: 'asset/image/my_cart_images/my_cart_img.jpg'),
-  ];
+
   final api = Api();
-  CartData? cartData;
+  CartDetails? cartData;
+  List<RecommendationProducts>? recommendedProductsData;
+  List<RecentlyViewedProducts>? recentlyViewedProducts;
+  List<String>? productIdList=[];
 
   int cartCount = 0;
   bool isLogin = true;
+  late double totalAmount;
+  late double shippingAmount;
+  late double taxAmount;
 
   @override
   void onInit() {
@@ -97,27 +68,38 @@ class CartController extends GetxController {
 
   Future<void> getCartProducts(language) async {
     Helper.showLoading();
-    cartQuantityList=[];
-    wishListedProduct=[];
+    cartQuantityList = [];
+    wishListedProduct = [];
+    productIdList=[];
+    cartData = null;
     await api.getCartItems(token, userId, language).then((value) {
       Helper.hideLoading(context);
       if (value.statusCode == 200) {
-        cartData = value.data!;
+        cartData = value.data!.cartDetails;
+        recommendedProductsData = value.data!.recommendationProducts;
+        recentlyViewedProducts = value.data!.recentlyViewedProducts;
         cartCount = cartData!.totalItems!;
-        for (var i = 0; i < cartData!.cartDetails!.length; i++) {
+        totalAmount=cartData!.totalPrice!.toPrecision(1);
+        shippingAmount=cartData!.totalDeliveryPrice!.toPrecision(1);
+        taxAmount=cartData!.totalTaxAmount!;
+        for (var i = 0; i < cartData!.cartItemDetails!.length; i++) {
+          productIdList!.add(cartData!.cartItemDetails![i].productId.toString());
           var q = CartQuantityModel();
-          q.setQuantity = cartData!.cartDetails![i].quantity!;
-          q.setProductId = cartData!.cartDetails![i].productId!;
+          q.setQuantity = cartData!.cartItemDetails![i].quantity!;
+          q.setProductId = cartData!.cartItemDetails![i].productId!;
           cartQuantityList.add(q);
         }
+        update();
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
+      }else{
+        update();
       }
 
-      update();
+
     }).catchError((error) {
       Helper.hideLoading(context);
       update();
@@ -128,7 +110,7 @@ class CartController extends GetxController {
   Future<void> getCartCount(language) async {
     await api.getCartItems(token, userId, language).then((value) {
       if (value.statusCode == 200) {
-        cartCount = value.data!.totalItems!;
+        cartCount = value.data!.cartDetails!.totalItems!;
         update();
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
@@ -137,7 +119,6 @@ class CartController extends GetxController {
         Get.offAll(DrawerScreen());
       }
     }).catchError((error) {
-      Helper.hideLoading(context);
       update();
       print('error....$error');
     });
@@ -152,7 +133,7 @@ class CartController extends GetxController {
         Helper.hideLoading(context);
         wishListedProduct.add(productId);
         update();
-        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
       } else if (value.statusCode == 401) {
         Helper.hideLoading(context);
         MySharedPreferences.instance
@@ -162,7 +143,7 @@ class CartController extends GetxController {
       } else {
         wishListedProduct.add(productId);
         Helper.hideLoading(context);
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
     }).catchError((error) {
       Helper.hideLoading(context);
@@ -171,23 +152,27 @@ class CartController extends GetxController {
     });
   }
 
-  Future<void> editCartProductDecrease(productId,quoteId,qty,addressId, language,oldQty,index) async {
+
+  Future<void> editCartProductDecrease(
+      id, productId,quoteId, qty, language, oldQty, index) async {
     Helper.showLoading();
-    var q = oldQty-1;
+    var q = qty - 1;
     print('......${q}');
     await api
-        .editCartItem(token, productId,quoteId,userId,q,addressId, language)
+        .editCartItem(token, id, quoteId, userId, q, language)
         .then((value) {
       if (value.statusCode == 200) {
         Helper.hideLoading(context);
 
-          oldQty = qty--;
-       cartQuantityList[index]
-              .setQuantity = qty--;
-       cartCount--;
+        oldQty = qty--;
+        cartQuantityList[index].setQuantity = value.data!.quoteItem![0].quantity!;
+        cartCount = value.data!.cartTotalItems!;
+       totalAmount =  value.data!.quote![0].grandTotal!.toPrecision(1);
+        shippingAmount=value.data!.quote![0].shippingPrice!.toPrecision(1);
+        taxAmount=value.data!.quote![0].taxAmount!;
         update();
 
-        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
       } else if (value.statusCode == 401) {
         Helper.hideLoading(context);
         MySharedPreferences.instance
@@ -197,7 +182,7 @@ class CartController extends GetxController {
       } else {
         wishListedProduct.add(productId);
         Helper.hideLoading(context);
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
     }).catchError((error) {
       Helper.hideLoading(context);
@@ -206,21 +191,24 @@ class CartController extends GetxController {
     });
   }
 
-  Future<void> editCartProductIncrease(productId,quoteId,qty,addressId, language,oldQty,index) async {
+  Future<void> editCartProductIncrease(
+      id,productId,quoteId, qty, language, oldQty, index) async {
     Helper.showLoading();
-    var q = oldQty+1;
-    print('......${q}');
+    var q = qty + 1;
+    print('......${q}....$oldQty...$qty');
     await api
-        .editCartItem(token, productId,quoteId,userId,q,addressId, language)
+        .editCartItem(token, id, quoteId, userId, q,  language)
         .then((value) {
       if (value.statusCode == 200) {
         Helper.hideLoading(context);
         oldQty = qty++;
-       cartQuantityList[index]
-            .setQuantity = qty++;
-       cartCount++;
+        cartQuantityList[index].setQuantity = value.data!.quoteItem![0].quantity!;
+        cartCount = value.data!.cartTotalItems!;
+        totalAmount =  value.data!.quote![0].grandTotal!.toPrecision(1);
+        shippingAmount=value.data!.quote![0].shippingPrice!.toPrecision(1);
+        taxAmount=value.data!.quote![0].taxAmount!;
         update();
-        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
       } else if (value.statusCode == 401) {
         Helper.hideLoading(context);
         MySharedPreferences.instance
@@ -230,7 +218,7 @@ class CartController extends GetxController {
       } else {
         wishListedProduct.add(productId);
         Helper.hideLoading(context);
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
     }).catchError((error) {
       Helper.hideLoading(context);
@@ -239,14 +227,17 @@ class CartController extends GetxController {
     });
   }
 
-  Future<void> deleteCartProduct(productId,quoteId,productItemId,addressId, language) async {
+  Future<void> deleteCartProduct(
+      quoteId, quoteItemId, language, qty) async {
     Helper.showLoading();
     await api
-        .removeCartItem(token, productId,quoteId,userId,productItemId,addressId, language)
+        .removeCartItem(token, quoteId, userId, quoteItemId,
+            language)
         .then((value) {
       if (value.statusCode == 200) {
+        cartCount = cartCount - int.parse(qty.toString());
         Helper.hideLoading(context);
-        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
         getCartProducts(language);
       } else if (value.statusCode == 401) {
         Helper.hideLoading(context);
@@ -255,9 +246,8 @@ class CartController extends GetxController {
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       } else {
-        wishListedProduct.add(productId);
         Helper.hideLoading(context);
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
     }).catchError((error) {
       Helper.hideLoading(context);

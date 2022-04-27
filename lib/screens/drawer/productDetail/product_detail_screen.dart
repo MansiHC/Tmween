@@ -1,17 +1,20 @@
+import 'dart:io';
+
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
-import 'package:tmween/screens/drawer/dashboard/productDetail/all_reviews_screen.dart';
-import 'package:tmween/screens/drawer/dashboard/productDetail/full_image_screen.dart';
-import 'package:tmween/screens/drawer/dashboard/productDetail/review_product_screen.dart';
 import 'package:tmween/screens/drawer/dashboard/similar_products_container.dart';
+import 'package:tmween/screens/drawer/productDetail/review_product_screen.dart';
 import 'package:tmween/screens/drawer/search/search_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
@@ -26,17 +29,24 @@ import '../../../../utils/my_shared_preferences.dart';
 import '../../../../utils/views/circular_progress_bar.dart';
 import '../../../../utils/views/custom_text_form_field.dart';
 import '../../../../utils/views/expandable_text.dart';
-import '../../../authentication/login/login_screen.dart';
-import '../../address_container.dart';
-import '../../cart/cart_screen.dart';
-import '../../profile/address/your_addresses_screen.dart';
+import '../../authentication/login/login_screen.dart';
+import '../address_container.dart';
+import '../cart/cart_screen.dart';
+import '../profile/address/your_addresses_screen.dart';
+import 'all_reviews_screen.dart';
+import 'full_image_attribute_screen.dart';
+import 'full_image_screen.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final int? productId;
   final String? productslug;
+  final bool? fromDeepLink;
 
   ProductDetailScreen(
-      {Key? key, required this.productId, required this.productslug})
+      {Key? key,
+      required this.productId,
+      required this.productslug,
+      this.fromDeepLink = false})
       : super(key: key);
 
   @override
@@ -49,25 +59,97 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
   late String language;
   final productDetailController = Get.put(ProductDetailController());
   final cartController = Get.put(CartController());
+  FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
+  bool _isCreatingLink = false;
+  late String dynamicLink;
+  String? _linkMessage;
 
   @override
   void initState() {
     productDetailController.productId = widget.productId!;
     productDetailController.productSlug = widget.productslug!;
-    print('hhhh....${widget.productslug}');
+    dynamicLink =
+        'https://tmween.page.link/productDetail?id=${productDetailController.productId}&slug=${productDetailController.productSlug}';
+
+    print('slug....${widget.productslug}');
     MySharedPreferences.instance
         .getBoolValuesSF(SharedPreferencesKeys.isLogin)
         .then((value) async {
-      productDetailController.isLogin = value!;
-      productDetailController.getProductDetails(Get.locale!.languageCode);
+      if (value != null) {
+        productDetailController.isLogin = value;
+
+        productDetailController.getProductDetails(Get.locale!.languageCode);
+      } else {
+        productDetailController.getProductDetails(Get.locale!.languageCode);
+      }
+    });
+    initDynamicLinks();
+    super.initState();
+  }
+
+  Future<void> initDynamicLinks() async {
+    dynamicLinks.onLink.listen((dynamicLinkData) {
+      final queryParams = dynamicLinkData.link.queryParameters;
+      if (queryParams.length > 0) {
+        int productId = int.parse(queryParams['id']!);
+        String productSlug = queryParams['slug']!;
+        productDetailController.navigateToProductDetailScreen(
+            productId, productSlug);
+      }
+    }).onError((error) {
+      print('onLink error');
+      print(error.message);
+    });
+  }
+
+  Future<void> _createDynamicLink(bool short) async {
+    setState(() {
+      _isCreatingLink = true;
     });
 
-    super.initState();
+    final DynamicLinkParameters parameters = DynamicLinkParameters(
+      uriPrefix: AppConstants.deepLinkUrlPrefix,
+      link: Uri.parse(dynamicLink),
+      androidParameters: const AndroidParameters(
+        packageName: 'com.tmween.tmween',
+        minimumVersion: 0,
+      ),
+      iosParameters: const IOSParameters(
+        bundleId: 'io.invertase.testing',
+        minimumVersion: '0',
+      ),
+    );
+
+    Uri url;
+    if (short) {
+      final ShortDynamicLink shortLink =
+          await dynamicLinks.buildShortLink(parameters);
+      url = shortLink.shortUrl;
+    } else {
+      url = await dynamicLinks.buildLink(parameters);
+    }
+    http.Response response = await http.get(Uri.parse(productDetailController
+        .productDetailData!.productData![0].productGallery![0].largeImageUrl!));
+    final directory = await getTemporaryDirectory();
+    final path = directory.path;
+    final file = File('$path/image.png');
+    file.writeAsBytes(response.bodyBytes);
+    setState(() {
+      _linkMessage = url.toString();
+      /*Share.share('check out product  ${_linkMessage}',
+          subject: 'Look what I see!');*/
+
+      Share.shareFiles(['$path/image.png'],
+          text: 'check out product  ${_linkMessage}',
+          subject: 'Look what I see!');
+
+      _isCreatingLink = false;
+    });
   }
 
   Future<bool> _onWillPop(
       ProductDetailController productDetailController) async {
-    productDetailController.exitScreen(cartController);
+    productDetailController.exitScreen(cartController, widget.fromDeepLink!);
     return true;
   }
 
@@ -98,8 +180,9 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                     .getBoolValuesSF(SharedPreferencesKeys
                                         .addressFromCurrentLocation)
                                     .then((value) async {
-                                  productDetailController
-                                      .addressFromCurrentLocation = value!;
+                                  if (value != null)
+                                    productDetailController
+                                        .addressFromCurrentLocation = value;
 
                                   if (productDetailController.isLogin) {
                                     productDetailController
@@ -296,93 +379,86 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                       child: Align(
                           alignment: Alignment.topCenter,
                           child: Column(children: [
-                            Stack(
-                              children: [
-                                Container(
-                                    height: 200,
-                                    width: double.maxFinite,
-                                    child: InkWell(
-                                        onTap: () {
-                                          Get.delete<FullImageController>();
-                                          productDetailController.navigateTo(
-                                              FullImageScreen(
-                                                  image: productDetailController
-                                                      .productDetailData!
-                                                      .productData![0]
-                                                      .productGallery!,
-                                                  current:
-                                                      productDetailController
-                                                          .current));
-                                        },
-                                        child: CarouselSlider(
-                                          items: productDetailController
-                                              .productDetailData!
-                                              .productData![0]
-                                              .productGallery!
-                                              .map((item) => Container(
-                                                    child: item.largeImageUrl!
-                                                        .setNetworkImage(),
-                                                  ))
-                                              .toList(),
-                                          carouselController:
-                                              productDetailController
-                                                  .controller,
-                                          options: CarouselOptions(
-                                            autoPlay: false,
-                                            enlargeCenterPage: false,
-                                            enableInfiniteScroll: false,
-                                            viewportFraction: 1,
-                                            aspectRatio: 1.6,
-                                            pageSnapping: true,
-                                            onPageChanged: (index, reason) {
-                                              productDetailController
-                                                  .changPage(index);
-                                            },
-                                          ),
-                                        ))),
-                                if (productDetailController
-                                        .productDetailData!
-                                        .productData![0]
-                                        .productGallery!
-                                        .length >
-                                    1)
-                                  Positioned(
-                                      bottom: 0.0,
-                                      left: 0.0,
-                                      right: 0.0,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: productDetailController
-                                            .productDetailData!
-                                            .productData![0]
-                                            .productGallery!
-                                            .asMap()
-                                            .entries
-                                            .map((entry) {
-                                          return GestureDetector(
-                                            onTap: () => productDetailController
-                                                .controller
-                                                .animateToPage(entry.key),
-                                            child: Container(
-                                              width: 8.0,
-                                              height: 2,
-                                              margin: EdgeInsets.symmetric(
-                                                  vertical: 8.0,
-                                                  horizontal: 4.0),
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.rectangle,
-                                                  color: productDetailController
-                                                              .current ==
-                                                          entry.key
-                                                      ? AppColors.darkblue
-                                                      : Colors.grey),
+                             Stack(
+                                children: [
+                                  Container(
+                                      height: 200,
+                                      width: double.maxFinite,
+                                      child: InkWell(
+                                          onTap: () {
+                                            Get.delete<FullImageController>();
+                                            productDetailController.navigateTo(
+                                                FullImageScreen(
+                                                    image:
+                                                        productDetailController
+                                                            .images,
+                                                    current:
+                                                        productDetailController
+                                                            .current));
+                                          },
+                                          child: CarouselSlider(
+                                            items: productDetailController
+                                                .images
+                                                .map((item) => Container(
+                                                      child: item
+                                                          .setNetworkImage(),
+                                                    ))
+                                                .toList(),
+                                            carouselController:
+                                                productDetailController
+                                                    .controller,
+                                            options: CarouselOptions(
+                                              autoPlay: false,
+                                              enlargeCenterPage: false,
+                                              enableInfiniteScroll: false,
+                                              viewportFraction: 1,
+                                              aspectRatio: 1.6,
+                                              pageSnapping: true,
+                                              onPageChanged: (index, reason) {
+                                                productDetailController
+                                                    .changPage(index);
+                                              },
                                             ),
-                                          );
-                                        }).toList(),
-                                      )),
-                              ],
-                            ),
+                                          ))),
+                                  if (productDetailController
+                                          .images.length >
+                                      1)
+                                    Positioned(
+                                        bottom: 0.0,
+                                        left: 0.0,
+                                        right: 0.0,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: productDetailController
+                                              .images.asMap()
+                                              .entries
+                                              .map((entry) {
+                                            return GestureDetector(
+                                              onTap: () =>
+                                                  productDetailController
+                                                      .controller
+                                                      .animateToPage(entry.key),
+                                              child: Container(
+                                                width: 8.0,
+                                                height: 2,
+                                                margin: EdgeInsets.symmetric(
+                                                    vertical: 8.0,
+                                                    horizontal: 4.0),
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.rectangle,
+                                                    color:
+                                                        productDetailController
+                                                                    .current ==
+                                                                entry.key
+                                                            ? AppColors.darkblue
+                                                            : Colors.grey),
+                                              ),
+                                            );
+                                          }).toList(),
+                                        )),
+                                ],
+                              ),
                             5.heightBox,
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -421,45 +497,42 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                 ],
               )),
           5.heightBox,
-          Container(
-              height: 80,
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: productDetailController.productDetailData!
-                      .productData![0].productGallery!.length,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                        onTap: () {
-                          productDetailController.controller
-                              .animateToPage(index);
-                          productDetailController.changPage(index);
-                        },
-                        child: Container(
-                            width: 80,
-                            decoration: BoxDecoration(
-                                color: CupertinoColors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Colors.grey[200]!,
-                                      blurRadius: 5,
-                                      spreadRadius: 5)
-                                ],
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(2)),
-                                border: Border.all(
-                                    color:
-                                        productDetailController.current == index
-                                            ? Color(0xFF1992CE)
-                                            : Colors.white)),
-                            padding: EdgeInsets.all(5),
-                            margin: EdgeInsets.only(right: 5),
-                            child: productDetailController
-                                .productDetailData!
-                                .productData![0]
-                                .productGallery![index]
-                                .largeImageUrl!
-                                .setNetworkImage()));
-                  })),
+
+            Container(
+                height: 80,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: productDetailController.images.length,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                          onTap: () {
+                            productDetailController.controller
+                                .animateToPage(index);
+                            productDetailController.changPage(index);
+                          },
+                          child: Container(
+                              width: 80,
+                              decoration: BoxDecoration(
+                                  color: CupertinoColors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.grey[200]!,
+                                        blurRadius: 5,
+                                        spreadRadius: 5)
+                                  ],
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(2)),
+                                  border: Border.all(
+                                      color: productDetailController.current ==
+                                              index
+                                          ? Color(0xFF1992CE)
+                                          : Colors.white)),
+                              padding: EdgeInsets.all(5),
+                              margin: EdgeInsets.only(right: 5),
+                              child: productDetailController
+                                  .images[index]
+                                  .setNetworkImage()));
+                    })),
           10.heightBox,
           Text(
             productDetailController
@@ -538,13 +611,13 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                         )),
                   ],
                 ),
-          15.heightBox,
+          10.heightBox,
           Divider(
             thickness: 1,
             height: 5,
             color: Color(0xFFE9E9E9),
           ),
-          15.heightBox,
+          5.heightBox,
           Align(
               alignment: Alignment.centerLeft,
               child: RichText(
@@ -664,12 +737,15 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                       style: TextStyle(color: Color(0xFF1992CE), fontSize: 14),
                     ),*/
                     ]))),
-          15.heightBox,
+          10.heightBox,
           Divider(
             thickness: 1,
             height: 5,
             color: Color(0xFFE9E9E9),
           ),
+          if (productDetailController
+              .attributeData!.productMainSupplier!.length !=
+              0)
           10.heightBox,
           /* Align(
               alignment: Alignment.centerLeft,
@@ -754,6 +830,9 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                               fontWeight: FontWeight.bold),
                                         ),
                                     ]))),
+                      if (productDetailController.productDetailData!
+                          .productAssociateAttribute![index].options !=
+                          null)
                       5.heightBox,
                       if (productDetailController.productDetailData!
                                   .productAssociateAttribute![index].options !=
@@ -870,13 +949,22 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                                   Icons.check,
                                                   size: 16,
                                                   color: productDetailController
-                                                          .productDetailData!
-                                                          .productAssociateAttribute![
-                                                              index]
-                                                          .options![index2]
-                                                          .attributeOptionValue!
-                                                          .toLowerCase()
-                                                          .contains('white')
+                                                              .productDetailData!
+                                                              .productAssociateAttribute![
+                                                                  index]
+                                                              .options![index2]
+                                                              .attributeOptionValue!
+                                                              .toLowerCase()
+                                                              .contains(
+                                                                  'white') ||
+                                                          productDetailController
+                                                              .productDetailData!
+                                                              .productAssociateAttribute![
+                                                                  index]
+                                                              .options![index2]
+                                                              .attributeOptionValue!
+                                                              .toLowerCase()
+                                                              .contains('multi')
                                                       ? Colors.black
                                                       : Colors.white,
                                                 )
@@ -884,6 +972,9 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                         ));
                                   return Container();
                                 })),
+                      if (productDetailController.productDetailData!
+                          .productAssociateAttribute![index].options !=
+                          null)
                       10.heightBox,
                     ],
                   ),
@@ -975,8 +1066,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
 
   Widget _bottomView(ProductDetailController productDetailController) {
     if (productDetailController.addedToCart) {
-      cartController.cartCount =
-          cartController.cartCount + productDetailController.quntity;
+      cartController.cartCount = productDetailController.cartCount;
     }
     return Expanded(
         child: SingleChildScrollView(
@@ -992,18 +1082,42 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                         child: _imagePriceView(productDetailController)),
                     15.heightBox,
                     if (productDetailController
-                        .productDetailData!.productData![0].inStock !=
-                        0)
+                                .productDetailData!.productData![0].inStock !=
+                            0 &&
+                        productDetailController
+                                .attributeData!.productMainSupplier!.length >
+                            0)
                       Padding(
                           padding: EdgeInsets.only(right: 15),
                           child: CustomButton(
-                              text: 'BUY NOW', fontSize: 14, onPressed: () {})),
+                              text: 'BUY NOW',
+                              fontSize: 14,
+                              onPressed: () {
+                                if (!productDetailController.isLogin) {
+                                  _loginFirstDialog(productDetailController);
+                                } else {
+                                  if (productDetailController.attributeData!
+                                          .productMainSupplier!.length >
+                                      0)
+                                    productDetailController.addToCartBuyNow(
+                                        productDetailController
+                                            .attributeData!
+                                            .productMainSupplier![0]
+                                            .productItemId,
+                                        productDetailController.attributeData!
+                                            .productMainSupplier![0].supplierId,
+                                        language);
+                                }
+                              })),
                     if (productDetailController
-                            .productDetailData!.productData![0].inStock !=
-                        0)
+                                .productDetailData!.productData![0].inStock !=
+                            0 &&
+                        productDetailController
+                                .attributeData!.productMainSupplier!.length >
+                            0)
                       Padding(
                           padding: EdgeInsets.only(right: 15),
-                          child: productDetailController.addedToCart
+                          child: /*productDetailController.addedToCart
                               ? Container(
                                   width: double.maxFinite,
                                   padding: EdgeInsets.symmetric(vertical: 10),
@@ -1020,22 +1134,31 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                         color: Color(0xFF314156), fontSize: 15),
                                   ),
                                 )
-                              : CustomButton(
+                              : */
+                              CustomButton(
                                   text: 'ADD TO CART',
                                   fontSize: 14,
                                   backgroundColor: Color(0xFF314156),
                                   onPressed: () {
-                                    if (!productDetailController.addedToCart)
-                                      productDetailController.addToCart(
-                                          productDetailController
-                                              .attributeData!
-                                              .productMainSupplier![0]
-                                              .productItemId,
-                                          productDetailController
-                                              .attributeData!
-                                              .productMainSupplier![0]
-                                              .supplierId,
-                                          language);
+                                    //  if (!productDetailController.addedToCart)
+                                    if (!productDetailController.isLogin) {
+                                      _loginFirstDialog(
+                                          productDetailController);
+                                    } else {
+                                      if (productDetailController.attributeData!
+                                              .productMainSupplier!.length >
+                                          0)
+                                        productDetailController.addToCart(
+                                            productDetailController
+                                                .attributeData!
+                                                .productMainSupplier![0]
+                                                .productItemId,
+                                            productDetailController
+                                                .attributeData!
+                                                .productMainSupplier![0]
+                                                .supplierId,
+                                            language);
+                                    }
 
                                     // productDetailController.navigateToCartScreen();
                                   })),
@@ -1086,18 +1209,30 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                     Padding(
                         padding: EdgeInsets.only(right: 15),
                         child: _ratingReviewSection(productDetailController)),
-                    15.heightBox,
-                    Padding(
-                        padding: EdgeInsets.only(right: 15),
-                        child: Text(
-                          'Similar Products',
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF000000)),
-                        )),
-                    5.heightBox,
-                    _similarProducts(productDetailController),
+                    if (productDetailController
+                            .productDetailData!.similarProduct!.length >
+                        0)
+                      15.heightBox,
+                    if (productDetailController
+                            .productDetailData!.similarProduct!.length >
+                        0)
+                      Padding(
+                          padding: EdgeInsets.only(right: 15),
+                          child: Text(
+                            'Similar Products',
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF000000)),
+                          )),
+                    if (productDetailController
+                            .productDetailData!.similarProduct!.length >
+                        0)
+                      5.heightBox,
+                    if (productDetailController
+                            .productDetailData!.similarProduct!.length >
+                        0)
+                      _similarProducts(productDetailController),
                     20.heightBox,
                   ],
                 ))));
@@ -1328,7 +1463,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                                       children: <InlineSpan>[
                                                         TextSpan(
                                                             text:
-                                                                ' - ${productDetailController.productDetailData!.customerProductReview!.data![index].createdAt!.split(' ')[0]}',
+                                                                ' - ${productDetailController.productDetailData!.customerProductReview!.data![index].reviewDate!.split(' ')[0]}',
                                                             style: TextStyle(
                                                               color: Color(
                                                                   0xFF888888),
@@ -1375,24 +1510,30 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                               InkWell(
                                                   onTap: () {
                                                     if (!productDetailController
-                                                        .reviewModelItems
-                                                        .contains(productDetailController
-                                                            .productDetailData!
-                                                            .customerProductReview!
-                                                            .data![index]
-                                                            .id))
-                                                      productDetailController.addReviewHelpful(
-                                                          productDetailController
+                                                        .isLogin) {
+                                                      _loginFirstDialog(
+                                                          productDetailController);
+                                                    } else {
+                                                      if (!productDetailController
+                                                          .reviewModelItems
+                                                          .contains(productDetailController
                                                               .productDetailData!
                                                               .customerProductReview!
                                                               .data![index]
-                                                              .id,
-                                                          language,
-                                                          productDetailController
-                                                              .productDetailData!
-                                                              .customerProductReview!
-                                                              .data![index]
-                                                              .id);
+                                                              .id))
+                                                        productDetailController.addReviewHelpful(
+                                                            productDetailController
+                                                                .productDetailData!
+                                                                .customerProductReview!
+                                                                .data![index]
+                                                                .id,
+                                                            language,
+                                                            productDetailController
+                                                                .productDetailData!
+                                                                .customerProductReview!
+                                                                .data![index]
+                                                                .id);
+                                                    }
                                                   },
                                                   child: (!productDetailController
                                                           .reviewModelItems
@@ -1427,7 +1568,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                                                 ))
                                                           ],
                                                         )),
-                                              5.widthBox,
+                                              3.widthBox,
                                               if (!productDetailController
                                                   .reviewModelItems
                                                   .contains(
@@ -1440,29 +1581,37 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                                   width: 1,
                                                   height: 12,
                                                   color: Color(0xFF333333),
+                                                  margin:
+                                                      EdgeInsets.only(top: 3),
                                                 ),
-                                              5.widthBox,
+                                              3.widthBox,
                                               InkWell(
                                                   onTap: () {
                                                     if (!productDetailController
-                                                        .reviewModelReportItems
-                                                        .contains(productDetailController
-                                                            .productDetailData!
-                                                            .customerProductReview!
-                                                            .data![index]
-                                                            .id))
-                                                      _showReportAbuseDialog(
-                                                          productDetailController,
-                                                          productDetailController
+                                                        .isLogin) {
+                                                      _loginFirstDialog(
+                                                          productDetailController);
+                                                    } else {
+                                                      if (!productDetailController
+                                                          .reviewModelReportItems
+                                                          .contains(productDetailController
                                                               .productDetailData!
                                                               .customerProductReview!
                                                               .data![index]
-                                                              .id!,
-                                                          productDetailController
-                                                              .productDetailData!
-                                                              .customerProductReview!
-                                                              .data![index]
-                                                              .id!);
+                                                              .id))
+                                                        _showReportAbuseDialog(
+                                                            productDetailController,
+                                                            productDetailController
+                                                                .productDetailData!
+                                                                .customerProductReview!
+                                                                .data![index]
+                                                                .id!,
+                                                            productDetailController
+                                                                .productDetailData!
+                                                                .customerProductReview!
+                                                                .data![index]
+                                                                .id!);
+                                                    }
                                                   },
                                                   child: (!productDetailController
                                                           .reviewModelReportItems
@@ -1901,17 +2050,22 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                   fontSize: 14,
                                   text: 'ADD TO CART',
                                   onPressed: () {
-                                    if (!productDetailController.addedToCart)
-                                      productDetailController.addToCart(
-                                          productDetailController
-                                              .attributeData!
-                                              .productOtherSupplier![index]
-                                              .productItemId,
-                                          productDetailController
-                                              .attributeData!
-                                              .productOtherSupplier![index]
-                                              .supplierId,
-                                          language);
+                                    if (!productDetailController.isLogin) {
+                                      _loginFirstDialog(
+                                          productDetailController);
+                                    } else {
+                                      if (!productDetailController.addedToCart)
+                                        productDetailController.addToCart(
+                                            productDetailController
+                                                .attributeData!
+                                                .productOtherSupplier![index]
+                                                .productItemId,
+                                            productDetailController
+                                                .attributeData!
+                                                .productOtherSupplier![index]
+                                                .supplierId,
+                                            language);
+                                    }
                                   })
                             ],
                           ),
@@ -2325,8 +2479,9 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                             activeColor: Color(0xFF1992CE),
                             onChanged: (int? value) {
                               productDetailController.packId = value!;
-                              productDetailController.supplierBranchId = productDetailController
-                                  .attributeData!.productQtyPackData![i].supplierBranchId!;
+                              productDetailController.supplierBranchId =
+                                  productDetailController.attributeData!
+                                      .productQtyPackData![i].supplierBranchId!;
                               productDetailController.update();
                             },
                           ),
@@ -2394,7 +2549,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                     color: Colors.white)),
             children: [
               Container(
-                width: double.maxFinite,
+                  width: double.maxFinite,
                   decoration: BoxDecoration(color: Colors.white, boxShadow: [
                     BoxShadow(
                         color: Colors.grey[200]!,
@@ -2565,7 +2720,8 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                 color: Colors.white, // Button color
                 child: InkWell(
                   onTap: () {
-                    productDetailController.exitScreen(cartController);
+                    productDetailController.exitScreen(
+                        cartController, widget.fromDeepLink!);
                   },
                   child: SizedBox(
                       width: 24,
@@ -2591,8 +2747,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                 ),
                 InkWell(
                     onTap: () {
-                      Share.share('check out my website https://example.com',
-                          subject: 'Look what I made!');
+                      _createDynamicLink(true);
                     },
                     child: SvgPicture.asset(
                       ImageConstanst.share,
@@ -2716,7 +2871,12 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                                           SharedPreferencesKeys
                                                               .address,
                                                           "${address.cityName} - ${address.zip}");
-
+                                                  MySharedPreferences.instance
+                                                      .addStringToSF(
+                                                          SharedPreferencesKeys
+                                                              .addressId,
+                                                          address.id
+                                                              .toString());
                                                   MySharedPreferences.instance
                                                       .addBoolToSF(
                                                           SharedPreferencesKeys

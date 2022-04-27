@@ -4,11 +4,11 @@ import 'package:get/get.dart';
 import 'package:tmween/controller/recently_viewed_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/drawer/dashboard/recently_viewed_container.dart';
+import 'package:tmween/screens/drawer/productDetail/product_detail_screen.dart';
 
 import '../../utils/global.dart';
 import '../../utils/views/circular_progress_bar.dart';
 import '../../utils/views/custom_text_form_field.dart';
-import 'dashboard/productDetail/product_detail_screen.dart';
 
 class RecentlyViewedScreen extends StatelessWidget {
   final recentlyProviderController = Get.put(RecentlyViewedController());
@@ -89,7 +89,7 @@ class RecentlyViewedScreen extends StatelessWidget {
                                   return null;
                                 }))),
                     recentlyProviderController.loading
-                        ? Center(child: CircularProgressBar())
+                        ? Expanded(child: Center(child: CircularProgressBar()))
                         : Expanded(
                             child: RefreshIndicator(
                                 onRefresh: () => recentlyProviderController

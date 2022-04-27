@@ -43,6 +43,9 @@ abstract class AppConstants {
   static String store = 'store';
   static int timer = 30;
   static int cardsPerPage = 6;
+  static String deepLinkUrlPrefix = "https://tmween.page.link";
+  static String deepLinkName = "tmween";
+  static String appStoreId = "";
 
 }
 
@@ -81,6 +84,8 @@ abstract class UrlConstants {
   static const String editProfile = '$baseUrl/customer/edit-profile';
   static const String addDataToWishList =
       '$baseUrl/customer/add-data-to-whishlist';
+  static const String changeDeliverySpeed =
+      '$baseUrl/customer/update-quote-item-delivery-mode';
   static const String deleteWishListDetails =
       '$baseUrl/customer/delete-wishlist-details';
   static const String getWishListDetails =
@@ -97,6 +102,8 @@ abstract class UrlConstants {
       '$baseUrl/customer/update-profile-mobile';
   static const String getCustomerAddressList =
       '$baseUrl/customer/get-customer-address-list-csc';
+  static const String getReviewOrder =
+      '$baseUrl/customer/get-review-order-mobile';
   static const String deleteCustomerAddress =
       '$baseUrl/customer/delete-customer-address';
   static const String editCustomerAddress =
@@ -113,12 +120,16 @@ abstract class UrlConstants {
   static const String addCustomerReview =
       '$baseUrl/customer/add-customer-review';
   static const String addToCart = '$baseUrl/customer/add-to-cart';
-  static const String updateCartItem = '$baseUrl/customer/update-cart-item-quantity';
-  static const String removeCartItem = '$baseUrl/customer/remove-cart-items';
-  static const String getCartItems = '$baseUrl/customer/get-cart-items';
+  static const String updateCartItem = '$baseUrl/customer/change-cart-item-quantity';
+  static const String removeCartItem = '$baseUrl/customer/remove-item-from-cart';
+  static const String getCartItems = '$baseUrl/customer/get-cart-page-details';
+  static const String updateQuoteAddress = '$baseUrl/customer/update-quote-address';
   static const String addReviewReportAbuse =
       '$baseUrl/customer/add-review-report-abuse';
   static const String addReviewHelpful = '$baseUrl/customer/add-review-helpful';
+  static const String getPaymentOptions = '$baseUrl/get-front-payment-gateway-logo';
+  static const String setPaymentOption = '$baseUrl/customer/add-quote-paymentmethod';
+  static const String addRecentlyViewed = '$baseUrl/add-recently-view-product';
 
   //e-commerce
   static const String getMasterData = '$baseUrl/get-master-data';
@@ -128,10 +139,16 @@ abstract class UrlConstants {
       '$baseUrl/get-home-page-mobile-data';
   static const String getMobileMasterViewData =
       '$baseUrl/get-mobile-master-view-data';
+  static const String getSubCategoriesData =
+      '$baseUrl/get-subcategory-data';
+  static const String getRecommendedProduct =
+      '$baseUrl/get-recommanded-product';
   static const String getCategoryMobileFilterData =
       '$baseUrl/get-category-mobile-filter-data';
   static const String topSearchSuggestionProductList =
       '$baseUrl/top-search-suggestion-product-list-mobile';
+  static const String categoryProductList =
+      '$baseUrl/get-product-list';
   static const String getProductDetailsMobile =
       '$baseUrl/get-product-details-mobile';
   static const String getItemIdByAttributeCombination =

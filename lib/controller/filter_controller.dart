@@ -55,7 +55,7 @@ class FilterController extends GetxController {
   bool loading = false;
   late GetFilterData filteredData;
 
-  Future<void> getFilterData(language) async {
+  /*Future<void> getFilterData(language) async {
     Helper.showLoading();
     await api.getFilterData("1", catId, language).then((value) {
       if (value.statusCode == 200) {
@@ -68,7 +68,7 @@ class FilterController extends GetxController {
       update();
       print('error....$error');
     });
-  }
+  }*/
 
   final List<Map> categoryList = [
     {'title': 'Mobile Phone Accessories', 'isChecked': false},

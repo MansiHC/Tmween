@@ -8,6 +8,7 @@ import '../model/dashboard_model.dart';
 import '../service/api.dart';
 import '../utils/global.dart';
 import '../utils/helper.dart';
+import '../utils/my_shared_preferences.dart';
 
 class DashboardController extends GetxController {
   late BuildContext context;
@@ -35,15 +36,23 @@ class DashboardController extends GetxController {
   List<CENTER>? centerBanners = [];
   List<CENTERUP>? centerUpBanners = [];
   List<CENTERDOWN>? centerDownBanners = [];
+  int userId = 0;
 
   @override
   void onInit() {
-    getDashboardData(Get.locale!.languageCode);
+    MySharedPreferences.instance
+        .getIntValuesSF(SharedPreferencesKeys.userId)
+        .then((value) async {
+          if(value!=null) {
+            userId = value;
+          }
+      getDashboardData(Get.locale!.languageCode);
+    });
     super.onInit();
   }
 
   Future<void> onRefresh(language) async {
-    await api.getHomePageMobileData(language).then((value) {
+    await api.getHomePageMobileData(userId,language).then((value) {
       if (value.statusCode == 200) {
         recentlyViewProduct = value.data!.recentlyViewProduct;
         topSelectionData = value.data!.topSelectionData;
@@ -66,7 +75,7 @@ class DashboardController extends GetxController {
     //Helper.showLoading();
     loading = true;
     update();
-    await api.getHomePageMobileData(language).then((value) {
+    await api.getHomePageMobileData(userId,language).then((value) {
       if (value.statusCode == 200) {
         recentlyViewProduct = value.data!.recentlyViewProduct;
         topSelectionData = value.data!.topSelectionData;

@@ -81,8 +81,6 @@ class CustomerData {
   String? image;
   String? password;
   String? passwordHash;
-  String? defaultBilling;
-  String? defaultShipping;
   String? taxvat;
   String? accountVerificationToken;
   int? confirmation;
@@ -108,8 +106,6 @@ class CustomerData {
       this.image,
       this.password,
       this.passwordHash,
-      this.defaultBilling,
-      this.defaultShipping,
       this.taxvat,
       this.accountVerificationToken,
       this.confirmation,
@@ -135,8 +131,6 @@ class CustomerData {
     image = json['image'];
     password = json['password'];
     passwordHash = json['password_hash'];
-    defaultBilling = json['default_billing'];
-    defaultShipping = json['default_shipping'];
     taxvat = json['taxvat'];
     accountVerificationToken = json['account_verification_token'];
     confirmation = json['confirmation'];
@@ -164,8 +158,6 @@ class CustomerData {
     data['image'] = this.image;
     data['password'] = this.password;
     data['password_hash'] = this.passwordHash;
-    data['default_billing'] = this.defaultBilling;
-    data['default_shipping'] = this.defaultShipping;
     data['taxvat'] = this.taxvat;
     data['account_verification_token'] = this.accountVerificationToken;
     data['confirmation'] = this.confirmation;

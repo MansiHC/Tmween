@@ -7,6 +7,7 @@ import 'package:tmween/utils/extensions.dart';
 import '../../../controller/search_controller.dart';
 import '../../../lang/locale_keys.g.dart';
 import '../../../utils/global.dart';
+import '../../../utils/my_shared_preferences.dart';
 import '../../../utils/views/circular_progress_bar.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -34,6 +35,31 @@ class SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     searchController.searchController.text = widget.searchText!;
+    searchController.searchList = [];
+    searchController.getPopularList(Get.locale!.languageCode);
+    // getFilterData(Get.locale!.languageCode);
+    MySharedPreferences.instance
+        .getBoolValuesSF(SharedPreferencesKeys.isLogin)
+        .then((value) async {
+      searchController.isLogin = value!;
+      searchController.update();
+    });
+    MySharedPreferences.instance
+        .getStringValuesSF(SharedPreferencesKeys.token)
+        .then((value) async {
+      searchController.token = value!;
+      print('dhsh.....${searchController.token}');
+      MySharedPreferences.instance
+          .getIntValuesSF(SharedPreferencesKeys.userId)
+          .then((value) async {
+        searchController.userId = value!;
+        MySharedPreferences.instance
+            .getIntValuesSF(SharedPreferencesKeys.loginLogId)
+            .then((value) async {
+          searchController.loginLogId = value!;
+        });
+      });
+    });
     super.initState();
   }
 
@@ -99,10 +125,12 @@ class SearchScreenState extends State<SearchScreen> {
                                           : searchController.searchController,
                                       keyboardType: TextInputType.text,
                                       textInputAction: TextInputAction.search,
+                                      onChanged: (text) {
+                                        searchController.update();
+                                      },
                                       onSubmitted: (term) {
                                         FocusScope.of(context).unfocus();
                                         searchController.searchedString = term;
-
                                         searchController.searchProduct(
                                             widget.from, language);
                                       },
@@ -128,18 +156,44 @@ class SearchScreenState extends State<SearchScreen> {
                                           color: AppColors.primaryColor,
                                           size: 32,
                                         ),
-                                        suffixIcon: IconButton(
-                                            onPressed: () {
-                                              searchController.searchController
-                                                  .clear();
-                                              searchController.update();
-                                            },
-                                            icon: Icon(
-                                              CupertinoIcons
-                                                  .clear_circled_solid,
-                                              color: AppColors.primaryColor,
-                                              size: 24,
-                                            )),
+                                        suffixIcon: widget.from ==
+                                                AppConstants.bottomBar
+                                            ? searchController.searchController2
+                                                        .text.length >
+                                                    0
+                                                ? IconButton(
+                                                    onPressed: () {
+                                                      searchController
+                                                          .searchController2
+                                                          .clear();
+                                                      searchController.update();
+                                                    },
+                                                    icon: Icon(
+                                                      CupertinoIcons
+                                                          .clear_circled_solid,
+                                                      color: AppColors
+                                                          .primaryColor,
+                                                      size: 24,
+                                                    ))
+                                                : SizedBox()
+                                            : searchController.searchController
+                                                        .text.length >
+                                                    0
+                                                ? IconButton(
+                                                    onPressed: () {
+                                                      searchController
+                                                          .searchController
+                                                          .clear();
+                                                      searchController.update();
+                                                    },
+                                                    icon: Icon(
+                                                      CupertinoIcons
+                                                          .clear_circled_solid,
+                                                      color: AppColors
+                                                          .primaryColor,
+                                                      size: 24,
+                                                    ))
+                                                : SizedBox(),
                                       ),
                                     ),
                                     suggestionsCallback:
@@ -168,7 +222,7 @@ class SearchScreenState extends State<SearchScreen> {
                                   )))
                         ])),
                     searchController.historyLoading
-                        ? CircularProgressBar()
+                        ? Flexible(child: Center(child: CircularProgressBar()))
                         : _searchHistory(searchController),
                   ],
                 ),

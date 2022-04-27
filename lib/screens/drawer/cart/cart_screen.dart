@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/screens/drawer/cart/cart_product_container.dart';
+import 'package:tmween/screens/drawer/cart/recently_viewed_product_screen.dart';
 import 'package:tmween/screens/drawer/cart/recommended_product_container.dart';
+import 'package:tmween/screens/drawer/cart/recommended_product_screen.dart';
 import 'package:tmween/screens/drawer/checkout/shipping_address_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
@@ -102,7 +104,7 @@ class CartScreenState extends State<CartScreen> {
                         children: <InlineSpan>[
                           TextSpan(
                             text:
-                                '(${cartController.cartData!.totalItems} items)',
+                                '(${cartController.cartCount} items)',
                             style: TextStyle(
                               color: Color(0xFF39A0D4),
                               fontSize: 13,
@@ -117,7 +119,7 @@ class CartScreenState extends State<CartScreen> {
                           ),
                           TextSpan(
                             text:
-                                '${cartController.cartData!.currencyCode} ${cartController.cartData!.totalPrice}',
+                                '${cartController.cartData!.currencyCode} ${cartController.totalAmount}',
                             style: TextStyle(
                                 color: Color(0xFFF4500F),
                                 fontSize: 13,
@@ -184,7 +186,12 @@ class CartScreenState extends State<CartScreen> {
                   backgroundColor: Color(0xFF27AE61),
                   onPressed: () {
                     cartController.navigateTo(ShippingAddressScreen(
-                        cartData: cartController.cartData));
+                        /*cartData: cartController.cartData,
+                    shippingAmount: cartController.shippingAmount,
+                    taxAmount: cartController.taxAmount,
+                    totalAmount: cartController.totalAmount
+*/
+                        ));
                   },
                 ),
                 10.heightBox,
@@ -192,13 +199,13 @@ class CartScreenState extends State<CartScreen> {
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     physics: ScrollPhysics(),
-                    itemCount: cartController.cartData!.cartDetails!.length,
+                    itemCount: cartController.cartData!.cartItemDetails!.length,
                     itemBuilder: (context, index) {
                       return Column(
                         children: [
                           CartProductContainer(
                               cartProductModel:
-                                  cartController.cartData!.cartDetails![index],
+                                  cartController.cartData!.cartItemDetails![index],
                               index: index),
                           15.heightBox
                         ],
@@ -230,7 +237,7 @@ class CartScreenState extends State<CartScreen> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 TextSpan(
-                                  text: cartController.cartData!.totalPrice!
+                                  text: cartController.totalAmount
                                       .toString(),
                                   style: TextStyle(
                                       color: Colors.white,
@@ -275,6 +282,7 @@ class CartScreenState extends State<CartScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    if(cartController.recommendedProductsData!.length>0)
                     Expanded(
                         child: Text(
                       'RECOMMENDATION FOR ALL PRODUCTS',
@@ -283,7 +291,12 @@ class CartScreenState extends State<CartScreen> {
                           fontSize: 13,
                           fontWeight: FontWeight.bold),
                     )),
-                    Wrap(
+                    if(cartController.recommendedProductsData!.length>3)
+                    InkWell(
+                        onTap: (){
+cartController.navigateTo(RecommendedProductScreen(productIdList:cartController.productIdList!));
+                        },
+                        child:Wrap(
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         Text(
@@ -297,7 +310,7 @@ class CartScreenState extends State<CartScreen> {
                           size: 16,
                         )
                       ],
-                    )
+                    ))
                   ],
                 ),
                 10.heightBox,
@@ -305,13 +318,13 @@ class CartScreenState extends State<CartScreen> {
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     physics: ScrollPhysics(),
-                    itemCount: cartController.recommendedProducts.length,
+                    itemCount: cartController.recommendedProductsData!.length>3?3:cartController.recommendedProductsData!.length,
                     itemBuilder: (context, index) {
                       return Column(
                         children: [
                           RecommendedProductContainer(
                               recommendedProductModel:
-                                  cartController.recommendedProducts[index]),
+                                  cartController.recommendedProductsData![index]),
                           15.heightBox
                         ],
                       );
@@ -323,6 +336,7 @@ class CartScreenState extends State<CartScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    if(cartController.recentlyViewedProducts!.length>0)
                     Expanded(
                         child: Text(
                       'YOUR RECENTLY VIEWED ITEMS',
@@ -331,6 +345,12 @@ class CartScreenState extends State<CartScreen> {
                           fontSize: 13,
                           fontWeight: FontWeight.bold),
                     )),
+    if(cartController.recentlyViewedProducts!.length>3)
+    InkWell(
+    onTap: (){
+    cartController.navigateTo(RecentlyViewedProductScreen());
+    },
+    child:
                     Wrap(
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
@@ -345,7 +365,7 @@ class CartScreenState extends State<CartScreen> {
                           size: 16,
                         )
                       ],
-                    )
+                    ))
                   ],
                 ),
                 10.heightBox,
@@ -353,13 +373,13 @@ class CartScreenState extends State<CartScreen> {
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     physics: ScrollPhysics(),
-                    itemCount: cartController.cartRecentViewedProducts.length,
+                    itemCount: cartController.recentlyViewedProducts!.length>3?3:cartController.recentlyViewedProducts!.length,
                     itemBuilder: (context, index) {
                       return Column(
                         children: [
                           CartRecentViewedProductContainer(
                               cartRecentViewedProductModel: cartController
-                                  .cartRecentViewedProducts[index]),
+                                  .recentlyViewedProducts![index]),
                           15.heightBox
                         ],
                       );
@@ -369,11 +389,17 @@ class CartScreenState extends State<CartScreen> {
   }
 
   Widget _guaranteeSection(CartController cartController) {
-    return Column(
+    return Container(
+        decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Color(0xFFF3F3F3)),
+    ),
+    child: Column(
       children: [
         Container(
             padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(color: Color(0xFF314156), boxShadow: [
+            decoration: BoxDecoration(color: Color(0xFF314156),
+          boxShadow: [
               BoxShadow(
                   color: Colors.grey[200]!, blurRadius: 5, spreadRadius: 5)
             ]),
@@ -399,115 +425,7 @@ class CartScreenState extends State<CartScreen> {
         Container(
             padding: EdgeInsets.all(10),
             color: Colors.white,
-            child: /*Table(
-                columnWidths: {
-                  0: FlexColumnWidth(5),
-                  1: FlexColumnWidth(0.1),
-                  2: FlexColumnWidth(5),
-                  3: FlexColumnWidth(0.1),
-                  4: FlexColumnWidth(4),
-                  5: FlexColumnWidth(0.1),
-                  6: FlexColumnWidth(5),
-                },
-                children: [
-                  TableRow(children: [
-                    SvgPicture.asset(
-                      ImageConstanst.sudanFlagIcon,
-                      height: 35,
-                      width: 35,
-                    ),
-                    Container(color: Color(0xFFEEEEEE), height: 35, width: 1,),
-                    SvgPicture.asset(
-                      ImageConstanst.sudanFlagIcon,
-                      height: 35,
-                      width: 35,
-                    ),
-                    Container(color: Color(0xFFEEEEEE), height: 35, width: 1,),
-                    SvgPicture.asset(
-                      ImageConstanst.sudanFlagIcon,
-                      height: 35,
-                      width: 35,
-                    ),
-                    Container(color: Color(0xFFEEEEEE), height: 35, width: 1,),
-                    SvgPicture.asset(
-                      ImageConstanst.sudanFlagIcon,
-                      height: 35,
-                      width: 35,
-                    ),
-                  ]),
-                  TableRow(children: [
-                    5.heightBox,
-                    Container(color: Color(0xFFEEEEEE), height: 5, width: 1,),
-                    5.heightBox,
-                    Container(color: Color(0xFFEEEEEE), height: 5, width: 1,),
-                    5.heightBox,
-                    Container(color: Color(0xFFEEEEEE), height: 5, width: 1,),
-                    5.heightBox,
-                  ]),
-                  TableRow(children: [
-                    Text(
-                      'WARRANTY',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Color(0xFF333333),
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Container(color: Color(0xFFEEEEEE), height: 30, width: 1,),
-                    Text(
-                      '100% ORIGINAL',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Color(0xFF333333),
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Container(color: Color(0xFFEEEEEE), height: 30, width: 1,),
-                    Text(
-                      'SECURE',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Color(0xFF333333),
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Container(color: Color(0xFFEEEEEE), height: 30, width: 1,),
-                    Text(
-                      '100% BUYER',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Color(0xFF333333),
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ]),
-                  TableRow(children: [
-                    Text(
-                      "As per Weswox's",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Color(0xFF5C5C5C), fontSize: 12.5),
-                    ), Container(color:Color(0xFFEEEEEE),  height: 30, width: 1,),
-                    Text(
-                      "Products",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Color(0xFF5C5C5C), fontSize: 12.5),
-                    ),Container(color:Color(0xFFEEEEEE), height: 30, width: 1,),
-                    Text(
-                      "PAYMENTS",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Color(0xFF5C5C5C), fontSize: 12.5),
-                    ),Container(color:Color(0xFFEEEEEE), height: 30, width: 1,),
-                    Text(
-                      "PROTECTION",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Color(0xFF5C5C5C), fontSize: 12.5),
-                    ),
-                  ])
-                ])*/
+            child:
                 Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -647,7 +565,7 @@ class CartScreenState extends State<CartScreen> {
               ],
             ))
       ],
-    );
+    ));
   }
 
   Widget _noCartView(CartController cartController) {

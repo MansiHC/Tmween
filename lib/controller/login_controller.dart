@@ -195,12 +195,12 @@ class LoginController extends GetxController {
                 "${value.data!.customerAddressData![0].cityName} - ${value.data!.customerAddressData![0].zip}");
             MySharedPreferences.instance.addStringToSF(
                 SharedPreferencesKeys.addressId,
-                value.data!.customerAddressData![0].id);
+                value.data!.customerAddressData![0].id.toString());
           }
 
           navigateToDrawerScreen();
         } else {
-          Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+          Helper.showGetSnackBar(value.message!, AppColors.errorColor);
         }
 
         update();
@@ -236,7 +236,7 @@ class LoginController extends GetxController {
         } else if (value.statusCode == 426) {
           _accountDeactivatedDialog(language);
         } else {
-          Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+          Helper.showGetSnackBar(value.message!, AppColors.errorColor);
         }
 
         update();
@@ -278,8 +278,8 @@ class LoginController extends GetxController {
                   ),
                   onPressed: () {
                     Navigator.of(context).pop(false);
-                    doIndividualLoginWithOtp(language,  AppConstants.individual,
-                         AppConstants.individual, true);
+                    doIndividualLoginWithOtp(language, AppConstants.individual,
+                        AppConstants.individual, true);
                   },
                 ),
               ],
@@ -301,7 +301,7 @@ class LoginController extends GetxController {
         navigateToOTPScreen(value.data!.otp.toString(),
             value.data!.loginWithPasswordFlag!, from, frm, isFromReActivate);
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
 
       update();
@@ -336,9 +336,9 @@ class LoginController extends GetxController {
     // Get.delete<LoginController>();
     //Navigator.of(context).pop();
     var phoneEmail;
-    if (from ==  AppConstants.individual) {
+    if (from == AppConstants.individual) {
       phoneEmail = phoneEmailController.text;
-    } else if (from ==  AppConstants.store) {
+    } else if (from == AppConstants.store) {
       phoneEmail = storePhoneEmailController.text;
     }
 
@@ -420,7 +420,7 @@ class LoginController extends GetxController {
       Get.delete<LoginController>();
 
       if (frm == SharedPreferencesKeys.isDrawer &&
-          from ==  AppConstants.forgotPassword) {
+          from == AppConstants.forgotPassword) {
         Get.deleteAll();
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => DrawerScreen()),

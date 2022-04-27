@@ -35,10 +35,13 @@ class AttributeData {
   List<ProductQtyPackData>? productQtyPackData;
   ProductDeliveryData? productDeliveryData;
   int? selectAttributeWiseImageShow;
+  List<GalleryAndAttributeComArr>? galleryAndAttributeComArr;
+
 
   //List<Null>? productAssociateAttributeData;
 
   AttributeData({
+    this.galleryAndAttributeComArr,
     this.productMainSupplier,
     this.productOtherSupplier,
     this.productQtyPackData,
@@ -48,6 +51,13 @@ class AttributeData {
   });
 
   AttributeData.fromJson(Map<String, dynamic> json) {
+    if (json['gallery_and_attribute_com_arr'] != null) {
+      galleryAndAttributeComArr = <GalleryAndAttributeComArr>[];
+      json['gallery_and_attribute_com_arr'].forEach((v) {
+        galleryAndAttributeComArr!
+            .add(new GalleryAndAttributeComArr.fromJson(v));
+      });
+    }
     if (json['product_main_supplier'] != null) {
       productMainSupplier = <ProductMainSupplier>[];
       json['product_main_supplier'].forEach((v) {
@@ -86,6 +96,10 @@ class AttributeData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.galleryAndAttributeComArr != null) {
+      data['gallery_and_attribute_com_arr'] =
+          this.galleryAndAttributeComArr!.map((v) => v.toJson()).toList();
+    }
     if (this.productMainSupplier != null) {
       data['product_main_supplier'] =
           this.productMainSupplier!.map((v) => v.toJson()).toList();
@@ -107,6 +121,51 @@ class AttributeData {
       data['product_associate_attribute_data'] =
           this.productAssociateAttributeData!.map((v) => v.toJson()).toList();
     }*/
+    return data;
+  }
+}
+
+class GalleryAndAttributeComArr {
+  int? id;
+  String? image;
+  int? status;
+  String? fancyBoxUrl;
+  String? smallImageUrl;
+  String? largeImageUrl;
+  int? productId;
+  int? orderBy;
+
+  GalleryAndAttributeComArr(
+      {this.id,
+        this.image,
+        this.status,
+        this.fancyBoxUrl,
+        this.smallImageUrl,
+        this.largeImageUrl,
+        this.productId,
+        this.orderBy});
+
+  GalleryAndAttributeComArr.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    image = json['image'];
+    status = json['status'];
+    fancyBoxUrl = json['fancy_box_url'];
+    smallImageUrl = json['small_image_url'];
+    largeImageUrl = json['large_image_url'];
+    productId = json['product_id'];
+    orderBy = json['order_by'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['image'] = this.image;
+    data['status'] = this.status;
+    data['fancy_box_url'] = this.fancyBoxUrl;
+    data['small_image_url'] = this.smallImageUrl;
+    data['large_image_url'] = this.largeImageUrl;
+    data['product_id'] = this.productId;
+    data['order_by'] = this.orderBy;
     return data;
   }
 }

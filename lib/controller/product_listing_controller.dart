@@ -7,8 +7,8 @@ import 'package:tmween/screens/drawer/search/search_screen.dart';
 
 import '../model/get_customer_address_list_model.dart';
 import '../model/product_listing_model.dart';
-import '../screens/drawer/dashboard/productDetail/product_detail_screen.dart';
 import '../screens/drawer/drawer_screen.dart';
+import '../screens/drawer/productDetail/product_detail_screen.dart';
 import '../service/api.dart';
 import '../utils/animations.dart';
 import '../utils/global.dart';

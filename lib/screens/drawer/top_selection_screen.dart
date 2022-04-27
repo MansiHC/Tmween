@@ -4,11 +4,11 @@ import 'package:get/get.dart';
 import 'package:tmween/controller/top_selection_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/drawer/dashboard/top_selection_container.dart';
+import 'package:tmween/screens/drawer/productDetail/product_detail_screen.dart';
 
 import '../../utils/global.dart';
 import '../../utils/views/circular_progress_bar.dart';
 import '../../utils/views/custom_text_form_field.dart';
-import 'dashboard/productDetail/product_detail_screen.dart';
 
 class TopSelectionScreen extends StatelessWidget {
   final topSelectionController = Get.put(TopSelectionController());
@@ -89,7 +89,7 @@ class TopSelectionScreen extends StatelessWidget {
                                   return null;
                                 }))),
                     topSelectionController.loading
-                        ? Center(child: CircularProgressBar())
+                        ? Expanded(child: Center(child: CircularProgressBar()))
                         : Expanded(
                             child: RefreshIndicator(
                                 onRefresh: () =>

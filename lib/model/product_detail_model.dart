@@ -171,7 +171,7 @@ class PackDetails {
   int? marketPrice;
   int? packSize;
   int? weightUnitId;
-  int? weight;
+  double? weight;
   int? dimensionUnitId;
   String? height;
   String? width;
@@ -195,7 +195,7 @@ class PackDetails {
     marketPrice = json['market_price'];
     packSize = json['pack_size'];
     weightUnitId = json['weight_unit_id'];
-    weight = json['weight'];
+    weight = double.parse(json['weight'].toString());
     dimensionUnitId = json['dimension_unit_id'];
     height = json['height'];
     width = json['width'];
@@ -858,7 +858,7 @@ class SimilarProduct {
   int? stock;
   int? inStock;
   int? isCombinationAvailable;
-  int? reviewsAvg;
+  double? reviewsAvg;
   int? brandId;
   String? manufacturerNumber;
   String? countryCode;
@@ -968,7 +968,7 @@ class SimilarProduct {
     stock = json['stock'];
     inStock = json['in_stock'];
     isCombinationAvailable = json['is_combination_available'];
-    reviewsAvg = json['reviews_avg'];
+    reviewsAvg = double.parse(json['reviews_avg'].toString());
     brandId = json['brand_id'];
     manufacturerNumber = json['manufacturer_number'];
     countryCode = json['country_code'];
@@ -1266,7 +1266,7 @@ class CustomerViewedProducts {
   int? stock;
   int? inStock;
   int? isCombinationAvailable;
-  int? reviewsAvg;
+  double? reviewsAvg;
   int? brandId;
   String? manufacturerNumber;
   String? countryCode;
@@ -1366,7 +1366,7 @@ class CustomerViewedProducts {
     stock = json['stock'];
     inStock = json['in_stock'];
     isCombinationAvailable = json['is_combination_available'];
-    reviewsAvg = json['reviews_avg'];
+    reviewsAvg = double.parse(json['reviews_avg'].toString());
     brandId = json['brand_id'];
     manufacturerNumber = json['manufacturer_number'];
     countryCode = json['country_code'];

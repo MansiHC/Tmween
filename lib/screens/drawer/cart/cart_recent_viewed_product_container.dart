@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -5,16 +6,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/cart_recent_viewed_product_model.dart';
+import 'package:tmween/model/get_cart_products_model.dart';
 import 'package:tmween/utils/extensions.dart';
 
 import '../../../../utils/global.dart';
 import '../../../controller/cart_controller.dart';
+import '../productDetail/product_detail_screen.dart';
 
 class CartRecentViewedProductContainer extends StatelessWidget {
   CartRecentViewedProductContainer(
       {Key? key, required this.cartRecentViewedProductModel})
       : super(key: key);
-  final CartRecentViewedProductModel cartRecentViewedProductModel;
+  final RecentlyViewedProducts cartRecentViewedProductModel;
   var language;
   final cartController = Get.put(CartController());
 
@@ -25,7 +28,18 @@ class CartRecentViewedProductContainer extends StatelessWidget {
         init: CartController(),
         builder: (contet) {
           cartController.context = context;
-          return Container(
+          return  InkWell(
+              onTap: () {
+            cartController.navigateTo(
+                ProductDetailScreen(
+                    productId:
+                    cartRecentViewedProductModel
+                        .id,
+                    productslug:
+                    cartRecentViewedProductModel
+                        .productSlug!));
+          },
+          child:Container(
             decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border.all(color: Color(0xFFF3F3F3)),
@@ -39,6 +53,11 @@ class CartRecentViewedProductContainer extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          cartRecentViewedProductModel.reviewsAvg == 0
+                              ? Container(
+                            width: 10,
+                          )
+                              :
                           Container(
                               padding: EdgeInsets.all(4),
                               decoration: BoxDecoration(
@@ -49,7 +68,7 @@ class CartRecentViewedProductContainer extends StatelessWidget {
                                 alignment: WrapAlignment.center,
                                 crossAxisAlignment: WrapCrossAlignment.center,
                                 children: [
-                                  Text(cartRecentViewedProductModel.rating,
+                                  Text(cartRecentViewedProductModel.reviewsAvg.toString(),
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 12,
@@ -62,12 +81,26 @@ class CartRecentViewedProductContainer extends StatelessWidget {
                                 ],
                               )),
                           5.heightBox,
-                          Image.asset(
-                            cartRecentViewedProductModel.image,
-                            fit: BoxFit.contain,
-                            height: 70,
-                            width: 70,
+                          cartRecentViewedProductModel.largeImageUrl!.isNotEmpty
+                              ? CachedNetworkImage(
+                            imageUrl: cartRecentViewedProductModel.largeImageUrl!,
+                            height:
+                            MediaQuery.of(context).size.width / 4.5,
+                           width: MediaQuery.of(context).size.width / 4.5,
+                            placeholder: (context, url) => Center(
+                                child: CupertinoActivityIndicator()),
+                            errorWidget: (context, url, error) => Icon(
+                              Icons.image_not_supported,
+                              color: Colors.grey,
+                            ),
                           )
+                              : Container(
+                              height:
+                              MediaQuery.of(context).size.width / 5.3,
+                              child: Icon(
+                                Icons.image_not_supported,
+                                color: Colors.grey,
+                              ))
                         ],
                       ),
                       10.widthBox,
@@ -76,14 +109,14 @@ class CartRecentViewedProductContainer extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           5.heightBox,
-                          Text(cartRecentViewedProductModel.title,
+                          Text(cartRecentViewedProductModel.productName!,
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                   color: Color(0xFF333333),
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold)),
                           5.heightBox,
-                          if (cartRecentViewedProductModel.isFulFilled)
+                          if (true)
                             RichText(
                                 textAlign: TextAlign.start,
                                 text: TextSpan(
@@ -104,7 +137,7 @@ class CartRecentViewedProductContainer extends StatelessWidget {
                           Wrap(
                             children: [
                               Text(
-                                  '${LocaleKeys.sar.tr} ${cartRecentViewedProductModel.price}',
+                                  '${LocaleKeys.sar.tr} ${cartRecentViewedProductModel.finalPrice}',
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                       color: Color(0xFFF57051),
@@ -112,7 +145,7 @@ class CartRecentViewedProductContainer extends StatelessWidget {
                                       fontWeight: FontWeight.bold)),
                               10.widthBox,
                               Text(
-                                  '${LocaleKeys.sar.tr} ${cartRecentViewedProductModel.offerPrice}',
+                                  '${LocaleKeys.sar.tr} ${cartRecentViewedProductModel.retailPrice}',
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                       color: Color(0xFF818181),
@@ -121,28 +154,42 @@ class CartRecentViewedProductContainer extends StatelessWidget {
                             ],
                           ),
                           5.heightBox,
-                          if (cartRecentViewedProductModel.isYouSave)
+                          if (cartRecentViewedProductModel.discountPer!>0)
+
+                            5.heightBox,
+                          if (cartRecentViewedProductModel.discountPer!>0)
+
                             RichText(
                                 textAlign: TextAlign.start,
                                 text: TextSpan(
                                     text:
-                                        'You save ${LocaleKeys.sar.tr} ${cartRecentViewedProductModel.savePrice}! ',
+                                    'You save ${cartRecentViewedProductModel.discountPerDisp}! ',
                                     style: TextStyle(
                                         color: Color(0xFF3B963C), fontSize: 12),
                                     children: <InlineSpan>[
                                       TextSpan(
-                                        text:
-                                            '${cartRecentViewedProductModel.saveOffer}% ${LocaleKeys.off.tr}!',
+                                        text: '${cartRecentViewedProductModel.discountPer}% ${LocaleKeys.off.tr}!',
                                         style: TextStyle(
                                           fontSize: 12,
                                           decoration:
-                                              TextDecoration.lineThrough,
+                                          TextDecoration.lineThrough,
                                           color: Color(0xFF3B963C),
                                         ),
                                       )
                                     ])),
                           10.heightBox,
-                          Container(
+                         InkWell(
+                             onTap: (){
+                               cartController.navigateTo(
+                                   ProductDetailScreen(
+                                       productId:
+                                       cartRecentViewedProductModel
+                                           .id,
+                                       productslug:
+                                       cartRecentViewedProductModel
+                                           .productSlug!));
+                             },
+                             child: Container(
                             color: Color(0xFF0088CA),
                             padding: EdgeInsets.symmetric(
                                 vertical: 5, horizontal: 10),
@@ -150,21 +197,29 @@ class CartRecentViewedProductContainer extends StatelessWidget {
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 12)),
-                          ),
+                          )),
                           10.heightBox
                         ],
                       )),
                       10.widthBox,
                       InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            print('......${cartRecentViewedProductModel
+                                .id}');
+                            cartController.addToWishlist(cartRecentViewedProductModel
+                                .id, language);
+                          },
                           child: SvgPicture.asset(
-                            ImageConstanst.like,
+                            cartController.wishListedProduct.contains(cartRecentViewedProductModel
+                                .id)
+                                ? ImageConstanst.likeFill
+                                : ImageConstanst.like,
                             color: Color(0xFF969696),
                             height: 20,
                             width: 20,
                           )),
                     ])),
-          );
+          ));
         });
   }
 }

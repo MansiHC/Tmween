@@ -64,7 +64,7 @@ class Helper {
       message,
       "",
       animationDuration: 100.milliseconds,
-      duration: 2.seconds,
+      duration: 3.seconds,
       snackPosition: SnackPosition.BOTTOM,
       showProgressIndicator: false,
       isDismissible: false,

@@ -8,7 +8,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/controller/dashboard_controller.dart';
 import 'package:tmween/controller/search_controller.dart';
 import 'package:tmween/model/language_model.dart';
-import 'package:tmween/screens/drawer/categories_screen.dart';
+import 'package:tmween/screens/drawer/category/categories_screen.dart';
 import 'package:tmween/screens/drawer/dashboard/dashboard_screen.dart';
 import 'package:tmween/screens/drawer/search/search_screen.dart';
 import 'package:tmween/screens/drawer/wishlist_screen.dart';
@@ -65,19 +65,22 @@ class DrawerControllers extends GetxController {
         .then((value) async {
       isLogin = value!;
       update();
+      if(isLogin){
+        MySharedPreferences.instance
+            .getStringValuesSF(SharedPreferencesKeys.address)
+            .then((value) async {
+          if (value != null) address = value;
+          update();
+        });
+        MySharedPreferences.instance
+            .getStringValuesSF(SharedPreferencesKeys.image)
+            .then((value) async {
+          image = value!;
+          update();
+        });
+      }
     });
-    MySharedPreferences.instance
-        .getStringValuesSF(SharedPreferencesKeys.address)
-        .then((value) async {
-      if (value != null) address = value;
-      update();
-    });
-    MySharedPreferences.instance
-        .getStringValuesSF(SharedPreferencesKeys.image)
-        .then((value) async {
-      image = value!;
-      update();
-    });
+
 
     MySharedPreferences.instance
         .addBoolToSF(SharedPreferencesKeys.isDrawer, true);

@@ -140,7 +140,7 @@ class EditProfileController extends GetxController {
           .getIntValuesSF(SharedPreferencesKeys.userId)
           .then((value) async {
         userId = value!;
-        print('filename.......${finalImage!.path}');
+//        print('filename.......${finalImage!.path}');
         await api
             .updateProfileMobile(
                 token,

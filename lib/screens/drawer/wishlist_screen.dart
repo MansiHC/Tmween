@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/wishlist_controller.dart';
 import 'package:tmween/model/get_wishlist_details_model.dart';
+import 'package:tmween/screens/drawer/productDetail/product_detail_screen.dart';
 import 'package:tmween/screens/drawer/wishlist_container.dart';
 
 import '../../lang/locale_keys.g.dart';
@@ -10,7 +11,6 @@ import '../../utils/global.dart';
 import '../../utils/my_shared_preferences.dart';
 import '../../utils/views/circular_progress_bar.dart';
 import '../../utils/views/custom_text_form_field.dart';
-import 'dashboard/productDetail/product_detail_screen.dart';
 
 class WishlistScreen extends StatefulWidget {
   final bool fromProfile;
@@ -146,6 +146,19 @@ class WishlistScreenState extends State<WishlistScreen> {
                                     color: AppColors.primaryColor,
                                     size: 32,
                                   ),
+                                  suffixIcon: wishlistController.searchController.text.length>0?
+                                  IconButton(
+                                      onPressed: () {
+                                        wishlistController.searchController
+                                            .clear();
+                                        wishlistController.update();
+                                      },
+                                      icon: Icon(
+                                        CupertinoIcons
+                                            .clear_circled_solid,
+                                        color: AppColors.primaryColor,
+                                        size: 24,
+                                      )):SizedBox(),
                                 ),
                                 validator: (value) {
                                   return null;

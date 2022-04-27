@@ -6,10 +6,24 @@ import 'package:tmween/model/get_customer_address_list_model.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 import 'package:tmween/screens/drawer/profile/address/add_address_screen.dart';
 
+import '../model/review_order_model.dart';
 import '../service/api.dart';
 import '../utils/global.dart';
 import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
+
+class RadioModel {
+   RadioModel(
+      {required this.id,required this.currentId});
+
+   List<int> id;
+   int currentId;
+
+  static fromJson(responseJson) {
+    return null;
+  }
+}
+
 
 class ReviewOrderController extends GetxController {
   late BuildContext context;
@@ -29,10 +43,13 @@ class ReviewOrderController extends GetxController {
   final api = Api();
   bool loading = false;
   List<Address> addressList = [];
-  List<int> radioValue = [];
-  int radioCurrentValue = 1;
+  List<int> radio1Value = [];
+  List<RadioModel> radioValue = [];
   int countPersonalAddress = 0;
   int countOfficeAddress = 0;
+  ReviewOrderData? reviewOrderData;
+  CustomerAddressDetails? addressDetails;
+  List<QuoteItemData>? quoteItemDetails;
 
   @override
   void onInit() {
@@ -49,7 +66,7 @@ class ReviewOrderController extends GetxController {
           .getIntValuesSF(SharedPreferencesKeys.userId)
           .then((value) async {
         userId = value!;
-        getAddressList(Get.locale!.languageCode);
+        getReviewOrderData(Get.locale!.languageCode);
 
         MySharedPreferences.instance
             .getIntValuesSF(SharedPreferencesKeys.loginLogId)
@@ -71,18 +88,24 @@ class ReviewOrderController extends GetxController {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
   }
 
-  Future<void> getAddressList(language) async {
+  Future<void> getReviewOrderData(language) async {
     countPersonalAddress = 0;
     countOfficeAddress = 0;
     addressList = [];
     Helper.showLoading();
-    await api.getCustomerAddressList(token, userId, language).then((value) {
+    await api.getReviewOrder(token, userId, language).then((value) {
       if (value.statusCode == 200) {
         Helper.hideLoading(context);
-        addressList = value.data!;
-        if (addressList.length > 0) {
-          for (var i = 0; i < addressList.length; i++) {
-            radioValue.add(i + 1);
+        reviewOrderData = value.data!;
+        addressDetails = value.data!.cartDetail!.customerAddressDetails![0];
+        quoteItemDetails= value.data!.quotesData!.quoteItemData!;
+        if(quoteItemDetails!.length>0) {
+          for (var i = 0; i < quoteItemDetails!.length; i++) {
+            radio1Value.add(quoteItemDetails![i].id!);
+            List<int> ids = [];
+            ids.add(quoteItemDetails![i].id!+11);
+            ids.add(quoteItemDetails![i].id!+12);
+            radioValue.add(RadioModel(id: ids,currentId: quoteItemDetails![i].id!+11));
           }
         }
       } else if (value.statusCode == 401) {
@@ -101,40 +124,14 @@ class ReviewOrderController extends GetxController {
     });
   }
 
-  Future<void> onRefresh(language) async {
-    await api.getCustomerAddressList(token, userId, language).then((value) {
-      if (value.statusCode == 200) {
-        addressList = value.data!;
-        if (addressList.length > 0) {
-          if (addressList[0].addressType == "1") {
-            addressList.sort((a, b) {
-              return int.parse(a.addressType!)
-                  .compareTo(int.parse(b.addressType!));
-            });
-          } else {
-            addressList
-              ..sort((a, b) => int.parse(b.addressType!)
-                  .compareTo(int.parse(a.addressType!)));
-          }
-        }
-        update();
-      }
-    }).catchError((error) {
-      print('error....$error');
-    });
-  }
-
-  Future<void> removeAddress(id, language) async {
-    //  if (Helper.isIndividual) {
-
-    countPersonalAddress = 0;
-    countOfficeAddress = 0;
+  Future<void> changeDeliverySpeed(quoteItemId,deliveryMode, language) async {
     Helper.showLoading();
-    await api.deleteCustomerAddress(token, id, userId, language).then((value) {
+    await api
+        .changeDeliverySpeed(token, userId, quoteItemId,deliveryMode, language)
+        .then((value) {
       if (value.statusCode == 200) {
         Helper.hideLoading(context);
-        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
-        getAddressList(Get.locale!.languageCode);
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
       } else if (value.statusCode == 401) {
         Helper.hideLoading(context);
         MySharedPreferences.instance
@@ -142,16 +139,16 @@ class ReviewOrderController extends GetxController {
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.hideLoading(context);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
-      update();
     }).catchError((error) {
       Helper.hideLoading(context);
       update();
       print('error....$error');
     });
-    //  }
   }
+
 
   void exitScreen() {
     Get.delete<ReviewOrderController>();
@@ -159,10 +156,9 @@ class ReviewOrderController extends GetxController {
   }
 
   void pop() {
-    countPersonalAddress = 0;
-    countOfficeAddress = 0;
+    Get.delete<ReviewOrderController>();
     Navigator.of(context).pop(false);
-    update();
+    //update();
   }
 
   void navigateToDashboardScreen() {
@@ -171,17 +167,5 @@ class ReviewOrderController extends GetxController {
         (Route<dynamic> route) => false);
   }
 
-  void navigateToAddAddressScreen([Address? address]) {
-    Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => AddAddressScreen(address: address)))
-        .then((value) {
-      if (value) {
-        countPersonalAddress = 0;
-        countOfficeAddress = 0;
-        getAddressList(Get.locale!.languageCode);
-      }
-    });
-  }
+
 }

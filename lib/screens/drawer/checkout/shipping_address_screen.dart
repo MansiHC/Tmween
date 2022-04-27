@@ -15,10 +15,6 @@ import '../../../utils/views/circular_progress_bar.dart';
 class ShippingAddressScreen extends StatelessWidget {
   late String language;
 
-  final CartData? cartData;
-
-  ShippingAddressScreen({Key? key, required this.cartData}) : super(key: key);
-
   final addressController = Get.put(ShippingAddressController());
 
   Future<bool> _onWillPop(ShippingAddressController addressController) async {
@@ -69,6 +65,7 @@ class ShippingAddressScreen extends StatelessWidget {
               visible: addressController.loading,
               child: CircularProgressBar(),
             ),
+            if(addressController.addressList!=null)
             Visibility(
               visible: !addressController.loading &&
                   addressController.addressList.length == 0,
@@ -81,6 +78,16 @@ class ShippingAddressScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold),
               )),
             ),
+            if(addressController.addressList==null)
+              Center(
+                  child: Text(
+                    'No Address',
+                    style: TextStyle(
+                        color: Color(0xFF414141),
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold),
+                  )),
+            if(addressController.addressList!=null)
             Visibility(
                 visible: !addressController.loading &&
                     addressController.addressList.length > 0,
@@ -125,6 +132,7 @@ class ShippingAddressScreen extends StatelessWidget {
                     fontSize: 15,
                     fontWeight: FontWeight.bold)),
             5.heightBox,
+            if(addressController.cartData!=null)
             Container(
                 decoration: BoxDecoration(
                     color: Colors.white,
@@ -141,13 +149,13 @@ class ShippingAddressScreen extends StatelessWidget {
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Colors.black,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w700,
                                     fontSize: 15)),
                             Text('Total',
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Colors.black,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w700,
                                     fontSize: 15)),
                           ],
                         )),
@@ -156,7 +164,7 @@ class ShippingAddressScreen extends StatelessWidget {
                       height: 1,
                       thickness: 1,
                     ),
-                   for (var i = 0; i < cartData!.cartDetails!.length; i++)
+                   for (var i = 0; i < addressController.cartData!.cartItemDetails!.length; i++)
                       Column(children: [
                         Padding(
                             padding: EdgeInsets.all(10),
@@ -165,12 +173,12 @@ class ShippingAddressScreen extends StatelessWidget {
                               children: [
                                 Expanded(
                                     child: Text(
-                                        cartData!.cartDetails![i].productName!,
+                                        addressController.cartData!.cartItemDetails![i].productName!,
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
                                             color: Color(0xFF666666),
                                             fontSize: 15))),
-                                Text(cartData!.cartDetails![i].finalPrice!,
+                                Text(addressController.cartData!.cartItemDetails![i].finalPrice!,
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
                                       color: Color(0xFF666666),
@@ -184,13 +192,13 @@ class ShippingAddressScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                    'Item(${cartData!.cartDetails![i].quantity!})',
+                                    'Item(${addressController.cartData!.cartItemDetails![i].quantity!})',
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
                                         color: Color(0xFF666666),
                                         fontSize: 15)),
                                 Text(
-                                    '${cartData!.currencyCode} ${cartData!.cartDetails![i].itemFinalTotal!.toString()}',
+                                    '${addressController.cartData!.currencyCode} ${addressController.cartData!.cartItemDetails![i].itemFinalTotal!.toString()}',
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
                                       color: Color(0xFF666666),
@@ -214,7 +222,7 @@ class ShippingAddressScreen extends StatelessWidget {
                                 style: TextStyle(
                                     color: Color(0xFF666666), fontSize: 15)),
                             Text(
-                                '${cartData!.currencyCode} ${cartData!.totalDeliveryPrice}',
+                                '${addressController.cartData!.currencyCode} ${addressController.shippingAmount}',
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Color(0xFF666666), fontSize: 15)),
@@ -230,7 +238,7 @@ class ShippingAddressScreen extends StatelessWidget {
                                 style: TextStyle(
                                     color: Color(0xFF666666), fontSize: 15)),
                             Text(
-                                '${cartData!.currencyCode} ${cartData!.totalTaxAmount}',
+                                '${addressController.cartData!.currencyCode} ${addressController.taxAmount}',
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Color(0xFF666666), fontSize: 15)),
@@ -254,7 +262,7 @@ class ShippingAddressScreen extends StatelessWidget {
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold)),
                             Text(
-                                '${cartData!.currencyCode} ${cartData!.totalPrice}',
+                                '${addressController.cartData!.currencyCode} ${addressController.totalAmount}',
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -308,7 +316,7 @@ class ShippingAddressScreen extends StatelessWidget {
           child: InkWell(
               onTap: (){
                 addressController.radioCurrentValue = addressController.radioValue[index];
-                addressController.update();
+                addressController.changeAddress(address.id, language);
               },
               child:
 
@@ -326,7 +334,7 @@ class ShippingAddressScreen extends StatelessWidget {
                   activeColor: Color(0xFF1992CE),
                   onChanged: (int? value) {
                     addressController.radioCurrentValue = value!;
-                    addressController.update();
+                    addressController.changeAddress(address.id, language);
                   },
                 ),
               ),

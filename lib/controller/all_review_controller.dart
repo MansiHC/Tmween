@@ -16,6 +16,8 @@ class AllReviewController extends GetxController {
   final formKey = GlobalKey<FormState>();
 
   TextEditingController commentController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
 
   double currentRating = 0;
   double averageRating = 0;
@@ -45,6 +47,10 @@ class AllReviewController extends GetxController {
   final api = Api();
   bool loading = false;
   List<ReviewProductData> reviewsList = [];
+  final List<int> reviewModelItems = [];
+  final List<int> reviewModelReportItems = [];
+  String reviewMessage = '';
+  String reportMessage = '';
 
   @override
   void onInit() {
@@ -66,6 +72,52 @@ class AllReviewController extends GetxController {
     });
     super.onInit();
   }
+
+  Future<void> addReviewHelpful(reviewId, language, index) async {
+    Helper.showLoading();
+    await api
+        .addReviewHelpful(token, userId, productId, reviewId, language)
+        .then((value) {
+      if (value.statusCode == 401) {
+        Helper.hideLoading(context);
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        Get.deleteAll();
+        Get.offAll(DrawerScreen());
+      } else {
+        Helper.hideLoading(context);
+        reviewMessage = value.message!;
+        reviewModelItems.add(index);
+      }
+      update();
+    }).catchError((error) {
+      print('error....$error');
+    });
+  }
+
+  Future<void> addReviewReport(reviewId, language, index) async {
+    Helper.showLoading();
+    await api
+        .addReviewReportAbuse(token, userId, productId, reviewId,
+        titleController.text, descriptionController.text, language)
+        .then((value) {
+      if (value.statusCode == 401) {
+        Helper.hideLoading(context);
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        Get.deleteAll();
+        Get.offAll(DrawerScreen());
+      } else {
+        Helper.hideLoading(context);
+        reportMessage = value.message!;
+        reviewModelReportItems.add(index);
+      }
+      update();
+    }).catchError((error) {
+      print('error....$error');
+    });
+  }
+
 
   Future<void> getAllReviews(language) async {
     //Helper.showLoading();

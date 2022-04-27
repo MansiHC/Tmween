@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
@@ -14,7 +15,7 @@ class FullImageScreen extends StatefulWidget {
     required this.image,
     required this.current,
   }) : super(key: key);
-  final List<ProductGallery> image;
+  final List<String> image;
   final int current;
 
   @override
@@ -71,8 +72,11 @@ class FullImageScreenState extends State<FullImageScreen> {
             padding: EdgeInsets.all(15),
             child: CarouselSlider(
               items: widget.image
-                  .map((item) => Container(
-                        child: item.largeImageUrl!.setNetworkImage(),
+                  .map((item) => PhotoView(
+                backgroundDecoration: BoxDecoration(
+                  color: Colors.white
+                ),
+                imageProvider: item.setNetworkImageProvider(),
                       ))
                   .toList(),
               carouselController: fullImageController.controller,
