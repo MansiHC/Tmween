@@ -82,7 +82,7 @@ class WishlistData {
   int? stock;
   int? inStock;
   int? isCombinationAvailable;
-  int? reviewsAvg;
+  double? reviewsAvg;
   int? brandId;
   String? manufacturerNumber;
   String? countryCode;
@@ -185,7 +185,7 @@ class WishlistData {
     stock = json['stock'];
     inStock = json['in_stock'];
     isCombinationAvailable = json['is_combination_available'];
-    reviewsAvg = json['reviews_avg'];
+    reviewsAvg = double.parse(json['reviews_avg'].toString());
     brandId = json['brand_id'];
     manufacturerNumber = json['manufacturer_number'];
     countryCode = json['country_code'];

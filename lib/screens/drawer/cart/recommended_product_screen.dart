@@ -51,19 +51,15 @@ class RecommendedProductScreenState extends State<RecommendedProductScreen> {
           return WillPopScope(
               onWillPop: () => _onWillPop(recommendedProductController),
               child: Scaffold(
-                appBar: AppBar(
-                  elevation: 0.0,
-                  iconTheme: IconThemeData(color: Colors.white),
-                  backgroundColor: AppColors.appBarColor,
-                  centerTitle: false,
-                  titleSpacing: 0.0,
-                  title: Text(
-                    'Recommended Products',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
+
                 body: Column(
                   children: [
+                    Container(
+                        constraints: BoxConstraints(
+                            minWidth: double.infinity, maxHeight: 90),
+                        color: AppColors.appBarColor,
+                        padding: EdgeInsets.only(top: 20),
+                        child: topView(recommendedProductController)),
                     recommendedProductController.loading
                         ? Expanded(child: Center(child: CircularProgressBar()))
                         : Expanded(
@@ -119,6 +115,43 @@ class RecommendedProductScreenState extends State<RecommendedProductScreen> {
                 ),
               ));
         });
+  }
+
+  Widget topView(RecommendedProductController addressController) {
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        child: Stack(
+          children: [
+            Align(
+                alignment: language == 'ar'
+                    ? Alignment.centerRight
+                    : Alignment.centerLeft,
+                child: ClipOval(
+                  child: Material(
+                    color: Colors.white, // Button color
+                    child: InkWell(
+                      onTap: () {
+                        addressController.exitScreen();
+                      },
+                      child: SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: Icon(
+                            Icons.keyboard_arrow_left_sharp,
+                            color: Colors.black,
+                          )),
+                    ),
+                  ),
+                )),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                "Recommended Products",
+                style: TextStyle(fontSize: 20, color: Colors.white),
+              ),
+            ),
+          ],
+        ));
   }
 }
 
@@ -282,4 +315,6 @@ class RecommendedProductContainer2 extends StatelessWidget {
           ));
         });
   }
+
+
 }

@@ -1848,6 +1848,39 @@ class Api {
     return result;
   }
 
+  Future<SubCategoryProductListingModel> getCategoryMobileBestMatchData(
+      page,catSlug,sortBy,sortOrder,  langCode) async {
+    late SubCategoryProductListingModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.categoryProductList),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "lang_code": langCode,
+                "pagination": 1,
+                "page": page,
+                "category_slug": catSlug,
+                "records_per_page": "10",
+                "sort_by": sortBy,
+                "sort_order": sortOrder,
+                "search_arr": {
+                  "slug_name":catSlug,
+                },
+              }));
+      var responseJson = _returnResponse(response);
+      result = SubCategoryProductListingModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+    }
+    return result;
+  }
+
 
   Future<GetCategoriesModel> getAllCategories(page, langCode) async {
     late GetCategoriesModel result;

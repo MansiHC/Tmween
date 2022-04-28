@@ -77,7 +77,7 @@ class ProductData {
   String? productName;
   int? finalPrice;
   int? retailPrice;
-  int? reviewsAvg;
+  double? reviewsAvg;
   String? productSlug;
   String? largeImageUrl;
 
@@ -112,7 +112,7 @@ class ProductData {
     productName = json['product_name'];
     finalPrice = json['final_price'];
     retailPrice = json['retail_price'];
-    reviewsAvg = json['reviews_avg'];
+    reviewsAvg = double.parse(json['reviews_avg'].toString());
 
     productSlug = json['product_slug'];
     largeImageUrl = json['large_image_url'];

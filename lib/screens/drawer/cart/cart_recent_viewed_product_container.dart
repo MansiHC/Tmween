@@ -206,15 +206,22 @@ class CartRecentViewedProductContainer extends StatelessWidget {
                           onTap: () {
                             print('......${cartRecentViewedProductModel
                                 .id}');
+                            if(cartController.wishListedProduct.contains(cartRecentViewedProductModel
+                                .id)){
+                              cartController.removeWishlistProduct(cartRecentViewedProductModel
+                                  .id, language);
+                            }else{
                             cartController.addToWishlist(cartRecentViewedProductModel
-                                .id, language);
+                                .id, language);}
                           },
                           child: SvgPicture.asset(
                             cartController.wishListedProduct.contains(cartRecentViewedProductModel
                                 .id)
                                 ? ImageConstanst.likeFill
                                 : ImageConstanst.like,
-                            color: Color(0xFF969696),
+                            color:  cartController.wishListedProduct.contains(cartRecentViewedProductModel
+                                .id)
+                                ?Colors.red:Color(0xFF969696),
                             height: 20,
                             width: 20,
                           )),

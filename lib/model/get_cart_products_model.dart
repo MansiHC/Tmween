@@ -829,6 +829,7 @@ class RecentlyViewedProducts {
   int? productInOnePack;
   int? expirable;
   int? status;
+  int? isWishlist;
   String? createdAt;
   String? updatedAt;
   String? productSlug;
@@ -897,7 +898,8 @@ class RecentlyViewedProducts {
         this.discountValueDisp,
         this.retailPriceDisp,
         this.finalPriceDisp,
-        this.discountPerDisp});
+        this.discountPerDisp,
+      this.isWishlist});
 
   RecentlyViewedProducts.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -955,6 +957,7 @@ class RecentlyViewedProducts {
     retailPriceDisp = json['retail_price_disp'];
     finalPriceDisp = json['final_price_disp'];
     discountPerDisp = json['discount_per_disp'];
+    isWishlist = json['isWishlist'];
   }
 
   Map<String, dynamic> toJson() {
@@ -1015,6 +1018,7 @@ class RecentlyViewedProducts {
     data['retail_price_disp'] = this.retailPriceDisp;
     data['final_price_disp'] = this.finalPriceDisp;
     data['discount_per_disp'] = this.discountPerDisp;
+    data['isWishlist'] = this.isWishlist;
     return data;
   }
 }

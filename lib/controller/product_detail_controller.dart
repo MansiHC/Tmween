@@ -146,6 +146,8 @@ class ProductDetailController extends GetxController {
     radioPackItems = [];
     attributeValueArray = [];
     images=[];
+    galleryImages=[];
+    attributeImages=[];
     await api
         .getProductDetailsMobile(productSlug, isLogin, userId, language)
         .then((value) {
@@ -161,7 +163,23 @@ class ProductDetailController extends GetxController {
         for(var i=0; i<productDetailData!.productData![0].productGallery!.length;i++){
           galleryImages.add(productDetailData!.productData![0].productGallery![i].largeImageUrl!);
         }
-
+        for (var i = 0; i < productDetailData!.productOtherInfo!.length; i++) {
+          if (productDetailData!.productOtherInfo![i].position == 1) {
+            topLeftInfo = productDetailData!.productOtherInfo![i];
+          } else if (productDetailData!.productOtherInfo![i].position == 2) {
+            topRightInfo = productDetailData!.productOtherInfo![i];
+          } else if (productDetailData!.productOtherInfo![i].position == 3) {
+            bottomLeftInfo = productDetailData!.productOtherInfo![i];
+          } else if (productDetailData!.productOtherInfo![i].position == 4) {
+            bottomRightInfo = productDetailData!.productOtherInfo![i];
+          }
+        }
+        print('......${isLogin}....${productDetailData!.productData![0].isWhishlist}');
+        if (isLogin) {
+          if (productDetailData!.productData![0].isWhishlist == 1) {
+            isLiked = true;
+          }
+        }
         if (productDetailData!.productAssociateAttribute != null) {
           for (var i = 0;
               i < productDetailData!.productAssociateAttribute!.length;
@@ -199,20 +217,7 @@ class ProductDetailController extends GetxController {
           Helper.hideLoading(context);
           update();
         }
-        for (var i = 0; i < productDetailData!.productOtherInfo!.length; i++) {
-          if (productDetailData!.productOtherInfo![i].position == 1) {
-            topLeftInfo = productDetailData!.productOtherInfo![i];
-          } else if (productDetailData!.productOtherInfo![i].position == 2) {
-            topRightInfo = productDetailData!.productOtherInfo![i];
-          } else if (productDetailData!.productOtherInfo![i].position == 3) {
-            bottomLeftInfo = productDetailData!.productOtherInfo![i];
-          } else if (productDetailData!.productOtherInfo![i].position == 4) {
-            bottomRightInfo = productDetailData!.productOtherInfo![i];
-          }
-        }
-        if (isLogin) if (productDetailData!.productData![0].isWhishlist == 1) {
-          isLiked = true;
-        }
+
       } else {
         Helper.hideLoading(context);
         Helper.showGetSnackBar(value.message!, AppColors.errorColor);
@@ -490,7 +495,9 @@ class ProductDetailController extends GetxController {
         addedToCart = true;
         cartCount = value.data!.cartTotalItems!;
         Helper.hideLoading(context);
-        navigateToCartScreen();
+     navigateTo(CartScreen(
+          from: AppConstants.productDetail,
+        ));
       //  _showDialog();
       } else if (value.statusCode == 401) {
         addedToCart = false;

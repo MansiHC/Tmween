@@ -36,7 +36,6 @@ class CategoryFilterScreenState extends State<CategoryFilterScreen> {
     filterController.catSlug = widget.catSlug!;
     filterController.catName = widget.catName!;
     filterController.catId = widget.catId!;
-      filterController.getFilterData(Get.locale!.languageCode);
     super.initState();
   }
   Future<bool> _onWillPop(CategoryFilterController filterController) async {

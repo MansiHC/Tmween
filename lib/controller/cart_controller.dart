@@ -88,6 +88,11 @@ class CartController extends GetxController {
           q.setQuantity = cartData!.cartItemDetails![i].quantity!;
           q.setProductId = cartData!.cartItemDetails![i].productId!;
           cartQuantityList.add(q);
+
+        }
+        for(var i=0;i<recentlyViewedProducts!.length;i++){
+          if(recentlyViewedProducts![i].isWishlist==1)
+            wishListedProduct.add(recentlyViewedProducts![i].id!);
         }
         update();
       } else if (value.statusCode == 401) {
@@ -151,6 +156,32 @@ class CartController extends GetxController {
       print('error....$error');
     });
   }
+
+  Future<void> removeWishlistProduct(productId,language) async {
+    //  if (Helper.isIndividual) {
+    print('remove......');
+    await api
+        .deleteWishListDetails(token, productId, userId, language)
+        .then((value) {
+      if (value.statusCode == 200) {
+        wishListedProduct.remove(productId);
+        update();
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
+      } else if (value.statusCode == 401) {
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        Get.deleteAll();
+        Get.offAll(DrawerScreen());
+      } else {
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
+      }
+      update();
+    }).catchError((error) {
+      print('error....$error');
+    });
+    //  }
+  }
+
 
 
   Future<void> editCartProductDecrease(

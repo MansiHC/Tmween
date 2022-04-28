@@ -32,30 +32,7 @@ class RecentlyViewedProductController extends GetxController {
   @override
   void onInit() {
 
-    MySharedPreferences.instance
-        .getBoolValuesSF(SharedPreferencesKeys.isLogin)
-        .then((value) async {
-      isLogin = value!;
-      print('...cart....$isLogin');
-      if (isLogin)
-        MySharedPreferences.instance
-            .getStringValuesSF(SharedPreferencesKeys.token)
-            .then((value) async {
-          token = value!;
-          print('dhsh.....$token');
-          MySharedPreferences.instance
-              .getIntValuesSF(SharedPreferencesKeys.userId)
-              .then((value) async {
-            userId = value!;
-            getData(Get.locale!.languageCode);
-            MySharedPreferences.instance
-                .getIntValuesSF(SharedPreferencesKeys.loginLogId)
-                .then((value) async {
-              loginLogId = value!;
-            });
-          });
-        });
-    });
+
 
 
     super.onInit();
@@ -64,6 +41,7 @@ class RecentlyViewedProductController extends GetxController {
   Future<void> getData(language) async {
     //Helper.showLoading();
     loading =true;
+    wishListedProduct=[];
     update();
     await api.getRecentlyViewed(userId,"1", language).then((value) {
     //  Helper.hideLoading(context);
@@ -75,7 +53,10 @@ class RecentlyViewedProductController extends GetxController {
         next = value.data!.next.runtimeType == int ? value.data!.next : 0;
         totalRecords = value.data!.totalRecords!;
         recentlyViewProduct = value.data!.recentlyViewProduct;
-
+        for(var i=0;i<recentlyViewProduct!.length;i++){
+          if(recentlyViewProduct![i].isWishlist==1)
+            wishListedProduct.add(recentlyViewProduct![i].id!);
+        }
 
       } else {
         Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
@@ -118,6 +99,10 @@ class RecentlyViewedProductController extends GetxController {
         totalRecords = value.data!.totalRecords!;
         recentlyViewProduct?.addAll(value.data!.recentlyViewProduct!);
         print('ydgsyudgfyuy.........${recentlyViewProduct!.length}');
+        for(var i=0;i<recentlyViewProduct!.length;i++){
+          if(recentlyViewProduct![i].isWishlist==1)
+          wishListedProduct.add(recentlyViewProduct![i].productId!);
+        }
 
         update();
         return true;
@@ -130,6 +115,32 @@ class RecentlyViewedProductController extends GetxController {
     });
     return false;
   }
+
+  Future<void> removeWishlistProduct(productId,language) async {
+    //  if (Helper.isIndividual) {
+    print('remove......');
+    await api
+        .deleteWishListDetails(token, productId, userId, language)
+        .then((value) {
+      if (value.statusCode == 200) {
+        wishListedProduct.remove(productId);
+        update();
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
+      } else if (value.statusCode == 401) {
+        MySharedPreferences.instance
+            .addBoolToSF(SharedPreferencesKeys.isLogin, false);
+        Get.deleteAll();
+        Get.offAll(DrawerScreen());
+      } else {
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
+      }
+      update();
+    }).catchError((error) {
+      print('error....$error');
+    });
+    //  }
+  }
+
 
   Future<void> addToWishlist(productId, language) async {
     Helper.showLoading();

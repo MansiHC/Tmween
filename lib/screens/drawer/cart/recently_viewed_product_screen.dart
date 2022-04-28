@@ -9,18 +9,91 @@ import 'package:tmween/utils/extensions.dart';
 
 import '../../../controller/recently_viewed_product_controller.dart';
 import '../../../utils/global.dart';
+import '../../../utils/my_shared_preferences.dart';
 import '../../../utils/views/circular_progress_bar.dart';
 import '../productDetail/product_detail_screen.dart';
 
-class RecentlyViewedProductScreen extends StatelessWidget {
+class RecentlyViewedProductScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return RecentlyViewedProductScreenState();
+  }
+
+}
+class RecentlyViewedProductScreenState extends State<RecentlyViewedProductScreen> {
   final recentlyViewedProductController =
       Get.put(RecentlyViewedProductController());
   var language;
+
+  @override
+  void initState() {
+    MySharedPreferences.instance
+        .getBoolValuesSF(SharedPreferencesKeys.isLogin)
+        .then((value) async {
+      recentlyViewedProductController.isLogin = value!;
+
+      if (recentlyViewedProductController.isLogin)
+        MySharedPreferences.instance
+            .getStringValuesSF(SharedPreferencesKeys.token)
+            .then((value) async {
+          recentlyViewedProductController.token = value!;
+          MySharedPreferences.instance
+              .getIntValuesSF(SharedPreferencesKeys.userId)
+              .then((value) async {
+            recentlyViewedProductController.userId = value!;
+            recentlyViewedProductController.getData(Get.locale!.languageCode);
+            MySharedPreferences.instance
+                .getIntValuesSF(SharedPreferencesKeys.loginLogId)
+                .then((value) async {
+              recentlyViewedProductController.loginLogId = value!;
+            });
+          });
+        });
+    });
+    super.initState();
+  }
 
   Future<bool> _onWillPop(
       RecentlyViewedProductController recentlyViewedProductController) async {
     recentlyViewedProductController.exitScreen();
     return true;
+  }
+
+  Widget topView(RecentlyViewedProductController addressController) {
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        child: Stack(
+          children: [
+            Align(
+                alignment: language == 'ar'
+                    ? Alignment.centerRight
+                    : Alignment.centerLeft,
+                child: ClipOval(
+                  child: Material(
+                    color: Colors.white, // Button color
+                    child: InkWell(
+                      onTap: () {
+                        addressController.exitScreen();
+                      },
+                      child: SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: Icon(
+                            Icons.keyboard_arrow_left_sharp,
+                            color: Colors.black,
+                          )),
+                    ),
+                  ),
+                )),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                'Recently Viewed Products',
+                style: TextStyle(fontSize: 20, color: Colors.white),
+              ),
+            ),
+          ],
+        ));
   }
 
   @override
@@ -34,19 +107,15 @@ class RecentlyViewedProductScreen extends StatelessWidget {
           return WillPopScope(
               onWillPop: () => _onWillPop(recentlyViewedProductController),
               child: Scaffold(
-                appBar: AppBar(
-                  elevation: 0.0,
-                  iconTheme: IconThemeData(color: Colors.white),
-                  backgroundColor: AppColors.appBarColor,
-                  centerTitle: false,
-                  titleSpacing: 0.0,
-                  title: Text(
-                    'Recently Viewed Products',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
+
                 body: Column(
                   children: [
+                    Container(
+                        constraints: BoxConstraints(
+                            minWidth: double.infinity, maxHeight: 90),
+                        color: AppColors.appBarColor,
+                        padding: EdgeInsets.only(top: 20),
+                        child: topView(recentlyViewedProductController)),
                     recentlyViewedProductController.loading
                         ? Expanded(child: Center(child: CircularProgressBar()))
                         : Expanded(
@@ -302,15 +371,23 @@ class RecentViewedProductContainer extends StatelessWidget {
                       InkWell(
                           onTap: () {
                             print('......${cartRecentViewedProductModel.id}');
-                            recentlyViewedProductController.addToWishlist(
-                                cartRecentViewedProductModel.id, language);
+    if(recentlyViewedProductController.wishListedProduct.contains(cartRecentViewedProductModel
+        .id)){
+      recentlyViewedProductController.removeWishlistProduct(cartRecentViewedProductModel
+        .id, language);
+    }else {
+      recentlyViewedProductController.addToWishlist(
+          cartRecentViewedProductModel.id, language);
+    }
                           },
                           child: SvgPicture.asset(
                             recentlyViewedProductController.wishListedProduct
                                     .contains(cartRecentViewedProductModel.id)
                                 ? ImageConstanst.likeFill
                                 : ImageConstanst.like,
-                            color: Color(0xFF969696),
+                            color: recentlyViewedProductController.wishListedProduct
+                                .contains(cartRecentViewedProductModel.id)
+                                ?Colors.red:Color(0xFF969696),
                             height: 20,
                             width: 20,
                           )),
@@ -318,4 +395,6 @@ class RecentViewedProductContainer extends StatelessWidget {
           ));
         });
   }
+
+
 }

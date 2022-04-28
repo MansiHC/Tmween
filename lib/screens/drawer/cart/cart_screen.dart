@@ -348,7 +348,7 @@ cartController.navigateTo(RecommendedProductScreen(productIdList:cartController.
     if(cartController.recentlyViewedProducts!.length>3)
     InkWell(
     onTap: (){
-    cartController.navigateTo(RecentlyViewedProductScreen());
+    Navigator.push(context, MaterialPageRoute(builder: (context) => RecentlyViewedProductScreen())).then((value) => cartController.getCartProducts(language));
     },
     child:
                     Wrap(

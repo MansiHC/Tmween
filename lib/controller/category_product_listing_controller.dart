@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:tmween/controller/category_filter_controller.dart';
 import 'package:tmween/screens/drawer/search/search_screen.dart';
 
 import '../model/get_customer_address_list_model.dart';
@@ -126,10 +127,13 @@ class CategoryProductListingController extends GetxController {
   }
 
   Future<void> getFilterResult( language) async {
+    productList = [];
     Helper.showLoading();
+    print('.............${categorySlug}....$fromPrice....$toPrice');
+
     await api
-        .setCategoryMobileFilterData("1",'arts-crafts', catIdList,brandIdList,sellerIdList,
-        fromPrice,toPrice,language)
+        .setCategoryMobileFilterData("1",categorySlug, catIdList,brandIdList,sellerIdList,
+        fromPrice.toString(),toPrice.toString(),language)
         .then((value) {
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
@@ -147,6 +151,55 @@ class CategoryProductListingController extends GetxController {
       print('error....$error');
     });
   }
+  /*## Filter Data Low to High
+ "sort":"final_price",
+ "sort_order":"asc"
+
+## Filter Data High to Low
+ "sort":"final_price",
+ "sort_order":"desc"
+
+## Filter Data by Product name
+ "sort":"product_name",
+ "sort_order":"asc"
+
+## Filter Data by Review average
+ "sort_by":"reviews_avg",
+ "sort_order":"desc"
+
+## Filter Data by Newest arrival
+ "sort_by":"created_at",
+ "sort_order":"desc"
+
+*/
+
+  Future<void> getBestMatchResult( sortBy,sortOrder,language) async {
+    productList = [];
+    Helper.showLoading();
+    print('.............${categorySlug}....$sortBy....$sortOrder');
+
+    await api
+        .getCategoryMobileBestMatchData("1",categorySlug, sortBy,sortOrder,language)
+        .then((value) {
+      if (value.statusCode == 200) {
+        totalPages = value.data!.totalPages!;
+        prev =
+        value.data!.previous.runtimeType == int ? value.data!.previous : 0;
+        next = value.data!.next.runtimeType == int ? value.data!.next : 0;
+        totalRecords = value.data!.totalRecords!;
+        productList = value.data!.productData!;
+      }
+      Helper.hideLoading(context);
+      update();
+    }).catchError((error) {
+      Helper.hideLoading(context);
+      update();
+      print('error....$error');
+    });
+  }
+
+
+
   Future<void> getProductList(searchString, language) async {
     productList = [];
     Helper.showLoading();
@@ -177,13 +230,36 @@ class CategoryProductListingController extends GetxController {
     });
   }
 
-
-
   Future<bool> loadMore(language) async {
     update();
     await api
         .categoryProductList(
             next, categorySlug,categoryId, language)
+        .then((value) {
+      if (value.statusCode == 200) {
+        totalPages = value.data!.totalPages!;
+        prev =
+            value.data!.previous.runtimeType == int ? value.data!.previous : 0;
+        next = value.data!.next.runtimeType == int ? value.data!.next : 0;
+        totalRecords = value.data!.totalRecords!;
+        productList.addAll(value.data!.productData!);
+        update();
+        return true;
+      }
+      update();
+    }).catchError((error) {
+      update();
+      print('error....$error');
+      return false;
+    });
+    return false;
+  }
+
+  Future<bool> loadMoreFilter(language) async {
+    update();
+    await api
+        .setCategoryMobileFilterData(next,categorySlug, catIdList,brandIdList,sellerIdList,
+        fromPrice.toString(),toPrice.toString(),language)
         .then((value) {
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
@@ -282,6 +358,7 @@ class CategoryProductListingController extends GetxController {
 
   void exitScreen() {
     Get.delete<CategoryProductListingController>();
+    Get.delete<CategoryFilterController>();
     Navigator.of(context).pop();
   }
 

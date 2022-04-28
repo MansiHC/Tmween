@@ -40,6 +40,7 @@ class WishlistScreenState extends State<WishlistScreen> {
 
   @override
   void initState() {
+    wishlistController.searchController.clear();
     MySharedPreferences.instance
         .getStringValuesSF(SharedPreferencesKeys.token)
         .then((value) async {

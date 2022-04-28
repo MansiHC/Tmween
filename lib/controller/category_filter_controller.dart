@@ -57,9 +57,9 @@ class CategoryFilterController extends GetxController {
   double priceRange = 0;
   late RangeValues currentRangeValues;
 
-  final List<Map> categoryList = [];
-  final List<Map> brandList = [];
-  final List<Map> sellerList = [];
+   List<Map> categoryList = [];
+   List<Map> brandList = [];
+   List<Map> sellerList = [];
   List<String> productCatIdList = [];
   List<String> brandIdList = [];
   List<String> sellerIdList = [];
@@ -79,9 +79,18 @@ class CategoryFilterController extends GetxController {
   late GetFilterData filteredData;
   int fromPrice=0,toPrice=0;
 
+  @override
+  void onInit() {
+    getFilterData(Get.locale!.languageCode);
+    super.onInit();
+  }
+
   Future<void> getFilterData(language) async {
     // Helper.showLoading();
     loading = true;
+    categoryList=[];
+    brandList=[];
+    sellerList=[];
     await api
         .getCategoryMobileFilterData('arts-crafts',language)
         .then((value) {
@@ -128,6 +137,7 @@ class CategoryFilterController extends GetxController {
   }
 
   Future<void> setFilter(language) async {
+    Navigator.of(context).pop(false);
     productCatIdList=[];
     brandIdList=[];
     sellerIdList=[];
@@ -209,7 +219,7 @@ class CategoryFilterController extends GetxController {
   }
 
   void exitScreen() {
-    Get.delete<CategoryFilterController>();
+    //Get.delete<CategoryFilterController>();
     Navigator.of(context).pop(false);
   }
 }

@@ -13,7 +13,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
-import 'package:tmween/screens/drawer/dashboard/similar_products_container.dart';
+import 'package:tmween/screens/drawer/productDetail/similar_products_container.dart';
 import 'package:tmween/screens/drawer/productDetail/review_product_screen.dart';
 import 'package:tmween/screens/drawer/search/search_screen.dart';
 import 'package:tmween/utils/extensions.dart';
@@ -77,8 +77,12 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
         .then((value) async {
       if (value != null) {
         productDetailController.isLogin = value;
-
-        productDetailController.getProductDetails(Get.locale!.languageCode);
+        MySharedPreferences.instance
+            .getIntValuesSF(SharedPreferencesKeys.userId)
+            .then((value) async {
+          productDetailController.userId = value!;
+          productDetailController.getProductDetails(Get.locale!.languageCode);
+        });
       } else {
         productDetailController.getProductDetails(Get.locale!.languageCode);
       }
