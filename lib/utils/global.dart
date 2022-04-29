@@ -145,6 +145,8 @@ abstract class UrlConstants {
       '$baseUrl/get-recommanded-product';
   static const String getCategoryMobileFilterData =
       '$baseUrl/get-category-mobile-filter-data';
+  static const String getSearchMobileFilterData =
+      '$baseUrl/get-search-product-left-filter';
   static const String topSearchSuggestionProductList =
       '$baseUrl/top-search-suggestion-product-list-mobile';
   static const String categoryProductList =

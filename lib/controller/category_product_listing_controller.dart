@@ -40,11 +40,12 @@ class CategoryProductListingController extends GetxController {
   int prev = 0;
   int next = 0;
   int totalRecords = 0;
-   int? fromPrice;
+   int? fromPrice =0;
    int? toPrice;
-   List<String>? catIdList;
-   List<String>? brandIdList;
-   List<String>? sellerIdList;
+   int? fullFillByTmween = 0;
+   List<String>? catIdList = [];
+   List<String>? brandIdList = [];
+   List<String>? sellerIdList = [];
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
@@ -129,11 +130,12 @@ class CategoryProductListingController extends GetxController {
   Future<void> getFilterResult( language) async {
     productList = [];
     Helper.showLoading();
-    print('.............${categorySlug}....$fromPrice....$toPrice');
+    print('.............${categorySlug}.$categoryId...$fromPrice....$toPrice..$catIdList...$brandIdList....$sellerIdList...');
+    catIdList!.add(categoryId.toString());
 
     await api
         .setCategoryMobileFilterData("1",categorySlug, catIdList,brandIdList,sellerIdList,
-        fromPrice.toString(),toPrice.toString(),language)
+        fromPrice.toString(),toPrice.toString(),fullFillByTmween.toString(),language)
         .then((value) {
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
@@ -151,35 +153,17 @@ class CategoryProductListingController extends GetxController {
       print('error....$error');
     });
   }
-  /*## Filter Data Low to High
- "sort":"final_price",
- "sort_order":"asc"
-
-## Filter Data High to Low
- "sort":"final_price",
- "sort_order":"desc"
-
-## Filter Data by Product name
- "sort":"product_name",
- "sort_order":"asc"
-
-## Filter Data by Review average
- "sort_by":"reviews_avg",
- "sort_order":"desc"
-
-## Filter Data by Newest arrival
- "sort_by":"created_at",
- "sort_order":"desc"
-
-*/
 
   Future<void> getBestMatchResult( sortBy,sortOrder,language) async {
     productList = [];
     Helper.showLoading();
-    print('.............${categorySlug}....$sortBy....$sortOrder');
+    print('.............${categorySlug}...$categoryId...$fromPrice..$toPrice.$sortBy....$sortOrder...$fullFillByTmween...$catIdList...$brandIdList....$sellerIdList');
+
+    catIdList!.add(categoryId.toString());
 
     await api
-        .getCategoryMobileBestMatchData("1",categorySlug, sortBy,sortOrder,language)
+        .getCategoryMobileBestMatchData("1",categorySlug, sortBy,sortOrder,catIdList,brandIdList,sellerIdList,
+        fromPrice.toString(),toPrice.toString(),fullFillByTmween.toString(),language)
         .then((value) {
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
@@ -197,8 +181,6 @@ class CategoryProductListingController extends GetxController {
       print('error....$error');
     });
   }
-
-
 
   Future<void> getProductList(searchString, language) async {
     productList = [];
@@ -257,9 +239,11 @@ class CategoryProductListingController extends GetxController {
 
   Future<bool> loadMoreFilter(language) async {
     update();
+    catIdList!.add(categoryId.toString());
+
     await api
         .setCategoryMobileFilterData(next,categorySlug, catIdList,brandIdList,sellerIdList,
-        fromPrice.toString(),toPrice.toString(),language)
+        fromPrice.toString(),toPrice.toString(),fullFillByTmween.toString(),language)
         .then((value) {
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;

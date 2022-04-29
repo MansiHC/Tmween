@@ -77,8 +77,8 @@ class CategoryFilterController extends GetxController {
   final api = Api();
   bool loading = true;
   late GetFilterData filteredData;
-  int fromPrice=0,toPrice=0;
-
+  int fromPrice=0,toPrice=0,fullFillByTmween=0;
+bool called=false;
   @override
   void onInit() {
     getFilterData(Get.locale!.languageCode);
@@ -92,10 +92,12 @@ class CategoryFilterController extends GetxController {
     brandList=[];
     sellerList=[];
     await api
-        .getCategoryMobileFilterData('arts-crafts',language)
+        .getCategoryMobileFilterData(catSlug,language)
         .then((value) {
       if (value.statusCode == 200) {
+        called=true;
         filteredData = value.data!;
+        if (filteredData.productCategory != null)
         for (var i = 0; i < filteredData.productCategory!.length; i++) {
           categoryList.add({
             'title': filteredData.productCategory![i].categoryName,
@@ -104,6 +106,7 @@ class CategoryFilterController extends GetxController {
             'isChecked': false
           });
         }
+        if (filteredData.brand != null)
         for (var i = 0; i < filteredData.brand!.length; i++) {
           brandList.add({
             'title': filteredData.brand![i].brandName,
@@ -112,6 +115,7 @@ class CategoryFilterController extends GetxController {
             'isChecked': false
           });
         }
+        if (filteredData.suppliersData != null)
         for (var i = 0; i < filteredData.suppliersData!.length; i++) {
           sellerList.add({
             'title': filteredData.suppliersData![i].supplierName,
@@ -155,13 +159,17 @@ class CategoryFilterController extends GetxController {
     }
    fromPrice =currentRangeValues.start.round();
    toPrice =currentRangeValues.end.round();
+    var showOnlyCheckedList = showOnlyList.where((i) => i['isChecked']).toList();
+    if(showOnlyCheckedList.contains(LocaleKeys.fulfilledBy.tr)){
+      fullFillByTmween =1;
+    }
 
-   print('object.....$productCatIdList...$brandIdList....$sellerIdList....$fromPrice....$toPrice');
+    print('object.....$productCatIdList...$brandIdList....$sellerIdList....$fromPrice....$toPrice...$fullFillByTmween');
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>
         CategoryProductListingScreen(categorySlug: catSlug, categoryName: catName,
         categoryId: catId,
         fromFilter: true,catIdList: productCatIdList,
-        brandIdList: brandIdList,sellerIdList: sellerIdList,fromPrice: fromPrice,toPrice: toPrice,)));
+        brandIdList: brandIdList,sellerIdList: sellerIdList,fromPrice: fromPrice,toPrice: toPrice,fullFillByTmween:fullFillByTmween)));
 
   }
 

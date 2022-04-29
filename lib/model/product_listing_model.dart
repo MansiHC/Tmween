@@ -1,3 +1,4 @@
+
 class ProductListingModel {
   int? statusCode;
   String? statusMessage;
@@ -28,7 +29,7 @@ class ProductListingModel {
 }
 
 class Data {
-  List<ProductData>? productData;
+  List<SearchProductData>? productData;
   int? totalPages;
   var next;
   var previous;
@@ -43,9 +44,9 @@ class Data {
 
   Data.fromJson(Map<String, dynamic> json) {
     if (json['product_data'] != null) {
-      productData = <ProductData>[];
+      productData = <SearchProductData>[];
       json['product_data'].forEach((v) {
-        productData!.add(new ProductData.fromJson(v));
+        productData!.add(new SearchProductData.fromJson(v));
       });
     }
     totalPages = json['total_pages'];
@@ -66,8 +67,7 @@ class Data {
     return data;
   }
 }
-
-class ProductData {
+class SearchProductData {
   int? id;
   int? attributeSetId;
   int? productCategoryId;
@@ -121,7 +121,7 @@ class ProductData {
   String? prodImage;
   String? largeImageUrl;
 
-  ProductData(
+  SearchProductData(
       {this.id,
       this.attributeSetId,
       this.productCategoryId,
@@ -175,7 +175,7 @@ class ProductData {
       this.prodImage,
       this.largeImageUrl});
 
-  ProductData.fromJson(Map<String, dynamic> json) {
+  SearchProductData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     attributeSetId = json['attribute_set_id'];
     productCategoryId = json['product_category_id'];

@@ -1807,8 +1807,37 @@ class Api {
     return result;
   }
 
+ Future<GetFilterDataModel> getSearchMobileFilterData(
+      searchString,  langCode) async {
+    late GetFilterDataModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.getSearchMobileFilterData),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "lang_code": langCode,
+                "search_text":searchString,
+                "pagination": 0,
+                "page": 1,
+                "sort_by":"created_at",
+                "sort_order":"desc"
+              }));
+      var responseJson = _returnResponse(response);
+      result = GetFilterDataModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+    }
+    return result;
+  }
+
   Future<SubCategoryProductListingModel> setCategoryMobileFilterData(
-      page,catSlug,catList,brandList,sellerList,fromPrice,toPrice,  langCode) async {
+      page,catSlug,catList,brandList,sellerList,fromPrice,toPrice,fullFillByTmween,  langCode) async {
     late SubCategoryProductListingModel result;
     try {
       final response =
@@ -1836,7 +1865,8 @@ class Api {
                     "slug_name":catSlug,
                     "keyword": "",
                     "price_from": fromPrice,
-                    "price_to":toPrice
+                    "price_to":toPrice,
+                    "full_fill_by_tmween":fullFillByTmween
                   },
 
               }));
@@ -1848,8 +1878,50 @@ class Api {
     return result;
   }
 
+  Future<SubCategoryProductListingModel> setSearchMobileFilterData(
+      page,searchString,catList,brandList,sellerList,fromPrice,toPrice,fullFillByTmween,  langCode) async {
+    late SubCategoryProductListingModel result;
+    try {
+      final response =
+      await http.post(Uri.parse(UrlConstants.categoryProductList),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader:
+            "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "lang_code": langCode,
+            "pagination": 1,
+            "page": page,
+            "records_per_page": "10",
+            "sort_by": "product_name",
+            "sort_order": "desc",
+            "search_arr": {
+              "category_id":"",
+              "product_category_id": catList,
+              "brand_id": brandList,
+              "supplier_id":sellerList,
+              "slug_name":"",
+              "keyword": searchString,
+              "price_from": fromPrice,
+              "price_to":toPrice,
+              "full_fill_by_tmween":fullFillByTmween
+            },
+
+          }));
+      var responseJson = _returnResponse(response);
+      result = SubCategoryProductListingModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+    }
+    return result;
+  }
+
+
   Future<SubCategoryProductListingModel> getCategoryMobileBestMatchData(
-      page,catSlug,sortBy,sortOrder,  langCode) async {
+      page,catSlug,sortBy,sortOrder, catList,brandList,sellerList,fromPrice,toPrice,fullFillByTmween,  langCode) async {
     late SubCategoryProductListingModel result;
     try {
       final response =
@@ -1865,12 +1937,59 @@ class Api {
                 "lang_code": langCode,
                 "pagination": 1,
                 "page": page,
-                "category_slug": catSlug,
                 "records_per_page": "10",
                 "sort_by": sortBy,
                 "sort_order": sortOrder,
                 "search_arr": {
                   "slug_name":catSlug,
+                  "category_id":"",
+                  "product_category_id": catList,
+                  "brand_id": brandList,
+                  "supplier_id":sellerList,
+                  "keyword": "",
+                  "price_from": fromPrice,
+                  "price_to":toPrice,
+                  "full_fill_by_tmween":fullFillByTmween
+                },
+              }));
+      var responseJson = _returnResponse(response);
+      result = SubCategoryProductListingModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+    }
+    return result;
+  }
+
+ Future<SubCategoryProductListingModel> getSearchMobileBestMatchData(
+      page,searchString,sortBy,sortOrder, catList,brandList,sellerList,fromPrice,toPrice,fullFillByTmween,  langCode) async {
+    late SubCategoryProductListingModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.categoryProductList),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "lang_code": langCode,
+                "pagination": 1,
+                "page": page,
+                "records_per_page": "10",
+                "sort_by": sortBy,
+                "sort_order": sortOrder,
+                "search_arr": {
+                  "keyword":searchString,
+                  "slug_name": "",
+                  "category_id":"",
+                  "product_category_id": "",
+                  "brand_id": brandList,
+                  "supplier_id":sellerList,
+                  "price_from": fromPrice,
+                  "price_to":toPrice,
+                  "full_fill_by_tmween":fullFillByTmween
                 },
               }));
       var responseJson = _returnResponse(response);

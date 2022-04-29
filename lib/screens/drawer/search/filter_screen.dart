@@ -12,9 +12,10 @@ import '../../../lang/locale_keys.g.dart';
 import '../../../utils/global.dart';
 
 class FilterScreen extends StatefulWidget {
-  final int? catId;
+  final String? from;
+  final String? searchedString;
 
-  FilterScreen({Key? key, required this.catId}) : super(key: key);
+  FilterScreen({Key? key,required this.from,required this.searchedString}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -29,8 +30,11 @@ class FilterScreenState extends State<FilterScreen> {
 
   @override
   void initState() {
-    filterController.catId = widget.catId!;
-    //  filterController.getFilterData(Get.locale!.languageCode);
+    filterController.from = widget.from!;
+    filterController.searchString = widget.searchedString!;
+    if(!filterController.called) {
+      filterController.getFilterData(Get.locale!.languageCode);
+    }
     super.initState();
   }
 
@@ -54,15 +58,19 @@ class FilterScreenState extends State<FilterScreen> {
                     padding: EdgeInsets.only(top: 20),
                     child: topView(filterController)),
                 filterController.loading
-                    ? CircularProgressBar()
+                    ? Expanded(child: Center(child:CircularProgressBar()))
                     : Expanded(
                         child: SingleChildScrollView(
                             child: Column(
                         children: [
                           _showOnly(filterController),
+                          if(filterController.categoryList.length>0)
                           _categories(filterController),
-                          _brands(filterController),
-                          _seller(filterController),
+                          if(filterController.brandList.length>0)
+                            _brands(filterController),
+                          if(filterController.sellerList.length>0)
+
+                            _seller(filterController),
                           _searchByPrice(filterController),
                           20.heightBox,
                         ],
@@ -77,15 +85,15 @@ class FilterScreenState extends State<FilterScreen> {
     return ExpansionTile(
       trailing: filterController.isShowOnlyExpanded
           ? SvgPicture.asset(
-              ImageConstanst.minusIcon,
-              height: 16,
-              width: 16,
-            )
+        ImageConstanst.minusIcon,
+        height: 16,
+        width: 16,
+      )
           : SvgPicture.asset(
-              ImageConstanst.plusIcon,
-              height: 16,
-              width: 16,
-            ),
+        ImageConstanst.plusIcon,
+        height: 16,
+        width: 16,
+      ),
       onExpansionChanged: (isExapanded) {
         filterController.updateShowOnlyExpanded();
       },
@@ -99,86 +107,67 @@ class FilterScreenState extends State<FilterScreen> {
       children: filterController.showOnlyList
           .map<Widget>(
             (map) => InkWell(
-                onTap: () {
-                  map["isChecked"] = !map["isChecked"];
-                  filterController.update();
-                },
-                child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment:
-                            map['title'].toString().contains('&')
-                                ? CrossAxisAlignment.center
-                                : CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                              height: 24.0,
-                              width: 24.0,
-                              child: Theme(
-                                  data: Theme.of(filterController.context)
-                                      .copyWith(
-                                    unselectedWidgetColor: Colors.grey,
-                                  ),
-                                  child: Checkbox(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(4)),
-                                      checkColor: Colors.black,
-                                      value: map["isChecked"],
-                                      activeColor: Colors.white,
-                                      side: MaterialStateBorderSide.resolveWith(
+            onTap: () {
+              map["isChecked"] = !map["isChecked"];
+              filterController.update();
+            },
+            child: Container(
+                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment:
+                    map['title'].toString().contains('&')
+                        ? CrossAxisAlignment.center
+                        : CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                          height: 24.0,
+                          width: 24.0,
+                          child: Theme(
+                              data: Theme.of(filterController.context)
+                                  .copyWith(
+                                unselectedWidgetColor: Colors.grey,
+                              ),
+                              child: Checkbox(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(4)),
+                                  checkColor: Colors.black,
+                                  value: map["isChecked"],
+                                  activeColor: Colors.white,
+                                  side: MaterialStateBorderSide.resolveWith(
                                         (states) => BorderSide(
-                                            width: 1.5, color: Colors.black),
-                                      ),
-                                      onChanged: (value) {
-                                        map["isChecked"] = value;
-                                        filterController.update();
-                                      }))),
-                          10.widthBox,
+                                        width: 1.5, color: Colors.black),
+                                  ),
+                                  onChanged: (value) {
+                                    map["isChecked"] = value;
+                                    filterController.update();
+                                  }))),
+                      10.widthBox,
+                      Text(
+                        map['title'].toString().contains('&')
+                            ? '${map['title'].toString().split('&')[0]} '
+                            : '',
+                        style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Column(
+                        children: [
                           Text(
                             map['title'].toString().contains('&')
-                                ? '${map['title'].toString().split('&')[0]} '
-                                : '',
+                                ? map['title'].toString().split('&')[1]
+                                : '${map['title']}',
                             style: TextStyle(
-                                color: Colors.red,
+                                color: AppColors.primaryColor,
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold),
                           ),
-                          Column(
-                            children: [
-                              Text(
-                                map['title'].toString().contains('&')
-                                    ? map['title'].toString().split('&')[1]
-                                    : '${map['title']} (1522)',
-                                style: TextStyle(
-                                    color: AppColors.primaryColor,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              !map['title'].toString().contains('&')
-                                  ? Wrap(
-                                      children: [
-                                        Text(
-                                          '(Eligible for ',
-                                          style: TextStyle(
-                                              color: Color(0xFF323232),
-                                              fontSize: 14),
-                                        ),
-                                        Text(
-                                          'FASR Shipping)',
-                                          style: TextStyle(
-                                              color: Color(0xFF3C3C3C),
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold),
-                                        )
-                                      ],
-                                    )
-                                  : Container()
-                            ],
-                          )
-                        ]))),
-          )
+                        ],
+                      )
+                    ]))),
+      )
           .toList(),
     );
   }
@@ -208,7 +197,7 @@ class FilterScreenState extends State<FilterScreen> {
               color: Color(0xFF5A5A5A))),
       children: filterController.categoryList
           .map<Widget>(
-            (map) => _checkBoxTile(filterController, map),
+            (map) => _checkBoxTile(filterController, map,false),
           )
           .toList(),
     );
@@ -239,7 +228,7 @@ class FilterScreenState extends State<FilterScreen> {
               color: Color(0xFF5A5A5A))),
       children: filterController.brandList
           .map<Widget>(
-            (map) => _checkBoxTile(filterController, map),
+            (map) => _checkBoxTile(filterController, map,false),
           )
           .toList(),
     );
@@ -270,7 +259,7 @@ class FilterScreenState extends State<FilterScreen> {
               color: Color(0xFF5A5A5A))),
       children: filterController.sellerList
           .map<Widget>(
-            (map) => _checkBoxTile(filterController, map),
+            (map) => _checkBoxTile(filterController, map,true),
           )
           .toList(),
     );
@@ -310,7 +299,8 @@ class FilterScreenState extends State<FilterScreen> {
               ),
               child: RangeSlider(
                 values: filterController.currentRangeValues,
-                max: 700,
+                max:  double.parse(filterController.filteredData.maxPrice!.toString()),
+
                 labels: RangeLabels(
                   filterController.currentRangeValues.start.round().toString(),
                   filterController.currentRangeValues.end.round().toString(),
@@ -346,12 +336,13 @@ class FilterScreenState extends State<FilterScreen> {
                       text: LocaleKeys.apply.tr,
                       fontSize: 14,
                       onPressed: () {
-                        filterController.exit();
+                        filterController.setFilter(language);
+
                       })))
         ]);
   }
 
-  _checkBoxTile(FilterController filterController, Map map) {
+  _checkBoxTile(FilterController filterController, Map map,bool fromSeller) {
     return InkWell(
         onTap: () {
           map["isChecked"] = !map["isChecked"];
@@ -386,7 +377,7 @@ class FilterScreenState extends State<FilterScreen> {
                               }))),
                   10.widthBox,
                   Text(
-                    '${map['title']} (1522)',
+                    fromSeller?map['title']:'${map['title']} (${map['count']})',
                     style: TextStyle(
                       color: Color(0xFF4B4B4B),
                       fontSize: 14,
@@ -411,7 +402,8 @@ class FilterScreenState extends State<FilterScreen> {
                 text: LocaleKeys.apply.tr,
                 fontSize: 16,
                 onPressed: () {
-                  filterController.pop();
+                  filterController.setFilter(language);
+
                 })
           ],
         ));

@@ -27,6 +27,7 @@ class CategoryProductListingScreen extends StatefulWidget {
   final bool fromSubCategory;
   final int? fromPrice;
   final int? toPrice;
+  final int? fullFillByTmween;
   final List<String>? catIdList;
   final List<String>? brandIdList;
   final List<String>? sellerIdList;
@@ -40,6 +41,7 @@ class CategoryProductListingScreen extends StatefulWidget {
       this.fromFilter = false,
       this.fromPrice,
       this.toPrice,
+      this.fullFillByTmween,
       this.catIdList,
       this.brandIdList,
       this.sellerIdList})
@@ -80,6 +82,7 @@ class CategoryProductListingScreenState
             if (widget.fromFilter) {
               categoryProductListingController.fromPrice = widget.fromPrice;
               categoryProductListingController.toPrice = widget.toPrice;
+              categoryProductListingController.fullFillByTmween = widget.fullFillByTmween;
               categoryProductListingController.catIdList = widget.catIdList;
               categoryProductListingController.brandIdList = widget.brandIdList;
               categoryProductListingController.sellerIdList =

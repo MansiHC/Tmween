@@ -36,6 +36,9 @@ class CategoryFilterScreenState extends State<CategoryFilterScreen> {
     filterController.catSlug = widget.catSlug!;
     filterController.catName = widget.catName!;
     filterController.catId = widget.catId!;
+    if(!filterController.called)
+      filterController.getFilterData(Get.locale!.languageCode);
+
     super.initState();
   }
   Future<bool> _onWillPop(CategoryFilterController filterController) async {
@@ -71,9 +74,14 @@ class CategoryFilterScreenState extends State<CategoryFilterScreen> {
                             child: Column(
                         children: [
                           _showOnly(filterController),
-                          _categories(filterController),
-                          _brands(filterController),
-                          _seller(filterController),
+                          if(filterController.categoryList.length>0)
+                            _categories(filterController),
+                          if(filterController.brandList.length>0)
+
+                            _brands(filterController),
+                          if(filterController.sellerList.length>0)
+
+                            _seller(filterController),
                           _searchByPrice(filterController),
                           20.heightBox,
                         ],
@@ -161,31 +169,12 @@ class CategoryFilterScreenState extends State<CategoryFilterScreen> {
                               Text(
                                 map['title'].toString().contains('&')
                                     ? map['title'].toString().split('&')[1]
-                                    : '${map['title']} (1522)',
+                                    : '${map['title']}',
                                 style: TextStyle(
                                     color: AppColors.primaryColor,
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold),
                               ),
-                              /*!map['title'].toString().contains('&')
-                                  ? Wrap(
-                                      children: [
-                                        Text(
-                                          '(Eligible for ',
-                                          style: TextStyle(
-                                              color: Color(0xFF323232),
-                                              fontSize: 14),
-                                        ),
-                                        Text(
-                                          'FASR Shipping)',
-                                          style: TextStyle(
-                                              color: Color(0xFF3C3C3C),
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold),
-                                        )
-                                      ],
-                                    )
-                                  : Container()*/
                             ],
                           )
                         ]))),

@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:tmween/controller/filter_controller.dart';
 import 'package:tmween/screens/drawer/search/search_screen.dart';
 
 import '../model/get_customer_address_list_model.dart';
 import '../model/product_listing_model.dart';
+import '../model/sub_category_product_listing_model.dart';
 import '../screens/drawer/drawer_screen.dart';
 import '../screens/drawer/productDetail/product_detail_screen.dart';
 import '../service/api.dart';
@@ -23,6 +25,7 @@ class ProductListingController extends GetxController {
   int val = 1;
   var searchedString = '';
   var from = '';
+  bool fromFilter = false;
 
   int userId = 0;
   String token = '';
@@ -32,11 +35,18 @@ class ProductListingController extends GetxController {
   bool searchLoading = false;
   bool addressFromCurrentLocation = false;
   List<Address> addressList = [];
-  List<ProductData> productList = [];
+  List<SearchProductData> productList = [];
+  List<ProductData> productFilterList = [];
   int totalPages = 0;
   int prev = 0;
   int next = 0;
   int totalRecords = 0;
+  int? fromPrice;
+  int? toPrice;
+  int? fullFillByTmween;
+  List<String>? catIdList;
+  List<String>? brandIdList;
+  List<String>? sellerIdList;
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
@@ -114,6 +124,60 @@ class ProductListingController extends GetxController {
     });
   }
 
+  Future<void> getFilterResult( language) async {
+    productFilterList = [];
+    Helper.showLoading();
+    print('.............${searchedString}....$fromPrice....$toPrice');
+
+    await api
+        .setSearchMobileFilterData("1",searchedString, catIdList,brandIdList,sellerIdList,
+        fromPrice.toString(),toPrice.toString(),fullFillByTmween.toString(),language)
+        .then((value) {
+      if (value.statusCode == 200) {
+        totalPages = value.data!.totalPages!;
+        prev =
+        value.data!.previous.runtimeType == int ? value.data!.previous : 0;
+        next = value.data!.next.runtimeType == int ? value.data!.next : 0;
+        totalRecords = value.data!.totalRecords!;
+        productFilterList = value.data!.productData!;
+      }
+      Helper.hideLoading(context);
+      update();
+    }).catchError((error) {
+      Helper.hideLoading(context);
+      update();
+      print('error....$error');
+    });
+  }
+
+  Future<void> getBestMatchResult( sortBy,sortOrder,language) async {
+    productFilterList = [];
+    fromFilter = true;
+    Helper.showLoading();
+    print('.............${searchedString}....$sortBy....$sortOrder');
+
+    await api
+        .getSearchMobileBestMatchData("1",searchedString, sortBy,sortOrder,catIdList,brandIdList,sellerIdList,
+        fromPrice.toString(),toPrice.toString(),fullFillByTmween.toString(),language)
+        .then((value) {
+      if (value.statusCode == 200) {
+        totalPages = value.data!.totalPages!;
+        prev =
+        value.data!.previous.runtimeType == int ? value.data!.previous : 0;
+        next = value.data!.next.runtimeType == int ? value.data!.next : 0;
+        totalRecords = value.data!.totalRecords!;
+        productFilterList = value.data!.productData!;
+      }
+      Helper.hideLoading(context);
+      update();
+    }).catchError((error) {
+      Helper.hideLoading(context);
+      update();
+      print('error....$error');
+    });
+  }
+
+
   Future<void> getProductList(searchString, language) async {
     productList = [];
     Helper.showLoading();
@@ -168,6 +232,32 @@ class ProductListingController extends GetxController {
     });
     return false;
   }
+
+  Future<bool> loadMoreFilter(language) async {
+    update();
+    await api
+        .setSearchMobileFilterData(next,searchedString, catIdList,brandIdList,sellerIdList,
+        fromPrice.toString(),toPrice.toString(),fullFillByTmween.toString(),language)
+        .then((value) {
+      if (value.statusCode == 200) {
+        totalPages = value.data!.totalPages!;
+        prev =
+        value.data!.previous.runtimeType == int ? value.data!.previous : 0;
+        next = value.data!.next.runtimeType == int ? value.data!.next : 0;
+        totalRecords = value.data!.totalRecords!;
+        productFilterList.addAll(value.data!.productData!);
+        update();
+        return true;
+      }
+      update();
+    }).catchError((error) {
+      update();
+      print('error....$error');
+      return false;
+    });
+    return false;
+  }
+
 
   Future<void> editAddress(
       id,
@@ -247,6 +337,7 @@ class ProductListingController extends GetxController {
 
   void exitScreen() {
     Get.delete<ProductListingController>();
+    Get.delete<FilterController>();
     Navigator.of(context).pop();
   }
 

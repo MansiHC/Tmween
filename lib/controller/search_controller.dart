@@ -15,6 +15,7 @@ import '../utils/global.dart';
 import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
 
+
 class SearchController extends GetxController {
   late BuildContext context;
   TextEditingController searchController = TextEditingController();
@@ -32,7 +33,7 @@ class SearchController extends GetxController {
   bool historyLoading = false;
   List<SearchHistoryData> historyList = [];
   List<PopularSearches> popularList = [];
-  List<ProductData> productList = [];
+  List<SearchProductData> productList = [];
   List<String> searchList = [];
 
   void navigateTo(Widget route) {
