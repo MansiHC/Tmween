@@ -45,7 +45,7 @@ class NotificationScreen extends StatelessWidget {
         child: Column(children: [
           Align(
             alignment: Alignment.centerRight,
-            child: Text('Read All',
+            child: Text(LocaleKeys.readAll.tr,
                 style: TextStyle(fontSize: 12, color: Colors.blue)),
           ),
           10.heightBox,

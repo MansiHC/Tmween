@@ -99,7 +99,7 @@ class DrawerScreenState extends State<DrawerScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Earliest delivery in 1 day*',
+                                    LocaleKeys.earliestDeliveryInDays.tr,
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 12),
                                   ),
@@ -118,8 +118,8 @@ class DrawerScreenState extends State<DrawerScreen> {
                                             ? drawerController
                                                     .address.isNotEmpty
                                                 ? drawerController.address
-                                                : 'Select Delivery Address'
-                                            : 'Select Delivery Address',
+                                                : LocaleKeys.selectDeliveryAddress.tr
+                                            : LocaleKeys.selectDeliveryAddress.tr,
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 12),
                                       ),
@@ -295,7 +295,7 @@ class DrawerScreenState extends State<DrawerScreen> {
         init: DrawerControllers(),
         builder: (contet) {
           return Container(
-              height: drawerController.isLogin ? 350 : 200,
+              height: drawerController.isLogin ? 380 : 210,
               padding: EdgeInsets.all(15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -355,7 +355,7 @@ class DrawerScreenState extends State<DrawerScreen> {
                                 visible: !drawerController.dialogLoading &&
                                     drawerController.addressList.length > 0,
                                 child: Container(
-                                    height: 170,
+                                    height: 185,
                                     child: ListView.builder(
                                         itemCount: drawerController
                                                 .addressList.length +
@@ -462,7 +462,7 @@ class DrawerScreenState extends State<DrawerScreen> {
                                     ),
                                     5.widthBox,
                                     Text(
-                                      'Use my current location',
+                                     LocaleKeys.useMyCurrentLocation.tr,
                                       style: TextStyle(
                                           color: AppColors.primaryColor,
                                           fontSize: 16),
@@ -472,7 +472,7 @@ class DrawerScreenState extends State<DrawerScreen> {
                           ],
                         )
                       : CustomButton(
-                          text: 'Sign in to see your Addresses',
+                          text: LocaleKeys.signInToSeeYourAddress.tr,
                           fontSize: 16,
                           onPressed: () {
                             Get.deleteAll();
@@ -673,7 +673,7 @@ class DrawerScreenState extends State<DrawerScreen> {
         context: drawerController.context,
         builder: (_) => AlertDialog(
               title: Text(
-                'Please Login First',
+                LocaleKeys.pleaseLoginFirst.tr,
                 style: TextStyle(
                   fontSize: 16,
                 ),
@@ -863,11 +863,13 @@ class DrawerScreenState extends State<DrawerScreen> {
               }).toList(),
               onChanged: (LanguageModel? value) async {
                 drawerController.languageValue = value!;
-                //  await context.setLocale(value.locale);
-                /*   MySharedPreferences.instance.addStringToSF(
+                //  await drawerController.context.setLocale(value.locale);
+                   MySharedPreferences.instance.addStringToSF(
                     SharedPreferencesKeys.language, value.locale.toString());
-                Get.updateLocale(value.locale);*/
-                // drawerController.closeDrawer();
+                Get.updateLocale(value.locale);
+                 //drawerController.closeDrawer();
+                Get.deleteAll();
+                Get.offAll(DrawerScreen());
               },
             ),
           ]),

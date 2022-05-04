@@ -96,7 +96,7 @@ class CartScreenState extends State<CartScreen> {
                 RichText(
                     textAlign: TextAlign.start,
                     text: TextSpan(
-                        text: 'BASKET SUBTOTAL ',
+                        text: '${LocaleKeys.basketSubTotal.tr} ',
                         style: TextStyle(
                             color: Color(0xFF333333),
                             fontSize: 13,
@@ -104,7 +104,7 @@ class CartScreenState extends State<CartScreen> {
                         children: <InlineSpan>[
                           TextSpan(
                             text:
-                                '(${cartController.cartCount} items)',
+                                '(${cartController.cartCount} ${LocaleKeys.items.tr})',
                             style: TextStyle(
                               color: Color(0xFF39A0D4),
                               fontSize: 13,
@@ -181,7 +181,7 @@ class CartScreenState extends State<CartScreen> {
                         ])),*/
                 10.heightBox,
                 CustomButton(
-                  text: 'PROCEED TO CHECKOUT',
+                  text: LocaleKeys.proceedToCheckout.tr,
                   fontSize: 17,
                   backgroundColor: Color(0xFF27AE61),
                   onPressed: () {
@@ -222,7 +222,7 @@ class CartScreenState extends State<CartScreen> {
                       child: RichText(
                           textAlign: TextAlign.start,
                           text: TextSpan(
-                              text: 'SUBTOTAL: ',
+                              text: '${LocaleKeys.subTotal.tr} ',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 13,
@@ -285,7 +285,7 @@ class CartScreenState extends State<CartScreen> {
                     if(cartController.recommendedProductsData!.length>0)
                     Expanded(
                         child: Text(
-                      'RECOMMENDATION FOR ALL PRODUCTS',
+                      LocaleKeys.recommendationForAllProducts.tr,
                       style: TextStyle(
                           color: Color(0xFF333333),
                           fontSize: 13,
@@ -300,7 +300,7 @@ cartController.navigateTo(RecommendedProductScreen(productIdList:cartController.
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         Text(
-                          'View All',
+                          LocaleKeys.viewAll.tr,
                           style:
                               TextStyle(color: Color(0xFF626262), fontSize: 11),
                         ),
@@ -339,7 +339,7 @@ cartController.navigateTo(RecommendedProductScreen(productIdList:cartController.
                     if(cartController.recentlyViewedProducts!.length>0)
                     Expanded(
                         child: Text(
-                      'YOUR RECENTLY VIEWED ITEMS',
+                      LocaleKeys.yourRecentlyViewedItems.tr,
                       style: TextStyle(
                           color: Color(0xFF333333),
                           fontSize: 13,
@@ -355,7 +355,7 @@ cartController.navigateTo(RecommendedProductScreen(productIdList:cartController.
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         Text(
-                          'View All',
+                          LocaleKeys.viewAll.tr,
                           style:
                               TextStyle(color: Color(0xFF626262), fontSize: 11),
                         ),
@@ -416,7 +416,7 @@ cartController.navigateTo(RecommendedProductScreen(productIdList:cartController.
                 10.heightBox,
                 Expanded(
                     child: Text(
-                  'Guarantee 100% Purchase Protection',
+                  LocaleKeys.guaranteePurchaseProtection,
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.white, fontSize: 14),
                 ))
@@ -443,7 +443,7 @@ cartController.navigateTo(RecommendedProductScreen(productIdList:cartController.
                         SizedBox(
                             height: 34,
                             child: Text(
-                              'WARRANTY',
+                              LocaleKeys.warranty.tr,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Color(0xFF333333),
@@ -451,7 +451,7 @@ cartController.navigateTo(RecommendedProductScreen(productIdList:cartController.
                                   fontWeight: FontWeight.bold),
                             )),
                         Text(
-                          "As per Weswox's",
+                          LocaleKeys.asPerWeswox.tr,
                           textAlign: TextAlign.center,
                           style:
                               TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
@@ -478,7 +478,7 @@ cartController.navigateTo(RecommendedProductScreen(productIdList:cartController.
                         SizedBox(
                             height: 34,
                             child: Text(
-                              '100% ORIGINAL',
+                              LocaleKeys.percentOriginal.tr,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Color(0xFF333333),
@@ -486,7 +486,7 @@ cartController.navigateTo(RecommendedProductScreen(productIdList:cartController.
                                   fontWeight: FontWeight.bold),
                             )),
                         Text(
-                          "\nProducts",
+                          "\n${LocaleKeys.products.tr}",
                           textAlign: TextAlign.center,
                           style:
                               TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
@@ -513,7 +513,7 @@ cartController.navigateTo(RecommendedProductScreen(productIdList:cartController.
                         SizedBox(
                             height: 34,
                             child: Text(
-                              'SECURE',
+                              LocaleKeys.secure.tr,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Color(0xFF333333),
@@ -521,7 +521,7 @@ cartController.navigateTo(RecommendedProductScreen(productIdList:cartController.
                                   fontWeight: FontWeight.bold),
                             )),
                         Text(
-                          "\nPAYMENTS",
+                          "\n${LocaleKeys.payments.tr}",
                           textAlign: TextAlign.center,
                           style:
                               TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
@@ -547,7 +547,7 @@ cartController.navigateTo(RecommendedProductScreen(productIdList:cartController.
                         SizedBox(
                             height: 34,
                             child: Text(
-                              '100% BUYER',
+                              LocaleKeys.percentBuyer.tr,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Color(0xFF333333),
@@ -555,7 +555,7 @@ cartController.navigateTo(RecommendedProductScreen(productIdList:cartController.
                                   fontWeight: FontWeight.bold),
                             )),
                         Text(
-                          "\nPROTECTION",
+                          "\n${LocaleKeys.protection.tr}",
                           textAlign: TextAlign.center,
                           style:
                               TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
@@ -585,7 +585,7 @@ cartController.navigateTo(RecommendedProductScreen(productIdList:cartController.
               children: [
                 5.heightBox,
                 Text(
-                  'Your Tmween Cart is empty.',
+                  LocaleKeys.cartEmpty.tr,
                   style: TextStyle(fontSize: 16, color: Color(0xFF737373)),
                 ),
                 10.heightBox,

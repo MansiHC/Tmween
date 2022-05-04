@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:tmween/controller/all_review_controller.dart';
+import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 import 'package:tmween/utils/views/circular_progress_bar.dart';
@@ -122,7 +123,7 @@ class AllReviewScreenState extends State<AllReviewScreen> {
                             )))),
                     5.heightBox,
                     Text(
-                      'based on  ${allReviewController.reviewsList.length} reviews',
+                      '${LocaleKeys.basedOn.tr} ${allReviewController.reviewsList.length} ${LocaleKeys.reviews.tr}',
                       style: TextStyle(
                           fontSize: 16,
                           color: Colors.black38,
@@ -131,7 +132,7 @@ class AllReviewScreenState extends State<AllReviewScreen> {
                     20.heightBox,
                     Row(children: [
                       Text(
-                        '5 star',
+                        LocaleKeys.star5.tr,
                         style: TextStyle(
                             fontSize: 16,
                             color: Colors.black38,
@@ -161,7 +162,7 @@ class AllReviewScreenState extends State<AllReviewScreen> {
                     5.heightBox,
                     Row(children: [
                       Text(
-                        '4 star',
+                        LocaleKeys.star4.tr,
                         style: TextStyle(
                             fontSize: 16,
                             color: Colors.black38,
@@ -190,7 +191,7 @@ class AllReviewScreenState extends State<AllReviewScreen> {
                     5.heightBox,
                     Row(children: [
                       Text(
-                        '3 star',
+                        LocaleKeys.star3.tr,
                         style: TextStyle(
                             fontSize: 16,
                             color: Colors.black38,
@@ -219,7 +220,7 @@ class AllReviewScreenState extends State<AllReviewScreen> {
                     5.heightBox,
                     Row(children: [
                       Text(
-                        '2 star',
+                        LocaleKeys.star2.tr,
                         style: TextStyle(
                             fontSize: 16,
                             color: Colors.black38,
@@ -248,7 +249,7 @@ class AllReviewScreenState extends State<AllReviewScreen> {
                     5.heightBox,
                     Row(children: [
                       Text(
-                        '1 star',
+                        LocaleKeys.star1.tr,
                         style: TextStyle(
                             fontSize: 16,
                             color: Colors.black38,
@@ -372,7 +373,8 @@ class AllReviewScreenState extends State<AllReviewScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Align(
-                                          alignment: Alignment.centerLeft,
+                                          alignment: language == 'ar'
+                                              ?Alignment.centerRight:Alignment.centerLeft,
                                           child: RichText(
                                               textAlign: TextAlign.start,
                                               text: TextSpan(
@@ -438,7 +440,7 @@ class AllReviewScreenState extends State<AllReviewScreen> {
                                                   .contains(allReviewController
                                                   .reviewsList[index]
                                                   .id))
-                                                  ? Text('Helpful',
+                                                  ? Text(LocaleKeys.helpful.tr,
                                                   style: TextStyle(
                                                     color: Color(
                                                         0xFF333333),
@@ -499,7 +501,7 @@ class AllReviewScreenState extends State<AllReviewScreen> {
                                                   .contains(allReviewController
                                                   .reviewsList[index]
                                                   .id))
-                                                  ? Text('Report abuse',
+                                                  ? Text(LocaleKeys.reportAbuse.tr,
                                                   style: TextStyle(
                                                     color: Color(
                                                         0xFF333333),
@@ -571,7 +573,7 @@ class AllReviewScreenState extends State<AllReviewScreen> {
                                 MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Add Report Abuse',
+                                    LocaleKeys.addReportAbuse.tr,
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
                                         fontSize: 16,
@@ -601,10 +603,10 @@ class AllReviewScreenState extends State<AllReviewScreen> {
                                 controller:
                                 allReviewController.titleController,
                                 keyboardType: TextInputType.name,
-                                hintText: 'Add Title',
+                                hintText: LocaleKeys.addTitle.tr,
                                 validator: (value) {
                                   if (value!.isEmpty) {
-                                    return 'Please Enter Title';
+                                    return LocaleKeys.emptyTitle.tr;
                                   }
                                 }),
                             10.heightBox,
@@ -612,7 +614,7 @@ class AllReviewScreenState extends State<AllReviewScreen> {
                                 controller: allReviewController
                                     .descriptionController,
                                 keyboardType: TextInputType.name,
-                                hintText: 'Add Description',
+                                hintText: LocaleKeys.addDesc.tr,
                                 maxLines: 3,
                                 textInputAction: TextInputAction.done,
                                 onSubmitted: (term) {
@@ -621,7 +623,7 @@ class AllReviewScreenState extends State<AllReviewScreen> {
                                 },
                                 validator: (value) {
                                   if (value!.isEmpty) {
-                                    return 'Please Enter Description';
+                                    return LocaleKeys.emptyDesc.tr;
                                   }
                                 }),
                             10.heightBox,
@@ -631,7 +633,7 @@ class AllReviewScreenState extends State<AllReviewScreen> {
                                 allReviewController.addReviewReport(
                                     reviewId, language, position);
                               },
-                              text: 'Report',
+                              text: LocaleKeys.report.tr,
                               width: 120,
                               fontSize: 12,
                               horizontalPadding: 5,
@@ -673,7 +675,7 @@ class AllReviewScreenState extends State<AllReviewScreen> {
             Align(
               alignment: Alignment.center,
               child: Text(
-                'All Reviews',
+                LocaleKeys.allReviews.tr,
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),

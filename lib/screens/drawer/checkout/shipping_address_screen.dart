@@ -71,7 +71,7 @@ class ShippingAddressScreen extends StatelessWidget {
                   addressController.addressList.length == 0,
               child: Center(
                   child: Text(
-                'No Address',
+                LocaleKeys.noAddress.tr,
                 style: TextStyle(
                     color: Color(0xFF414141),
                     fontSize: 14,
@@ -81,7 +81,7 @@ class ShippingAddressScreen extends StatelessWidget {
             if(addressController.addressList==null)
               Center(
                   child: Text(
-                    'No Address',
+                    LocaleKeys.noAddress.tr,
                     style: TextStyle(
                         color: Color(0xFF414141),
                         fontSize: 14,
@@ -96,7 +96,7 @@ class ShippingAddressScreen extends StatelessWidget {
                     children: [
                       5.heightBox,
                       Text(
-                        'Select a shipping address',
+                        LocaleKeys.selectShippingAddress.tr,
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
@@ -126,7 +126,7 @@ class ShippingAddressScreen extends StatelessWidget {
                   addressController.navigateToAddAddressScreen();
                 }),
             10.heightBox,
-            Text('Your order',
+            Text(LocaleKeys.yourOrder.tr,
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 15,
@@ -145,13 +145,13 @@ class ShippingAddressScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Product',
+                            Text(LocaleKeys.product.tr,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w700,
                                     fontSize: 15)),
-                            Text('Total',
+                            Text(LocaleKeys.total.tr,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Colors.black,
@@ -192,7 +192,7 @@ class ShippingAddressScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                    'Item(${addressController.cartData!.cartItemDetails![i].quantity!})',
+                                    '${LocaleKeys.item.tr}(${addressController.cartData!.cartItemDetails![i].quantity!})',
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
                                         color: Color(0xFF666666),
@@ -217,7 +217,7 @@ class ShippingAddressScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Shipping',
+                            Text(LocaleKeys.shipping.tr,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Color(0xFF666666), fontSize: 15)),
@@ -233,7 +233,7 @@ class ShippingAddressScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Tax',
+                            Text(LocaleKeys.tax.tr,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Color(0xFF666666), fontSize: 15)),
@@ -255,7 +255,7 @@ class ShippingAddressScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Total',
+                            Text(LocaleKeys.total.tr,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Colors.black,
@@ -278,7 +278,7 @@ class ShippingAddressScreen extends StatelessWidget {
                 child: ElevatedButton(
                   child: Wrap(spacing: 10, children: [
                     Text(
-                      'Proceed to Pay',
+                      LocaleKeys.proceedToPay.tr,
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.white, fontSize: 17),
                     ),
@@ -409,7 +409,7 @@ class ShippingAddressScreen extends StatelessWidget {
             Align(
               alignment: Alignment.center,
               child: Text(
-                'Shipping Address',
+                LocaleKeys.shippingAddress.tr,
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),

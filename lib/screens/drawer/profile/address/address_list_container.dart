@@ -219,7 +219,7 @@ class AddressListContainer extends StatelessWidget {
                   builder: (contet) {
                     return Column(children: [
                       Text(
-                        'Are you sure you want to delete this address?',
+                        LocaleKeys.wantToDelete.tr,
                         style: TextStyle(
                           fontSize: 16,
                         ),

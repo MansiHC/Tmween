@@ -4,6 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/review_product_controller.dart';
+import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/product_detail_model.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
@@ -96,7 +97,7 @@ class ReviewProductScreenState extends State<ReviewProductScreen> {
                     ),
                     50.heightBox,
                     Text(
-                      'Rate the Product',
+                      LocaleKeys.rateTheProduct.tr,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Color(0xFF363D49),
@@ -107,7 +108,7 @@ class ReviewProductScreenState extends State<ReviewProductScreen> {
                     Padding(
                         padding: EdgeInsets.symmetric(horizontal: 30),
                         child: Text(
-                          'How did you find the product based on your usage?',
+                          LocaleKeys.howDidFindProduct.tr,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Color(0xFF596067),
@@ -157,7 +158,7 @@ class ReviewProductScreenState extends State<ReviewProductScreen> {
                         child: CircularProgressBar()),
                     30.heightBox,
                     Text(
-                      'Leave a comment',
+                      LocaleKeys.leaveComment.tr,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Color(0xFF363D49),
@@ -172,11 +173,11 @@ class ReviewProductScreenState extends State<ReviewProductScreen> {
                         fillColor: Color(0xFFF1F1F1),
                         controller: reviewProductController.commentController,
                         keyboardType: TextInputType.text,
-                        hintText: 'Write any comments',
+                        hintText: LocaleKeys.writeAnyComments.tr,
                         validator: (value) {}),
                     10.heightBox,
                     CustomButton(
-                      text: 'Submit',
+                      text: LocaleKeys.submit.tr,
                       onPressed: () {
                         reviewProductController.rateProduct(language);
                       },
@@ -225,7 +226,7 @@ class ReviewProductScreenState extends State<ReviewProductScreen> {
             Align(
               alignment: Alignment.center,
               child: Text(
-                'Review Product',
+                LocaleKeys.reviewProduct.tr,
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),

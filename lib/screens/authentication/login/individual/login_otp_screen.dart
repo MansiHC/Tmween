@@ -47,10 +47,10 @@ class LoginOtpScreenState extends State<LoginOtpScreen> {
     try {
       comingSms = (await AltSmsAutofill().listenForSms)!;
     } on PlatformException {
-      comingSms = 'Failed to get Sms.';
+      comingSms = LocaleKeys.failedToGetSMS.tr;
     }
     if (!mounted) return;
-    if (comingSms.contains('Tmween')) {
+    if (comingSms.contains(LocaleKeys.appTitle.tr)) {
       otpController.comingSms = comingSms;
       print("====>Message: ${otpController.comingSms}");
       final intInStr = RegExp(r'\d+');
@@ -171,7 +171,7 @@ class LoginOtpScreenState extends State<LoginOtpScreen> {
         RichText(
             text: TextSpan(
                 text:
-                    "We've sent an One Time Password (OTP) to the mobile number ",
+                    "${LocaleKeys.sentOTP.tr} ",
                 style: TextStyle(
                     fontSize: 14,
                     color: Color(0xFF727272),
@@ -184,7 +184,7 @@ class LoginOtpScreenState extends State<LoginOtpScreen> {
                       color: Colors.black,
                       fontWeight: FontWeight.bold)),
               TextSpan(
-                  text: "Please enter it below to complete verification.",
+                  text: LocaleKeys.pleaseCompleteVerification.tr,
                   style: TextStyle(
                       fontSize: 14,
                       color: Color(0xFF727272),
@@ -231,7 +231,7 @@ class LoginOtpScreenState extends State<LoginOtpScreen> {
           ),
         if (otpController.otpExpired)
           Text(
-            'Please Resend the Otp.',
+            LocaleKeys.pleaseResendOtp.tr,
             style: TextStyle(fontSize: 16, color: Colors.black),
           ),
         40.heightBox,

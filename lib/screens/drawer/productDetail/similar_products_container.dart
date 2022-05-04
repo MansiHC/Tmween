@@ -90,7 +90,9 @@ class SimilarProductsContainer extends StatelessWidget {
                 child: products.largeImageUrl!.setNetworkImage())),
         5.heightBox,
           Align(
-              alignment: Alignment.centerLeft,
+              alignment: language == 'ar'
+          ? Alignment.centerRight
+              : Alignment.centerLeft,
               child:Padding(
             padding: EdgeInsets.only(left: 5, right: 15),
             child: Text(products.productName!,

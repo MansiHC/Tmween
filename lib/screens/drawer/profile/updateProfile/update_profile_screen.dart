@@ -47,10 +47,10 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
     try {
       comingSms = (await AltSmsAutofill().listenForSms)!;
     } on PlatformException {
-      comingSms = 'Failed to get Sms.';
+      comingSms = LocaleKeys.failedToGetSMS.tr;
     }
     if (!mounted) return;
-    if (comingSms.contains('Tmween')) {
+    if (comingSms.contains(LocaleKeys.appTitle.tr)) {
       otpController.comingSms = comingSms;
       print("====>Message: ${otpController.comingSms}");
       final intInStr = RegExp(r'\d+');
@@ -623,7 +623,7 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         5.heightBox,
                         if (editProfileController.otpValue.isNotEmpty)
                           Text(
-                            'Otp is : ${editProfileController.otpValue}',
+                            '${LocaleKeys.otpIs.tr} : ${editProfileController.otpValue}',
                             textAlign: TextAlign.start,
                             style: TextStyle(
                                 fontSize: 14,
@@ -697,7 +697,7 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           ),
                         if (editProfileController.otpExpired)
                           Text(
-                            'Please Resend the Otp.',
+                            LocaleKeys.pleaseResendOtp.tr,
                             style: TextStyle(fontSize: 13, color: Colors.black),
                           ),
                         10.heightBox,

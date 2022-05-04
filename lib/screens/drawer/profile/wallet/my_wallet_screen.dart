@@ -71,7 +71,7 @@ class MyWalletScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Current Balance  ',
+                                '${LocaleKeys.currentBalance.tr} ',
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 15,
@@ -92,7 +92,7 @@ class MyWalletScreen extends StatelessWidget {
                     ),
                     15.heightBox,
                     Text(
-                      'Add money',
+                      LocaleKeys.addMoney.tr,
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           color: Color(0xFF555555),
@@ -110,7 +110,7 @@ class MyWalletScreen extends StatelessWidget {
                               isPrefix: false,
                               controller: myWalletController.amountController,
                               keyboardType: TextInputType.number,
-                              hintText: 'Amount',
+                              hintText: LocaleKeys.amount.tr,
                               prefixIcon: Text(
                                 LocaleKeys.sar.tr,
                                 style: TextStyle(fontSize: 14),
@@ -145,7 +145,7 @@ class MyWalletScreen extends StatelessWidget {
                               )),
                           20.heightBox,
                           CustomButton(
-                            text: 'FUND WALLET',
+                            text: LocaleKeys.fundWalletCap.tr,
                             onPressed: () {
                               myWalletController.navigateTo(FundWalletScreen());
                             },
@@ -163,7 +163,7 @@ class MyWalletScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Wallet activity for',
+                            LocaleKeys.walletActivityFor.tr,
                             textAlign: TextAlign.start,
                             style: TextStyle(
                                 color: Color(0xFF555555),
@@ -173,7 +173,7 @@ class MyWalletScreen extends StatelessWidget {
                           CustomButton(
                             width: 120,
                             horizontalPadding: 0,
-                            text: 'VIEW HISTORY',
+                            text: LocaleKeys.viewHistory.tr,
                             onPressed: () {
                               myWalletController
                                   .navigateTo(ViewHistoryScreen());
@@ -309,8 +309,8 @@ class MyWalletScreen extends StatelessWidget {
                                                                           .historyItemList[
                                                                               index2]
                                                                           .isSuccess
-                                                                      ? '+SAS 500'
-                                                                      : '-SAS 500',
+                                                                      ? '+${LocaleKeys.sar.tr} 500'
+                                                                      : '-${LocaleKeys.sar.tr} 500',
                                                                   style:
                                                                       TextStyle(
                                                                     color: myWalletController
@@ -404,7 +404,7 @@ class MyWalletScreen extends StatelessWidget {
             Align(
               alignment: Alignment.center,
               child: Text(
-                'My Wallet',
+                LocaleKeys.myWallet.tr,
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),

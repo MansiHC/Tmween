@@ -79,7 +79,7 @@ class FilterController extends GetxController {
   double priceRange = 0;
   late RangeValues currentRangeValues;
 
-  late GetFilterData filteredData;
+   GetFilterData? filteredData;
   int fromPrice = 0, toPrice = 0, fullFillByTmween = 0;
   late String from;
   late String searchString;
@@ -102,38 +102,38 @@ class FilterController extends GetxController {
       if (value.statusCode == 200) {
         called = true;
         filteredData = value.data!;
-        if (filteredData.productCategory != null)
-          for (var i = 0; i < filteredData.productCategory!.length; i++) {
+        if (filteredData!.productCategory != null)
+          for (var i = 0; i < filteredData!.productCategory!.length; i++) {
             categoryList.add({
-              'title': filteredData.productCategory![i].categoryName,
-              'id': filteredData.productCategory![i].id,
-              'count': filteredData.productCategory![i].count,
+              'title': filteredData!.productCategory![i].categoryName,
+              'id': filteredData!.productCategory![i].id,
+              'count': filteredData!.productCategory![i].count,
               'isChecked': false
             });
           }
-        if (filteredData.brand != null)
-        for (var i = 0; i < filteredData.brand!.length; i++) {
+        if (filteredData!.brand != null)
+        for (var i = 0; i < filteredData!.brand!.length; i++) {
           brandList.add({
-            'title': filteredData.brand![i].brandName,
-            'id': filteredData.brand![i].id,
-            'count': filteredData.brand![i].count,
+            'title': filteredData!.brand![i].brandName,
+            'id': filteredData!.brand![i].id,
+            'count': filteredData!.brand![i].count,
             'isChecked': false
           });
         }
-        if (filteredData.suppliersData != null)
-        for (var i = 0; i < filteredData.suppliersData!.length; i++) {
+        if (filteredData!.suppliersData != null)
+        for (var i = 0; i < filteredData!.suppliersData!.length; i++) {
           sellerList.add({
-            'title': filteredData.suppliersData![i].supplierName,
-            'id': filteredData.suppliersData![i].supplierId,
+            'title': filteredData!.suppliersData![i].supplierName,
+            'id': filteredData!.suppliersData![i].supplierId,
             'count': 0,
             'isChecked': false
           });
         }
-        print('.....${filteredData.maxPrice}');
+        print('.....${filteredData!.maxPrice}');
         currentRangeValues =
-            RangeValues(0, double.parse(filteredData.maxPrice!.toString()));
+            RangeValues(0, double.parse(filteredData!.maxPrice!.toString()));
         fromPrice = 0;
-        toPrice = filteredData.maxPrice!;
+        toPrice = filteredData!.maxPrice!;
       }
       loading = false;
       //  Helper.hideLoading(context);

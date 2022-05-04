@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
@@ -64,7 +65,7 @@ class PaymentStatusScreenState extends State<PaymentStatusScreen> {
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
-                  'Amount',
+                  LocaleKeys.amount.tr,
                   style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.bold,
@@ -76,7 +77,7 @@ class PaymentStatusScreenState extends State<PaymentStatusScreen> {
                 child: Row(
                   children: [
                     Text(
-                      'SAR 1,990',
+                      '${LocaleKeys.sar.tr} 1,990',
                       style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
@@ -92,7 +93,7 @@ class PaymentStatusScreenState extends State<PaymentStatusScreen> {
                     ),
                     5.widthBox,
                     Text(
-                      widget.isSuccess! ? 'Payment Success' : 'Payment Failed',
+                      widget.isSuccess! ? LocaleKeys.paymentSuccess.tr : LocaleKeys.paymentFailed.tr,
                       style: TextStyle(
                           fontSize: 14,
                           color: widget.isSuccess! ? Colors.green : Colors.red),
@@ -116,7 +117,7 @@ class PaymentStatusScreenState extends State<PaymentStatusScreen> {
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
-                  'To',
+                  LocaleKeys.to.tr,
                   style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.bold,
@@ -126,7 +127,7 @@ class PaymentStatusScreenState extends State<PaymentStatusScreen> {
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
-                  'Other Account',
+                  LocaleKeys.otherAccount.tr,
                   style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
@@ -142,7 +143,7 @@ class PaymentStatusScreenState extends State<PaymentStatusScreen> {
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
-                  'From',
+                 LocaleKeys.from.tr,
                   style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.bold,
@@ -161,7 +162,7 @@ class PaymentStatusScreenState extends State<PaymentStatusScreen> {
                     Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10),
                         child: Text(
-                          'SyberPay',
+                          LocaleKeys.syberPay.tr,
                           style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -173,18 +174,18 @@ class PaymentStatusScreenState extends State<PaymentStatusScreen> {
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
-                  'Added at 11:56AM, 20 Mar 2022',
+                  '${LocaleKeys.addedAt.tr} 11:56AM, 20 Mar 2022',
                   style: TextStyle(fontSize: 13, color: Colors.black45),
                 )),
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: RichText(
                     text: TextSpan(
-                        text: 'Wallet Ref No: 3876543215 ',
+                        text: '${LocaleKeys.walletRefNo.tr}: 3876543215 ',
                         style: TextStyle(fontSize: 13, color: Colors.black45),
                         children: [
                       TextSpan(
-                        text: 'Copy',
+                        text: LocaleKeys.copy.tr,
                         style: TextStyle(fontSize: 13, color: AppColors.blue),
                       )
                     ]))),

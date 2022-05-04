@@ -174,7 +174,7 @@ class WishlistScreenState extends State<WishlistScreen> {
                       child: Expanded(
                         child: Center(
                             child: Text(
-                          'No Records',
+                          LocaleKeys.noRecords.tr,
                           style: TextStyle(
                               color: Color(0xFF414141),
                               fontSize: 14,

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/drawer/profile/wallet/payment_status_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
@@ -54,7 +55,7 @@ class ViewHistoryScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "From Date",
+                          LocaleKeys.fromDate.tr,
                           style: TextStyle(
                               color: Colors.black54,
                               fontSize: 14,
@@ -99,7 +100,7 @@ class ViewHistoryScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "To Date",
+                            LocaleKeys.toDate.tr,
                             style: TextStyle(
                                 color: Colors.black54,
                                 fontSize: 14,
@@ -125,7 +126,7 @@ class ViewHistoryScreen extends StatelessWidget {
                                   },
                                   child: Text(
                                     viewHistoryController.toDate.isEmpty
-                                        ? "Choose Date"
+                                        ? LocaleKeys.chooseDate.tr
                                         : viewHistoryController.toDate,
                                     style: TextStyle(
                                         color: Colors.black45,
@@ -144,7 +145,7 @@ class ViewHistoryScreen extends StatelessWidget {
                             padding: EdgeInsets.only(top: 25),
                             child: Container(
                               child: Text(
-                                'Submit',
+                                LocaleKeys.submit.tr,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 15),
@@ -169,7 +170,7 @@ class ViewHistoryScreen extends StatelessWidget {
                             child: Wrap(
                               children: [
                                 Text(
-                                  'Filter',
+                                  LocaleKeys.filter.tr,
                                   style: TextStyle(
                                       fontSize: 17, color: Colors.black87),
                                 ),
@@ -308,8 +309,8 @@ class ViewHistoryScreen extends StatelessWidget {
                                                                           .historyItemList[
                                                                               index2]
                                                                           .isSuccess
-                                                                      ? '+SAS 500'
-                                                                      : '-SAS 500',
+                                                                      ? '+${LocaleKeys.sar.tr} 500'
+                                                                      : '-${LocaleKeys.sar.tr} 500',
                                                                   style:
                                                                       TextStyle(
                                                                     color: viewHistoryController
@@ -386,7 +387,7 @@ class ViewHistoryScreen extends StatelessWidget {
                 children: [
                   10.heightBox,
                   Text(
-                    'Filter Payments',
+                    LocaleKeys.filterPayments.tr,
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 18,
@@ -394,7 +395,7 @@ class ViewHistoryScreen extends StatelessWidget {
                   ),
                   10.heightBox,
                   Text(
-                    'Status',
+                    LocaleKeys.status.tr,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 15,
@@ -411,7 +412,7 @@ class ViewHistoryScreen extends StatelessWidget {
                             color: Colors.green,
                             borderRadius: BorderRadius.circular(15)),
                         child: Text(
-                          'Successful',
+                          LocaleKeys.successful.tr,
                           style: TextStyle(color: Colors.white, fontSize: 14),
                         ),
                       ),
@@ -422,7 +423,7 @@ class ViewHistoryScreen extends StatelessWidget {
                             color: Colors.orange,
                             borderRadius: BorderRadius.circular(15)),
                         child: Text(
-                          'Pending',
+                          LocaleKeys.pending.tr,
                           style: TextStyle(color: Colors.white, fontSize: 14),
                         ),
                       ),
@@ -433,7 +434,7 @@ class ViewHistoryScreen extends StatelessWidget {
                             color: Colors.red,
                             borderRadius: BorderRadius.circular(15)),
                         child: Text(
-                          'Failed',
+                          LocaleKeys.failed.tr,
                           style: TextStyle(color: Colors.white, fontSize: 14),
                         ),
                       ),
@@ -441,7 +442,7 @@ class ViewHistoryScreen extends StatelessWidget {
                   ),
                   10.heightBox,
                   Text(
-                    'Type',
+                    LocaleKeys.type.tr,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 15,
@@ -459,7 +460,7 @@ class ViewHistoryScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(15),
                             border: Border.all(color: Colors.grey[300]!)),
                         child: Text(
-                          'Paid',
+                          LocaleKeys.paid.tr,
                           style: TextStyle(color: Colors.black54, fontSize: 14),
                         ),
                       ),
@@ -471,7 +472,7 @@ class ViewHistoryScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(15),
                             border: Border.all(color: Colors.grey[300]!)),
                         child: Text(
-                          'Added',
+                          LocaleKeys.added.tr,
                           style: TextStyle(color: Colors.white, fontSize: 14),
                         ),
                       ),
@@ -483,7 +484,7 @@ class ViewHistoryScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(15),
                             border: Border.all(color: Colors.grey[300]!)),
                         child: Text(
-                          'Cashback',
+                          LocaleKeys.cashback.tr,
                           style: TextStyle(color: Colors.black54, fontSize: 14),
                         ),
                       ),
@@ -501,7 +502,7 @@ class ViewHistoryScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(2),
                             border: Border.all(color: AppColors.primaryColor)),
                         child: Text(
-                          'Clear',
+                          LocaleKeys.clear.tr,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: AppColors.primaryColor, fontSize: 14),
@@ -517,7 +518,7 @@ class ViewHistoryScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(2),
                             border: Border.all(color: AppColors.primaryColor)),
                         child: Text(
-                          'Apply',
+                          LocaleKeys.applySmall.tr,
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.white, fontSize: 14),
                         ),
@@ -558,7 +559,7 @@ class ViewHistoryScreen extends StatelessWidget {
             Align(
               alignment: Alignment.center,
               child: Text(
-                'View History',
+                LocaleKeys.viewHistory.tr,
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),

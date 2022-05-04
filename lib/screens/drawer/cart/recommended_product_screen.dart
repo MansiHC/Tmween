@@ -146,7 +146,7 @@ class RecommendedProductScreenState extends State<RecommendedProductScreen> {
             Align(
               alignment: Alignment.center,
               child: Text(
-                "Recommended Products",
+                LocaleKeys.recommendProducts.tr,
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),
@@ -273,7 +273,7 @@ class RecommendedProductContainer2 extends StatelessWidget {
                                 textAlign: TextAlign.start,
                                 text: TextSpan(
                                     text:
-                                        'You save ${recommendedProductModel.discountPerDisp}! ',
+                                        '${LocaleKeys.youSave.tr} ${recommendedProductModel.discountPerDisp}! ',
                                     style: TextStyle(
                                         color: Color(0xFF3B963C), fontSize: 12),
                                     children: <InlineSpan>[
@@ -303,7 +303,7 @@ class RecommendedProductContainer2 extends StatelessWidget {
                                 color: Color(0xFF0088CA),
                                 padding: EdgeInsets.symmetric(
                                     vertical: 5, horizontal: 10),
-                                child: Text('ADD TO CART',
+                                child: Text(LocaleKeys.addToCart.tr,
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 12)),

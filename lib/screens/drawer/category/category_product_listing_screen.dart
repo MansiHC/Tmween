@@ -68,12 +68,13 @@ class CategoryProductListingScreenState
       categoryProductListingController.categorySlug = widget.categorySlug!;
       categoryProductListingController.categoryName = widget.categoryName!;
       categoryProductListingController.categoryId = widget.categoryId!;
-
+print(categoryProductListingController.isLogin);
       if (categoryProductListingController.isLogin) {
         MySharedPreferences.instance
             .getStringValuesSF(SharedPreferencesKeys.token)
             .then((value) async {
-          categoryProductListingController.token = value!;
+              if(value!=null)
+          categoryProductListingController.token = value;
           print('dhsh.....${categoryProductListingController.token}');
           MySharedPreferences.instance
               .getIntValuesSF(SharedPreferencesKeys.userId)
@@ -209,8 +210,8 @@ class CategoryProductListingScreenState
                         .address.isNotEmpty
                         ? categoryProductListingController
                         .address
-                        : 'Select Delivery Address'
-                        : 'Select Delivery Address',
+                        : LocaleKeys.selectDeliveryAddress.tr
+                        : LocaleKeys.selectDeliveryAddress.tr,
                     style: TextStyle(
                         color: Color(0xFF838383), fontSize: 12),
                   ),
@@ -322,7 +323,7 @@ class CategoryProductListingScreenState
           Expanded(
       child: Center(
           child: Text(
-            'No Records',
+            LocaleKeys.noRecords.tr,
             style: TextStyle(
                 color: Color(0xFF414141),
                 fontSize: 14,
@@ -399,8 +400,8 @@ class CategoryProductListingScreenState
                                               .address.isNotEmpty
                                           ? categoryProductListingController
                                               .address
-                                          : 'Select Delivery Address'
-                                      : 'Select Delivery Address',
+                                          : LocaleKeys.selectDeliveryAddress.tr
+                                      : LocaleKeys.selectDeliveryAddress.tr,
                                   style: TextStyle(
                                       color: Color(0xFF838383), fontSize: 12),
                                 ),
@@ -555,7 +556,7 @@ class CategoryProductListingScreenState
         init: CategoryProductListingController(),
         builder: (contet) {
           return Container(
-              height: categoryProductListingController.isLogin ? 350 : 200,
+              height: categoryProductListingController.isLogin ? 380 : 210,
               padding: EdgeInsets.all(15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -620,7 +621,7 @@ class CategoryProductListingScreenState
                                               .addressList.length >
                                           0,
                               child: Container(
-                                  height: 170,
+                                  height: 185,
                                   child: ListView.builder(
                                       itemCount:
                                           categoryProductListingController
@@ -721,7 +722,7 @@ class CategoryProductListingScreenState
                                   ),
                                   5.widthBox,
                                   Text(
-                                    'Use my current location',
+                                    LocaleKeys.useMyCurrentLocation.tr,
                                     style: TextStyle(
                                         color: AppColors.primaryColor,
                                         fontSize: 16),
@@ -730,7 +731,7 @@ class CategoryProductListingScreenState
                               ))
                         ])
                       : CustomButton(
-                          text: 'Sign in to see your Addresses',
+                          text: LocaleKeys.signInToSeeYourAddress.tr,
                           fontSize: 16,
                           onPressed: () {
                             Get.deleteAll();
@@ -871,7 +872,7 @@ class CategoryProductListingScreenState
                       categoryProductListingController.update();
                     },
                     title: Text(
-                      'Product Name',
+                      LocaleKeys.productName.tr,
                       style: TextStyle(color: Colors.black87, fontSize: 14),
                     ),
                   ),
@@ -916,7 +917,7 @@ class CategoryProductListingScreenState
                       categoryProductListingController.update();
                     },
                     title: Text(
-                      'Avg. Customer Review',
+                      LocaleKeys.avgCustomerReview.tr,
                       style: TextStyle(color: Colors.black87, fontSize: 14),
                     ),
                   ),
@@ -931,7 +932,7 @@ class CategoryProductListingScreenState
                       categoryProductListingController.update();
                     },
                     title: Text(
-                      'Newest Arrival',
+                      LocaleKeys.newestArrival.tr,
                       style: TextStyle(color: Colors.black87, fontSize: 14),
                     ),
                   ),

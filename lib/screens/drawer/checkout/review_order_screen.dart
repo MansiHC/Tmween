@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/review_order_controller.dart';
+import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/drawer/checkout/item_shipped_container.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
@@ -71,7 +72,7 @@ class ReviewOrderScreen extends StatelessWidget {
                     children: [
                       5.heightBox,
                       Text(
-                        'Review your order',
+                        LocaleKeys.reviewYourOrder.tr,
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
@@ -79,7 +80,7 @@ class ReviewOrderScreen extends StatelessWidget {
                       ),
                       5.heightBox,
                       Text(
-                        "By clicking on the 'Place Your Order and Pay' button, you agree to Tmween.com's privacy notice and conditions of use.",
+                        LocaleKeys.agreeingForPrivacyPolicy.tr,
                         style: TextStyle(
                             color: Color(0xFF666666),
                             fontSize: 13,
@@ -102,7 +103,7 @@ class ReviewOrderScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Important message",
+                                LocaleKeys.impMessage.tr,
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 14,
@@ -144,7 +145,7 @@ class ReviewOrderScreen extends StatelessWidget {
                                         5.widthBox,
                                         Expanded(
                                           child: Text(
-                                            "Check this box to these delivery and payment options in the future.",
+                                            LocaleKeys.thisDeliveryOptionForFuture.tr,
                                             style: TextStyle(
                                                 color: Color(0xFF666666),
                                                 fontSize: 14),
@@ -175,7 +176,7 @@ class ReviewOrderScreen extends StatelessWidget {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 text: TextSpan(
-                                    text: 'Shipping to ',
+                                    text: '${LocaleKeys.shippingTo.tr} ',
                                     style: TextStyle(
                                         color: Color(0xFF666666), fontSize: 15),
                                     children: [
@@ -218,13 +219,13 @@ class ReviewOrderScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Product',
+                            Text(LocaleKeys.product.tr,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w500,
                                     fontSize: 15)),
-                            Text('Total',
+                            Text(LocaleKeys.total.tr,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Colors.black,
@@ -263,7 +264,7 @@ class ReviewOrderScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('Item(${reviewOrderController.quoteItemDetails![i].quantity})',
+                              Text('${LocaleKeys.item.tr}(${reviewOrderController.quoteItemDetails![i].quantity})',
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                       color: Color(0xFF666666), fontSize: 15)),
@@ -286,7 +287,7 @@ class ReviewOrderScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Shipping',
+                            Text(LocaleKeys.shipping.tr,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Color(0xFF666666), fontSize: 15)),
@@ -302,7 +303,7 @@ class ReviewOrderScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Tax',
+                            Text(LocaleKeys.tax.tr,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Color(0xFF666666), fontSize: 15)),
@@ -324,7 +325,7 @@ class ReviewOrderScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Total',
+                            Text(LocaleKeys.total.tr,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Colors.black,
@@ -361,7 +362,7 @@ class ReviewOrderScreen extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Pay with',
+                            Text(LocaleKeys.payWith.tr,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Colors.black,
@@ -401,7 +402,7 @@ class ReviewOrderScreen extends StatelessWidget {
                             child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Deliver to',
+                            Text(LocaleKeys.deliverTo.tr,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Colors.black,
@@ -453,7 +454,7 @@ class ReviewOrderScreen extends StatelessWidget {
                 child: ElevatedButton(
                   child: Wrap(spacing: 10, children: [
                     Text(
-                      'Proceed to Pay',
+                      LocaleKeys.proceedToPay.tr,
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.white, fontSize: 17),
                     ),
@@ -506,7 +507,7 @@ class ReviewOrderScreen extends StatelessWidget {
             Align(
               alignment: Alignment.center,
               child: Text(
-                'Complete Payment',
+                LocaleKeys.completePayment.tr,
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),

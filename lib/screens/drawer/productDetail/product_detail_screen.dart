@@ -144,8 +144,8 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
           subject: 'Look what I see!');*/
 
       Share.shareFiles(['$path/image.png'],
-          text: 'check out product  ${_linkMessage}',
-          subject: 'Look what I see!');
+          text: '${LocaleKeys.checkoutProduct.tr}  ${_linkMessage}',
+          subject: '${LocaleKeys.lookWhat.tr}!');
 
       _isCreatingLink = false;
     });
@@ -228,8 +228,8 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                                     .address.isNotEmpty
                                                 ? productDetailController
                                                     .address
-                                                : 'Select Delivery Address'
-                                            : 'Select Delivery Address',
+                                                : LocaleKeys.selectDeliveryAddress.tr
+                                            : LocaleKeys.selectDeliveryAddress.tr,
                                         style: TextStyle(
                                             color: Color(0xFF454545),
                                             fontSize: 12,
@@ -264,7 +264,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
         context: productDetailController.context,
         builder: (_) => AlertDialog(
               title: Text(
-                'Please Login First',
+                LocaleKeys.pleaseLoginFirst.tr,
                 style: TextStyle(
                   fontSize: 16,
                 ),
@@ -555,7 +555,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                 child: RichText(
                     textAlign: TextAlign.start,
                     text: TextSpan(
-                        text: 'by ',
+                        text: '${LocaleKeys.by.tr} ',
                         style:
                             TextStyle(color: Color(0xFF48505C), fontSize: 16),
                         children: <InlineSpan>[
@@ -572,7 +572,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
           productDetailController.productDetailData!.customerProductReview!
                       .customerProductReviewCount ==
                   0
-              ? Text('No Reviews Yet',
+              ? Text(LocaleKeys.noReviewsYet.tr,
                   style: TextStyle(
                     color: Color(0xFF828282),
                     fontSize: 13,
@@ -623,18 +623,19 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
           ),
           5.heightBox,
           Align(
-              alignment: Alignment.centerLeft,
+              alignment: language == 'ar'
+                  ?Alignment.centerRight:Alignment.centerLeft,
               child: RichText(
                   textAlign: TextAlign.start,
                   text: TextSpan(
-                      text: 'Price: ',
+                      text: '${LocaleKeys.price.tr}: ',
                       style: TextStyle(
                           color: Color(0xFF636363),
                           fontSize: 14,
                           fontWeight: FontWeight.bold),
                       children: <InlineSpan>[
                         TextSpan(
-                          text: 'SAR ',
+                          text: '${LocaleKeys.sar.tr} ',
                           style: TextStyle(
                               color: Color(0xFFF4500F),
                               fontSize: 14,
@@ -652,11 +653,12 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                       ]))),
           5.heightBox,
           Align(
-              alignment: Alignment.centerLeft,
+              alignment: language == 'ar'
+                  ?Alignment.centerRight:Alignment.centerLeft,
               child: RichText(
                   textAlign: TextAlign.start,
                   text: TextSpan(
-                      text: 'M.R.P: ',
+                      text: '${LocaleKeys.mrp.tr}: ',
                       style: TextStyle(
                           decoration: TextDecoration.lineThrough,
                           decorationThickness: 2,
@@ -665,7 +667,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                           fontWeight: FontWeight.bold),
                       children: <InlineSpan>[
                         TextSpan(
-                          text: 'SAR ',
+                          text: '${LocaleKeys.sar.tr} ',
                           style: TextStyle(
                               decoration: TextDecoration.lineThrough,
                               decorationThickness: 2,
@@ -685,11 +687,12 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                       ]))),
           5.heightBox,
           Align(
-              alignment: Alignment.centerLeft,
+              alignment: language == 'ar'
+                  ?Alignment.centerRight:Alignment.centerLeft,
               child: RichText(
                   textAlign: TextAlign.start,
                   text: TextSpan(
-                      text: 'You Save: ',
+                      text: '${LocaleKeys.youSave.tr}: ',
                       style: TextStyle(
                           color: Color(0xFF636363),
                           fontSize: 14,
@@ -697,7 +700,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                       children: <InlineSpan>[
                         TextSpan(
                           text:
-                              'SAR ${productDetailController.productDetailData!.productData![0].discountValue.toString()} (${productDetailController.productDetailData!.productData![0].discountValuePercentage.toString()}%)',
+                              '${LocaleKeys.sar.tr} ${productDetailController.productDetailData!.productData![0].discountValue.toString()} (${productDetailController.productDetailData!.productData![0].discountValuePercentage.toString()}%)',
                           style:
                               TextStyle(color: Color(0xFFF4500F), fontSize: 14),
                         ),
@@ -1057,7 +1060,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                     5.widthBox,
                     Expanded(
                         child: Text(
-                      '*Minimum order Quantity 1 Piece.',
+                      LocaleKeys.minimumOrderQuantity.tr,
                       style: TextStyle(
                           color: Color(0xFF000000),
                           fontSize: 12,
@@ -1094,7 +1097,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                       Padding(
                           padding: EdgeInsets.only(right: 15),
                           child: CustomButton(
-                              text: 'BUY NOW',
+                              text: LocaleKeys.buyNow.tr,
                               fontSize: 14,
                               onPressed: () {
                                 if (!productDetailController.isLogin) {
@@ -1140,7 +1143,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                 )
                               : */
                               CustomButton(
-                                  text: 'ADD TO CART',
+                                  text: LocaleKeys.addToCart.tr,
                                   fontSize: 14,
                                   backgroundColor: Color(0xFF314156),
                                   onPressed: () {
@@ -1223,7 +1226,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                       Padding(
                           padding: EdgeInsets.only(right: 15),
                           child: Text(
-                            'Similar Products',
+                            LocaleKeys.similarProducts.tr,
                             style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
@@ -1278,7 +1281,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Ratings & Reviews',
+                LocaleKeys.ratingReviews.tr,
                 style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -1310,7 +1313,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                         borderRadius: BorderRadius.circular(4)),
                     child: Center(
                         child: Text(
-                      'Rate Product',
+                      LocaleKeys.rateProduct.tr,
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 13, color: Colors.white),
                     )),
@@ -1323,7 +1326,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
               child: productDetailController.productDetailData!
                           .customerProductReview!.data!.length ==
                       0
-                  ? Text('Be the First to write a review',
+                  ? Text(LocaleKeys.beTheFirstToReview.tr,
                       style: TextStyle(
                         color: Color(0xFF333333),
                         fontSize: 12,
@@ -1449,9 +1452,11 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Align(
-                                              alignment: Alignment.centerLeft,
+                                              alignment: language == 'ar'
+                                                  ?Alignment.centerRight:Alignment.centerLeft,
                                               child: RichText(
-                                                  textAlign: TextAlign.start,
+                                                  textAlign:
+                                                  TextAlign.start,
                                                   text: TextSpan(
                                                       text: productDetailController
                                                           .productDetailData!
@@ -1546,7 +1551,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                                               .customerProductReview!
                                                               .data![index]
                                                               .id))
-                                                      ? Text('Helpful',
+                                                      ? Text(LocaleKeys.helpful.tr,
                                                           style: TextStyle(
                                                             color: Color(
                                                                 0xFF333333),
@@ -1624,7 +1629,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                                               .customerProductReview!
                                                               .data![index]
                                                               .id))
-                                                      ? Text('Report abuse',
+                                                      ? Text(LocaleKeys.reportAbuse.tr,
                                                           style: TextStyle(
                                                             color: Color(
                                                                 0xFF333333),
@@ -1685,7 +1690,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              'All ${productDetailController.productDetailData!.customerProductReview!.data!.length} Reviews',
+                                              '${LocaleKeys.all.tr} ${productDetailController.productDetailData!.customerProductReview!.data!.length} ${LocaleKeys.reviews.tr}',
                                               style: TextStyle(
                                                   fontSize: 13,
                                                   fontWeight: FontWeight.bold,
@@ -1726,7 +1731,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Add Report Abuse',
+                                    LocaleKeys.addReportAbuse.tr,
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
                                         fontSize: 16,
@@ -1756,10 +1761,10 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                 controller:
                                     productDetailController.titleController,
                                 keyboardType: TextInputType.name,
-                                hintText: 'Add Title',
+                                hintText: LocaleKeys.addTitle.tr,
                                 validator: (value) {
                                   if (value!.isEmpty) {
-                                    return 'Please Enter Title';
+                                    return LocaleKeys.emptyTitle.tr;
                                   }
                                 }),
                             10.heightBox,
@@ -1767,7 +1772,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                 controller: productDetailController
                                     .descriptionController,
                                 keyboardType: TextInputType.name,
-                                hintText: 'Add Description',
+                                hintText: LocaleKeys.addDesc.tr,
                                 maxLines: 3,
                                 textInputAction: TextInputAction.done,
                                 onSubmitted: (term) {
@@ -1776,7 +1781,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                 },
                                 validator: (value) {
                                   if (value!.isEmpty) {
-                                    return 'Please Enter Description';
+                                    return LocaleKeys.emptyDesc.tr;
                                   }
                                 }),
                             10.heightBox,
@@ -1786,7 +1791,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                 productDetailController.addReviewReport(
                                     reviewId, language, position);
                               },
-                              text: 'Report',
+                              text: LocaleKeys.report.tr,
                               width: 120,
                               fontSize: 12,
                               horizontalPadding: 5,
@@ -1812,7 +1817,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
             RichText(
                 textAlign: TextAlign.start,
                 text: TextSpan(
-                    text: 'Ship to ',
+                    text: '${LocaleKeys.shipTo.tr} ',
                     style: TextStyle(
                       color: Color(0xFF484848),
                       fontSize: 14,
@@ -1833,7 +1838,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
             RichText(
                 textAlign: TextAlign.start,
                 text: TextSpan(
-                    text: 'Delivered by ',
+                    text: '${LocaleKeys.deliverBy.tr} ',
                     style: TextStyle(
                       color: Color(0xFF484848),
                       fontSize: 14,
@@ -1850,7 +1855,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                     ])),
           if (productDetailController.attributeData!.productDeliveryData ==
               null)
-            Text('delivery is not available at your location',
+            Text(LocaleKeys.deliveryNotAvailable.tr,
                 style: TextStyle(
                     color: Color(0xFF1992CE),
                     fontSize: 14,
@@ -1882,7 +1887,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
           Row(
             children: [
               Expanded(
-                  child: Text('Sold by: ',
+                  child: Text('${LocaleKeys.soldBy.tr}: ',
                       style: TextStyle(
                           color: Color(0xFF535353),
                           fontSize: 14,
@@ -1917,7 +1922,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
           8.heightBox,
           productDetailController.productDetailData!.productData![0].inStock ==
                   0
-              ? Text('Out of Stock!',
+              ? Text('${LocaleKeys.outOfStock.tr}!',
                   style: TextStyle(
                       color: Color(0xFFF77443),
                       fontSize: 14,
@@ -1926,7 +1931,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                           .productDetailData!.productData![0].inStock! <
                       11
                   ? Text(
-                      'Only ${productDetailController.productDetailData!.productData![0].inStock} left in stock!',
+                      '${LocaleKeys.only.tr} ${productDetailController.productDetailData!.productData![0].inStock} ${LocaleKeys.leftInStock.tr}!',
                       style: TextStyle(
                           color: Color(0xFFF77443),
                           fontSize: 14,
@@ -1950,7 +1955,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                     ),
                     children: <InlineSpan>[
                       TextSpan(
-                        text: 'from ',
+                        text: '${LocaleKeys.from.tr} ',
                         style: TextStyle(
                             color: Color(0xFF333333),
                             fontSize: 14,
@@ -1977,7 +1982,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
               padding: EdgeInsets.all(15),
               width: double.maxFinite,
               child: Text(
-                'Other Seller on Tmween',
+                LocaleKeys.otherSellerOnTmween.tr,
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 14,
@@ -2018,7 +2023,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold)),
                                   3.heightBox,
-                                  Text('+ ${'0.00'} Delivery charge',
+                                  Text('+ ${'0.00'} ${LocaleKeys.deliveryCharge.tr}',
                                       style: TextStyle(
                                         color: Color(0xFF7D838B),
                                         fontSize: 13,
@@ -2027,7 +2032,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                   RichText(
                                       textAlign: TextAlign.start,
                                       text: TextSpan(
-                                          text: 'Sold by: ',
+                                          text: '${LocaleKeys.soldBy.tr}: ',
                                           style: TextStyle(
                                             color: Color(0xFF7D838B),
                                             fontSize: 13,
@@ -2052,7 +2057,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                   horizontalPadding: 0,
                                   width: 105,
                                   fontSize: 14,
-                                  text: 'ADD TO CART',
+                                  text: LocaleKeys.addToCart.tr,
                                   onPressed: () {
                                     if (!productDetailController.isLogin) {
                                       _loginFirstDialog(
@@ -2135,7 +2140,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                 10.heightBox,
                 Expanded(
                     child: Text(
-                  'Guarantee 100% Purchase Protection',
+                  LocaleKeys.guaranteePurchaseProtection.tr,
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.white, fontSize: 14),
                 ))
@@ -2144,115 +2149,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
         Container(
             padding: EdgeInsets.all(10),
             color: Colors.white,
-            child: /*Table(
-                columnWidths: {
-                  0: FlexColumnWidth(5),
-                  1: FlexColumnWidth(0.1),
-                  2: FlexColumnWidth(5),
-                  3: FlexColumnWidth(0.1),
-                  4: FlexColumnWidth(4),
-                  5: FlexColumnWidth(0.1),
-                  6: FlexColumnWidth(5),
-                },
-                children: [
-                  TableRow(children: [
-                    SvgPicture.asset(
-                      ImageConstanst.sudanFlagIcon,
-                      height: 35,
-                      width: 35,
-                    ),
-                    Container(color: Color(0xFFEEEEEE), height: 35, width: 1,),
-                    SvgPicture.asset(
-                      ImageConstanst.sudanFlagIcon,
-                      height: 35,
-                      width: 35,
-                    ),
-                    Container(color: Color(0xFFEEEEEE), height: 35, width: 1,),
-                    SvgPicture.asset(
-                      ImageConstanst.sudanFlagIcon,
-                      height: 35,
-                      width: 35,
-                    ),
-                    Container(color: Color(0xFFEEEEEE), height: 35, width: 1,),
-                    SvgPicture.asset(
-                      ImageConstanst.sudanFlagIcon,
-                      height: 35,
-                      width: 35,
-                    ),
-                  ]),
-                  TableRow(children: [
-                    5.heightBox,
-                    Container(color: Color(0xFFEEEEEE), height: 5, width: 1,),
-                    5.heightBox,
-                    Container(color: Color(0xFFEEEEEE), height: 5, width: 1,),
-                    5.heightBox,
-                    Container(color: Color(0xFFEEEEEE), height: 5, width: 1,),
-                    5.heightBox,
-                  ]),
-                  TableRow(children: [
-                    Text(
-                      'WARRANTY',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Color(0xFF333333),
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Container(color: Color(0xFFEEEEEE), height: 30, width: 1,),
-                    Text(
-                      '100% ORIGINAL',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Color(0xFF333333),
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Container(color: Color(0xFFEEEEEE), height: 30, width: 1,),
-                    Text(
-                      'SECURE',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Color(0xFF333333),
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Container(color: Color(0xFFEEEEEE), height: 30, width: 1,),
-                    Text(
-                      '100% BUYER',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Color(0xFF333333),
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ]),
-                  TableRow(children: [
-                    Text(
-                      "As per Weswox's",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Color(0xFF5C5C5C), fontSize: 12.5),
-                    ), Container(color:Color(0xFFEEEEEE),  height: 30, width: 1,),
-                    Text(
-                      "Products",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Color(0xFF5C5C5C), fontSize: 12.5),
-                    ),Container(color:Color(0xFFEEEEEE), height: 30, width: 1,),
-                    Text(
-                      "PAYMENTS",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Color(0xFF5C5C5C), fontSize: 12.5),
-                    ),Container(color:Color(0xFFEEEEEE), height: 30, width: 1,),
-                    Text(
-                      "PROTECTION",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Color(0xFF5C5C5C), fontSize: 12.5),
-                    ),
-                  ])
-                ])*/
+            child:
                 Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -2270,7 +2167,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                         SizedBox(
                             height: 34,
                             child: Text(
-                              'WARRANTY',
+                              LocaleKeys.warranty.tr,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Color(0xFF333333),
@@ -2278,7 +2175,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                   fontWeight: FontWeight.bold),
                             )),
                         Text(
-                          "As per Weswox's",
+                          LocaleKeys.asPerWeswox.tr,
                           textAlign: TextAlign.center,
                           style:
                               TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
@@ -2305,7 +2202,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                         SizedBox(
                             height: 34,
                             child: Text(
-                              '100% ORIGINAL',
+                              LocaleKeys.percentOriginal.tr,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Color(0xFF333333),
@@ -2313,7 +2210,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                   fontWeight: FontWeight.bold),
                             )),
                         Text(
-                          "\nProducts",
+                          "\n${LocaleKeys.products.tr}",
                           textAlign: TextAlign.center,
                           style:
                               TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
@@ -2340,7 +2237,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                         SizedBox(
                             height: 34,
                             child: Text(
-                              'SECURE',
+                              LocaleKeys.secure.tr,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Color(0xFF333333),
@@ -2348,7 +2245,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                   fontWeight: FontWeight.bold),
                             )),
                         Text(
-                          "\nPAYMENTS",
+                          "\n${LocaleKeys.payments.tr}",
                           textAlign: TextAlign.center,
                           style:
                               TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
@@ -2374,7 +2271,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                         SizedBox(
                             height: 34,
                             child: Text(
-                              '100% BUYER',
+                              LocaleKeys.percentBuyer.tr,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Color(0xFF333333),
@@ -2382,7 +2279,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                   fontWeight: FontWeight.bold),
                             )),
                         Text(
-                          "\nPROTECTION",
+                          "\n${LocaleKeys.protection.tr}",
                           textAlign: TextAlign.center,
                           style:
                               TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
@@ -2412,7 +2309,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
             collapsedBackgroundColor: Color(0xFF314156),
             initiallyExpanded: true,
             key: PageStorageKey<String>('Bulk quantity Discounts!!'),
-            title: Text('Bulk quantity Discounts!!',
+            title: Text('${LocaleKeys.bulkQuantityDiscount.tr}!!',
                 style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -2438,7 +2335,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                           height: 40,
                           child: Center(
                               child: Text(
-                            'Quantity',
+                            LocaleKeys.quantity.tr,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Color(0xFF000000),
@@ -2449,7 +2346,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                           height: 40,
                           child: Center(
                               child: Text(
-                            'Discount',
+                           LocaleKeys.discount.tr,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Color(0xFF000000),
@@ -2460,7 +2357,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                           height: 40,
                           child: Center(
                             child: Text(
-                              'Price per Piece',
+                              LocaleKeys.pricePerPiece.tr,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Color(0xFF000000),
@@ -2546,7 +2443,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
             collapsedBackgroundColor: Color(0xFF314156),
             initiallyExpanded: true,
             key: PageStorageKey<String>('Product Information'),
-            title: Text('Product Information',
+            title: Text(LocaleKeys.productInfo.tr,
                 style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -2577,7 +2474,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Descriptions:',
+                              '${LocaleKeys.descriptions.tr}:',
                               style: TextStyle(
                                   color: Color(0xFF333333),
                                   fontSize: 14,
@@ -2630,7 +2527,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
             collapsedBackgroundColor: Color(0xFF314156),
             initiallyExpanded: false,
             key: PageStorageKey<String>('Specification'),
-            title: Text('Specification',
+            title: Text(LocaleKeys.specification.tr,
                 style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -2680,7 +2577,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
             collapsedBackgroundColor: Color(0xFF314156),
             initiallyExpanded: false,
             key: PageStorageKey<String>('Size & Specification'),
-            title: Text('Size & Specification',
+            title: Text(LocaleKeys.sizeSpecification.tr,
                 style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -2705,7 +2602,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
             collapsedBackgroundColor: Color(0xFF314156),
             initiallyExpanded: false,
             key: PageStorageKey<String>('Delivery & Returns'),
-            title: Text('Delivery & Returns',
+            title: Text(LocaleKeys.deliveryReturns.tr,
                 style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -2795,7 +2692,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
         init: ProductDetailController(),
         builder: (contet) {
           return Container(
-              height: productDetailController.isLogin ? 350 : 200,
+              height: productDetailController.isLogin ? 380 : 210,
               padding: EdgeInsets.all(15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -2855,7 +2752,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                   productDetailController.addressList.length >
                                       0,
                               child: Container(
-                                  height: 170,
+                                  height: 185,
                                   child: ListView.builder(
                                       itemCount: productDetailController
                                               .addressList.length +
@@ -2954,7 +2851,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                   ),
                                   5.widthBox,
                                   Text(
-                                    'Use my current location',
+                                    LocaleKeys.useMyCurrentLocation.tr,
                                     style: TextStyle(
                                         color: AppColors.primaryColor,
                                         fontSize: 16),
@@ -2963,7 +2860,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                               ))
                         ])
                       : CustomButton(
-                          text: 'Sign in to see your Addresses',
+                          text: LocaleKeys.signInToSeeYourAddress.tr,
                           fontSize: 16,
                           onPressed: () {
                             Get.deleteAll();
@@ -3081,7 +2978,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                         ),
                         10.widthBox,
                         Text(
-                          'Added To Cart',
+                          LocaleKeys.addedToCart.tr,
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 14,

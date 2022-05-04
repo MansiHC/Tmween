@@ -157,12 +157,13 @@ class CategoryProductListingController extends GetxController {
   Future<void> getBestMatchResult( sortBy,sortOrder,language) async {
     productList = [];
     Helper.showLoading();
-    print('.............${categorySlug}...$categoryId...$fromPrice..$toPrice.$sortBy....$sortOrder...$fullFillByTmween...$catIdList...$brandIdList....$sellerIdList');
 
     catIdList!.add(categoryId.toString());
 
+    print('.............${categorySlug}...$categoryId...$fromPrice..$toPrice.$sortBy....$sortOrder...$fullFillByTmween...${catIdList!.toSet().toList()}...$brandIdList....$sellerIdList');
+
     await api
-        .getCategoryMobileBestMatchData("1",categorySlug, sortBy,sortOrder,catIdList,brandIdList,sellerIdList,
+        .getCategoryMobileBestMatchData("1",categorySlug, sortBy,sortOrder,catIdList!.toSet().toList(),brandIdList,sellerIdList,
         fromPrice.toString(),toPrice.toString(),fullFillByTmween.toString(),language)
         .then((value) {
       if (value.statusCode == 200) {

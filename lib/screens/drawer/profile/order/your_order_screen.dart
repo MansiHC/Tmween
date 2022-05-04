@@ -60,7 +60,7 @@ class YourOrderScreen extends StatelessWidget {
               isDense: true,
               controller: yourOrderController.searchController,
               keyboardType: TextInputType.text,
-              hintText: 'Search All Orders',
+              hintText: LocaleKeys.searchAllOrder.tr,
               textInputAction: TextInputAction.search,
               onSubmitted: (term) {
                 FocusScope.of(yourOrderController.context).unfocus();

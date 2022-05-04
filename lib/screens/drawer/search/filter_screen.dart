@@ -59,7 +59,8 @@ class FilterScreenState extends State<FilterScreen> {
                     child: topView(filterController)),
                 filterController.loading
                     ? Expanded(child: Center(child:CircularProgressBar()))
-                    : Expanded(
+                    : filterController.filteredData==null?
+                Container():Expanded(
                         child: SingleChildScrollView(
                             child: Column(
                         children: [
@@ -299,7 +300,7 @@ class FilterScreenState extends State<FilterScreen> {
               ),
               child: RangeSlider(
                 values: filterController.currentRangeValues,
-                max:  double.parse(filterController.filteredData.maxPrice!.toString()),
+                max:  double.parse(filterController.filteredData!.maxPrice!.toString()),
 
                 labels: RangeLabels(
                   filterController.currentRangeValues.start.round().toString(),

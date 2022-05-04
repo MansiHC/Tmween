@@ -166,7 +166,7 @@ class AddAddressScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomButton(
-                            text: 'USE CURRENT LOCATION',
+                            text: LocaleKeys.useCurrentLocation.tr,
                             fontSize: 16,
                             onPressed: () {
                               getAddress();
@@ -254,14 +254,14 @@ class AddAddressScreen extends StatelessWidget {
                             hintFontSize: 14,
                             controller: addressController.fullNameController,
                             keyboardType: TextInputType.name,
-                            hintText: 'Enter Full Name',
+                            hintText: LocaleKeys.enterFullName.tr,
                             prefixIcon: SvgPicture.asset(
                               ImageConstanst.userIcon,
                               color: AppColors.primaryColor,
                             ),
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return 'Please Enter Full Name';
+                                return LocaleKeys.emptyFullName.tr;
                               }
                               return null;
                             }),
@@ -279,14 +279,14 @@ class AddAddressScreen extends StatelessWidget {
                             controller:
                                 addressController.mobileNumberController,
                             keyboardType: TextInputType.phone,
-                            hintText: 'Enter Mobile Number',
+                            hintText: LocaleKeys.enterMobileNumber.tr,
                             prefixIcon: SvgPicture.asset(
                               ImageConstanst.phoneCallIcon,
                               color: AppColors.primaryColor,
                             ),
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return 'Please Enter Mobile Number';
+                                return LocaleKeys.emptyMobileNumber.tr;
                               }
                               return null;
                             }),
@@ -303,14 +303,14 @@ class AddAddressScreen extends StatelessWidget {
                             hintFontSize: 14,
                             controller: addressController.pincodeController,
                             keyboardType: TextInputType.number,
-                            hintText: 'Enter Pincode',
+                            hintText: LocaleKeys.enterPinCode.tr,
                             prefixIcon: SvgPicture.asset(
                               ImageConstanst.worldIcon,
                               color: AppColors.primaryColor,
                             ),
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return 'Please Enter Pincode';
+                                return LocaleKeys.emptyPinCode.tr;
                               }
                               return null;
                             }),
@@ -327,14 +327,14 @@ class AddAddressScreen extends StatelessWidget {
                             hintFontSize: 14,
                             controller: addressController.houseNoController,
                             keyboardType: TextInputType.text,
-                            hintText: 'Enter ${LocaleKeys.houseNo.tr}',
+                            hintText: '${LocaleKeys.enter.tr} ${LocaleKeys.houseNo.tr}',
                             prefixIcon: SvgPicture.asset(
                               ImageConstanst.homeIcon,
                               color: AppColors.primaryColor,
                             ),
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return 'Please Enter ${LocaleKeys.houseNo.tr}';
+                                return '${LocaleKeys.emptyEnter.tr} ${LocaleKeys.houseNo.tr}';
                               }
                               return null;
                             }),
@@ -351,14 +351,14 @@ class AddAddressScreen extends StatelessWidget {
                             hintFontSize: 14,
                             controller: addressController.areaStreetController,
                             keyboardType: TextInputType.text,
-                            hintText: 'Enter ${LocaleKeys.areaStreet.tr}',
+                            hintText: '${LocaleKeys.enter.tr} ${LocaleKeys.areaStreet.tr}',
                             prefixIcon: SvgPicture.asset(
                               ImageConstanst.homeIcon,
                               color: AppColors.primaryColor,
                             ),
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return 'Please Enter ${LocaleKeys.areaStreet.tr}';
+                                return '${LocaleKeys.emptyEnter.tr} ${LocaleKeys.areaStreet.tr}';
                               }
                               return null;
                             }),
@@ -375,14 +375,14 @@ class AddAddressScreen extends StatelessWidget {
                             hintFontSize: 14,
                             controller: addressController.landmarkController,
                             keyboardType: TextInputType.text,
-                            hintText: 'Enter ${LocaleKeys.landmark.tr}',
+                            hintText: '${LocaleKeys.enter.tr} ${LocaleKeys.landmark.tr}',
                             prefixIcon: SvgPicture.asset(
                               ImageConstanst.pinIcon,
                               color: AppColors.primaryColor,
                             ),
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return 'Please Enter ${LocaleKeys.landmark.tr}';
+                                return '${LocaleKeys.emptyEnter.tr} ${LocaleKeys.landmark.tr}';
                               }
                               return null;
                             }),
@@ -395,51 +395,6 @@ class AddAddressScreen extends StatelessWidget {
                               fontSize: 14),
                         ),
                         5.heightBox,
-                        /* DropdownButtonHideUnderline(
-                          child: DropdownButton2(
-                            buttonDecoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(2),
-                                border: Border.all(
-                                  color: Color(0xFFA7A7A7),
-                                ),
-                                color: Color(0xFFEEEEEE)),
-                            isExpanded: true,
-                            hint: Text(
-                              LocaleKeys.chooseState.tr,
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            items: addressController.states
-                                .map((item) => DropdownMenuItem<States>(
-                                      value: item,
-                                      child: Text(
-                                        item.stateName!,
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ))
-                                .toList(),
-                            value: addressController.stateValue,
-                            onChanged: (value) {
-                              var val = value as States;
-                              addressController.updateState(val, language);
-                            },
-                            icon: const Icon(
-                              Icons.keyboard_arrow_down_sharp,
-                              color: Colors.black45,
-                            ),
-                            iconSize: 24,
-                            buttonHeight: 40,
-                            buttonPadding:
-                                const EdgeInsets.only(left: 10, right: 10),
-                            dropdownDecoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(2),
-                            ),
-                            offset: const Offset(0, 0),
-                          ),
-                        ),*/
                         Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(2),
@@ -509,51 +464,6 @@ class AddAddressScreen extends StatelessWidget {
                               fontSize: 14),
                         ),
                         5.heightBox,
-                        /*DropdownButtonHideUnderline(
-                          child: DropdownButton2(
-                            buttonDecoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(2),
-                                border: Border.all(
-                                  color: Color(0xFFA7A7A7),
-                                ),
-                                color: Color(0xFFEEEEEE)),
-                            isExpanded: true,
-                            hint: Text(
-                              'Choose a City',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            items: addressController.cities
-                                .map((item) => DropdownMenuItem<City>(
-                                      value: item,
-                                      child: Text(
-                                        item.cityName!,
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ))
-                                .toList(),
-                            value: addressController.cityValue,
-                            onChanged: (value) {
-                              var val = value as City;
-                              addressController.updateCity(val);
-                            },
-                            icon: const Icon(
-                              Icons.keyboard_arrow_down_sharp,
-                              color: Colors.black45,
-                            ),
-                            iconSize: 24,
-                            buttonHeight: 40,
-                            buttonPadding:
-                                const EdgeInsets.only(left: 10, right: 10),
-                            dropdownDecoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(2),
-                            ),
-                            offset: const Offset(0, 0),
-                          ),
-                        ),*/
                         Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(2),
@@ -755,7 +665,7 @@ class AddAddressScreen extends StatelessWidget {
                         CustomButton(
                             text: address == null
                                 ? LocaleKeys.addNewAddress.tr
-                                : 'UPDATE ADDRESS',
+                                : LocaleKeys.updateAddress.tr,
                             fontSize: 16,
                             onPressed: () {
                               print('gdhgdhgh.......');

@@ -295,8 +295,8 @@ class ProductListingScreenState extends State<ProductListingScreen> {
                         .address.isNotEmpty
                         ? productListingController
                         .address
-                        : 'Select Delivery Address'
-                        : 'Select Delivery Address',
+                        : LocaleKeys.selectDeliveryAddress.tr
+                        : LocaleKeys.selectDeliveryAddress.tr,
                     style: TextStyle(
                         color: Color(0xFF838383), fontSize: 12),
                   ),
@@ -402,7 +402,7 @@ class ProductListingScreenState extends State<ProductListingScreen> {
       Expanded(
         child: Center(
             child: Text(
-              'No Records',
+              LocaleKeys.noRecords.tr,
               style: TextStyle(
                   color: Color(0xFF414141),
                   fontSize: 14,
@@ -476,8 +476,8 @@ class ProductListingScreenState extends State<ProductListingScreen> {
                                     ? productListingController
                                             .address.isNotEmpty
                                         ? productListingController.address
-                                        : 'Select Delivery Address'
-                                    : 'Select Delivery Address',
+                                        : LocaleKeys.selectDeliveryAddress.tr
+                                    : LocaleKeys.selectDeliveryAddress.tr,
                                 style: TextStyle(
                                     color: Color(0xFF838383), fontSize: 12),
                               ),
@@ -633,7 +633,7 @@ class ProductListingScreenState extends State<ProductListingScreen> {
         init: ProductListingController(),
         builder: (contet) {
           return Container(
-              height: productListingController.isLogin ? 350 : 200,
+              height: productListingController.isLogin ? 380 : 210,
               padding: EdgeInsets.all(15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -694,7 +694,7 @@ class ProductListingScreenState extends State<ProductListingScreen> {
                                   productListingController.addressList.length >
                                       0,
                               child: Container(
-                                  height: 170,
+                                  height: 185,
                                   child: ListView.builder(
                                       itemCount: productListingController
                                               .addressList.length +
@@ -794,7 +794,7 @@ class ProductListingScreenState extends State<ProductListingScreen> {
                                   ),
                                   5.widthBox,
                                   Text(
-                                    'Use my current location',
+                                   LocaleKeys.useMyCurrentLocation.tr,
                                     style: TextStyle(
                                         color: AppColors.primaryColor,
                                         fontSize: 16),
@@ -803,7 +803,7 @@ class ProductListingScreenState extends State<ProductListingScreen> {
                               ))
                         ])
                       : CustomButton(
-                          text: 'Sign in to see your Addresses',
+                          text: LocaleKeys.signInToSeeYourAddress.tr,
                           fontSize: 16,
                           onPressed: () {
                             Get.deleteAll();
@@ -943,7 +943,7 @@ class ProductListingScreenState extends State<ProductListingScreen> {
                       productListingController.update();
                     },
                     title: Text(
-                      'Product Name',
+                      LocaleKeys.productName.tr,
                       style: TextStyle(color: Colors.black87, fontSize: 14),
                     ),
                   ),
@@ -988,7 +988,7 @@ class ProductListingScreenState extends State<ProductListingScreen> {
                       productListingController.update();
                     },
                     title: Text(
-                      'Avg. Customer Review',
+                      LocaleKeys.avgCustomerReview.tr,
                       style: TextStyle(color: Colors.black87, fontSize: 14),
                     ),
                   ),
@@ -1003,7 +1003,7 @@ class ProductListingScreenState extends State<ProductListingScreen> {
                       productListingController.update();
                     },
                     title: Text(
-                      'Newest Arrival',
+                      LocaleKeys.newestArrival.tr,
                       style: TextStyle(color: Colors.black87, fontSize: 14),
                     ),
                   ),

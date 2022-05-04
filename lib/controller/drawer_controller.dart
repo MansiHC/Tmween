@@ -93,7 +93,8 @@ class DrawerControllers extends GetxController {
     MySharedPreferences.instance
         .getStringValuesSF(SharedPreferencesKeys.token)
         .then((value) async {
-      token = value!;
+          if(value!=null)
+      token = value;
       print('dhsh.....$token');
       MySharedPreferences.instance
           .getIntValuesSF(SharedPreferencesKeys.userId)

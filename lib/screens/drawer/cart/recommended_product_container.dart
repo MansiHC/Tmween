@@ -128,7 +128,7 @@ class RecommendedProductContainer extends StatelessWidget {
                                     textAlign: TextAlign.start,
                                     text: TextSpan(
                                         text:
-                                            'You save ${recommendedProductModel.discountPerDisp}! ',
+                                            '${LocaleKeys.youSave.tr} ${recommendedProductModel.discountPerDisp}! ',
                                         style: TextStyle(
                                             color: Color(0xFF3B963C),
                                             fontSize: 12),
@@ -158,7 +158,7 @@ class RecommendedProductContainer extends StatelessWidget {
                                     color: Color(0xFF0088CA),
                                     padding: EdgeInsets.symmetric(
                                         vertical: 5, horizontal: 10),
-                                    child: Text('ADD TO CART',
+                                    child: Text(LocaleKeys.addToCart.tr,
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 12)),

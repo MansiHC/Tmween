@@ -65,7 +65,7 @@ class ChangePasswordScreen extends StatelessWidget {
                   children: [
                     if (changePasswordController.otpValue.isNotEmpty)
                       Text(
-                        'Otp is : ${changePasswordController.otpValue}',
+                        '${LocaleKeys.otpIs.tr} : ${changePasswordController.otpValue}',
                         style: TextStyle(fontSize: 14, color: Colors.black54),
                       ),
                     15.heightBox,
@@ -221,7 +221,7 @@ class ChangePasswordScreen extends StatelessWidget {
                       ),
                     if (changePasswordController.otpExpired)
                       Text(
-                        'Please Resend the Otp.',
+                        LocaleKeys.pleaseResendOtp.tr,
                         style: TextStyle(fontSize: 16, color: Colors.black),
                       ),
                     10.heightBox,

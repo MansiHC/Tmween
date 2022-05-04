@@ -47,13 +47,13 @@ class SelectCategoryContainer extends StatelessWidget {
                 child: Align(
                     alignment: Alignment.topRight,
                     child: Container(
-                        width: 55,
                         padding:
                             EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                         decoration: BoxDecoration(
                             color: Color(0xFFFF9529),
                             borderRadius: BorderRadius.all(Radius.circular(4))),
                         child: Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(/*'${category.offer}%'*/ '30%',
                                 style: TextStyle(

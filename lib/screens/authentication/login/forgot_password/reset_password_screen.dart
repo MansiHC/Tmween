@@ -66,7 +66,7 @@ class ResetPasswordScreen extends StatelessWidget {
           children: [
             5.heightBox,
             Text(
-              "We'll ask for this password whenever you sign in.",
+              LocaleKeys.willAskForPassword.tr,
               style: TextStyle(
                   fontSize: 13,
                   color: Color(0xFF727272),
@@ -76,7 +76,7 @@ class ResetPasswordScreen extends StatelessWidget {
             CustomBoxTextFormField(
                 controller: resetPasswordController.newPasswordController,
                 keyboardType: TextInputType.visiblePassword,
-                hintText: 'Enter new password',
+                hintText: LocaleKeys.enterNewPassword.tr,
                 prefixIcon: SvgPicture.asset(
                   ImageConstanst.lockIcon,
                   color: AppColors.primaryColor,
@@ -118,7 +118,7 @@ class ResetPasswordScreen extends StatelessWidget {
                 ),
                 2.widthBox,
                 Text(
-                  "Passwords must be at least 8 Characters.",
+                  LocaleKeys.passwordLengthError.tr,
                   style: TextStyle(
                       fontSize: 13,
                       color: Color(0xFF727272),
@@ -131,7 +131,7 @@ class ResetPasswordScreen extends StatelessWidget {
                 controller: resetPasswordController.confirmPasswordController,
                 keyboardType: TextInputType.visiblePassword,
                 obscureText: resetPasswordController.visibleConfirmPassword,
-                hintText: 'Re-enter new password',
+                hintText: LocaleKeys.reenterNewPassword.tr,
                 textInputAction: TextInputAction.done,
                 onSubmitted: (term) {
                   if (from == AppConstants.individual) {
@@ -172,7 +172,7 @@ class ResetPasswordScreen extends StatelessWidget {
                 }),
             10.heightBox,
             CustomButton(
-                text: 'Continue',
+                text: LocaleKeys.continueText.tr,
                 fontSize: 16,
                 onPressed: () {
                   if (from == AppConstants.individual) {
@@ -188,7 +188,7 @@ class ResetPasswordScreen extends StatelessWidget {
             ),
             30.heightBox,
             Text(
-              'Secure password tips:',
+              LocaleKeys.securePasswordTips.tr,
               style: TextStyle(
                   fontSize: 14,
                   color: Color(0xFF575757),
@@ -208,7 +208,7 @@ class ResetPasswordScreen extends StatelessWidget {
                 10.widthBox,
                 Expanded(
                     child: Text(
-                        'Use at least 8 characters, a combination of numbers and letters is best.',
+                        LocaleKeys.useCharLength.tr,
                         style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
@@ -229,7 +229,7 @@ class ResetPasswordScreen extends StatelessWidget {
                 10.widthBox,
                 Expanded(
                     child: Text(
-                        'Do not use the same password you have used with us previously.',
+                        LocaleKeys.notUseSamePwd.tr,
                         style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
@@ -250,7 +250,7 @@ class ResetPasswordScreen extends StatelessWidget {
                 10.widthBox,
                 Expanded(
                     child: Text(
-                        'Do not use dictionary words, your name, e-mail address, mobile phone number or other personal information that can be easily obtained.',
+                        LocaleKeys.notUsePersonalInfo.tr,
                         style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
@@ -271,7 +271,7 @@ class ResetPasswordScreen extends StatelessWidget {
                 10.widthBox,
                 Expanded(
                     child: Text(
-                        'Do not use the same password for multiple online accounts.',
+                        LocaleKeys.notUseSameForMultiple.tr,
                         style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
@@ -311,7 +311,7 @@ class ResetPasswordScreen extends StatelessWidget {
             Align(
               alignment: Alignment.center,
               child: Text(
-                'Verification required',
+                LocaleKeys.verificationRequired.tr,
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),

@@ -88,7 +88,7 @@ class RecentlyViewedProductScreenState extends State<RecentlyViewedProductScreen
             Align(
               alignment: Alignment.center,
               child: Text(
-                'Recently Viewed Products',
+                LocaleKeys.recentlyViewedProducts.tr,
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),
@@ -359,7 +359,7 @@ class RecentViewedProductContainer extends StatelessWidget {
                                 color: Color(0xFF0088CA),
                                 padding: EdgeInsets.symmetric(
                                     vertical: 5, horizontal: 10),
-                                child: Text('ADD TO CART',
+                                child: Text(LocaleKeys.addToCart.tr,
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 12)),

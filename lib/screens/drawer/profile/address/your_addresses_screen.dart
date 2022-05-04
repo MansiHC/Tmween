@@ -63,7 +63,7 @@ class YourAddressesScreen extends StatelessWidget {
                             child: Expanded(
                               child: Center(
                                   child: Text(
-                                'No Records',
+                                LocaleKeys.noRecords.tr,
                                 style: TextStyle(
                                     color: Color(0xFF414141),
                                     fontSize: 14,

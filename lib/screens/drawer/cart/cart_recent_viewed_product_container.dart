@@ -163,7 +163,7 @@ class CartRecentViewedProductContainer extends StatelessWidget {
                                 textAlign: TextAlign.start,
                                 text: TextSpan(
                                     text:
-                                    'You save ${cartRecentViewedProductModel.discountPerDisp}! ',
+                                    '${LocaleKeys.youSave.tr} ${cartRecentViewedProductModel.discountPerDisp}! ',
                                     style: TextStyle(
                                         color: Color(0xFF3B963C), fontSize: 12),
                                     children: <InlineSpan>[
@@ -193,7 +193,7 @@ class CartRecentViewedProductContainer extends StatelessWidget {
                             color: Color(0xFF0088CA),
                             padding: EdgeInsets.symmetric(
                                 vertical: 5, horizontal: 10),
-                            child: Text('ADD TO CART',
+                            child: Text(LocaleKeys.addToCart.tr,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 12)),

@@ -202,12 +202,12 @@ class DeactivateAccountScreenState extends State<DeactivateAccountScreen> {
                 5.heightBox,
                 _descView(
                   deactivateAccountController,
-                  're-activate your account from login page with generating otp',
+                  LocaleKeys.reActivateAccount.tr,
                 ),
                 5.heightBox,
                 _descView(
                   deactivateAccountController,
-                  'Tmween retains your account data for you to conveniently start off from where you left, if you decide to reactivate your account.',
+                  LocaleKeys.retainAccount.tr,
                 ),
                 15.heightBox,
                 Container(

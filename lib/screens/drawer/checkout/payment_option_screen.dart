@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/payment_option_controller.dart';
+import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/drawer/checkout/review_order_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
@@ -56,7 +57,7 @@ class PaymentOptionScreen extends StatelessWidget {
           children: [
             10.heightBox,
             Text(
-              'All other options',
+              LocaleKeys.allOtherOptions.tr,
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 16,
@@ -139,7 +140,7 @@ class PaymentOptionScreen extends StatelessWidget {
                     child: ElevatedButton(
                       child: Wrap(spacing: 10, children: [
                         Text(
-                          'Proceed to Pay',
+                          LocaleKeys.proceedToPay.tr,
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.white, fontSize: 17),
                         ),
@@ -194,7 +195,7 @@ class PaymentOptionScreen extends StatelessWidget {
             Align(
               alignment: Alignment.center,
               child: Text(
-                'Payments',
+                LocaleKeys.paymentSmall.tr,
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),

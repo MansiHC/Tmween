@@ -43,7 +43,7 @@ class OrderDetailScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'View Order Details',
+            LocaleKeys.viewOrderDetails.tr,
             style: TextStyle(
                 color: Color(0xFF383838),
                 fontSize: 15,
@@ -56,7 +56,7 @@ class OrderDetailScreen extends StatelessWidget {
                 children: [
                   TableRow(children: [
                     Text(
-                      'Order Date',
+                      LocaleKeys.orderDate.tr,
                       style: TextStyle(
                         color: Color(0xFF3F3F3F),
                         fontSize: 14,
@@ -72,7 +72,7 @@ class OrderDetailScreen extends StatelessWidget {
                   ]),
                   TableRow(children: [
                     Text(
-                      'Order Number',
+                      LocaleKeys.orderNumber.tr,
                       style: TextStyle(
                         color: Color(0xFF3F3F3F),
                         fontSize: 14,
@@ -117,7 +117,7 @@ class OrderDetailScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Download Invoice',
+                    LocaleKeys.downloadInvoice.tr,
                     style: TextStyle(
                       color: Color(0xFF3F3F3F),
                       fontSize: 15,
@@ -130,7 +130,7 @@ class OrderDetailScreen extends StatelessWidget {
                 ],
               )),
           25.heightBox,
-          Text('Shipping Details',
+          Text(LocaleKeys.shippingDetails.tr,
               style: TextStyle(
                   color: Color(0xFF383838),
                   fontSize: 15,
@@ -163,7 +163,7 @@ class OrderDetailScreen extends StatelessWidget {
                         5.heightBox,
                         RichText(
                             text: TextSpan(
-                                text: 'Sold by: ',
+                                text: '${LocaleKeys.soldBy.tr}: ',
                                 style: TextStyle(
                                   color: Color(0xFF121212),
                                   fontSize: 13,
@@ -188,7 +188,7 @@ class OrderDetailScreen extends StatelessWidget {
                           color: Color(0xFF0088C8),
                           padding:
                               EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                          child: Text('Buy it again',
+                          child: Text(LocaleKeys.buyItAgain.tr,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.white,
@@ -207,7 +207,7 @@ class OrderDetailScreen extends StatelessWidget {
                                 border: Border.all(color: Color(0xFF3C3C3C))),
                             padding: EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: Text('Write Product Review',
+                            child: Text(LocaleKeys.writeProductReview.tr,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Color(0xFF3C3C3C),
@@ -219,7 +219,7 @@ class OrderDetailScreen extends StatelessWidget {
                     ))
                   ])),
           25.heightBox,
-          Text('Payment Information',
+          Text(LocaleKeys.paymentInfo.tr,
               style: TextStyle(
                   color: Color(0xFF383838),
                   fontSize: 15,
@@ -230,7 +230,7 @@ class OrderDetailScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     10.heightBox,
-                    Text('Payment method',
+                    Text(LocaleKeys.paymentMethod.tr,
                         style: TextStyle(
                             color: Color(0xFF383838),
                             fontSize: 15,
@@ -244,7 +244,7 @@ class OrderDetailScreen extends StatelessWidget {
                     ),
                   ])),
           25.heightBox,
-          Text('Shipping Address',
+          Text(LocaleKeys.shippingAddress.tr,
               style: TextStyle(
                   color: Color(0xFF383838),
                   fontSize: 15,
@@ -292,7 +292,7 @@ class OrderDetailScreen extends StatelessWidget {
                     ),
                   ])),
           25.heightBox,
-          Text('Order Summary',
+          Text(LocaleKeys.orderSummary.tr,
               style: TextStyle(
                   color: Color(0xFF383838),
                   fontSize: 15,
@@ -308,7 +308,7 @@ class OrderDetailScreen extends StatelessWidget {
                 children: [
                   TableRow(children: [
                     Text(
-                      'Items:',
+                      '${LocaleKeys.items.tr}:',
                       style: TextStyle(
                         color: Color(0xFF3F3F3F),
                         fontSize: 14,
@@ -324,7 +324,7 @@ class OrderDetailScreen extends StatelessWidget {
                   ]),
                   TableRow(children: [
                     Text(
-                      'Shipping:',
+                      '${LocaleKeys.shipping.tr}:',
                       style: TextStyle(
                         color: Color(0xFF3F3F3F),
                         fontSize: 14,
@@ -340,7 +340,7 @@ class OrderDetailScreen extends StatelessWidget {
                   ]),
                   TableRow(children: [
                     Text(
-                      'Total:',
+                      '${LocaleKeys.total.tr}:',
                       style: TextStyle(
                         color: Color(0xFF3F3F3F),
                         fontSize: 14,
@@ -356,7 +356,7 @@ class OrderDetailScreen extends StatelessWidget {
                   ]),
                   TableRow(children: [
                     Text(
-                      'Grand Total:',
+                      '${LocaleKeys.grandTotal.tr}:',
                       style: TextStyle(
                           color: Color(0xFF383838),
                           fontSize: 14,
@@ -407,7 +407,7 @@ class OrderDetailScreen extends StatelessWidget {
             Align(
               alignment: Alignment.center,
               child: Text(
-                'Your Order Details',
+                LocaleKeys.orderDetails.tr,
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),

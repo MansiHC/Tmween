@@ -86,8 +86,10 @@ class Data {
         shopByCategory!.add(new ShopByCategory.fromJson(v));
       });
     }
-    banners =
-        json['banners'] != null ? new Banners.fromJson(json['banners']) : null;
+    try {
+      banners =
+      json['banners'] != null ? new Banners.fromJson(json['banners']) : null;
+    }catch(e){}
   }
 
   Map<String, dynamic> toJson() {

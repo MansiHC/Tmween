@@ -242,13 +242,13 @@ class IndividualSignUpScreen extends StatelessWidget {
                                               RichText(
                                                   textAlign: TextAlign.center,
                                                   text: TextSpan(
-                                                      text: 'I agree to the ',
+                                                      text: '${LocaleKeys.agreeToThe.tr} ',
                                                       style: TextStyle(
                                                           fontSize: 15,
                                                           color: Colors.grey),
                                                       children: [
                                                         TextSpan(
-                                                          text: 'terms of use ',
+                                                          text: '${LocaleKeys.termsOfUse.tr} ',
                                                           style: TextStyle(
                                                             fontSize: 15,
                                                             color: AppColors

@@ -80,35 +80,35 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             5.heightBox,
             RichText(
                 text: TextSpan(
-                    text: 'Enter the ',
+                    text: '${LocaleKeys.enterThe.tr} ',
                     style: TextStyle(
                         fontSize: 14,
                         color: Color(0xFF0727272),
                         fontWeight: FontWeight.bold),
                     children: [
                   TextSpan(
-                    text: 'EMAIL ADDRESS ',
+                    text: '${LocaleKeys.emailAddress.tr} ',
                     style: TextStyle(
                         fontSize: 14,
                         color: Colors.black,
                         fontWeight: FontWeight.bold),
                   ),
                   TextSpan(
-                    text: 'or ',
+                    text: '${LocaleKeys.or.tr} ',
                     style: TextStyle(
                         fontSize: 14,
                         color: Color(0xFF0727272),
                         fontWeight: FontWeight.bold),
                   ),
                   TextSpan(
-                    text: 'MOBILE PHONE NUMBER ',
+                    text: '${LocaleKeys.phoneNumberCap.tr} ',
                     style: TextStyle(
                         fontSize: 14,
                         color: Colors.black,
                         fontWeight: FontWeight.bold),
                   ),
                   TextSpan(
-                    text: 'associated with your Tmween account.',
+                    text: LocaleKeys.associateWithTmween.tr,
                     style: TextStyle(
                         fontSize: 14,
                         color: Color(0xFF0727272),
@@ -152,7 +152,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 }),
             10.heightBox,
             CustomButton(
-                text: 'Continue',
+                text: LocaleKeys.continueText.tr,
                 fontSize: 16,
                 onPressed: () {
                   if (widget.from == AppConstants.individual) {
@@ -169,7 +169,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             ),
             20.heightBox,
             Text(
-              'Has your email address or mobile phone number changed?',
+              LocaleKeys.hasYrEmailChanged.tr,
               style: TextStyle(
                   fontSize: 14,
                   color: Color(0xFF575757),
@@ -180,7 +180,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 textAlign: TextAlign.start,
                 text: TextSpan(
                     text:
-                        'If you no longer use the e-mail address associated with your Tmween account, you may contact ',
+                        '${LocaleKeys.ifNoLongerUse.tr} ',
                     style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.bold,
@@ -194,7 +194,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             color: Color(0xFF61ABD1),
                           )),
                       TextSpan(
-                        text: 'for help restoring access to your account.',
+                        text: LocaleKeys.restoringAccount.tr,
                         style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
@@ -238,7 +238,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             Align(
               alignment: Alignment.center,
               child: Text(
-                'Password Assistance',
+                LocaleKeys.passwordAssistance.tr,
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),

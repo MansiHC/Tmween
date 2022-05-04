@@ -57,7 +57,7 @@ class FundWalletScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Recharge Amount',
+                            LocaleKeys.rechargeAmount.tr,
                             style: TextStyle(
                               color: Color(0xFF7D7D7D),
                               fontSize: 14,
@@ -80,7 +80,7 @@ class FundWalletScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Total Amount Payable',
+                            LocaleKeys.totalAmountPayable.tr,
                             style: TextStyle(
                                 color: Colors.black54,
                                 fontSize: 15,
@@ -98,7 +98,7 @@ class FundWalletScreen extends StatelessWidget {
                     ),
                     20.heightBox,
                     Text(
-                      'Payment Option',
+                      LocaleKeys.paymentOption.tr,
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           color: Colors.black,
@@ -126,7 +126,7 @@ class FundWalletScreen extends StatelessWidget {
                                       ),
                                       15.widthBox,
                                       Text(
-                                        'SyberPay',
+                                        LocaleKeys.syberPay.tr,
                                         style: TextStyle(
                                             color: Colors.black54,
                                             fontSize: 15,
@@ -175,7 +175,7 @@ class FundWalletScreen extends StatelessWidget {
             Align(
               alignment: Alignment.center,
               child: Text(
-                'Fund Wallet',
+                LocaleKeys.fundWallet.tr,
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),

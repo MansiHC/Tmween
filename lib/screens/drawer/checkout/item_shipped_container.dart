@@ -29,7 +29,7 @@ class ItemShippedContainer extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Item will ship from ${quoteItemData.supplierName}',
+              Text('${LocaleKeys.itemWillShipFrom.tr} ${quoteItemData.supplierName}',
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       color: Colors.grey[700]!,
@@ -83,7 +83,7 @@ class ItemShippedContainer extends StatelessWidget {
                             3.heightBox,
                             Wrap(
                               children: [
-                                Text('SAR ${quoteItemData.finalPrice}',
+                                Text('${LocaleKeys.sar.tr} ${quoteItemData.finalPrice}',
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
                                       color: Color(0xFF666666),
@@ -91,7 +91,7 @@ class ItemShippedContainer extends StatelessWidget {
                                       decoration: TextDecoration.lineThrough,
                                       decorationThickness: 2,)),
                                 10.widthBox,
-                                Text('SAR ${quoteItemData.retailPrice}',
+                                Text('${LocaleKeys.sar.tr} ${quoteItemData.retailPrice}',
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
                                         color: Color(0xFFF57051),
@@ -108,7 +108,7 @@ class ItemShippedContainer extends StatelessWidget {
                                     fontSize: 13,
                                   )),
                             3.heightBox,
-                            Text('Sold by: ${quoteItemData.supplierName}',
+                            Text('${LocaleKeys.soldBy.tr}: ${quoteItemData.supplierName}',
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                   color: Color(0xFF666666),
@@ -116,7 +116,7 @@ class ItemShippedContainer extends StatelessWidget {
                                 )),
                             3.heightBox,
                             Wrap(children: [
-                              Text('Quantity: ${quoteItemData.quantity}',
+                              Text('${LocaleKeys.quantity.tr}: ${quoteItemData.quantity}',
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                       color: Colors.grey[700]!,
@@ -129,7 +129,7 @@ class ItemShippedContainer extends StatelessWidget {
                                     reviewOrderController.pop();
                                     reviewOrderController.pop();
                                   },
-                                  child: Text('Change',
+                                  child: Text(LocaleKeys.change.tr,
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
                                         color: AppColors.primaryColor,
@@ -137,7 +137,7 @@ class ItemShippedContainer extends StatelessWidget {
                                       ))),
                             ]),
                             10.heightBox,
-                            Text("Choose a delivery speed:",
+                            Text('${LocaleKeys.chooseDeliverySpeed.tr}:',
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Colors.black,
@@ -185,20 +185,20 @@ class ItemShippedContainer extends StatelessWidget {
                                     5.widthBox,
                                     Expanded(
                                         child: Wrap(children: [
-                                          Text('Standard Delivery',
+                                          Text(LocaleKeys.standardDelivery.tr,
                                               textAlign: TextAlign.start,
                                               style: TextStyle(
                                                 color: Color(0xFF3B963C),
                                                 fontSize: 13,
                                               )),
-                                          Text(' - Delivery Price: ',
+                                          Text(' - ${LocaleKeys.deliveryPrice.tr}: ',
                                               textAlign: TextAlign.start,
                                               style: TextStyle(
                                                 color: Color(0xFF666666),
                                                 fontSize: 13,
                                               )),
 
-                                          Text("SAR ${quoteItemData
+                                          Text("${LocaleKeys.sar.tr} ${quoteItemData
                                               .normalDeliveryPrice}",
                                               textAlign: TextAlign.start,
                                               style: TextStyle(
@@ -249,19 +249,19 @@ class ItemShippedContainer extends StatelessWidget {
                                     5.widthBox,
                                     Expanded(
                                         child: Wrap(children: [
-                                          Text('Quick Delivery',
+                                          Text(LocaleKeys.quickDelivery.tr,
                                               textAlign: TextAlign.start,
                                               style: TextStyle(
                                                 color: Color(0xFF3B963C),
                                                 fontSize: 13,
                                               )),
-                                          Text(' - Delivery Price: ',
+                                          Text(' - ${LocaleKeys.deliveryPrice.tr}: ',
                                               textAlign: TextAlign.start,
                                               style: TextStyle(
                                                 color: Color(0xFF666666),
                                                 fontSize: 13,
                                               )),
-                                          Text("SAR ${quoteItemData
+                                          Text("${LocaleKeys.sar.tr} ${quoteItemData
                                               .quickDeliveryPrice}",
                                               textAlign: TextAlign.start,
                                               style: TextStyle(

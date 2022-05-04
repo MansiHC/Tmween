@@ -205,7 +205,7 @@ class MyAccountScreen extends StatelessWidget {
                           Expanded(
                               child: Text(
                             myAccountController.profileData!.fullname == null
-                                ? 'Select Delivery Address'
+                                ? LocaleKeys.selectDeliveryAddress.tr
                                 : '${myAccountController.profileData!.cityName} - ${myAccountController.profileData!.zip}',
                             style:
                                 TextStyle(color: Colors.black54, fontSize: 14),
