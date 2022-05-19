@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/model/get_customer_address_list_model.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
-import 'package:tmween/screens/drawer/profile/address/add_address_screen.dart';
 
 import '../model/review_order_model.dart';
 import '../service/api.dart';
@@ -13,17 +12,15 @@ import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
 
 class RadioModel {
-   RadioModel(
-      {required this.id,required this.currentId});
+  RadioModel({required this.id, required this.currentId});
 
-   List<int> id;
-   int currentId;
+  List<int> id;
+  int currentId;
 
   static fromJson(responseJson) {
     return null;
   }
 }
-
 
 class ReviewOrderController extends GetxController {
   late BuildContext context;
@@ -98,14 +95,15 @@ class ReviewOrderController extends GetxController {
         Helper.hideLoading(context);
         reviewOrderData = value.data!;
         addressDetails = value.data!.cartDetail!.customerAddressDetails![0];
-        quoteItemDetails= value.data!.quotesData!.quoteItemData!;
-        if(quoteItemDetails!.length>0) {
+        quoteItemDetails = value.data!.quotesData!.quoteItemData!;
+        if (quoteItemDetails!.length > 0) {
           for (var i = 0; i < quoteItemDetails!.length; i++) {
             radio1Value.add(quoteItemDetails![i].id!);
             List<int> ids = [];
-            ids.add(quoteItemDetails![i].id!+11);
-            ids.add(quoteItemDetails![i].id!+12);
-            radioValue.add(RadioModel(id: ids,currentId: quoteItemDetails![i].id!+11));
+            ids.add(quoteItemDetails![i].id! + 11);
+            ids.add(quoteItemDetails![i].id! + 12);
+            radioValue.add(
+                RadioModel(id: ids, currentId: quoteItemDetails![i].id! + 11));
           }
         }
       } else if (value.statusCode == 401) {
@@ -114,6 +112,8 @@ class ReviewOrderController extends GetxController {
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
+      } else {
+        Helper.hideLoading(context);
       }
 
       update();
@@ -124,10 +124,10 @@ class ReviewOrderController extends GetxController {
     });
   }
 
-  Future<void> changeDeliverySpeed(quoteItemId,deliveryMode, language) async {
+  Future<void> changeDeliverySpeed(quoteItemId, deliveryMode, language) async {
     Helper.showLoading();
     await api
-        .changeDeliverySpeed(token, userId, quoteItemId,deliveryMode, language)
+        .changeDeliverySpeed(token, userId, quoteItemId, deliveryMode, language)
         .then((value) {
       if (value.statusCode == 200) {
         Helper.hideLoading(context);
@@ -149,7 +149,6 @@ class ReviewOrderController extends GetxController {
     });
   }
 
-
   void exitScreen() {
     Get.delete<ReviewOrderController>();
     Navigator.of(context).pop(true);
@@ -166,6 +165,4 @@ class ReviewOrderController extends GetxController {
         MaterialPageRoute(builder: (context) => DrawerScreen()),
         (Route<dynamic> route) => false);
   }
-
-
 }

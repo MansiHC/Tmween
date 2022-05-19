@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
-import 'package:tmween/screens/drawer/profile/wallet/payment_status_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
@@ -227,7 +226,7 @@ class ViewHistoryScreen extends StatelessWidget {
                                                 10.heightBox,
                                                 InkWell(
                                                     onTap: () {
-                                                      viewHistoryController
+                                                      /*viewHistoryController
                                                           .navigateTo(
                                                               PaymentStatusScreen(
                                                         isSuccess:
@@ -244,7 +243,7 @@ class ViewHistoryScreen extends StatelessWidget {
                                                                 .historyItemList[
                                                                     index2]
                                                                 .successText,
-                                                      ));
+                                                      ));*/
                                                     },
                                                     child: Container(
                                                         padding: EdgeInsets
@@ -438,6 +437,17 @@ class ViewHistoryScreen extends StatelessWidget {
                           style: TextStyle(color: Colors.white, fontSize: 14),
                         ),
                       ),
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                        decoration: BoxDecoration(
+                            color: Color(0xFFffc107),
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Text(
+                          LocaleKeys.processing.tr,
+                          style: TextStyle(color: Colors.white, fontSize: 14),
+                        ),
+                      ),
                     ],
                   ),
                   10.heightBox,
@@ -476,7 +486,7 @@ class ViewHistoryScreen extends StatelessWidget {
                           style: TextStyle(color: Colors.white, fontSize: 14),
                         ),
                       ),
-                      Container(
+                      /*Container(
                         padding:
                             EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                         decoration: BoxDecoration(
@@ -487,7 +497,7 @@ class ViewHistoryScreen extends StatelessWidget {
                           LocaleKeys.cashback.tr,
                           style: TextStyle(color: Colors.black54, fontSize: 14),
                         ),
-                      ),
+                      ),*/
                     ],
                   ),
                   15.heightBox,

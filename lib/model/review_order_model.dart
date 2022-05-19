@@ -11,7 +11,10 @@ class ReviewOrderModel {
     statusCode = json['status_code'];
     statusMessage = json['status_message'];
     message = json['message'];
-    data = json['data'] != null ? new ReviewOrderData.fromJson(json['data']) : null;
+    if (statusCode == 200)
+      data = json['data'] != null
+          ? new ReviewOrderData.fromJson(json['data'])
+          : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -104,21 +107,21 @@ class QuoteDetails {
 
   QuoteDetails(
       {this.id,
-        this.quoteNo,
-        this.currentQuotesNo,
-        this.customerId,
-        this.customerAddressId,
-        this.subTotal,
-        this.shippingPrice,
-        this.taxAmount,
-        this.grandTotal,
-        this.shippingNotes,
-        this.paymentMethodId,
-        this.quoteCreatedDate,
-        this.quoteUpdatedDate,
-        this.status,
-        this.ip,
-        this.paymentMethod});
+      this.quoteNo,
+      this.currentQuotesNo,
+      this.customerId,
+      this.customerAddressId,
+      this.subTotal,
+      this.shippingPrice,
+      this.taxAmount,
+      this.grandTotal,
+      this.shippingNotes,
+      this.paymentMethodId,
+      this.quoteCreatedDate,
+      this.quoteUpdatedDate,
+      this.status,
+      this.ip,
+      this.paymentMethod});
 
   QuoteDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -212,7 +215,7 @@ class QuoteItemData {
   String? createdAt;
   String? updatedAt;
   String? image;
-  int? reviewsAvg;
+  double? reviewsAvg;
   String? supplierName;
   String? pName;
   String? productSlug;
@@ -225,65 +228,65 @@ class QuoteItemData {
 
   QuoteItemData(
       {this.id,
-        this.quoteNo,
-        this.currentQuotesNo,
-        this.customerId,
-        this.customerAddressId,
-        this.subTotal,
-        this.shippingPrice,
-        this.taxAmount,
-        this.grandTotal,
-        this.shippingNotes,
-        this.paymentMethodId,
-        this.quoteCreatedDate,
-        this.quoteUpdatedDate,
-        this.status,
-        this.ip,
-        this.quoteId,
-        this.productId,
-        this.productName,
-        this.sku,
-        this.productItemId,
-        this.productPackId,
-        this.attributeOptions,
-        this.supplierId,
-        this.supplierAssignedDate,
-        this.supplierBranchId,
-        this.supplierStatusId,
-        this.supplierStatusUpdated,
-        this.supplierRemark,
-        this.daId,
-        this.daBranchId,
-        this.daAssignedDate,
-        this.daStatusId,
-        this.daStatusUpdated,
-        this.daRemark,
-        this.finalPrice,
-        this.retailPrice,
-        this.unitId,
-        this.quantity,
-        this.weight,
-        this.weightUnitId,
-        this.freeShipping,
-        this.itemFinalTotal,
-        this.daEstimatedDeliveryDate,
-        this.deliveryTimeFactor,
-        this.normalDeliveryPrice,
-        this.quickDeliveryPrice,
-        this.itemTotalAmount,
-        this.createdAt,
-        this.updatedAt,
-        this.image,
-        this.reviewsAvg,
-        this.supplierName,
-        this.pName,
-        this.productSlug,
-        this.smallImageUrl,
-        this.largeImageUrl,
-        this.shippingPriceLabel,
-        this.normalDeliveryPriceLabel,
-        this.quickDeliveryPriceLabel,
-        this.prodImage});
+      this.quoteNo,
+      this.currentQuotesNo,
+      this.customerId,
+      this.customerAddressId,
+      this.subTotal,
+      this.shippingPrice,
+      this.taxAmount,
+      this.grandTotal,
+      this.shippingNotes,
+      this.paymentMethodId,
+      this.quoteCreatedDate,
+      this.quoteUpdatedDate,
+      this.status,
+      this.ip,
+      this.quoteId,
+      this.productId,
+      this.productName,
+      this.sku,
+      this.productItemId,
+      this.productPackId,
+      this.attributeOptions,
+      this.supplierId,
+      this.supplierAssignedDate,
+      this.supplierBranchId,
+      this.supplierStatusId,
+      this.supplierStatusUpdated,
+      this.supplierRemark,
+      this.daId,
+      this.daBranchId,
+      this.daAssignedDate,
+      this.daStatusId,
+      this.daStatusUpdated,
+      this.daRemark,
+      this.finalPrice,
+      this.retailPrice,
+      this.unitId,
+      this.quantity,
+      this.weight,
+      this.weightUnitId,
+      this.freeShipping,
+      this.itemFinalTotal,
+      this.daEstimatedDeliveryDate,
+      this.deliveryTimeFactor,
+      this.normalDeliveryPrice,
+      this.quickDeliveryPrice,
+      this.itemTotalAmount,
+      this.createdAt,
+      this.updatedAt,
+      this.image,
+      this.reviewsAvg,
+      this.supplierName,
+      this.pName,
+      this.productSlug,
+      this.smallImageUrl,
+      this.largeImageUrl,
+      this.shippingPriceLabel,
+      this.normalDeliveryPriceLabel,
+      this.quickDeliveryPriceLabel,
+      this.prodImage});
 
   QuoteItemData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -330,13 +333,14 @@ class QuoteItemData {
     itemFinalTotal = double.parse(json['item_final_total'].toString());
     daEstimatedDeliveryDate = json['da_estimated_delivery_date'];
     deliveryTimeFactor = json['delivery_time_factor'];
-    normalDeliveryPrice = double.parse(json['normal_delivery_price'].toString());
+    normalDeliveryPrice =
+        double.parse(json['normal_delivery_price'].toString());
     quickDeliveryPrice = double.parse(json['quick_delivery_price'].toString());
     itemTotalAmount = double.parse(json['item_total_amount'].toString());
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     image = json['image'];
-    reviewsAvg = json['reviews_avg'];
+    reviewsAvg = double.parse(json['reviews_avg'].toString());
     supplierName = json['supplier_name'];
     pName = json['p_name'];
     productSlug = json['product_slug'];
@@ -425,12 +429,12 @@ class CartDetail {
 
   CartDetail(
       {this.paymentMethod,
-        this.totalPrice,
-        this.currencyCode,
-        this.totalDeliveryPrice,
-        this.totalTaxAmount,
-        this.totalItems,
-        this.customerAddressDetails});
+      this.totalPrice,
+      this.currencyCode,
+      this.totalDeliveryPrice,
+      this.totalTaxAmount,
+      this.totalItems,
+      this.customerAddressDetails});
 
   CartDetail.fromJson(Map<String, dynamic> json) {
     paymentMethod = json['payment_method'];
@@ -494,32 +498,32 @@ class CustomerAddressDetails {
 
   CustomerAddressDetails(
       {this.id,
-        this.customerId,
-        this.createdAt,
-        this.status,
-        this.updatedAt,
-        this.fullname,
-        this.firstName,
-        this.lastName,
-        this.address1,
-        this.address2,
-        this.landmark,
-        this.addressType,
-        this.defaultAddress,
-        this.deliveryInstruction,
-        this.phone1Isd,
-        this.phone1,
-        this.mobile1Isd,
-        this.mobile1,
-        this.zip,
-        this.countryCode,
-        this.stateCode,
-        this.cityCode,
-        this.isDefaultShipping,
-        this.isDefaultBilling,
-        this.countryName,
-        this.stateName,
-        this.cityName});
+      this.customerId,
+      this.createdAt,
+      this.status,
+      this.updatedAt,
+      this.fullname,
+      this.firstName,
+      this.lastName,
+      this.address1,
+      this.address2,
+      this.landmark,
+      this.addressType,
+      this.defaultAddress,
+      this.deliveryInstruction,
+      this.phone1Isd,
+      this.phone1,
+      this.mobile1Isd,
+      this.mobile1,
+      this.zip,
+      this.countryCode,
+      this.stateCode,
+      this.cityCode,
+      this.isDefaultShipping,
+      this.isDefaultBilling,
+      this.countryName,
+      this.stateName,
+      this.cityName});
 
   CustomerAddressDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];

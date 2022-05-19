@@ -79,7 +79,7 @@ class FilterController extends GetxController {
   double priceRange = 0;
   late RangeValues currentRangeValues;
 
-   GetFilterData? filteredData;
+  GetFilterData? filteredData;
   int fromPrice = 0, toPrice = 0, fullFillByTmween = 0;
   late String from;
   late String searchString;
@@ -87,7 +87,6 @@ class FilterController extends GetxController {
 
   @override
   void onInit() {
-
     // getFilterData(Get.locale!.languageCode);
     super.onInit();
   }
@@ -112,23 +111,23 @@ class FilterController extends GetxController {
             });
           }
         if (filteredData!.brand != null)
-        for (var i = 0; i < filteredData!.brand!.length; i++) {
-          brandList.add({
-            'title': filteredData!.brand![i].brandName,
-            'id': filteredData!.brand![i].id,
-            'count': filteredData!.brand![i].count,
-            'isChecked': false
-          });
-        }
+          for (var i = 0; i < filteredData!.brand!.length; i++) {
+            brandList.add({
+              'title': filteredData!.brand![i].brandName,
+              'id': filteredData!.brand![i].id,
+              'count': filteredData!.brand![i].count,
+              'isChecked': false
+            });
+          }
         if (filteredData!.suppliersData != null)
-        for (var i = 0; i < filteredData!.suppliersData!.length; i++) {
-          sellerList.add({
-            'title': filteredData!.suppliersData![i].supplierName,
-            'id': filteredData!.suppliersData![i].supplierId,
-            'count': 0,
-            'isChecked': false
-          });
-        }
+          for (var i = 0; i < filteredData!.suppliersData!.length; i++) {
+            sellerList.add({
+              'title': filteredData!.suppliersData![i].supplierName,
+              'id': filteredData!.suppliersData![i].supplierId,
+              'count': 0,
+              'isChecked': false
+            });
+          }
         print('.....${filteredData!.maxPrice}');
         currentRangeValues =
             RangeValues(0, double.parse(filteredData!.maxPrice!.toString()));

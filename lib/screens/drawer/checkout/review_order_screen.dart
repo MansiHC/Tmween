@@ -2,13 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:tmween/controller/payment_gateway_controller.dart';
 import 'package:tmween/controller/review_order_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/screens/drawer/checkout/item_shipped_container.dart';
+import 'package:tmween/screens/drawer/checkout/payment_gateway_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
-
-import '../../../utils/views/circular_progress_bar.dart';
 
 class ReviewOrderScreen extends StatelessWidget {
   late String language;
@@ -47,10 +47,10 @@ class ReviewOrderScreen extends StatelessWidget {
                               padding: EdgeInsets.only(top: 20),
                               child: topView(reviewOrderController)),
                           5.heightBox,
-                          if(reviewOrderController.reviewOrderData!=null)
-                          Expanded(
-                              child: SingleChildScrollView(
-                                  child: _bottomView(reviewOrderController))),
+                          if (reviewOrderController.reviewOrderData != null)
+                            Expanded(
+                                child: SingleChildScrollView(
+                                    child: _bottomView(reviewOrderController))),
                         ],
                       ))));
         });
@@ -66,7 +66,7 @@ class ReviewOrderScreen extends StatelessWidget {
           children: [
             Visibility(
                 visible: !reviewOrderController.loading &&
-                    reviewOrderController.reviewOrderData!=null,
+                    reviewOrderController.reviewOrderData != null,
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -145,7 +145,8 @@ class ReviewOrderScreen extends StatelessWidget {
                                         5.widthBox,
                                         Expanded(
                                           child: Text(
-                                            LocaleKeys.thisDeliveryOptionForFuture.tr,
+                                            LocaleKeys
+                                                .thisDeliveryOptionForFuture.tr,
                                             style: TextStyle(
                                                 color: Color(0xFF666666),
                                                 fontSize: 14),
@@ -189,7 +190,7 @@ class ReviewOrderScreen extends StatelessWidget {
                                             fontSize: 15),
                                       )
                                     ])),
-                           /* 3.heightBox,
+                            /* 3.heightBox,
                             RichText(
                                 textAlign: TextAlign.start,
                                 maxLines: 1,
@@ -238,50 +239,59 @@ class ReviewOrderScreen extends StatelessWidget {
                       height: 1,
                       thickness: 1,
                     ),
-                       for (var i = 0; i < reviewOrderController.quoteItemDetails!.length; i++)
-                    Column(children: [
-                      Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                  child: Text(reviewOrderController.quoteItemDetails![i].productName!,
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                          color: Color(0xFF666666),
-                                          fontSize: 15))),
-                              Text(reviewOrderController.quoteItemDetails![i].finalPrice!,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    color: Color(0xFF666666),
-                                    fontSize: 15,
-                                  )),
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('${LocaleKeys.item.tr}(${reviewOrderController.quoteItemDetails![i].quantity})',
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      color: Color(0xFF666666), fontSize: 15)),
-                              Text( '${reviewOrderController.reviewOrderData!.cartDetail!.currencyCode} ${reviewOrderController.quoteItemDetails![i].itemFinalTotal!.toString()}',
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    color: Color(0xFF666666),
-                                    fontSize: 15,
-                                  )),
-                            ],
-                          )),
-                      Divider(
-                        color: Colors.grey[300]!,
-                        height: 1,
-                        thickness: 1,
-                      ),
-                    ]),
+                    for (var i = 0;
+                        i < reviewOrderController.quoteItemDetails!.length;
+                        i++)
+                      Column(children: [
+                        Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                    child: Text(
+                                        reviewOrderController
+                                            .quoteItemDetails![i].productName!,
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                            color: Color(0xFF666666),
+                                            fontSize: 15))),
+                                Text(
+                                    reviewOrderController
+                                        .quoteItemDetails![i].finalPrice!,
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      color: Color(0xFF666666),
+                                      fontSize: 15,
+                                    )),
+                              ],
+                            )),
+                        Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                    '${LocaleKeys.item.tr}(${reviewOrderController.quoteItemDetails![i].quantity})',
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        color: Color(0xFF666666),
+                                        fontSize: 15)),
+                                Text(
+                                    '${reviewOrderController.reviewOrderData!.cartDetail!.currencyCode} ${reviewOrderController.quoteItemDetails![i].itemFinalTotal!.toString()}',
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      color: Color(0xFF666666),
+                                      fontSize: 15,
+                                    )),
+                              ],
+                            )),
+                        Divider(
+                          color: Colors.grey[300]!,
+                          height: 1,
+                          thickness: 1,
+                        ),
+                      ]),
                     Padding(
                         padding: EdgeInsets.all(10),
                         child: Row(
@@ -291,8 +301,8 @@ class ReviewOrderScreen extends StatelessWidget {
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Color(0xFF666666), fontSize: 15)),
-                            Text(  '${reviewOrderController.reviewOrderData!.cartDetail!.currencyCode} ${reviewOrderController.reviewOrderData!.cartDetail!.totalDeliveryPrice!}',
-
+                            Text(
+                                '${reviewOrderController.reviewOrderData!.cartDetail!.currencyCode} ${reviewOrderController.reviewOrderData!.cartDetail!.totalDeliveryPrice!}',
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Color(0xFF666666), fontSize: 15)),
@@ -307,8 +317,8 @@ class ReviewOrderScreen extends StatelessWidget {
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Color(0xFF666666), fontSize: 15)),
-                            Text( '${reviewOrderController.reviewOrderData!.cartDetail!.currencyCode} ${reviewOrderController.reviewOrderData!.cartDetail!.totalTaxAmount!}',
-
+                            Text(
+                                '${reviewOrderController.reviewOrderData!.cartDetail!.currencyCode} ${reviewOrderController.reviewOrderData!.cartDetail!.totalTaxAmount!}',
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Color(0xFF666666), fontSize: 15)),
@@ -331,8 +341,8 @@ class ReviewOrderScreen extends StatelessWidget {
                                     color: Colors.black,
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold)),
-                            Text( '${reviewOrderController.reviewOrderData!.cartDetail!.currencyCode} ${reviewOrderController.reviewOrderData!.cartDetail!.totalPrice!}',
-
+                            Text(
+                                '${reviewOrderController.reviewOrderData!.cartDetail!.currencyCode} ${reviewOrderController.reviewOrderData!.cartDetail!.totalPrice!}',
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -344,110 +354,121 @@ class ReviewOrderScreen extends StatelessWidget {
                 )),
             20.heightBox,
             InkWell(
-                onTap: (){
+                onTap: () {
                   reviewOrderController.pop();
                 },
-                child:
-            Container(
-                width: double.maxFinite,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.grey[300]!),
-                    borderRadius: BorderRadius.all(Radius.circular(2))),
-                child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                child: Container(
+                    width: double.maxFinite,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey[300]!),
+                        borderRadius: BorderRadius.all(Radius.circular(2))),
+                    child: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(LocaleKeys.payWith.tr,
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                            6.heightBox,
-                            Text(reviewOrderController.reviewOrderData!.quotesData!.quoteDetails!.paymentMethod!,
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    color: Color(0xFF666666), fontSize: 15)),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(LocaleKeys.payWith.tr,
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold)),
+                                6.heightBox,
+                                Text(
+                                    reviewOrderController
+                                        .reviewOrderData!
+                                        .quotesData!
+                                        .quoteDetails!
+                                        .paymentMethod!,
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        color: Color(0xFF666666),
+                                        fontSize: 15)),
+                              ],
+                            ),
+                            Icon(
+                              Icons.arrow_forward_ios_sharp,
+                              color: Color(0xFF666666),
+                            )
                           ],
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios_sharp,
-                          color: Color(0xFF666666),
-                        )
-                      ],
-                    )))),
+                        )))),
             20.heightBox,
-           InkWell(
-               onTap: (){
-                 reviewOrderController.pop();
-                 reviewOrderController.pop();
-               },
-               child:  Container(
-                width: double.maxFinite,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.grey[300]!),
-                    borderRadius: BorderRadius.all(Radius.circular(2))),
-                child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                            child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+            InkWell(
+                onTap: () {
+                  reviewOrderController.pop();
+                  reviewOrderController.pop();
+                },
+                child: Container(
+                    width: double.maxFinite,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey[300]!),
+                        borderRadius: BorderRadius.all(Radius.circular(2))),
+                    child: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(LocaleKeys.deliverTo.tr,
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                            6.heightBox,
-                            Text(reviewOrderController.addressDetails!.fullname!,
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                            Text('${reviewOrderController.addressDetails!.address1!}, ${reviewOrderController.addressDetails!.address2!}',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    color: Color(0xFF666666), fontSize: 15)),
+                            Expanded(
+                                child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(LocaleKeys.deliverTo.tr,
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold)),
+                                6.heightBox,
+                                Text(
+                                    reviewOrderController
+                                        .addressDetails!.fullname!,
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold)),
+                                Text(
+                                    '${reviewOrderController.addressDetails!.address1!}, ${reviewOrderController.addressDetails!.address2!}',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        color: Color(0xFF666666),
+                                        fontSize: 15)),
+                              ],
+                            )),
+                            Icon(
+                              Icons.arrow_forward_ios_sharp,
+                              color: Color(0xFF666666),
+                            )
                           ],
-                        )),
-                        Icon(
-                          Icons.arrow_forward_ios_sharp,
-                          color: Color(0xFF666666),
-                        )
-                      ],
-                    )))),
+                        )))),
             20.heightBox,
-        ListView.builder(
-            padding: EdgeInsets.zero,
-            shrinkWrap: true,
-            physics: ScrollPhysics(),
-            itemCount: reviewOrderController.quoteItemDetails!.length,
-            itemBuilder: (context, index) {
-
-              return
-            Container(
-                width: double.maxFinite,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.grey[300]!),
-                    borderRadius: BorderRadius.all(Radius.circular(2))),
-                child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: ItemShippedContainer(quoteItemData: reviewOrderController.quoteItemDetails![index],index: index,)));
-            }),
+            ListView.builder(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                physics: ScrollPhysics(),
+                itemCount: reviewOrderController.quoteItemDetails!.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                      width: double.maxFinite,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.grey[300]!),
+                          borderRadius: BorderRadius.all(Radius.circular(2))),
+                      child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: ItemShippedContainer(
+                            quoteItemData:
+                                reviewOrderController.quoteItemDetails![index],
+                            index: index,
+                          )));
+                }),
             25.heightBox,
             Container(
                 width: double.maxFinite,
@@ -465,7 +486,12 @@ class ReviewOrderScreen extends StatelessWidget {
                       color: Colors.white,
                     )
                   ]),
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.delete<PaymentGatewayController>();
+                    reviewOrderController.navigateTo(PaymentGatewayScreen(
+                        paymentId: reviewOrderController.reviewOrderData!
+                            .quotesData!.quoteDetails!.paymentMethodId));
+                  },
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all(Color(0xFF27AF61)),

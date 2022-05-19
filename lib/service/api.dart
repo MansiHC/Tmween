@@ -8,6 +8,7 @@ import 'package:tmween/model/UserDataModel.dart';
 import 'package:tmween/model/add_to_cart_model.dart';
 import 'package:tmween/model/attribute_combination_model.dart';
 import 'package:tmween/model/best_seller_model.dart';
+import 'package:tmween/model/checkout_model.dart';
 import 'package:tmween/model/city_model.dart';
 import 'package:tmween/model/country_model.dart';
 import 'package:tmween/model/dashboard_model.dart';
@@ -19,7 +20,11 @@ import 'package:tmween/model/get_filter_data_model.dart';
 import 'package:tmween/model/get_recommended_product_model.dart';
 import 'package:tmween/model/get_reviews_model.dart';
 import 'package:tmween/model/get_wishlist_details_model.dart';
+import 'package:tmween/model/invoice_model.dart';
 import 'package:tmween/model/login_otp_model.dart';
+import 'package:tmween/model/notification_model.dart';
+import 'package:tmween/model/order_detail_model.dart';
+import 'package:tmween/model/order_listing_model.dart';
 import 'package:tmween/model/popular_search_model.dart';
 import 'package:tmween/model/product_detail_model.dart';
 import 'package:tmween/model/product_listing_model.dart';
@@ -41,6 +46,7 @@ import '../model/edit_cart_quanity_model.dart';
 import '../model/get_categories_model.dart';
 import '../model/get_payment_option_model.dart';
 import '../model/get_sub_category_model.dart';
+import '../model/get_wallet_model.dart';
 import 'app_exception.dart';
 
 class Api {
@@ -48,6 +54,7 @@ class Api {
   Future<SuccessModel> register(
       name, password, email, phone, agreeTerms, langCode) async {
     late SuccessModel result;
+
     try {
       final response = await http.post(Uri.parse(UrlConstants.register),
           headers: {
@@ -135,7 +142,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = UserDataModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -166,7 +173,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -196,7 +203,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = LoginOTPModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -229,7 +236,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SignupModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -260,7 +267,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = UserDataModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -285,7 +292,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -308,7 +315,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = VerifyOtpModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -330,7 +337,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SignupModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -352,7 +359,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SignupModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -376,7 +383,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SignupModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -400,7 +407,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SignupModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -424,7 +431,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SignupModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -456,7 +463,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = VerifyForgotPasswordMobileOTP.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -480,7 +487,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SignupModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -504,7 +511,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -528,7 +535,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = GetCustomerDataModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -553,7 +560,7 @@ class Api {
 
       result = SignupModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -578,7 +585,7 @@ class Api {
 
       result = SignupModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -608,7 +615,7 @@ class Api {
 
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -635,7 +642,7 @@ class Api {
 
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -662,21 +669,21 @@ class Api {
 
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
 
-  Future<SuccessModel> setPaymentOptions(token,userId,paymentId, langCode) async {
+  Future<SuccessModel> setPaymentOptions(
+      token, userId, paymentId, langCode) async {
     late SuccessModel result;
     try {
-      final response =
-      await http.post(Uri.parse(UrlConstants.setPaymentOption),
+      final response = await http.post(Uri.parse(UrlConstants.setPaymentOption),
           headers: {
             HttpHeaders.contentTypeHeader: "application/json",
             'username': token,
             HttpHeaders.authorizationHeader:
-            "Bearer ${AppConstants.customer_token}"
+                "Bearer ${AppConstants.customer_token}"
           },
           body: json.encode({
             "entity_type_id": AppConstants.entity_type_id_customer,
@@ -687,40 +694,36 @@ class Api {
           }));
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
-
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
 
-  Future<SuccessModel> addToRecent(userId,productId, langCode) async {
+  Future<SuccessModel> addToRecent(userId, productId, langCode) async {
     late SuccessModel result;
     try {
       final response =
-      await http.post(Uri.parse(UrlConstants.addRecentlyViewed),
-          headers: {
-            HttpHeaders.contentTypeHeader: "application/json",
-            HttpHeaders.authorizationHeader:
-            "Bearer ${AppConstants.customer_token}"
-          },
-          body: json.encode({
-            "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": AppConstants.device_type,
-            "lang_code": langCode,
-            "user_id": userId,
-            "product_id": productId
-          }));
+          await http.post(Uri.parse(UrlConstants.addRecentlyViewed),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "lang_code": langCode,
+                "user_id": userId,
+                "product_id": productId
+              }));
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
-
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
-
-
 
   Future<GetCustomerDataModel> updateProfileMobileImage(
       token, userId, name, oldImage, image, langCode) async {
@@ -760,7 +763,7 @@ class Api {
       var responseJson = json.decode(responseString);
       result = GetCustomerDataModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -793,7 +796,7 @@ class Api {
       print(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -821,7 +824,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -849,13 +852,13 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
 
   Future<SuccessModel> changeDeliverySpeed(
-      token, userId, quoteItemId,deliveryMode, langCode) async {
+      token, userId, quoteItemId, deliveryMode, langCode) async {
     late SuccessModel result;
     try {
       final response =
@@ -878,7 +881,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -906,7 +909,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -933,7 +936,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -959,7 +962,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = GetWishlistDetailsModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -983,32 +986,34 @@ class Api {
       var responseJson = _returnResponse(response);
       result = GetCartProductsModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
 
-  Future<SuccessModel> updateQuoteAddress(token, userId,addressId, langCode) async {
+  Future<SuccessModel> updateQuoteAddress(
+      token, userId, addressId, langCode) async {
     late SuccessModel result;
     try {
-      final response = await http.post(Uri.parse(UrlConstants.updateQuoteAddress),
-          headers: {
-            HttpHeaders.contentTypeHeader: "application/json",
-            'username': token,
-            HttpHeaders.authorizationHeader:
-                "Bearer ${AppConstants.customer_token}"
-          },
-          body: json.encode({
-            "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": AppConstants.device_type,
-            "user_id": userId,
-            "customer_address_id": addressId,
-            "lang_code": langCode
-          }));
+      final response =
+          await http.post(Uri.parse(UrlConstants.updateQuoteAddress),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                'username': token,
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "user_id": userId,
+                "customer_address_id": addressId,
+                "lang_code": langCode
+              }));
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -1035,17 +1040,17 @@ class Api {
       var responseJson = _returnResponse(response);
       result = GetCustomerAddressListModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
 
-  Future<ReviewOrderModel> getReviewOrder(
+  Future<GetWalletModel> getWalletData(
       token, userId, langCode) async {
-    late ReviewOrderModel result;
+    late GetWalletModel result;
     try {
       final response =
-          await http.post(Uri.parse(UrlConstants.getReviewOrder),
+          await http.post(Uri.parse(UrlConstants.getCustomerWalletData),
               headers: {
                 HttpHeaders.contentTypeHeader: "application/json",
                 'username': token,
@@ -1056,13 +1061,37 @@ class Api {
                 "entity_type_id": AppConstants.entity_type_id_customer,
                 "device_type": AppConstants.device_type,
                 "user_id": userId,
-                "customer_id": userId,
                 "lang_code": langCode
               }));
       var responseJson = _returnResponse(response);
+      result = GetWalletModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
+    }
+    return result;
+  }
+
+  Future<ReviewOrderModel> getReviewOrder(token, userId, langCode) async {
+    late ReviewOrderModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.getReviewOrder),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            'username': token,
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "user_id": userId,
+            "customer_id": userId,
+            "lang_code": langCode
+          }));
+      var responseJson = _returnResponse(response);
       result = ReviewOrderModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -1090,7 +1119,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -1149,7 +1178,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -1205,7 +1234,240 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
+    }
+    return result;
+  }
+
+  Future<CheckoutModel> getCheckoutDetail(token, userId, langCode) async {
+    late CheckoutModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.getSyberPayPaymentURL),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                'username': token,
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "user_id": userId,
+                "lang_code": langCode
+              }));
+      var responseJson = _returnResponse(response);
+      result = CheckoutModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
+    }
+    return result;
+  }
+
+  Future<SuccessModel> getOrderStatus(
+      token, userId, salesOrderId, langCode) async {
+    late SuccessModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.getSyberPayOrderStatus),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                'username': token,
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "user_id": userId,
+                "sales_order_id": salesOrderId,
+                "lang_code": langCode
+              }));
+      var responseJson = _returnResponse(response);
+      result = SuccessModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
+    }
+    return result;
+  }
+
+  Future<NotificationModel> getNotifications(langCode) async {
+    late NotificationModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.getNotificationList),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "lang_code": langCode
+              }));
+      var responseJson = _returnResponse(response);
+      result = NotificationModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
+    }
+    return result;
+  }
+
+  Future<OrderListingModel> getOrderList(page, userId, token, langCode) async {
+    late OrderListingModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.getOrderList),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            'username': token,
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "lang_code": langCode,
+            "page": page,
+            "user_id": userId,
+            "records_per_page": 10,
+            "sort_order": "desc",
+            "sort_by": "id"
+          }));
+      var responseJson = _returnResponse(response);
+      result = OrderListingModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
+    }
+    return result;
+  }
+
+  Future<OrderListingModel> getSearchOrderList(
+      page, userId, token, keyword, langCode) async {
+    late OrderListingModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.getOrderList),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            'username': token,
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "lang_code": langCode,
+            "page": page,
+            "keyword": keyword,
+            "user_id": userId,
+            "records_per_page": 10,
+            "sort_order": "desc",
+            "sort_by": "id"
+          }));
+      var responseJson = _returnResponse(response);
+      result = OrderListingModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
+    }
+    return result;
+  }
+
+  Future<OrderDetailModel> getOrderDetail(
+      userId, token, orderId, langCode) async {
+    late OrderDetailModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.getOrderDetail),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            'username': token,
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "lang_code": langCode,
+            "order_id": orderId,
+            "user_id": userId,
+          }));
+      var responseJson = _returnResponse(response);
+      result = OrderDetailModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
+    }
+    return result;
+  }
+
+  Future<InvoiceModel> getInvoice(userId, token, orderId, langCode) async {
+    late InvoiceModel result;
+    try {
+      final response = await http.post(Uri.parse(UrlConstants.getInvoice),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            'username': token,
+            HttpHeaders.authorizationHeader:
+                "Bearer ${AppConstants.customer_token}"
+          },
+          body: json.encode({
+            "entity_type_id": AppConstants.entity_type_id_customer,
+            "device_type": AppConstants.device_type,
+            "lang_code": langCode,
+            "order_id": orderId,
+            "user_id": userId,
+            "flag": "MQ%3D%3D"
+          }));
+      var responseJson = _returnResponse(response);
+      result = InvoiceModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
+    }
+    return result;
+  }
+
+  Future<SuccessModel> readNotifications(notificationId, langCode) async {
+    late SuccessModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.readUserNotification),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "notification_ids": notificationId,
+                "lang_code": langCode
+              }));
+      var responseJson = _returnResponse(response);
+      result = SuccessModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
+    }
+    return result;
+  }
+
+  Future<SuccessModel> deleteNotifications(notificationId, langCode) async {
+    late SuccessModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.deleteUserNotification),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "notification_ids": notificationId,
+                "lang_code": langCode
+              }));
+      var responseJson = _returnResponse(response);
+      result = SuccessModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -1235,7 +1497,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -1262,7 +1524,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -1293,7 +1555,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -1318,7 +1580,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -1360,18 +1622,13 @@ class Api {
       var responseJson = _returnResponse(response);
       result = AddToCartModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
 
   Future<EditCartQuantityModel> editCartItem(
-      token,
-      quoteItemId,
-      quoteId,
-      userId,
-      qty,
-      langCode) async {
+      token, quoteItemId, quoteId, userId, qty, langCode) async {
     late EditCartQuantityModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.updateCartItem),
@@ -1393,17 +1650,13 @@ class Api {
       var responseJson = _returnResponse(response);
       result = EditCartQuantityModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
 
   Future<SuccessModel> removeCartItem(
-      token,
-      quoteId,
-      userId,
-      quoteItemId,
-      langCode) async {
+      token, quoteId, userId, quoteItemId, langCode) async {
     late SuccessModel result;
     try {
       final response = await http.post(Uri.parse(UrlConstants.removeCartItem),
@@ -1424,7 +1677,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -1449,7 +1702,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = GetReviewsModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -1469,7 +1722,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = CountryModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -1491,7 +1744,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = StateModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -1514,13 +1767,14 @@ class Api {
       var responseJson = _returnResponse(response);
       result = CityModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
 
-  Future<DashboardModel> getHomePageMobileData(userId,language) async {
+  Future<DashboardModel> getHomePageMobileData(userId, language) async {
     late DashboardModel result;
+
     try {
       final response =
           await http.post(Uri.parse(UrlConstants.getHomePageMobileData),
@@ -1540,7 +1794,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = DashboardModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -1575,7 +1829,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SearchHistoryModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -1600,7 +1854,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SuccessModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -1624,7 +1878,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = PopularSearchModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -1652,40 +1906,40 @@ class Api {
       var responseJson = _returnResponse(response);
       result = ProductListingModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
 
   Future<SubCategoryProductListingModel> categoryProductList(
-      page, categorySlug,categoryId, langCode) async {
+      page, categorySlug, categoryId, langCode) async {
     late SubCategoryProductListingModel result;
     try {
-      final response = await http.post(
-          Uri.parse(UrlConstants.categoryProductList),
-          headers: {
-            HttpHeaders.contentTypeHeader: "application/json",
-            HttpHeaders.authorizationHeader:
-                "Bearer ${AppConstants.customer_token}"
-          },
-          body: json.encode({
-            "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": AppConstants.device_type,
-            "lang_code": langCode,
-            "search_arr": {
-              "slug_name":categorySlug,
-              "product_category_id": [categoryId],
-            },
-            "pagination": "1",
-            "page": page,
-            "records_per_page": "10",
-            "sort_by": "product_name",
-            "sort_order": "desc",
-          }));
+      final response =
+          await http.post(Uri.parse(UrlConstants.categoryProductList),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "lang_code": langCode,
+                "search_arr": {
+                  "slug_name": categorySlug,
+                  "product_category_id": [categoryId],
+                },
+                "pagination": "1",
+                "page": page,
+                "records_per_page": "10",
+                "sort_by": "product_name",
+                "sort_order": "desc",
+              }));
       var responseJson = _returnResponse(response);
       result = SubCategoryProductListingModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -1711,7 +1965,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = ProductDetailModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -1749,7 +2003,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = AttributeCombinationModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -1775,13 +2029,13 @@ class Api {
       var responseJson = _returnResponse(response);
       result = AttributeCombinationModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
 
   Future<GetFilterDataModel> getCategoryMobileFilterData(
-      catSlug,  langCode) async {
+      catSlug, langCode) async {
     late GetFilterDataModel result;
     try {
       final response =
@@ -1802,13 +2056,13 @@ class Api {
       var responseJson = _returnResponse(response);
       result = GetFilterDataModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
 
- Future<GetFilterDataModel> getSearchMobileFilterData(
-      searchString,  langCode) async {
+  Future<GetFilterDataModel> getSearchMobileFilterData(
+      searchString, langCode) async {
     late GetFilterDataModel result;
     try {
       final response =
@@ -1822,22 +2076,30 @@ class Api {
                 "entity_type_id": AppConstants.entity_type_id_customer,
                 "device_type": AppConstants.device_type,
                 "lang_code": langCode,
-                "search_text":searchString,
+                "search_text": searchString,
                 "pagination": 0,
                 "page": 1,
-                "sort_by":"created_at",
-                "sort_order":"desc"
+                "sort_by": "created_at",
+                "sort_order": "desc"
               }));
       var responseJson = _returnResponse(response);
       result = GetFilterDataModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
 
   Future<SubCategoryProductListingModel> setCategoryMobileFilterData(
-      page,catSlug,catList,brandList,sellerList,fromPrice,toPrice,fullFillByTmween,  langCode) async {
+      page,
+      catSlug,
+      catList,
+      brandList,
+      sellerList,
+      fromPrice,
+      toPrice,
+      fullFillByTmween,
+      langCode) async {
     late SubCategoryProductListingModel result;
     try {
       final response =
@@ -1858,70 +2120,35 @@ class Api {
                 "sort_by": "product_name",
                 "sort_order": "desc",
                 "search_arr": {
-                    "category_id":"",
-                    "product_category_id": catList,
-                    "brand_id": brandList,
-                    "supplier_id":sellerList,
-                    "slug_name":catSlug,
-                    "keyword": "",
-                    "price_from": fromPrice,
-                    "price_to":toPrice,
-                    "full_fill_by_tmween":fullFillByTmween
-                  },
-
+                  "category_id": "",
+                  "product_category_id": catList,
+                  "brand_id": brandList,
+                  "supplier_id": sellerList,
+                  "slug_name": catSlug,
+                  "keyword": "",
+                  "price_from": fromPrice,
+                  "price_to": toPrice,
+                  "full_fill_by_tmween": fullFillByTmween
+                },
               }));
       var responseJson = _returnResponse(response);
       result = SubCategoryProductListingModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
 
   Future<SubCategoryProductListingModel> setSearchMobileFilterData(
-      page,searchString,catList,brandList,sellerList,fromPrice,toPrice,fullFillByTmween,  langCode) async {
-    late SubCategoryProductListingModel result;
-    try {
-      final response =
-      await http.post(Uri.parse(UrlConstants.categoryProductList),
-          headers: {
-            HttpHeaders.contentTypeHeader: "application/json",
-            HttpHeaders.authorizationHeader:
-            "Bearer ${AppConstants.customer_token}"
-          },
-          body: json.encode({
-            "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": AppConstants.device_type,
-            "lang_code": langCode,
-            "pagination": 1,
-            "page": page,
-            "records_per_page": "10",
-            "sort_by": "product_name",
-            "sort_order": "desc",
-            "search_arr": {
-              "category_id":"",
-              "product_category_id": catList,
-              "brand_id": brandList,
-              "supplier_id":sellerList,
-              "slug_name":"",
-              "keyword": searchString,
-              "price_from": fromPrice,
-              "price_to":toPrice,
-              "full_fill_by_tmween":fullFillByTmween
-            },
-
-          }));
-      var responseJson = _returnResponse(response);
-      result = SubCategoryProductListingModel.fromJson(responseJson);
-    } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
-    }
-    return result;
-  }
-
-
-  Future<SubCategoryProductListingModel> getCategoryMobileBestMatchData(
-      page,catSlug,sortBy,sortOrder, catList,brandList,sellerList,fromPrice,toPrice,fullFillByTmween,  langCode) async {
+      page,
+      searchString,
+      catList,
+      brandList,
+      sellerList,
+      fromPrice,
+      toPrice,
+      fullFillByTmween,
+      langCode) async {
     late SubCategoryProductListingModel result;
     try {
       final response =
@@ -1938,30 +2165,40 @@ class Api {
                 "pagination": 1,
                 "page": page,
                 "records_per_page": "10",
-                "sort_by": sortBy,
-                "sort_order": sortOrder,
+                "sort_by": "product_name",
+                "sort_order": "desc",
                 "search_arr": {
-                  "slug_name":catSlug,
-                  "category_id":"",
+                  "category_id": "",
                   "product_category_id": catList,
                   "brand_id": brandList,
-                  "supplier_id":sellerList,
-                  "keyword": "",
+                  "supplier_id": sellerList,
+                  "slug_name": "",
+                  "keyword": searchString,
                   "price_from": fromPrice,
-                  "price_to":toPrice,
-                  "full_fill_by_tmween":fullFillByTmween
+                  "price_to": toPrice,
+                  "full_fill_by_tmween": fullFillByTmween
                 },
               }));
       var responseJson = _returnResponse(response);
       result = SubCategoryProductListingModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
 
- Future<SubCategoryProductListingModel> getSearchMobileBestMatchData(
-      page,searchString,sortBy,sortOrder, catList,brandList,sellerList,fromPrice,toPrice,fullFillByTmween,  langCode) async {
+  Future<SubCategoryProductListingModel> getCategoryMobileBestMatchData(
+      page,
+      catSlug,
+      sortBy,
+      sortOrder,
+      catList,
+      brandList,
+      sellerList,
+      fromPrice,
+      toPrice,
+      fullFillByTmween,
+      langCode) async {
     late SubCategoryProductListingModel result;
     try {
       final response =
@@ -1981,25 +2218,74 @@ class Api {
                 "sort_by": sortBy,
                 "sort_order": sortOrder,
                 "search_arr": {
-                  "keyword":searchString,
-                  "slug_name": "",
-                  "category_id":"",
-                  "product_category_id": "",
+                  "slug_name": catSlug,
+                  "category_id": "",
+                  "product_category_id": catList,
                   "brand_id": brandList,
-                  "supplier_id":sellerList,
+                  "supplier_id": sellerList,
+                  "keyword": "",
                   "price_from": fromPrice,
-                  "price_to":toPrice,
-                  "full_fill_by_tmween":fullFillByTmween
+                  "price_to": toPrice,
+                  "full_fill_by_tmween": fullFillByTmween
                 },
               }));
       var responseJson = _returnResponse(response);
       result = SubCategoryProductListingModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
 
+  Future<SubCategoryProductListingModel> getSearchMobileBestMatchData(
+      page,
+      searchString,
+      sortBy,
+      sortOrder,
+      catList,
+      brandList,
+      sellerList,
+      fromPrice,
+      toPrice,
+      fullFillByTmween,
+      langCode) async {
+    late SubCategoryProductListingModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.categoryProductList),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "lang_code": langCode,
+                "pagination": 1,
+                "page": page,
+                "records_per_page": "10",
+                "sort_by": sortBy,
+                "sort_order": sortOrder,
+                "search_arr": {
+                  "keyword": searchString,
+                  "slug_name": "",
+                  "category_id": "",
+                  "product_category_id": "",
+                  "brand_id": brandList,
+                  "supplier_id": sellerList,
+                  "price_from": fromPrice,
+                  "price_to": toPrice,
+                  "full_fill_by_tmween": fullFillByTmween
+                },
+              }));
+      var responseJson = _returnResponse(response);
+      result = SubCategoryProductListingModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
+    }
+    return result;
+  }
 
   Future<GetCategoriesModel> getAllCategories(page, langCode) async {
     late GetCategoriesModel result;
@@ -2022,7 +2308,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = GetCategoriesModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -2031,26 +2317,25 @@ class Api {
     late GetSubCategoryModel result;
     try {
       final response =
-      await http.post(Uri.parse(UrlConstants.getSubCategoriesData),
-          headers: {
-            HttpHeaders.contentTypeHeader: "application/json",
-            HttpHeaders.authorizationHeader:
-            "Bearer ${AppConstants.customer_token}"
-          },
-          body: json.encode({
-            "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": AppConstants.device_type,
-            "lang_code": langCode,
-            "category_id": categoryId
-          }));
+          await http.post(Uri.parse(UrlConstants.getSubCategoriesData),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "lang_code": langCode,
+                "category_id": categoryId
+              }));
       var responseJson = _returnResponse(response);
       result = GetSubCategoryModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
-
 
   Future<DealsOfTheDayModel> getDealsOfTheDay(page, langCode) async {
     late DealsOfTheDayModel result;
@@ -2073,7 +2358,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = DealsOfTheDayModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -2099,12 +2384,13 @@ class Api {
       var responseJson = _returnResponse(response);
       result = BestSellerModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
 
-  Future<GetRecommendedProductModel> getRecommendedProduct(productId,page, langCode) async {
+  Future<GetRecommendedProductModel> getRecommendedProduct(
+      productId, page, langCode) async {
     late GetRecommendedProductModel result;
     try {
       final response =
@@ -2126,7 +2412,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = GetRecommendedProductModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -2152,7 +2438,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = SoldByTmweenModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
@@ -2161,30 +2447,28 @@ class Api {
     late GetPaymentOptionModel result;
     try {
       final response =
-      await http.post(Uri.parse(UrlConstants.getPaymentOptions),
-          headers: {
-            HttpHeaders.contentTypeHeader: "application/json",
-            HttpHeaders.authorizationHeader:
-            "Bearer ${AppConstants.customer_token}"
-          },
-          body: json.encode({
-            "entity_type_id": AppConstants.entity_type_id_customer,
-            "device_type": AppConstants.device_type,
-            "lang_code": langCode,
-            "user_id": userId
-          }));
+          await http.post(Uri.parse(UrlConstants.getPaymentOptions),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "lang_code": langCode,
+                "user_id": userId
+              }));
       var responseJson = _returnResponse(response);
       result = GetPaymentOptionModel.fromJson(responseJson);
-     /* for(Map<String,dynamic> i in responseJson){
+      /* for(Map<String,dynamic> i in responseJson){
         result.add(GetPaymentOptionModel.fromJson(i));
       }*/
-      } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
-
-
 
   Future<TopSelectionModel> getTopSelection(page, langCode) async {
     late TopSelectionModel result;
@@ -2207,12 +2491,12 @@ class Api {
       var responseJson = _returnResponse(response);
       result = TopSelectionModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }
 
-  Future<RecentlyViewedModel> getRecentlyViewed(userId,page, langCode) async {
+  Future<RecentlyViewedModel> getRecentlyViewed(userId, page, langCode) async {
     late RecentlyViewedModel result;
     try {
       final response =
@@ -2235,7 +2519,7 @@ class Api {
       var responseJson = _returnResponse(response);
       result = RecentlyViewedModel.fromJson(responseJson);
     } on SocketException {
-      Helper.showGetSnackBar(LocaleKeys.noInternet.tr,  AppColors.errorColor);
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
     }
     return result;
   }

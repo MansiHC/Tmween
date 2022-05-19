@@ -77,11 +77,12 @@ class ShippingAddressController extends GetxController {
 
         recommendedProductsData = value.data!.recommendationProducts;
         recentlyViewedProducts = value.data!.recentlyViewedProducts;
-        totalAmount=cartData!.totalPrice!.toPrecision(1);
-        shippingAmount=cartData!.totalDeliveryPrice!.toPrecision(1);
-        taxAmount=cartData!.totalTaxAmount!;
-        for(var i=0;i<addressList.length;i++){
-          if(addressList[i].id==value.data!.cartDetails!.customerAddressDetails![0].id!){
+        totalAmount = cartData!.totalPrice!.toPrecision(1);
+        shippingAmount = cartData!.totalDeliveryPrice!.toPrecision(1);
+        taxAmount = cartData!.totalTaxAmount!;
+        for (var i = 0; i < addressList.length; i++) {
+          if (addressList[i].id ==
+              value.data!.cartDetails!.customerAddressDetails![0].id!) {
             radioCurrentValue = addressList[i].id!;
           }
         }
@@ -91,11 +92,9 @@ class ShippingAddressController extends GetxController {
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
-      }else{
+      } else {
         update();
       }
-
-
     }).catchError((error) {
       Helper.hideLoading(context);
       update();
@@ -103,31 +102,29 @@ class ShippingAddressController extends GetxController {
     });
   }
 
-
-  Future<void> changeAddress(addressId,language) async {
+  Future<void> changeAddress(addressId, language) async {
     Helper.showLoading();
     cartData = null;
-    await api.updateQuoteAddress(token, userId,addressId, language).then((value) {
+    await api
+        .updateQuoteAddress(token, userId, addressId, language)
+        .then((value) {
       Helper.hideLoading(context);
       if (value.statusCode == 200) {
-       getAddressList(language);
+        getAddressList(language);
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
-      }else{
+      } else {
         update();
       }
-
-
     }).catchError((error) {
       Helper.hideLoading(context);
       update();
       print('error....$error');
     });
   }
-
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
@@ -137,11 +134,11 @@ class ShippingAddressController extends GetxController {
     countPersonalAddress = 0;
     countOfficeAddress = 0;
     addressList = [];
-    radioValue =[];
+    radioValue = [];
     Helper.showLoading();
     await api.getCustomerAddressList(token, userId, language).then((value) {
       if (value.statusCode == 200) {
-         addressList = value.data!;
+        addressList = value.data!;
         if (addressList.length > 0) {
           radioCurrentValue = addressList[0].id!;
           for (var i = 0; i < addressList.length; i++) {
@@ -155,14 +152,16 @@ class ShippingAddressController extends GetxController {
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
+      } else {
+        Helper.hideLoading(context);
       }
-
     }).catchError((error) {
       Helper.hideLoading(context);
       update();
       print('error....$error');
     });
   }
+
   void exitScreen() {
     Get.delete<ShippingAddressController>();
     Navigator.of(context).pop(true);

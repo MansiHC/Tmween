@@ -238,115 +238,117 @@ class SearchScreenState extends State<SearchScreen> {
                 child: Container(
                     width: double.maxFinite,
                     child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    5.heightBox,
-                    if (searchController.isLogin)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            LocaleKeys.searchHistory.tr,
-                            style: TextStyle(
-                                fontSize: 19,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF585858)),
-                          ),
-                          InkWell(
-                              onTap: () {
-                                searchController.clearHistoryList(language);
-                              },
-                              child: Text(
-                                LocaleKeys.clear.tr,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        5.heightBox,
+                        if (searchController.isLogin)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                LocaleKeys.searchHistory.tr,
                                 style: TextStyle(
-                                    fontSize: 12.5,
-                                    decoration: TextDecoration.underline,
+                                    fontSize: 19,
                                     fontWeight: FontWeight.bold,
                                     color: Color(0xFF585858)),
-                              )),
-                        ],
-                      ),
-                    if (searchController.isLogin)
-                      10.heightBox,
-                    if (searchController.isLogin)
-                      if (searchController.historyList.length > 0)
+                              ),
+                              InkWell(
+                                  onTap: () {
+                                    searchController.clearHistoryList(language);
+                                  },
+                                  child: Text(
+                                    LocaleKeys.clear.tr,
+                                    style: TextStyle(
+                                        fontSize: 12.5,
+                                        decoration: TextDecoration.underline,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF585858)),
+                                  )),
+                            ],
+                          ),
+                        if (searchController.isLogin) 10.heightBox,
+                        if (searchController.isLogin)
+                          if (searchController.historyList.length > 0)
+                            Wrap(
+                                spacing: 10,
+                                children: List.generate(
+                                    searchController.historyList.length,
+                                    (index) => InkWell(
+                                        onTap: () {
+                                          searchController.searchedString =
+                                              searchController
+                                                  .historyList[index].keyword!;
+                                          searchController.searchProduct(
+                                              widget.from, language);
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.all(5),
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 2, vertical: 6),
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(6),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    color: Colors.grey[300]!,
+                                                    blurRadius: 3,
+                                                    spreadRadius: 3)
+                                              ]),
+                                          child: Text(
+                                            searchController
+                                                .historyList[index].keyword!,
+                                            style: TextStyle(
+                                                fontSize: 12.5,
+                                                color: Color(0xFF5B5B5B)),
+                                          ),
+                                        )))),
+                        if (searchController.isLogin)
+                          if (searchController.historyList.length > 0)
+                            30.heightBox,
+                        Text(
+                          LocaleKeys.popularSearch.tr,
+                          style: TextStyle(
+                              fontSize: 19,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF585858)),
+                        ),
+                        10.heightBox,
                         Wrap(
-                            spacing: 10,
-                            children: List.generate(
-                                searchController.historyList.length,
-                                (index) => InkWell(
-                                    onTap: () {
-                                      searchController.searchedString =
-                                          searchController
-                                              .historyList[index].keyword!;
-                                      searchController.searchProduct(
-                                          widget.from, language);
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.all(5),
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 2, vertical: 6),
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(6),
-                                          boxShadow: [
-                                            BoxShadow(
-                                                color: Colors.grey[300]!,
-                                                blurRadius: 3,
-                                                spreadRadius: 3)
-                                          ]),
-                                      child: Text(
+                          spacing: 10,
+                          children: List.generate(
+                              searchController.popularList.length,
+                              (index) => InkWell(
+                                  onTap: () {
+                                    searchController.searchedString =
                                         searchController
-                                            .historyList[index].keyword!,
-                                        style: TextStyle(
-                                            fontSize: 12.5,
-                                            color: Color(0xFF5B5B5B)),
-                                      ),
-                                    )))),
-                    if (searchController.isLogin)
-                      if (searchController.historyList.length > 0) 30.heightBox,
-                    Text(
-                      LocaleKeys.popularSearch.tr,
-                      style: TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF585858)),
-                    ),
-                    10.heightBox,
-                    Wrap(
-                      spacing: 10,
-                      children: List.generate(
-                          searchController.popularList.length,
-                          (index) => InkWell(
-                              onTap: () {
-                                searchController.searchedString =
-                                    searchController
-                                        .popularList[index].keyword!;
-                                searchController.searchProduct(
-                                    widget.from, language);
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(5),
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: 2, vertical: 6),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(6),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.grey[300]!,
-                                          blurRadius: 3,
-                                          spreadRadius: 3)
-                                    ]),
-                                child: Text(
-                                  searchController.popularList[index].keyword!,
-                                  style: TextStyle(
-                                      fontSize: 12.5, color: Color(0xFF5B5B5B)),
-                                ),
-                              ))),
-                    ),
-                  ],
-                )))));
+                                            .popularList[index].keyword!;
+                                    searchController.searchProduct(
+                                        widget.from, language);
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(5),
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: 2, vertical: 6),
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(6),
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color: Colors.grey[300]!,
+                                              blurRadius: 3,
+                                              spreadRadius: 3)
+                                        ]),
+                                    child: Text(
+                                      searchController
+                                          .popularList[index].keyword!,
+                                      style: TextStyle(
+                                          fontSize: 12.5,
+                                          color: Color(0xFF5B5B5B)),
+                                    ),
+                                  ))),
+                        ),
+                      ],
+                    )))));
   }
 }

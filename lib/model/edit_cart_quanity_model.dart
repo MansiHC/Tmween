@@ -11,7 +11,8 @@ class EditCartQuantityModel {
     statusCode = json['status_code'];
     statusMessage = json['status_message'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    if (statusCode == 200)
+      data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -31,7 +32,7 @@ class Data {
   List<QuoteItem>? quoteItem;
   int? cartTotalItems;
 
-  Data({this.quote, this.quoteItem,this.cartTotalItems});
+  Data({this.quote, this.quoteItem, this.cartTotalItems});
 
   Data.fromJson(Map<String, dynamic> json) {
     if (json['quote'] != null) {
@@ -81,20 +82,20 @@ class Quote {
 
   Quote(
       {this.id,
-        this.quoteNo,
-        this.currentQuotesNo,
-        this.customerId,
-        this.customerAddressId,
-        this.subTotal,
-        this.shippingPrice,
-        this.taxAmount,
-        this.grandTotal,
-        this.shippingNotes,
-        this.paymentMethodId,
-        this.quoteCreatedDate,
-        this.quoteUpdatedDate,
-        this.status,
-        this.ip});
+      this.quoteNo,
+      this.currentQuotesNo,
+      this.customerId,
+      this.customerAddressId,
+      this.subTotal,
+      this.shippingPrice,
+      this.taxAmount,
+      this.grandTotal,
+      this.shippingNotes,
+      this.paymentMethodId,
+      this.quoteCreatedDate,
+      this.quoteUpdatedDate,
+      this.status,
+      this.ip});
 
   Quote.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -177,43 +178,43 @@ class QuoteItem {
 
   QuoteItem(
       {this.id,
-        this.quoteId,
-        this.productId,
-        this.productName,
-        this.sku,
-        this.productItemId,
-        this.productPackId,
-        this.attributeOptions,
-        this.supplierId,
-        this.supplierAssignedDate,
-        this.supplierBranchId,
-        this.supplierStatusId,
-        this.supplierStatusUpdated,
-        this.supplierRemark,
-        this.daId,
-        this.daBranchId,
-        this.daAssignedDate,
-        this.daStatusId,
-        this.daStatusUpdated,
-        this.daRemark,
-        this.finalPrice,
-        this.retailPrice,
-        this.unitId,
-        this.quantity,
-        this.weight,
-        this.weightUnitId,
-        this.freeShipping,
-        this.itemFinalTotal,
-        this.shippingPrice,
-        this.daEstimatedDeliveryDate,
-        this.deliveryTimeFactor,
-        this.normalDeliveryPrice,
-        this.quickDeliveryPrice,
-        this.taxAmount,
-        this.itemTotalAmount,
-        this.status,
-        this.createdAt,
-        this.updatedAt});
+      this.quoteId,
+      this.productId,
+      this.productName,
+      this.sku,
+      this.productItemId,
+      this.productPackId,
+      this.attributeOptions,
+      this.supplierId,
+      this.supplierAssignedDate,
+      this.supplierBranchId,
+      this.supplierStatusId,
+      this.supplierStatusUpdated,
+      this.supplierRemark,
+      this.daId,
+      this.daBranchId,
+      this.daAssignedDate,
+      this.daStatusId,
+      this.daStatusUpdated,
+      this.daRemark,
+      this.finalPrice,
+      this.retailPrice,
+      this.unitId,
+      this.quantity,
+      this.weight,
+      this.weightUnitId,
+      this.freeShipping,
+      this.itemFinalTotal,
+      this.shippingPrice,
+      this.daEstimatedDeliveryDate,
+      this.deliveryTimeFactor,
+      this.normalDeliveryPrice,
+      this.quickDeliveryPrice,
+      this.taxAmount,
+      this.itemTotalAmount,
+      this.status,
+      this.createdAt,
+      this.updatedAt});
 
   QuoteItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -247,7 +248,8 @@ class QuoteItem {
     shippingPrice = double.parse(json['shipping_price'].toString());
     daEstimatedDeliveryDate = json['da_estimated_delivery_date'];
     deliveryTimeFactor = json['delivery_time_factor'];
-    normalDeliveryPrice = double.parse(json['normal_delivery_price'].toString());
+    normalDeliveryPrice =
+        double.parse(json['normal_delivery_price'].toString());
     quickDeliveryPrice = double.parse(json['quick_delivery_price'].toString());
     taxAmount = double.parse(json['tax_amount'].toString());
     itemTotalAmount = double.parse(json['item_total_amount'].toString());

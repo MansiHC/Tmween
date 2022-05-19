@@ -9,7 +9,8 @@ import '../../../model/sub_category_product_listing_model.dart';
 import '../../../utils/global.dart';
 
 class CategoryProductListingContainer extends StatelessWidget {
-  CategoryProductListingContainer({Key? key, required this.productData}) : super(key: key);
+  CategoryProductListingContainer({Key? key, required this.productData})
+      : super(key: key);
   final ProductData productData;
   var language;
 

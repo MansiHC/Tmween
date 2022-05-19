@@ -56,8 +56,8 @@ class DashboardScreen extends StatelessWidget {
                         _centerUpBanner(dashboardController),
                         _topSelection(dashboardController),
                         _centerDownBanner(dashboardController),
-                        if(dashboardController.recentlyViewProduct!=null)
-                        _recentlyViewed(dashboardController),
+                        if (dashboardController.recentlyViewProduct != null)
+                          _recentlyViewed(dashboardController),
                         10.heightBox,
                         Text(
                           LocaleKeys.thatAll.tr,
@@ -748,58 +748,62 @@ class DashboardScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
                     ),
-                    if(dashboardController.recentlyViewProduct!=null)
-                    Visibility(
-                        visible:
-                            dashboardController.recentlyViewProduct!.length >
-                                AppConstants.cardsPerPage,
-                        child: InkWell(
-                            onTap: () {
-                              dashboardController
-                                  .navigateTo(RecentlyViewedScreen());
-                            },
-                            child: Wrap(
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              children: [
-                                Text(
-                                  LocaleKeys.viewAll.tr,
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xFF6E7C77)),
-                                ),
-                                Icon(
-                                  CupertinoIcons.chevron_forward,
-                                  color: Color(0xFF6E7C77),
-                                  size: 14,
-                                )
-                              ],
-                            )))
+                    if (dashboardController.recentlyViewProduct != null)
+                      Visibility(
+                          visible:
+                              dashboardController.recentlyViewProduct!.length >
+                                  AppConstants.cardsPerPage,
+                          child: InkWell(
+                              onTap: () {
+                                dashboardController
+                                    .navigateTo(RecentlyViewedScreen());
+                              },
+                              child: Wrap(
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: [
+                                  Text(
+                                    LocaleKeys.viewAll.tr,
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF6E7C77)),
+                                  ),
+                                  Icon(
+                                    CupertinoIcons.chevron_forward,
+                                    color: Color(0xFF6E7C77),
+                                    size: 14,
+                                  )
+                                ],
+                              )))
                   ],
                 )),
             5.heightBox,
-            if(dashboardController.recentlyViewProduct!=null)
-            Container(
-                height: 244,
-                child: ListView.builder(
-                    itemCount: dashboardController.recentlyViewProduct!.length >
-                            AppConstants.cardsPerPage
-                        ? AppConstants.cardsPerPage
-                        : dashboardController.recentlyViewProduct!.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                          onTap: () {
-                            dashboardController.navigateTo(ProductDetailScreen(
-                                productId: dashboardController
-                                    .recentlyViewProduct![index].productId,
-                                productslug: dashboardController
-                                    .recentlyViewProduct![index].productSlug));
-                          },
-                          child: RecentlyViewedContainer(
-                              recentlyViewed: dashboardController
-                                  .recentlyViewProduct![index]));
-                    })),
+            if (dashboardController.recentlyViewProduct != null)
+              Container(
+                  height: 244,
+                  child: ListView.builder(
+                      itemCount:
+                          dashboardController.recentlyViewProduct!.length >
+                                  AppConstants.cardsPerPage
+                              ? AppConstants.cardsPerPage
+                              : dashboardController.recentlyViewProduct!.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                            onTap: () {
+                              dashboardController.navigateTo(
+                                  ProductDetailScreen(
+                                      productId: dashboardController
+                                          .recentlyViewProduct![index]
+                                          .productId,
+                                      productslug: dashboardController
+                                          .recentlyViewProduct![index]
+                                          .productSlug));
+                            },
+                            child: RecentlyViewedContainer(
+                                recentlyViewed: dashboardController
+                                    .recentlyViewProduct![index]));
+                      })),
             20.heightBox
           ],
         ));

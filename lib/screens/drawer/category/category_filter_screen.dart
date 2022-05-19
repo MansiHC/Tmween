@@ -8,7 +8,6 @@ import 'package:tmween/utils/views/circular_progress_bar.dart';
 import 'package:tmween/utils/views/custom_button.dart';
 import 'package:tmween/utils/views/custom_rectangle_slider_thumb_shape.dart';
 
-import '../../../controller/filter_controller.dart';
 import '../../../lang/locale_keys.g.dart';
 import '../../../utils/global.dart';
 
@@ -17,8 +16,12 @@ class CategoryFilterScreen extends StatefulWidget {
   final String? catName;
   final int? catId;
 
-  CategoryFilterScreen({Key? key, required this.catSlug,required this.catName,
-  required this.catId}) : super(key: key);
+  CategoryFilterScreen(
+      {Key? key,
+      required this.catSlug,
+      required this.catName,
+      required this.catId})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -36,11 +39,12 @@ class CategoryFilterScreenState extends State<CategoryFilterScreen> {
     filterController.catSlug = widget.catSlug!;
     filterController.catName = widget.catName!;
     filterController.catId = widget.catId!;
-    if(!filterController.called)
+    if (!filterController.called)
       filterController.getFilterData(Get.locale!.languageCode);
 
     super.initState();
   }
+
   Future<bool> _onWillPop(CategoryFilterController filterController) async {
     filterController.exitScreen();
     return true;
@@ -56,40 +60,39 @@ class CategoryFilterScreenState extends State<CategoryFilterScreen> {
 
           return WillPopScope(
               onWillPop: () => _onWillPop(filterController),
-          child: Scaffold(
-              body: Container(
-            color: Colors.white,
-            child: Column(
-              children: [
-                Container(
-                    constraints: BoxConstraints(
-                        minWidth: double.infinity, maxHeight: 90),
-                    color: AppColors.appBarColor,
-                    padding: EdgeInsets.only(top: 20),
-                    child: topView(filterController)),
-                filterController.loading
-                    ?Expanded(child: Center(child: CircularProgressBar()))
-                    : filterController.filteredData==null?Container()
-                :Expanded(
-                        child: SingleChildScrollView(
-                            child: Column(
-                        children: [
-                          _showOnly(filterController),
-                          if(filterController.categoryList.length>0)
-                            _categories(filterController),
-                          if(filterController.brandList.length>0)
-
-                            _brands(filterController),
-                          if(filterController.sellerList.length>0)
-
-                            _seller(filterController),
-                          _searchByPrice(filterController),
-                          20.heightBox,
-                        ],
-                      )))
-              ],
-            ),
-          )));
+              child: Scaffold(
+                  body: Container(
+                color: Colors.white,
+                child: Column(
+                  children: [
+                    Container(
+                        constraints: BoxConstraints(
+                            minWidth: double.infinity, maxHeight: 90),
+                        color: AppColors.appBarColor,
+                        padding: EdgeInsets.only(top: 20),
+                        child: topView(filterController)),
+                    filterController.loading
+                        ? Expanded(child: Center(child: CircularProgressBar()))
+                        : filterController.filteredData == null
+                            ? Container()
+                            : Expanded(
+                                child: SingleChildScrollView(
+                                    child: Column(
+                                children: [
+                                  _showOnly(filterController),
+                                  if (filterController.categoryList.length > 0)
+                                    _categories(filterController),
+                                  if (filterController.brandList.length > 0)
+                                    _brands(filterController),
+                                  if (filterController.sellerList.length > 0)
+                                    _seller(filterController),
+                                  _searchByPrice(filterController),
+                                  20.heightBox,
+                                ],
+                              )))
+                  ],
+                ),
+              )));
         });
   }
 
@@ -209,7 +212,7 @@ class CategoryFilterScreenState extends State<CategoryFilterScreen> {
               color: Color(0xFF5A5A5A))),
       children: filterController.categoryList
           .map<Widget>(
-            (map) => _checkBoxTile(filterController, map,false),
+            (map) => _checkBoxTile(filterController, map, false),
           )
           .toList(),
     );
@@ -240,7 +243,7 @@ class CategoryFilterScreenState extends State<CategoryFilterScreen> {
               color: Color(0xFF5A5A5A))),
       children: filterController.brandList
           .map<Widget>(
-            (map) => _checkBoxTile(filterController, map,false),
+            (map) => _checkBoxTile(filterController, map, false),
           )
           .toList(),
     );
@@ -271,7 +274,7 @@ class CategoryFilterScreenState extends State<CategoryFilterScreen> {
               color: Color(0xFF5A5A5A))),
       children: filterController.sellerList
           .map<Widget>(
-            (map) => _checkBoxTile(filterController, map,true),
+            (map) => _checkBoxTile(filterController, map, true),
           )
           .toList(),
     );
@@ -311,7 +314,8 @@ class CategoryFilterScreenState extends State<CategoryFilterScreen> {
               ),
               child: RangeSlider(
                 values: filterController.currentRangeValues,
-                max: double.parse(filterController.filteredData!.maxPrice!.toString()),
+                max: double.parse(
+                    filterController.filteredData!.maxPrice!.toString()),
                 labels: RangeLabels(
                   filterController.currentRangeValues.start.round().toString(),
                   filterController.currentRangeValues.end.round().toString(),
@@ -352,7 +356,8 @@ class CategoryFilterScreenState extends State<CategoryFilterScreen> {
         ]);
   }
 
-  _checkBoxTile(CategoryFilterController filterController, Map map,bool fromSeller) {
+  _checkBoxTile(
+      CategoryFilterController filterController, Map map, bool fromSeller) {
     return InkWell(
         onTap: () {
           map["isChecked"] = !map["isChecked"];
@@ -387,7 +392,9 @@ class CategoryFilterScreenState extends State<CategoryFilterScreen> {
                               }))),
                   10.widthBox,
                   Text(
-                    fromSeller?map['title']:'${map['title']} (${map['count']})',
+                    fromSeller
+                        ? map['title']
+                        : '${map['title']} (${map['count']})',
                     style: TextStyle(
                       color: Color(0xFF4B4B4B),
                       fontSize: 14,
@@ -413,7 +420,7 @@ class CategoryFilterScreenState extends State<CategoryFilterScreen> {
                 fontSize: 16,
                 onPressed: () {
                   filterController.setFilter(language);
-                 // filterController.pop();
+                  // filterController.pop();
                 })
           ],
         ));

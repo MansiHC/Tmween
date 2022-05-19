@@ -24,8 +24,7 @@ class CartProductContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
-    print('....${cartController
-        .cartQuantityList.length}....$index');
+    print('....${cartController.cartQuantityList.length}....$index');
     return GetBuilder<CartController>(
         init: CartController(),
         builder: (contet) {
@@ -64,7 +63,7 @@ class CartProductContainer extends StatelessWidget {
                                               .toString(),
                                           style: TextStyle(
                                               color: Colors.white,
-                                             fontSize: 13,
+                                              fontSize: 13,
                                               fontWeight: FontWeight.bold)),
                                       Icon(
                                         Icons.star,
@@ -114,7 +113,7 @@ class CartProductContainer extends StatelessWidget {
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                       color: Color(0xFFF57051),
-                                     fontSize: 13,
+                                      fontSize: 13,
                                       fontWeight: FontWeight.bold)),
                               10.widthBox,
                               if (true)
@@ -123,13 +122,13 @@ class CartProductContainer extends StatelessWidget {
                                     text: TextSpan(
                                         text: LocaleKeys.fulfilledBy.tr,
                                         style: TextStyle(
-                                           fontSize: 13,
+                                            fontSize: 13,
                                             color: Color(0xFF888888)),
                                         children: <InlineSpan>[
                                           TextSpan(
                                             text: LocaleKeys.appTitle.tr,
                                             style: TextStyle(
-                                             fontSize: 13,
+                                              fontSize: 13,
                                               color: AppColors.primaryColor,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -138,9 +137,10 @@ class CartProductContainer extends StatelessWidget {
                             ],
                           ),
                           5.heightBox,
-                           Wrap(
+                          Wrap(
                             children: List.generate(
-                                cartProductModel.attributeOptionsDetails!.length,
+                                cartProductModel
+                                    .attributeOptionsDetails!.length,
                                 (index) => Wrap(
                                       children: [
                                         Text(
@@ -148,7 +148,7 @@ class CartProductContainer extends StatelessWidget {
                                             textAlign: TextAlign.start,
                                             style: TextStyle(
                                                 color: Color(0xFF888888),
-                                               fontSize: 13,
+                                                fontSize: 13,
                                                 fontWeight: FontWeight.bold)),
                                         Text(
                                             cartProductModel.attributeOptionsDetails!
@@ -163,14 +163,15 @@ class CartProductContainer extends StatelessWidget {
                                       ],
                                     )),
                           ),
-                          if(cartProductModel.attributeOptionsDetails!.length>0)
-                          5.heightBox,
+                          if (cartProductModel.attributeOptionsDetails!.length >
+                              0)
+                            5.heightBox,
                           if (true)
                             Text(LocaleKeys.inStock.tr,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Color(0xFF3B963C),
-                                   fontSize: 13,
+                                    fontSize: 13,
                                     fontWeight: FontWeight.bold)),
                           if (!true)
                             Text(
@@ -178,7 +179,7 @@ class CartProductContainer extends StatelessWidget {
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Color(0xFFF24F2B),
-                                   fontSize: 13,
+                                    fontSize: 13,
                                     fontWeight: FontWeight.bold)),
                           5.heightBox,
                           Wrap(
@@ -309,15 +310,13 @@ class CartProductContainer extends StatelessWidget {
                       10.widthBox,
                       InkWell(
                           onTap: () {
-                            print('..${cartProductModel.productId}...${
-                                cartProductModel.quoteId}....${
-                                cartProductModel.productItemId}....${
-                                cartProductModel.customerAddressId}....');
+                            print(
+                                '..${cartProductModel.productId}...${cartProductModel.quoteId}....${cartProductModel.productItemId}....${cartProductModel.customerAddressId}....');
                             cartController.deleteCartProduct(
                                 cartProductModel.quoteId,
                                 cartProductModel.id,
-                                language,cartProductModel.quantity!);
-
+                                language,
+                                cartProductModel.quantity!);
                           },
                           child: SvgPicture.asset(
                             ImageConstanst.delete,

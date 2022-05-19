@@ -11,7 +11,8 @@ class GetPaymentOptionModel {
     statusCode = json['status_code'];
     statusMessage = json['status_message'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    if (statusCode == 200)
+      data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -59,10 +60,10 @@ class PaymentMethod {
 
   PaymentMethod(
       {this.id,
-        this.methodName,
-        this.methodCode,
-        this.image,
-        this.smallImageUrl});
+      this.methodName,
+      this.methodCode,
+      this.image,
+      this.smallImageUrl});
 
   PaymentMethod.fromJson(Map<String, dynamic> json) {
     id = json['id'];

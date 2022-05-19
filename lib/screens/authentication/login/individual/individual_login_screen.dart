@@ -53,9 +53,24 @@ class IndividualLoginScreen extends StatelessWidget {
                                               .individuaLogin(language);
                                         },
                                         validator: (value) {
+                                          bool isValid = false;
                                           if (value!.isEmpty) {
                                             return LocaleKeys
                                                 .emptyPhoneNumberEmail.tr;
+                                          }
+                                          if (loginController
+                                              .phoneEmailController.value.text
+                                              .validateMobile()) {
+                                            isValid = true;
+                                          }
+                                          if (loginController
+                                              .phoneEmailController.value.text
+                                              .validateEmail()) {
+                                            isValid = true;
+                                          }
+                                          if (!isValid) {
+                                            return LocaleKeys
+                                                .validEmailPhoneNumber.tr;
                                           }
                                           return null;
                                         }),

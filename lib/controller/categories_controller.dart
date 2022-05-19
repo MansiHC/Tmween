@@ -27,14 +27,13 @@ class CategoriesController extends GetxController {
 
   @override
   void onInit() {
-
     super.onInit();
   }
 
   Future<void> getCategories(language) async {
     //Helper.showLoading();
     loading = true;
-  //  update();
+    //  update();
     await api.getAllCategories("1", language).then((value) {
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
@@ -46,7 +45,7 @@ class CategoriesController extends GetxController {
 
         update();
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
       //Helper.hideLoading();
       loading = false;
@@ -102,7 +101,8 @@ class CategoriesController extends GetxController {
     Navigator.of(context).pop(false);
   }
 
-  Future<void> getSubCategories(categoryId,categoryName,categorySlug,language) async {
+  Future<void> getSubCategories(
+      categoryId, categoryName, categorySlug, language) async {
     //Helper.showLoading();
     loading = true;
     update();
@@ -114,18 +114,24 @@ class CategoriesController extends GetxController {
         next = value.data!.next.runtimeType == int ? value.data!.next : 0;
         totalRecords = value.data!.totalRecords!;*/
         subCategoryData = value.data!.subCategoryData;
-        if(subCategoryData!.length==0){
+        if (subCategoryData!.length == 0) {
           print('....cateSlug......$categorySlug');
-          navigateTo(CategoryProductListingScreen
-            ( categorySlug: categorySlug,categoryName: categoryName,fromSubCategory: false,
-          categoryId: categoryId,));
-
-        }else{
-          navigateTo(SubCategoriesScreen(subCategoryData:subCategoryData!,categoryName: categoryName,categorySlug: categorySlug,));
+          navigateTo(CategoryProductListingScreen(
+            categorySlug: categorySlug,
+            categoryName: categoryName,
+            fromSubCategory: false,
+            categoryId: categoryId,
+          ));
+        } else {
+          navigateTo(SubCategoriesScreen(
+            subCategoryData: subCategoryData!,
+            categoryName: categoryName,
+            categorySlug: categorySlug,
+          ));
         }
         update();
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
       //Helper.hideLoading();
       loading = false;
@@ -137,7 +143,6 @@ class CategoriesController extends GetxController {
       print('error....$error');
     });
   }
-
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));

@@ -1,3 +1,4 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -59,10 +60,10 @@ class SplashScreen extends StatelessWidget {
                 Padding(
                     padding: EdgeInsets.only(top: 60, right: 15, left: 15),
                     child: Align(
-                        alignment: language == 'ar'
-                            ? Alignment.topLeft
-                            : Alignment.topRight,
-                        child: Wrap(
+                      alignment: language == 'ar'
+                          ? Alignment.topLeft
+                          : Alignment.topRight,
+                      child: /*Wrap(
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
                             SvgPicture.asset(flagIcon, width: 20, height: 20),
@@ -93,7 +94,50 @@ class SplashScreen extends StatelessWidget {
                               },
                             ),
                           ],
-                        ))),
+                        )*/
+                          DropdownButtonHideUnderline(
+                        child: DropdownButton2(
+                          buttonDecoration:
+                              BoxDecoration(color: Colors.transparent),
+                          dropdownDecoration:
+                              BoxDecoration(color: AppColors.appBarColor),
+                          items: splashController.languages
+                              .map((item) => DropdownMenuItem<LanguageModel>(
+                                  value: item,
+                                  child: Wrap(children: [
+                                    16.widthBox,
+                                    SvgPicture.asset(item.image,
+                                        width: 20, height: 20),
+                                    30.widthBox,
+                                    Text(
+                                      item.name.tr,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ])))
+                              .toList(),
+                          value: splashController.languageValue,
+                          onChanged: (value) {
+                            var val = value as LanguageModel;
+                            splashController.languageValue = val;
+                            MySharedPreferences.instance.addStringToSF(
+                                SharedPreferencesKeys.language,
+                                value.locale.toString());
+                            Get.updateLocale(value.locale);
+                          },
+                          icon: Icon(
+                            Icons.keyboard_arrow_down_sharp,
+                            color: Colors.white,
+                          ),
+                          iconSize: 24,
+                          buttonHeight: 20,
+                          itemPadding: EdgeInsets.zero,
+                          dropdownWidth: 150,
+                        ),
+                      ),
+                    )),
                 Padding(
                     padding: EdgeInsets.only(bottom: 50),
                     child: Align(

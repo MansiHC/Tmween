@@ -7,7 +7,6 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
 import '../../../../controller/full_image_controller.dart';
-import '../../../../model/product_detail_model.dart';
 
 class FullImageScreen extends StatefulWidget {
   FullImageScreen({
@@ -73,10 +72,9 @@ class FullImageScreenState extends State<FullImageScreen> {
             child: CarouselSlider(
               items: widget.image
                   .map((item) => PhotoView(
-                backgroundDecoration: BoxDecoration(
-                  color: Colors.white
-                ),
-                imageProvider: item.setNetworkImageProvider(),
+                        backgroundDecoration:
+                            BoxDecoration(color: Colors.white),
+                        imageProvider: item.setNetworkImageProvider(),
                       ))
                   .toList(),
               carouselController: fullImageController.controller,

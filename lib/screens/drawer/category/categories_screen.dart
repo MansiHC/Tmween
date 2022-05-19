@@ -12,19 +12,17 @@ import '../dashboard/select_category_container.dart';
 class CategoriesScreen extends StatefulWidget {
   final bool fromDrawer;
 
-
   CategoriesScreen({Key? key, this.fromDrawer = false}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-   return CategoriesScreenState();
+    return CategoriesScreenState();
   }
-
 }
+
 class CategoriesScreenState extends State<CategoriesScreen> {
   var language;
   final categoriesController = Get.put(CategoriesController());
-
 
   @override
   void initState() {

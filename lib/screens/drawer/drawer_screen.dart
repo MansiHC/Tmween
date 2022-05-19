@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -118,8 +119,10 @@ class DrawerScreenState extends State<DrawerScreen> {
                                             ? drawerController
                                                     .address.isNotEmpty
                                                 ? drawerController.address
-                                                : LocaleKeys.selectDeliveryAddress.tr
-                                            : LocaleKeys.selectDeliveryAddress.tr,
+                                                : LocaleKeys
+                                                    .selectDeliveryAddress.tr
+                                            : LocaleKeys
+                                                .selectDeliveryAddress.tr,
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 12),
                                       ),
@@ -330,26 +333,29 @@ class DrawerScreenState extends State<DrawerScreen> {
                                     drawerController
                                         .navigateTo(YourAddressesScreen());
                                   },
-                                  child: Container(
-                                      width: 150,
-                                      height: 160,
-                                      padding: EdgeInsets.all(10),
-                                      margin: EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          border: Border.all(
-                                              color: AppColors.lightBlue),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(2))),
-                                      child: Center(
-                                          child: Text(
-                                              LocaleKeys.addAddressText.tr,
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  color: AppColors.primaryColor,
-                                                  fontSize: 15,
-                                                  fontWeight:
-                                                      FontWeight.bold))))),
+                                  child: Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Container(
+                                          width: 150,
+                                          height: 160,
+                                          padding: EdgeInsets.all(10),
+                                          margin: EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              border: Border.all(
+                                                  color: AppColors.lightBlue),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(2))),
+                                          child: Center(
+                                              child: Text(
+                                                  LocaleKeys.addAddressText.tr,
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      color: AppColors
+                                                          .primaryColor,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold)))))),
                             ),
                             Visibility(
                                 visible: !drawerController.dialogLoading &&
@@ -462,7 +468,7 @@ class DrawerScreenState extends State<DrawerScreen> {
                                     ),
                                     5.widthBox,
                                     Text(
-                                     LocaleKeys.useMyCurrentLocation.tr,
+                                      LocaleKeys.useMyCurrentLocation.tr,
                                       style: TextStyle(
                                           color: AppColors.primaryColor,
                                           fontSize: 16),
@@ -637,6 +643,7 @@ class DrawerScreenState extends State<DrawerScreen> {
             icon: GetBuilder<CartController>(
                 init: CartController(),
                 builder: (contet) {
+                  print('......${cartController.cartCount}....');
                   return Badge(
                       badgeContent: Text(cartController.cartCount.toString()),
                       badgeColor: Colors.white,
@@ -712,6 +719,13 @@ class DrawerScreenState extends State<DrawerScreen> {
     } else if (language == 'es') {
       drawerController.languageValue = drawerController.languages[2];
     }
+    String? selectedValue;
+    List<String> items = [
+      'Item1',
+      'Item2',
+      'Item3',
+      'Item4',
+    ];
     return Drawer(
       backgroundColor: AppColors.appBarColor,
       child: ListView(
@@ -841,38 +855,59 @@ class DrawerScreenState extends State<DrawerScreen> {
             },
           ),
           10.heightBox,
-          Wrap(children: [
+          /*  Wrap(children: [
             16.widthBox,
             SvgPicture.asset(flagIcon, width: 20, height: 20),
             6.widthBox,
-            DropdownButton<LanguageModel>(
-              isDense: true,
-              underline: Container(color: Colors.transparent),
+       */
+          DropdownButtonHideUnderline(
+            child: DropdownButton2(
+              buttonDecoration: BoxDecoration(color: Colors.transparent),
+              dropdownDecoration: BoxDecoration(color: AppColors.appBarColor),
+              items: drawerController.languages
+                  .map((item) => DropdownMenuItem<LanguageModel>(
+                      value: item,
+                      child: Wrap(children: [
+                        16.widthBox,
+                        SvgPicture.asset(item.image, width: 20, height: 20),
+                        30.widthBox,
+                        Text(
+                          item.name.tr,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ])))
+                  .toList(),
               value: drawerController.languageValue,
-              dropdownColor: AppColors.primaryColor,
-              style: TextStyle(color: Colors.white),
-              icon: const Icon(
-                Icons.keyboard_arrow_down,
-                color: Colors.white,
-              ),
-              items: drawerController.languages.map((LanguageModel items) {
-                return DropdownMenuItem(
-                  value: items,
-                  child: Padding(padding:EdgeInsets.only(left: 20),child:Text(items.name.tr)),
-                );
-              }).toList(),
-              onChanged: (LanguageModel? value) async {
-                drawerController.languageValue = value!;
+              onChanged: (value) {
+                var val = value as LanguageModel;
+                drawerController.languageValue = val;
                 //  await drawerController.context.setLocale(value.locale);
-                   MySharedPreferences.instance.addStringToSF(
+                MySharedPreferences.instance.addStringToSF(
                     SharedPreferencesKeys.language, value.locale.toString());
                 Get.updateLocale(value.locale);
-                 //drawerController.closeDrawer();
+                //drawerController.closeDrawer();
                 Get.deleteAll();
                 Get.offAll(DrawerScreen());
               },
+              icon: Icon(
+                Icons.keyboard_arrow_down_sharp,
+                color: Colors.white,
+              ),
+              iconSize: 24,
+              buttonHeight: 20,
+              itemPadding: EdgeInsets.zero,
+              dropdownWidth: 150,
+              buttonPadding: language == 'ar'
+                  ? EdgeInsets.only(
+                      left: MediaQuery.of(context).size.width / 3.03)
+                  : EdgeInsets.only(
+                      right: MediaQuery.of(context).size.width / 3.03),
             ),
-          ]),
+          ),
+          // ]),
         ],
       ),
     );

@@ -4,11 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/model/get_sub_category_model.dart';
 
-import '../model/dashboard_model.dart';
-import '../screens/drawer/category/category_product_listing_screen.dart';
 import '../service/api.dart';
-import '../utils/global.dart';
-import '../utils/helper.dart';
 
 class SubCategoriesController extends GetxController {
   late BuildContext context;
@@ -27,10 +23,8 @@ class SubCategoriesController extends GetxController {
 
   @override
   void onInit() {
-
     super.onInit();
   }
-
 
   void exitScreen() {
     Get.delete<SubCategoriesController>();

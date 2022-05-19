@@ -28,12 +28,12 @@ class SoldByTmweenController extends GetxController {
   }
 
   Future<void> getData(language) async {
-   // Helper.showLoading();
-    loading =true;
+    // Helper.showLoading();
+    loading = true;
     update();
     await api.getSoldByTmween("1", language).then((value) {
-     // Helper.hideLoading(context);
-      loading=false;
+      // Helper.hideLoading(context);
+      loading = false;
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
         prev =
@@ -42,13 +42,13 @@ class SoldByTmweenController extends GetxController {
         totalRecords = value.data!.totalRecords!;
         soldByTmweenProductData = value.data!.soldByTmweenProductData;
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
 
       update();
     }).catchError((error) {
-     // Helper.hideLoading(context);
-      loading=false;
+      // Helper.hideLoading(context);
+      loading = false;
       update();
       print('error....$error');
     });

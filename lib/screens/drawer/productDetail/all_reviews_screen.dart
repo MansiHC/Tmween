@@ -374,7 +374,8 @@ class AllReviewScreenState extends State<AllReviewScreen> {
                                     children: [
                                       Align(
                                           alignment: language == 'ar'
-                                              ?Alignment.centerRight:Alignment.centerLeft,
+                                              ? Alignment.centerRight
+                                              : Alignment.centerLeft,
                                           child: RichText(
                                               textAlign: TextAlign.start,
                                               text: TextSpan(
@@ -423,56 +424,58 @@ class AllReviewScreenState extends State<AllReviewScreen> {
                                               onTap: () {
                                                 if (!allReviewController
                                                     .reviewModelItems
-                                                    .contains(allReviewController
-                                                    .reviewsList[index]
-                                                    .id))
-                                                  allReviewController.addReviewHelpful(
-                                                      allReviewController
-                                                          .reviewsList[index]
-                                                          .id,
-                                                      language,
-                                                      allReviewController
-                                                          .reviewsList[index]
-                                                          .id);
+                                                    .contains(
+                                                        allReviewController
+                                                            .reviewsList[index]
+                                                            .id))
+                                                  allReviewController
+                                                      .addReviewHelpful(
+                                                          allReviewController
+                                                              .reviewsList[
+                                                                  index]
+                                                              .id,
+                                                          language,
+                                                          allReviewController
+                                                              .reviewsList[
+                                                                  index]
+                                                              .id);
                                               },
                                               child: (!allReviewController
-                                                  .reviewModelItems
-                                                  .contains(allReviewController
-                                                  .reviewsList[index]
-                                                  .id))
+                                                      .reviewModelItems
+                                                      .contains(
+                                                          allReviewController
+                                                              .reviewsList[
+                                                                  index]
+                                                              .id))
                                                   ? Text(LocaleKeys.helpful.tr,
-                                                  style: TextStyle(
-                                                    color: Color(
-                                                        0xFF333333),
-                                                    fontSize: 12,
-                                                  ))
-                                                  : Wrap(
-                                                children: [
-                                                  Icon(
-                                                    CupertinoIcons
-                                                        .checkmark_circle_fill,
-                                                    color:
-                                                    Colors.green,
-                                                    size: 16,
-                                                  ),
-                                                  Text(
-                                                      allReviewController
-                                                          .reviewMessage,
-                                                      style:
-                                                      TextStyle(
-                                                        color: Colors
-                                                            .green,
+                                                      style: TextStyle(
+                                                        color:
+                                                            Color(0xFF333333),
                                                         fontSize: 12,
                                                       ))
-                                                ],
-                                              )),
+                                                  : Wrap(
+                                                      children: [
+                                                        Icon(
+                                                          CupertinoIcons
+                                                              .checkmark_circle_fill,
+                                                          color: Colors.green,
+                                                          size: 16,
+                                                        ),
+                                                        Text(
+                                                            allReviewController
+                                                                .reviewMessage,
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.green,
+                                                              fontSize: 12,
+                                                            ))
+                                                      ],
+                                                    )),
                                           3.widthBox,
                                           if (!allReviewController
                                               .reviewModelItems
-                                              .contains(
-                                              allReviewController
-                                                  .reviewsList[index]
-                                                  .id))
+                                              .contains(allReviewController
+                                                  .reviewsList[index].id))
                                             Container(
                                               width: 1,
                                               height: 12,
@@ -484,9 +487,10 @@ class AllReviewScreenState extends State<AllReviewScreen> {
                                               onTap: () {
                                                 if (!allReviewController
                                                     .reviewModelReportItems
-                                                    .contains(allReviewController
-                                                    .reviewsList[index]
-                                                    .id))
+                                                    .contains(
+                                                        allReviewController
+                                                            .reviewsList[index]
+                                                            .id))
                                                   _showReportAbuseDialog(
                                                       allReviewController,
                                                       allReviewController
@@ -497,36 +501,37 @@ class AllReviewScreenState extends State<AllReviewScreen> {
                                                           .id!);
                                               },
                                               child: (!allReviewController
-                                                  .reviewModelReportItems
-                                                  .contains(allReviewController
-                                                  .reviewsList[index]
-                                                  .id))
-                                                  ? Text(LocaleKeys.reportAbuse.tr,
-                                                  style: TextStyle(
-                                                    color: Color(
-                                                        0xFF333333),
-                                                    fontSize: 12,
-                                                  ))
-                                                  : Wrap(
-                                                children: [
-                                                  Icon(
-                                                    CupertinoIcons
-                                                        .checkmark_circle_fill,
-                                                    color:
-                                                    Colors.green,
-                                                    size: 16,
-                                                  ),
-                                                  Text(
-                                                      allReviewController
-                                                          .reportMessage,
-                                                      style:
-                                                      TextStyle(
-                                                        color: Colors
-                                                            .green,
+                                                      .reviewModelReportItems
+                                                      .contains(
+                                                          allReviewController
+                                                              .reviewsList[
+                                                                  index]
+                                                              .id))
+                                                  ? Text(
+                                                      LocaleKeys.reportAbuse.tr,
+                                                      style: TextStyle(
+                                                        color:
+                                                            Color(0xFF333333),
                                                         fontSize: 12,
                                                       ))
-                                                ],
-                                              )),
+                                                  : Wrap(
+                                                      children: [
+                                                        Icon(
+                                                          CupertinoIcons
+                                                              .checkmark_circle_fill,
+                                                          color: Colors.green,
+                                                          size: 16,
+                                                        ),
+                                                        Text(
+                                                            allReviewController
+                                                                .reportMessage,
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.green,
+                                                              fontSize: 12,
+                                                            ))
+                                                      ],
+                                                    )),
                                         ],
                                       ),
                                       10.heightBox
@@ -570,7 +575,7 @@ class AllReviewScreenState extends State<AllReviewScreen> {
                             15.heightBox,
                             Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     LocaleKeys.addReportAbuse.tr,
@@ -600,8 +605,7 @@ class AllReviewScreenState extends State<AllReviewScreen> {
                                 ]),
                             15.heightBox,
                             CustomBoxTextFormField(
-                                controller:
-                                allReviewController.titleController,
+                                controller: allReviewController.titleController,
                                 keyboardType: TextInputType.name,
                                 hintText: LocaleKeys.addTitle.tr,
                                 validator: (value) {
@@ -611,8 +615,8 @@ class AllReviewScreenState extends State<AllReviewScreen> {
                                 }),
                             10.heightBox,
                             CustomBoxTextFormField(
-                                controller: allReviewController
-                                    .descriptionController,
+                                controller:
+                                    allReviewController.descriptionController,
                                 keyboardType: TextInputType.name,
                                 hintText: LocaleKeys.addDesc.tr,
                                 maxLines: 3,
@@ -643,7 +647,6 @@ class AllReviewScreenState extends State<AllReviewScreen> {
                       ));
                 })));
   }
-
 
   Widget topView(AllReviewController allReviewController) {
     return Padding(

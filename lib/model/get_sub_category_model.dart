@@ -11,7 +11,8 @@ class GetSubCategoryModel {
     statusCode = json['status_code'];
     statusMessage = json['status_message'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    if (statusCode == 200)
+      data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -59,10 +60,10 @@ class SubCategoryData {
 
   SubCategoryData(
       {this.id,
-        this.parentId,
-        this.subcategoryName,
-        this.slugName,
-        this.largeImageUrl});
+      this.parentId,
+      this.subcategoryName,
+      this.slugName,
+      this.largeImageUrl});
 
   SubCategoryData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -70,7 +71,6 @@ class SubCategoryData {
     subcategoryName = json['subcategory_name'];
     slugName = json['slug_name'];
     largeImageUrl = json['large_image_url'];
-
   }
 
   Map<String, dynamic> toJson() {

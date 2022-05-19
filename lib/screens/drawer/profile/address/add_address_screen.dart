@@ -327,7 +327,8 @@ class AddAddressScreen extends StatelessWidget {
                             hintFontSize: 14,
                             controller: addressController.houseNoController,
                             keyboardType: TextInputType.text,
-                            hintText: '${LocaleKeys.enter.tr} ${LocaleKeys.houseNo.tr}',
+                            hintText:
+                                '${LocaleKeys.enter.tr} ${LocaleKeys.houseNo.tr}',
                             prefixIcon: SvgPicture.asset(
                               ImageConstanst.homeIcon,
                               color: AppColors.primaryColor,
@@ -351,7 +352,8 @@ class AddAddressScreen extends StatelessWidget {
                             hintFontSize: 14,
                             controller: addressController.areaStreetController,
                             keyboardType: TextInputType.text,
-                            hintText: '${LocaleKeys.enter.tr} ${LocaleKeys.areaStreet.tr}',
+                            hintText:
+                                '${LocaleKeys.enter.tr} ${LocaleKeys.areaStreet.tr}',
                             prefixIcon: SvgPicture.asset(
                               ImageConstanst.homeIcon,
                               color: AppColors.primaryColor,
@@ -375,7 +377,8 @@ class AddAddressScreen extends StatelessWidget {
                             hintFontSize: 14,
                             controller: addressController.landmarkController,
                             keyboardType: TextInputType.text,
-                            hintText: '${LocaleKeys.enter.tr} ${LocaleKeys.landmark.tr}',
+                            hintText:
+                                '${LocaleKeys.enter.tr} ${LocaleKeys.landmark.tr}',
                             prefixIcon: SvgPicture.asset(
                               ImageConstanst.pinIcon,
                               color: AppColors.primaryColor,
@@ -632,25 +635,15 @@ class AddAddressScreen extends StatelessWidget {
                                       ),
                                     ))
                                 .toList(),
-                            onTap: () {
-                              addressController.isAddressOpened =
-                                  !addressController.isAddressOpened;
-                              addressController.update();
-                            },
                             value: addressController.addressTypeValue,
                             onChanged: (value) {
                               var val = value as AddressTypeModel;
                               addressController.updateAddressType(val);
                             },
-                            icon: addressController.isAddressOpened
-                                ? Icon(
-                                    Icons.keyboard_arrow_up_sharp,
-                                    color: Colors.black45,
-                                  )
-                                : Icon(
-                                    Icons.keyboard_arrow_down_sharp,
-                                    color: Colors.black45,
-                                  ),
+                            icon: Icon(
+                              Icons.keyboard_arrow_down_sharp,
+                              color: Colors.black45,
+                            ),
                             iconSize: 24,
                             buttonHeight: 40,
                             buttonPadding:

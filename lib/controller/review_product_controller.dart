@@ -62,7 +62,7 @@ class ReviewProductController extends GetxController {
         .then((value) {
       Helper.hideLoading(context);
       if (value.statusCode == 200) {
-        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
         Get.delete<ReviewProductController>();
         Navigator.of(context).pop(true);
       } else if (value.statusCode == 401) {
@@ -71,7 +71,7 @@ class ReviewProductController extends GetxController {
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
 
       update();

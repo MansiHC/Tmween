@@ -124,19 +124,27 @@ class ProductListingController extends GetxController {
     });
   }
 
-  Future<void> getFilterResult( language) async {
+  Future<void> getFilterResult(language) async {
     productFilterList = [];
     Helper.showLoading();
     print('.............${searchedString}....$fromPrice....$toPrice');
 
     await api
-        .setSearchMobileFilterData("1",searchedString, catIdList,brandIdList,sellerIdList,
-        fromPrice.toString(),toPrice.toString(),fullFillByTmween.toString(),language)
+        .setSearchMobileFilterData(
+            "1",
+            searchedString,
+            catIdList,
+            brandIdList,
+            sellerIdList,
+            fromPrice.toString(),
+            toPrice.toString(),
+            fullFillByTmween.toString(),
+            language)
         .then((value) {
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
         prev =
-        value.data!.previous.runtimeType == int ? value.data!.previous : 0;
+            value.data!.previous.runtimeType == int ? value.data!.previous : 0;
         next = value.data!.next.runtimeType == int ? value.data!.next : 0;
         totalRecords = value.data!.totalRecords!;
         productFilterList = value.data!.productData!;
@@ -150,20 +158,30 @@ class ProductListingController extends GetxController {
     });
   }
 
-  Future<void> getBestMatchResult( sortBy,sortOrder,language) async {
+  Future<void> getBestMatchResult(sortBy, sortOrder, language) async {
     productFilterList = [];
     fromFilter = true;
     Helper.showLoading();
     print('.............${searchedString}....$sortBy....$sortOrder');
 
     await api
-        .getSearchMobileBestMatchData("1",searchedString, sortBy,sortOrder,catIdList,brandIdList,sellerIdList,
-        fromPrice.toString(),toPrice.toString(),fullFillByTmween.toString(),language)
+        .getSearchMobileBestMatchData(
+            "1",
+            searchedString,
+            sortBy,
+            sortOrder,
+            catIdList,
+            brandIdList,
+            sellerIdList,
+            fromPrice.toString(),
+            toPrice.toString(),
+            fullFillByTmween.toString(),
+            language)
         .then((value) {
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
         prev =
-        value.data!.previous.runtimeType == int ? value.data!.previous : 0;
+            value.data!.previous.runtimeType == int ? value.data!.previous : 0;
         next = value.data!.next.runtimeType == int ? value.data!.next : 0;
         totalRecords = value.data!.totalRecords!;
         productFilterList = value.data!.productData!;
@@ -176,7 +194,6 @@ class ProductListingController extends GetxController {
       print('error....$error');
     });
   }
-
 
   Future<void> getProductList(searchString, language) async {
     productList = [];
@@ -236,13 +253,21 @@ class ProductListingController extends GetxController {
   Future<bool> loadMoreFilter(language) async {
     update();
     await api
-        .setSearchMobileFilterData(next,searchedString, catIdList,brandIdList,sellerIdList,
-        fromPrice.toString(),toPrice.toString(),fullFillByTmween.toString(),language)
+        .setSearchMobileFilterData(
+            next,
+            searchedString,
+            catIdList,
+            brandIdList,
+            sellerIdList,
+            fromPrice.toString(),
+            toPrice.toString(),
+            fullFillByTmween.toString(),
+            language)
         .then((value) {
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
         prev =
-        value.data!.previous.runtimeType == int ? value.data!.previous : 0;
+            value.data!.previous.runtimeType == int ? value.data!.previous : 0;
         next = value.data!.next.runtimeType == int ? value.data!.next : 0;
         totalRecords = value.data!.totalRecords!;
         productFilterList.addAll(value.data!.productData!);
@@ -257,7 +282,6 @@ class ProductListingController extends GetxController {
     });
     return false;
   }
-
 
   Future<void> editAddress(
       id,

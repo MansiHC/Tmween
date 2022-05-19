@@ -147,19 +147,26 @@ class WishlistScreenState extends State<WishlistScreen> {
                                     color: AppColors.primaryColor,
                                     size: 32,
                                   ),
-                                  suffixIcon: wishlistController.searchController.text.length>0?
-                                  IconButton(
-                                      onPressed: () {
-                                        wishlistController.searchController
-                                            .clear();
-                                        wishlistController.update();
-                                      },
-                                      icon: Icon(
-                                        CupertinoIcons
-                                            .clear_circled_solid,
-                                        color: AppColors.primaryColor,
-                                        size: 24,
-                                      )):SizedBox(),
+                                  suffixIcon: wishlistController
+                                              .searchController.text.length >
+                                          0
+                                      ? IconButton(
+                                          onPressed: () {
+                                            wishlistController.searchController
+                                                .clear();
+                                            wishlistController.wishListItems
+                                                .clear();
+                                            wishlistController.wishListItems
+                                                .addAll(wishlistController
+                                                    .wishListData);
+                                            wishlistController.update();
+                                          },
+                                          icon: Icon(
+                                            CupertinoIcons.clear_circled_solid,
+                                            color: AppColors.primaryColor,
+                                            size: 24,
+                                          ))
+                                      : SizedBox(),
                                 ),
                                 validator: (value) {
                                   return null;

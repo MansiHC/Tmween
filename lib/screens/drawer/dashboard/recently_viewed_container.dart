@@ -101,8 +101,8 @@ class RecentlyViewedContainer extends StatelessWidget {
                 child: recentlyViewed.largeImageUrl!.setNetworkImage())),
         5.heightBox,
         Align(
-            alignment: language == 'ar'?
-            Alignment.centerRight:Alignment.centerLeft,
+            alignment:
+                language == 'ar' ? Alignment.centerRight : Alignment.centerLeft,
             child: Padding(
                 padding: EdgeInsets.only(left: 5, right: 15),
                 child: Text(recentlyViewed.productName!,

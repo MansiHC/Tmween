@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
 import '../../../controller/login_controller.dart';
+import '../../../utils/my_shared_preferences.dart';
 import 'individual/individual_login_password_screen.dart';
 import 'individual/individual_login_screen.dart';
 
@@ -44,10 +46,27 @@ class _LoginScreenState extends State<LoginScreen>
 */
   var language;
   final loginController = Get.put(LoginController());
+  late FirebaseMessaging messaging;
 
   @override
   void initState() {
-    print('......${widget.frm}.....${widget.from}');
+    messaging = FirebaseMessaging.instance;
+    messaging.getToken().then((value) {
+      print(value);
+      loginController.uuid = value;
+      MySharedPreferences.instance
+          .addStringToSF(SharedPreferencesKeys.fcmToken, value);
+    });
+    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+      print("message recieved");
+      print(event.notification!.body);
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      print('Message clicked!');
+    });
+   /* loginController.uuid =
+        "fGwAjgffRhWoXQpWAwuQMD:APA91bGFpr1zZJMNOT15_4bG5HSGiPg-zuPZ5NW5OdsoCOUYHh0P6pGehQsMmcaNLXfoTQ64dmRss_d-J1zg-icMqDZgfMgB_vVrBhi05uYThlQa0QSpkPIo1VNlsT0M4mU5t4TFGWOi";
+  */  print('......${widget.frm}.....${widget.from}...');
     if (widget.from != null) {
       if (widget.from == SharedPreferencesKeys.isDrawer) {
         loginController.isPasswordScreen = widget.isPassword!;

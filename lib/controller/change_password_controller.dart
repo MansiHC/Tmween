@@ -57,7 +57,7 @@ class ChangePasswordController extends GetxController {
       if (value.statusCode == 200) {
         Helper.hideLoading(context);
         otpValue = value.data!.otp.toString();
-        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
       } else if (value.statusCode == 401) {
         Helper.hideLoading(context);
         MySharedPreferences.instance
@@ -65,7 +65,7 @@ class ChangePasswordController extends GetxController {
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
       update();
     }).catchError((error) {
@@ -82,7 +82,7 @@ class ChangePasswordController extends GetxController {
       if (value.statusCode == 200) {
         Helper.hideLoading(context);
         otpValue = value.data!.otp.toString();
-        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
       } else if (value.statusCode == 401) {
         Helper.hideLoading(context);
         MySharedPreferences.instance
@@ -90,7 +90,8 @@ class ChangePasswordController extends GetxController {
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.hideLoading(context);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
       update();
     }).catchError((error) {
@@ -119,7 +120,7 @@ class ChangePasswordController extends GetxController {
         .then((value) {
       if (value.statusCode == 200) {
         Helper.hideLoading(context);
-        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
         navigateToDashBoardScreen();
       } else if (value.statusCode == 401) {
         Helper.hideLoading(context);
@@ -128,7 +129,8 @@ class ChangePasswordController extends GetxController {
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.hideLoading(context);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
       update();
     }).catchError((error) {

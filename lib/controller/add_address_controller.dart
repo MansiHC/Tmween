@@ -52,7 +52,6 @@ class AddAddressController extends GetxController {
   AddressTypeModel? addressTypeValue;
 
   bool isDefault = false;
-  bool isAddressOpened = false;
   final api = Api();
   bool loading = false;
   Address? address;
@@ -208,15 +207,15 @@ class AddAddressController extends GetxController {
     // if (Helper.isIndividual) {
     print('gdhgdhgh.......');
     if (countryValue == null) {
-      Helper.showGetSnackBar('Please Select Country',  AppColors.errorColor);
+      Helper.showGetSnackBar('Please Select Country', AppColors.errorColor);
     } else if (formKey.currentState!.validate()) {
       if (stateValue == null) {
-        Helper.showGetSnackBar('Please Select State',  AppColors.errorColor);
+        Helper.showGetSnackBar('Please Select State', AppColors.errorColor);
       } else if (cityValue == null) {
-        Helper.showGetSnackBar('Please Select City',  AppColors.errorColor);
+        Helper.showGetSnackBar('Please Select City', AppColors.errorColor);
       } else if (addressTypeValue == null) {
         Helper.showGetSnackBar(
-            'Please Select Address Type',  AppColors.errorColor);
+            'Please Select Address Type', AppColors.errorColor);
       } else {
         //loading = true;
         Helper.showLoading();
@@ -243,7 +242,7 @@ class AddAddressController extends GetxController {
             Helper.hideLoading(context);
             Get.delete<AddAddressController>();
             Navigator.of(context).pop(true);
-            Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+            Helper.showGetSnackBar(value.message!, AppColors.successColor);
           } else if (value.statusCode == 401) {
             Helper.hideLoading(context);
             MySharedPreferences.instance
@@ -251,7 +250,7 @@ class AddAddressController extends GetxController {
             Get.deleteAll();
             Get.offAll(DrawerScreen());
           } else {
-            Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+            Helper.showGetSnackBar(value.message!, AppColors.errorColor);
           }
           update();
         }).catchError((error) {
@@ -268,15 +267,15 @@ class AddAddressController extends GetxController {
     // if (Helper.isIndividual) {
 
     if (countryValue == null) {
-      Helper.showGetSnackBar('Please Select Country',  AppColors.errorColor);
+      Helper.showGetSnackBar('Please Select Country', AppColors.errorColor);
     } else if (formKey.currentState!.validate()) {
       if (stateValue == null) {
-        Helper.showGetSnackBar('Please Select State',  AppColors.errorColor);
+        Helper.showGetSnackBar('Please Select State', AppColors.errorColor);
       } else if (cityValue == null) {
-        Helper.showGetSnackBar('Please Select City',  AppColors.errorColor);
+        Helper.showGetSnackBar('Please Select City', AppColors.errorColor);
       } else if (addressTypeValue == null) {
         Helper.showGetSnackBar(
-            'Please Select Address Type',  AppColors.errorColor);
+            'Please Select Address Type', AppColors.errorColor);
       } else {
         print(
             '........${countryValue!.countryCode}...${stateValue!.stateCode}.....${cityValue!.cityCode}');
@@ -302,7 +301,7 @@ class AddAddressController extends GetxController {
             .then((value) {
           if (value.statusCode == 200) {
             Helper.hideLoading(context);
-            Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+            Helper.showGetSnackBar(value.message!, AppColors.successColor);
             Get.delete<AddAddressController>();
             Navigator.of(context).pop(true);
           } else if (value.statusCode == 401) {
@@ -312,7 +311,8 @@ class AddAddressController extends GetxController {
             Get.deleteAll();
             Get.offAll(DrawerScreen());
           } else {
-            Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+            Helper.hideLoading(context);
+            Helper.showGetSnackBar(value.message!, AppColors.errorColor);
           }
           update();
         }).catchError((error) {

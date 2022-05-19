@@ -40,12 +40,12 @@ class CategoryProductListingController extends GetxController {
   int prev = 0;
   int next = 0;
   int totalRecords = 0;
-   int? fromPrice =0;
-   int? toPrice;
-   int? fullFillByTmween = 0;
-   List<String>? catIdList = [];
-   List<String>? brandIdList = [];
-   List<String>? sellerIdList = [];
+  int? fromPrice = 0;
+  int? toPrice;
+  int? fullFillByTmween = 0;
+  List<String>? catIdList = [];
+  List<String>? brandIdList = [];
+  List<String>? sellerIdList = [];
 
   void navigateTo(Widget route) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => route));
@@ -113,6 +113,7 @@ class CategoryProductListingController extends GetxController {
       if (value.statusCode == 200) {
         addressList = value.data!;
       } else if (value.statusCode == 401) {
+        Helper.hideLoading(context);
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
@@ -127,20 +128,29 @@ class CategoryProductListingController extends GetxController {
     });
   }
 
-  Future<void> getFilterResult( language) async {
+  Future<void> getFilterResult(language) async {
     productList = [];
     Helper.showLoading();
-    print('.............${categorySlug}.$categoryId...$fromPrice....$toPrice..$catIdList...$brandIdList....$sellerIdList...');
+    print(
+        '.............${categorySlug}.$categoryId...$fromPrice....$toPrice..$catIdList...$brandIdList....$sellerIdList...');
     catIdList!.add(categoryId.toString());
 
     await api
-        .setCategoryMobileFilterData("1",categorySlug, catIdList,brandIdList,sellerIdList,
-        fromPrice.toString(),toPrice.toString(),fullFillByTmween.toString(),language)
+        .setCategoryMobileFilterData(
+            "1",
+            categorySlug,
+            catIdList,
+            brandIdList,
+            sellerIdList,
+            fromPrice.toString(),
+            toPrice.toString(),
+            fullFillByTmween.toString(),
+            language)
         .then((value) {
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
         prev =
-        value.data!.previous.runtimeType == int ? value.data!.previous : 0;
+            value.data!.previous.runtimeType == int ? value.data!.previous : 0;
         next = value.data!.next.runtimeType == int ? value.data!.next : 0;
         totalRecords = value.data!.totalRecords!;
         productList = value.data!.productData!;
@@ -154,22 +164,33 @@ class CategoryProductListingController extends GetxController {
     });
   }
 
-  Future<void> getBestMatchResult( sortBy,sortOrder,language) async {
+  Future<void> getBestMatchResult(sortBy, sortOrder, language) async {
     productList = [];
     Helper.showLoading();
 
     catIdList!.add(categoryId.toString());
 
-    print('.............${categorySlug}...$categoryId...$fromPrice..$toPrice.$sortBy....$sortOrder...$fullFillByTmween...${catIdList!.toSet().toList()}...$brandIdList....$sellerIdList');
+    print(
+        '.............${categorySlug}...$categoryId...$fromPrice..$toPrice.$sortBy....$sortOrder...$fullFillByTmween...${catIdList!.toSet().toList()}...$brandIdList....$sellerIdList');
 
     await api
-        .getCategoryMobileBestMatchData("1",categorySlug, sortBy,sortOrder,catIdList!.toSet().toList(),brandIdList,sellerIdList,
-        fromPrice.toString(),toPrice.toString(),fullFillByTmween.toString(),language)
+        .getCategoryMobileBestMatchData(
+            "1",
+            categorySlug,
+            sortBy,
+            sortOrder,
+            catIdList!.toSet().toList(),
+            brandIdList,
+            sellerIdList,
+            fromPrice.toString(),
+            toPrice.toString(),
+            fullFillByTmween.toString(),
+            language)
         .then((value) {
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
         prev =
-        value.data!.previous.runtimeType == int ? value.data!.previous : 0;
+            value.data!.previous.runtimeType == int ? value.data!.previous : 0;
         next = value.data!.next.runtimeType == int ? value.data!.next : 0;
         totalRecords = value.data!.totalRecords!;
         productList = value.data!.productData!;
@@ -187,8 +208,7 @@ class CategoryProductListingController extends GetxController {
     productList = [];
     Helper.showLoading();
     await api
-        .categoryProductList(
-            "1", categorySlug,categoryId, language)
+        .categoryProductList("1", categorySlug, categoryId, language)
         .then((value) {
       Helper.hideLoading(context);
       if (value.statusCode == 200) {
@@ -216,8 +236,7 @@ class CategoryProductListingController extends GetxController {
   Future<bool> loadMore(language) async {
     update();
     await api
-        .categoryProductList(
-            next, categorySlug,categoryId, language)
+        .categoryProductList(next, categorySlug, categoryId, language)
         .then((value) {
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
@@ -243,8 +262,16 @@ class CategoryProductListingController extends GetxController {
     catIdList!.add(categoryId.toString());
 
     await api
-        .setCategoryMobileFilterData(next,categorySlug, catIdList,brandIdList,sellerIdList,
-        fromPrice.toString(),toPrice.toString(),fullFillByTmween.toString(),language)
+        .setCategoryMobileFilterData(
+            next,
+            categorySlug,
+            catIdList,
+            brandIdList,
+            sellerIdList,
+            fromPrice.toString(),
+            toPrice.toString(),
+            fullFillByTmween.toString(),
+            language)
         .then((value) {
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
@@ -320,6 +347,7 @@ class CategoryProductListingController extends GetxController {
           update();
         });
       } else if (value.statusCode == 401) {
+        Helper.hideLoading(context);
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();

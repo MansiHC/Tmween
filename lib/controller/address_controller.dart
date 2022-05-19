@@ -84,6 +84,11 @@ class AddressController extends GetxController {
               ..sort((a, b) => int.parse(b.addressType!)
                   .compareTo(int.parse(a.addressType!)));
           }
+        } else {
+          MySharedPreferences.instance
+              .addStringToSF(SharedPreferencesKeys.address, "");
+          MySharedPreferences.instance
+              .addStringToSF(SharedPreferencesKeys.addressId, 0);
         }
       } else if (value.statusCode == 401) {
         Helper.hideLoading(context);
@@ -133,7 +138,7 @@ class AddressController extends GetxController {
     await api.deleteCustomerAddress(token, id, userId, language).then((value) {
       if (value.statusCode == 200) {
         Helper.hideLoading(context);
-        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
         getAddressList(Get.locale!.languageCode);
       } else if (value.statusCode == 401) {
         Helper.hideLoading(context);
@@ -142,7 +147,8 @@ class AddressController extends GetxController {
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.hideLoading(context);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
 
       update();

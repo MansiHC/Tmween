@@ -68,13 +68,12 @@ class CategoryProductListingScreenState
       categoryProductListingController.categorySlug = widget.categorySlug!;
       categoryProductListingController.categoryName = widget.categoryName!;
       categoryProductListingController.categoryId = widget.categoryId!;
-print(categoryProductListingController.isLogin);
+      print(categoryProductListingController.isLogin);
       if (categoryProductListingController.isLogin) {
         MySharedPreferences.instance
             .getStringValuesSF(SharedPreferencesKeys.token)
             .then((value) async {
-              if(value!=null)
-          categoryProductListingController.token = value;
+          if (value != null) categoryProductListingController.token = value;
           print('dhsh.....${categoryProductListingController.token}');
           MySharedPreferences.instance
               .getIntValuesSF(SharedPreferencesKeys.userId)
@@ -83,7 +82,8 @@ print(categoryProductListingController.isLogin);
             if (widget.fromFilter) {
               categoryProductListingController.fromPrice = widget.fromPrice;
               categoryProductListingController.toPrice = widget.toPrice;
-              categoryProductListingController.fullFillByTmween = widget.fullFillByTmween;
+              categoryProductListingController.fullFillByTmween =
+                  widget.fullFillByTmween;
               categoryProductListingController.catIdList = widget.catIdList;
               categoryProductListingController.brandIdList = widget.brandIdList;
               categoryProductListingController.sellerIdList =
@@ -155,182 +155,174 @@ print(categoryProductListingController.isLogin);
 
   _productList(
       CategoryProductListingController categoryProductListingController) {
-    return  !categoryProductListingController.searchLoading &&
-        categoryProductListingController
-            .productList.length ==
-            0
-        ? Expanded(child: Column(children: [
-      InkWell(
-          onTap: () {
-            MySharedPreferences.instance
-                .getBoolValuesSF(SharedPreferencesKeys
-                .addressFromCurrentLocation)
-                .then((value) async {
-              if (value != null)
-                categoryProductListingController
-                    .addressFromCurrentLocation = value;
+    return !categoryProductListingController.searchLoading &&
+            categoryProductListingController.productList.length == 0
+        ? Expanded(
+            child: Column(children: [
+            InkWell(
+                onTap: () {
+                  MySharedPreferences.instance
+                      .getBoolValuesSF(
+                          SharedPreferencesKeys.addressFromCurrentLocation)
+                      .then((value) async {
+                    if (value != null)
+                      categoryProductListingController
+                          .addressFromCurrentLocation = value;
 
-              if (categoryProductListingController.isLogin) {
-                categoryProductListingController
-                    .getAddressList(language)
-                    .then((value) => showModalBottomSheet<void>(
-                    context: categoryProductListingController
-                        .context,
-                    builder: (BuildContext context) {
-                      return _bottomSheetView(
-                          categoryProductListingController);
-                    }));
-              } else {
-                showModalBottomSheet<void>(
-                    context:
-                    categoryProductListingController.context,
-                    builder: (BuildContext context) {
-                      return _bottomSheetView(
-                          categoryProductListingController);
-                    });
-              }
-            });
-          },
-          child: Container(
-              color: Colors.white,
-              padding: EdgeInsets.symmetric(vertical: 5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(
-                    ImageConstanst.locationPinIcon,
-                    color: Color(0xFF838383),
-                    height: 16,
-                    width: 16,
-                  ),
-                  3.widthBox,
-                  Text(
-                    categoryProductListingController.isLogin
-                        ? categoryProductListingController
-                        .address.isNotEmpty
-                        ? categoryProductListingController
-                        .address
-                        : LocaleKeys.selectDeliveryAddress.tr
-                        : LocaleKeys.selectDeliveryAddress.tr,
-                    style: TextStyle(
-                        color: Color(0xFF838383), fontSize: 12),
-                  ),
-                  Icon(
-                    Icons.arrow_drop_down_sharp,
-                    size: 16,
-                  ),
-                  5.widthBox
-                ],
-              ))),
-      10.heightBox,
-      Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-
-              Expanded(
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: Text(
-                              '${categoryProductListingController.categoryName} ',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  color: Color(0xFF5A5A5A),
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold))),
-                      Text(
-                        '(${categoryProductListingController.productList.length} ${LocaleKeys.items.tr})',
-                        style: TextStyle(
-                            color: Color(0xFF838383), fontSize: 14),
-                      ),
-                    ],
-                  )),
-              5.widthBox,
-              Wrap(
-                children: [
-                  InkWell(
-                      onTap: () {
-                        categoryProductListingController
-                            .navigateTo(CategoryFilterScreen(
-                          catSlug:
-                          categoryProductListingController
-                              .categorySlug,
-                          catName:
-                          categoryProductListingController
-                              .categoryName,
-                          catId: categoryProductListingController
-                              .categoryId,
-                        ));
-                      },
-                      child: Container(
-                          color: Colors.white,
-                          padding: EdgeInsets.all(5),
-                          child: Wrap(
-                              crossAxisAlignment:
-                              WrapCrossAlignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  ImageConstanst.filterIcon,
-                                  height: 16,
-                                  width: 16,
-                                ),
-                                5.widthBox,
-                                Text(
-                                  LocaleKeys.filter.tr,
-                                  style: TextStyle(
-                                      color: Color(0xFF838383),
-                                      fontSize: 13),
-                                ),
-                              ]))),
-                  10.widthBox,
-                  InkWell(
-                      onTap: () {
-                        showModalBottomSheet<void>(
-                            context:
-                            categoryProductListingController
-                                .context,
-                            builder: (BuildContext context) {
-                              return _bestMatchBottomSheetView();
-                            });
-                      },
-                      child: Container(
-                          color: Colors.white,
-                          padding: EdgeInsets.all(5),
-                          child: Wrap(
-                            crossAxisAlignment:
-                            WrapCrossAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                  ImageConstanst.bestMatchIcon,
-                                  height: 16,
-                                  width: 16),
-                              5.widthBox,
-                              Text(
-                                LocaleKeys.bestMatch.tr,
+                    if (categoryProductListingController.isLogin) {
+                      categoryProductListingController
+                          .getAddressList(language)
+                          .then((value) => showModalBottomSheet<void>(
+                              context: categoryProductListingController.context,
+                              builder: (BuildContext context) {
+                                return _bottomSheetView(
+                                    categoryProductListingController);
+                              }));
+                    } else {
+                      showModalBottomSheet<void>(
+                          context: categoryProductListingController.context,
+                          builder: (BuildContext context) {
+                            return _bottomSheetView(
+                                categoryProductListingController);
+                          });
+                    }
+                  });
+                },
+                child: Container(
+                    color: Colors.white,
+                    padding: EdgeInsets.symmetric(vertical: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          ImageConstanst.locationPinIcon,
+                          color: Color(0xFF838383),
+                          height: 16,
+                          width: 16,
+                        ),
+                        3.widthBox,
+                        Text(
+                          categoryProductListingController.isLogin
+                              ? categoryProductListingController
+                                      .address.isNotEmpty
+                                  ? categoryProductListingController.address
+                                  : LocaleKeys.selectDeliveryAddress.tr
+                              : LocaleKeys.selectDeliveryAddress.tr,
+                          style:
+                              TextStyle(color: Color(0xFF838383), fontSize: 12),
+                        ),
+                        Icon(
+                          Icons.arrow_drop_down_sharp,
+                          size: 16,
+                        ),
+                        5.widthBox
+                      ],
+                    ))),
+            10.heightBox,
+            Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                        child: Row(
+                      children: [
+                        Expanded(
+                            child: Text(
+                                '${categoryProductListingController.categoryName} ',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                    color: Color(0xFF838383),
-                                    fontSize: 13),
-                              )
-                            ],
-                          )))
-                ],
-              )
-            ],
-          )),
-          Expanded(
-      child: Center(
-          child: Text(
-            LocaleKeys.noRecords.tr,
-            style: TextStyle(
-                color: Color(0xFF414141),
-                fontSize: 14,
-                fontWeight: FontWeight.bold),
-          )),
-    )]))
-        :Flexible(
+                                    color: Color(0xFF5A5A5A),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold))),
+                        Text(
+                          '(${categoryProductListingController.productList.length} ${LocaleKeys.items.tr})',
+                          style:
+                              TextStyle(color: Color(0xFF838383), fontSize: 14),
+                        ),
+                      ],
+                    )),
+                    5.widthBox,
+                    Wrap(
+                      children: [
+                        InkWell(
+                            onTap: () {
+                              categoryProductListingController
+                                  .navigateTo(CategoryFilterScreen(
+                                catSlug: categoryProductListingController
+                                    .categorySlug,
+                                catName: categoryProductListingController
+                                    .categoryName,
+                                catId:
+                                    categoryProductListingController.categoryId,
+                              ));
+                            },
+                            child: Container(
+                                color: Colors.white,
+                                padding: EdgeInsets.all(5),
+                                child: Wrap(
+                                    crossAxisAlignment:
+                                        WrapCrossAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(
+                                        ImageConstanst.filterIcon,
+                                        height: 16,
+                                        width: 16,
+                                      ),
+                                      5.widthBox,
+                                      Text(
+                                        LocaleKeys.filter.tr,
+                                        style: TextStyle(
+                                            color: Color(0xFF838383),
+                                            fontSize: 13),
+                                      ),
+                                    ]))),
+                        10.widthBox,
+                        InkWell(
+                            onTap: () {
+                              showModalBottomSheet<void>(
+                                  context:
+                                      categoryProductListingController.context,
+                                  builder: (BuildContext context) {
+                                    return _bestMatchBottomSheetView();
+                                  });
+                            },
+                            child: Container(
+                                color: Colors.white,
+                                padding: EdgeInsets.all(5),
+                                child: Wrap(
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                        ImageConstanst.bestMatchIcon,
+                                        height: 16,
+                                        width: 16),
+                                    5.widthBox,
+                                    Text(
+                                      LocaleKeys.bestMatch.tr,
+                                      style: TextStyle(
+                                          color: Color(0xFF838383),
+                                          fontSize: 13),
+                                    )
+                                  ],
+                                )))
+                      ],
+                    )
+                  ],
+                )),
+            Expanded(
+              child: Center(
+                  child: Text(
+                LocaleKeys.noRecords.tr,
+                style: TextStyle(
+                    color: Color(0xFF414141),
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold),
+              )),
+            )
+          ]))
+        : Flexible(
             child: Container(
                 color: Color(0xFFF3F3F3),
                 child: NotificationListener<ScrollNotification>(
@@ -349,7 +341,7 @@ print(categoryProductListingController.isLogin);
                     }
                     return false;
                   },
-                  child: Column( children: <Widget>[
+                  child: Column(children: <Widget>[
                     InkWell(
                         onTap: () {
                           MySharedPreferences.instance
@@ -418,7 +410,6 @@ print(categoryProductListingController.isLogin);
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-
                             Expanded(
                                 child: Row(
                               children: [
@@ -510,41 +501,42 @@ print(categoryProductListingController.isLogin);
                             )
                           ],
                         )),
-              Expanded(child: SingleChildScrollView(
-                  child:  Padding(
-                            padding: EdgeInsets.symmetric(
-                                 horizontal: 15),
-                            child: GridView.builder(
-                              shrinkWrap: true,
-                              physics: ScrollPhysics(),
-                              itemCount: categoryProductListingController
-                                  .productList.length,
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      mainAxisSpacing: 2,
-                                      crossAxisSpacing: 2,
-                                      childAspectRatio: 0.66),
-                              itemBuilder: (ctx, i) {
-                                return InkWell(
-                                    onTap: () {
-                                      print(
-                                          'njjjj........${categoryProductListingController.productList[i].productSlug}');
+                    Expanded(
+                        child: SingleChildScrollView(
+                            child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 15),
+                                child: GridView.builder(
+                                  shrinkWrap: true,
+                                  physics: ScrollPhysics(),
+                                  itemCount: categoryProductListingController
+                                      .productList.length,
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          mainAxisSpacing: 2,
+                                          crossAxisSpacing: 2,
+                                          childAspectRatio: 0.66),
+                                  itemBuilder: (ctx, i) {
+                                    return InkWell(
+                                        onTap: () {
+                                          print(
+                                              'njjjj........${categoryProductListingController.productList[i].productSlug}');
 
-                                      categoryProductListingController
-                                          .navigateToProductDetailScreen(
-                                              categoryProductListingController
-                                                  .productList[i].id!,
-                                              categoryProductListingController
-                                                  .productList[i].productSlug!);
-                                    },
-                                    child: CategoryProductListingContainer(
-                                      productData:
                                           categoryProductListingController
-                                              .productList[i],
-                                    ));
-                              },
-                            )))),
+                                              .navigateToProductDetailScreen(
+                                                  categoryProductListingController
+                                                      .productList[i].id!,
+                                                  categoryProductListingController
+                                                      .productList[i]
+                                                      .productSlug!);
+                                        },
+                                        child: CategoryProductListingContainer(
+                                          productData:
+                                              categoryProductListingController
+                                                  .productList[i],
+                                        ));
+                                  },
+                                )))),
                     15.heightBox
                   ]),
                 )));
@@ -593,26 +585,29 @@ print(categoryProductListingController.isLogin);
                                   categoryProductListingController
                                       .navigateTo(YourAddressesScreen());
                                 },
-                                child: Container(
-                                    width: 150,
-                                    height: 160,
-                                    padding: EdgeInsets.all(10),
-                                    margin: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border: Border.all(
-                                            color: AppColors.lightBlue),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(2))),
-                                    child: Center(
-                                        child: Text(
-                                            LocaleKeys.addAddressText.tr,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color: AppColors.primaryColor,
-                                                fontSize: 15,
-                                                fontWeight:
-                                                    FontWeight.bold))))),
+                                child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Container(
+                                        width: 150,
+                                        height: 160,
+                                        padding: EdgeInsets.all(10),
+                                        margin: EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            border: Border.all(
+                                                color: AppColors.lightBlue),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(2))),
+                                        child: Center(
+                                            child: Text(
+                                                LocaleKeys.addAddressText.tr,
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    color:
+                                                        AppColors.primaryColor,
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.bold)))))),
                           ),
                           Visibility(
                               visible:
@@ -846,16 +841,30 @@ print(categoryProductListingController.isLogin);
                           fontSize: 14,
                           onPressed: () {
                             categoryProductListingController.popp();
-                            if(categoryProductListingController.val==1){
-                              categoryProductListingController.getBestMatchResult("product_name", "asc", language);
-                            }else if(categoryProductListingController.val==2){
-                              categoryProductListingController.getBestMatchResult("final_price", "asc", language);
-                            }else if(categoryProductListingController.val==3){
-                              categoryProductListingController.getBestMatchResult("final_price", "desc", language);
-                            }else if(categoryProductListingController.val==4){
-                              categoryProductListingController.getBestMatchResult("reviews_avg", "desc", language);
-                            }else if(categoryProductListingController.val==5){
-                              categoryProductListingController.getBestMatchResult("created_at", "desc", language);
+                            if (categoryProductListingController.val == 1) {
+                              categoryProductListingController
+                                  .getBestMatchResult(
+                                      "product_name", "asc", language);
+                            } else if (categoryProductListingController.val ==
+                                2) {
+                              categoryProductListingController
+                                  .getBestMatchResult(
+                                      "final_price", "asc", language);
+                            } else if (categoryProductListingController.val ==
+                                3) {
+                              categoryProductListingController
+                                  .getBestMatchResult(
+                                      "final_price", "desc", language);
+                            } else if (categoryProductListingController.val ==
+                                4) {
+                              categoryProductListingController
+                                  .getBestMatchResult(
+                                      "reviews_avg", "desc", language);
+                            } else if (categoryProductListingController.val ==
+                                5) {
+                              categoryProductListingController
+                                  .getBestMatchResult(
+                                      "created_at", "desc", language);
                             }
                           })
                     ],

@@ -12,9 +12,7 @@ import '../model/search_history_model.dart';
 import '../screens/drawer/drawer_screen.dart';
 import '../service/api.dart';
 import '../utils/global.dart';
-import '../utils/helper.dart';
 import '../utils/my_shared_preferences.dart';
-
 
 class SearchController extends GetxController {
   late BuildContext context;
@@ -44,10 +42,8 @@ class SearchController extends GetxController {
 
   @override
   void onInit() {
-
     super.onInit();
   }
-
 
   Future<void> getHistoryList(language) async {
     historyList = [];

@@ -9,11 +9,22 @@ const Map<String, String> en_US = {
   "loginWithPassword": "Login With Password",
   "change": "Change",
   "edit": "Edit",
+  "processing": "Processing",
+  "noTransactionFound": "No Transaction Found",
+  "deliveryPayment": "Delivery & Payment",
+  "orderPlaced": "Order Placed!",
+  "orderPlacedText1": "Your order has been placed successfully.",
+  "orderPlacedText2": "For more details, check All My Orders.",
+  "myOrders": "My Orders",
+  "paymentFailedText1": "It seems we have not received money",
+  "paymentFailedText2": "Oops!\nSomething went wrong",
+  "tryAgain": "Try Again",
   "sentOTP":
       "We’ve sent a One Time Password (OTP) to the mobile number above. Please enter it to complete verification.",
   "sentOTPEmail":
       "We’ve sent a One Time Password (OTP) to the mobile number/email above. Please enter it to complete verification.",
   "inText": "IN",
+  "pageNotFound": "Page Not Found",
   "validPhoneNumber": "Please Enter Valid Phone Number",
   "keepMeSignedIn": "Keep me signed in",
   "forgotPassword": "forgot password?",
@@ -37,7 +48,12 @@ const Map<String, String> en_US = {
   "yourEmail": "Your Email",
   "emptyYourEmail": "Please Enter Your Email",
   "validYourEmail": "Please Enter Valid Email",
+  "validEmailPhoneNumber": "Please Enter Valid Phone Number/Email",
   "yourPassword": "Your Password",
+  "writeReview": "Write Review",
+  "orderTotal": "Order Total",
+  "downloading": "Downloading...",
+  "downloadComplete": "Download Complete",
   "emptyPassword": "Please Enter Password",
   "validPasswordLength": "Password Length must be 8",
   "validPassword":
@@ -190,12 +206,12 @@ const Map<String, String> en_US = {
   "inStock": "In Stock",
   "orderNowOnly": "Order now, only",
   "leftInStock": "left in stock",
-
   "failedToGetSMS": "Failed to get Sms.",
   "otpIs": "OTP is",
   "completeVerification": "To continue, complete this verification step.",
   "sentOtp": "We've sent an One Time Password (OTP) to the mobile number",
-  "pleaseCompleteVerification": "Please enter it below to complete verification.",
+  "pleaseCompleteVerification":
+      "Please enter it below to complete verification.",
   "pleaseResendOtp": "Please Resend the Otp.",
   "continueText": "Continue",
   "resendOtp": "Resend OTP",
@@ -205,7 +221,8 @@ const Map<String, String> en_US = {
   "phoneNumberCap": "PHONE NUMBER",
   "associateWithTmween": "associated with your Tmween account.",
   "hasYrEmailChanged": "Has your email address or mobile phone number changed?",
-  "ifNoLongerUse": "If you no longer use the e-mail address associated with your Tmween account, you may contact",
+  "ifNoLongerUse":
+      "If you no longer use the e-mail address associated with your Tmween account, you may contact",
   "restoringAccount": "for help restoring access to your account.",
   "passwordAssistance": "Password Assistance",
   "willAskForPassword": "We'll ask for this password whenever you sign in.",
@@ -213,10 +230,14 @@ const Map<String, String> en_US = {
   "passwordLengthError": "Passwords must be at least 8 Characters.",
   "reenterNewPassword": "Re-enter new password.",
   "securePasswordTips": "Secure password tips:",
-  "useCharLength": "Use at least 8 characters, a combination of numbers and letters is best.",
-  "notUseSamePwd": "Do not use the same password you have used with us previously.",
-  "notUsePersonalInfo": "Do not use dictionary words, your name, e-mail address, mobile phone number or other personal information that can be easily obtained.",
-  "notUseSameForMultiple": "Do not use the same password for multiple online accounts.",
+  "useCharLength":
+      "Use at least 8 characters, a combination of numbers and letters is best.",
+  "notUseSamePwd":
+      "Do not use the same password you have used with us previously.",
+  "notUsePersonalInfo":
+      "Do not use dictionary words, your name, e-mail address, mobile phone number or other personal information that can be easily obtained.",
+  "notUseSameForMultiple":
+      "Do not use the same password for multiple online accounts.",
   "agreeToThe": "I agree to the",
   "termsOfUse": "terms of use",
   "youSave": "You save",
@@ -256,9 +277,11 @@ const Map<String, String> en_US = {
   "proceedToPay": "Proceed to Pay",
   "paymentSmall": "Payments",
   "reviewYourOrder": "Review your order",
-  "agreeingForPrivacyPolicy": "By clicking on the 'Place Your Order and Pay' button, you agree to Tmween.com's privacy notice and conditions of use.",
+  "agreeingForPrivacyPolicy":
+      "By clicking on the 'Place Your Order and Pay' button, you agree to Tmween.com's privacy notice and conditions of use.",
   "impMessage": "Important message",
-  "thisDeliveryOptionForFuture": "Check this box to these delivery and payment options in the future.",
+  "thisDeliveryOptionForFuture":
+      "Check this box to these delivery and payment options in the future.",
   "shippingTo": "Shipping to",
   "product": "Product",
   "total": "Total",
@@ -349,8 +372,10 @@ const Map<String, String> en_US = {
   "grandTotal": "Grand Total",
   "orderDetails": "Your Order Details",
   "searchAllOrder": "Search All Orders",
-  "reActivateAccount": "re-activate your account from login page with generating otp",
-  "retainAccount": "Tmween retains your account data for you to conveniently start off from where you left, if you decide to reactivate your account.",
+  "reActivateAccount":
+      "re-activate your account from login page with generating otp",
+  "retainAccount":
+      "Tmween retains your account data for you to conveniently start off from where you left, if you decide to reactivate your account.",
   "rechargeAmount": "Recharge Amount",
   "totalAmountPayable": "Total Amount Payable",
   "paymentOption": "Payment Option",
@@ -385,5 +410,4 @@ const Map<String, String> en_US = {
   "applySmall": "Apply",
   "viewHistorySmall": "View History",
   "earliestDeliveryInDays": "Earliest delivery in 1 day*"
-
 };

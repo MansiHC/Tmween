@@ -58,11 +58,11 @@ class RecentlyViewedController extends GetxController {
 
   Future<void> getData(language) async {
     //Helper.showLoading();
-    loading =true;
+    loading = true;
     update();
-    await api.getRecentlyViewed(userId,"1", language).then((value) {
-    //  Helper.hideLoading(context);
-      loading=false;
+    await api.getRecentlyViewed(userId, "1", language).then((value) {
+      //  Helper.hideLoading(context);
+      loading = false;
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
         prev =
@@ -71,20 +71,20 @@ class RecentlyViewedController extends GetxController {
         totalRecords = value.data!.totalRecords!;
         recentlyViewProduct = value.data!.recentlyViewProduct;
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
 
       update();
     }).catchError((error) {
-     // Helper.hideLoading(context);
-      loading=false;
+      // Helper.hideLoading(context);
+      loading = false;
       update();
       print('error....$error');
     });
   }
 
   Future<void> onRefresh(language) async {
-    await api.getRecentlyViewed(userId,"1", language).then((value) {
+    await api.getRecentlyViewed(userId, "1", language).then((value) {
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
         prev =
@@ -102,7 +102,7 @@ class RecentlyViewedController extends GetxController {
 
   Future<bool> loadMore(language) async {
     update();
-    await api.getRecentlyViewed(userId,next, language).then((value) {
+    await api.getRecentlyViewed(userId, next, language).then((value) {
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
         prev =

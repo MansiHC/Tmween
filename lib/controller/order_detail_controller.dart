@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 
-import '../model/order_model.dart';
+import '../model/order_detail_model.dart';
+import '../service/api.dart';
+import '../utils/helper.dart';
 
 class OrderDetailController extends GetxController {
   late BuildContext context;
@@ -13,28 +15,15 @@ class OrderDetailController extends GetxController {
   int userId = 0;
   int loginLogId = 0;
   bool noOrders = true;
+  String token = '';
+  String? orderId;
+
   TextEditingController searchController = TextEditingController();
-  List<OrderModel> orders = const <OrderModel>[
-    const OrderModel(
-        title: 'Book name - author name details of book',
-        image: 'asset/image/my_cart_images/book.png',
-        deliveryStatus: 'Delivered Today',
-        rating: 0,
-        ratingStatus: 'Rate this product now',
-        isRating: true),
-    const OrderModel(
-        title: 'Book name - author name details of book',
-        image: 'asset/image/my_cart_images/book.png',
-        deliveryStatus: 'Delivered Today',
-        rating: 3,
-        ratingStatus: 'Write Review',
-        isRating: true),
-    const OrderModel(
-        title: 'Book name - author name details of book',
-        image: 'asset/image/my_cart_images/book.png',
-        deliveryStatus: 'Refund Completed',
-        isRating: false),
-  ];
+
+  OrderData? orderData = null;
+  String? invoiceUrl;
+
+  final api = Api();
 
   @override
   void onInit() {
@@ -49,6 +38,50 @@ class OrderDetailController extends GetxController {
       });
     });*/
     super.onInit();
+  }
+
+  bool isLoading = true;
+
+  Future<void> getOrderDetail(language) async {
+    Helper.showLoading();
+    // update();
+    await api.getOrderDetail(userId, token, orderId, language).then((value) {
+      if (value.statusCode == 200) {
+        isLoading = false;
+        Helper.hideLoading(context);
+        orderData = value.data!.orderData![0];
+      } else {
+        isLoading = false;
+        Helper.hideLoading(context);
+      }
+      update();
+    }).catchError((error) {
+      Helper.hideLoading(context);
+      isLoading = false;
+      update();
+      print('error....$error');
+    });
+  }
+
+  Future<void> getInvoice(language) async {
+    Helper.showLoading();
+    // update();
+    await api.getInvoice(userId, token, orderId, language).then((value) {
+      if (value.statusCode == 200) {
+        isLoading = false;
+        Helper.hideLoading(context);
+        invoiceUrl = value.data!;
+      } else {
+        isLoading = false;
+        Helper.hideLoading(context);
+      }
+      update();
+    }).catchError((error) {
+      Helper.hideLoading(context);
+      isLoading = false;
+      update();
+      print('error....$error');
+    });
   }
 
   void exitScreen() {

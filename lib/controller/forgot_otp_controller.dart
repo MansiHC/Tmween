@@ -12,6 +12,7 @@ import 'package:tmween/utils/global.dart';
 
 import '../screens/authentication/login/forgot_password/reset_password_screen.dart';
 import '../utils/helper.dart';
+import '../utils/my_shared_preferences.dart';
 
 class ForgotOtpController extends GetxController {
   late BuildContext context;
@@ -31,6 +32,11 @@ class ForgotOtpController extends GetxController {
   @override
   void onInit() {
     initPlatformState();
+    MySharedPreferences.instance
+        .getStringValuesSF(SharedPreferencesKeys.fcmToken)
+        .then((value) async {
+      uuid = value!;
+    });
     super.onInit();
   }
 
@@ -49,7 +55,7 @@ class ForgotOtpController extends GetxController {
   }
 
   void getAndroidBuildData(AndroidDeviceInfo build) {
-    uuid = build.androidId;
+    // uuid = build.androidId;
     deviceNo = build.id;
     deviceName = build.device;
     platform = "android";
@@ -89,7 +95,7 @@ class ForgotOtpController extends GetxController {
   }
 
   void getIosDeviceInfo(IosDeviceInfo data) {
-    uuid = "";
+    //  uuid = "";
     deviceNo = "";
     deviceName = data.systemName;
     platform = "ios";
@@ -118,10 +124,10 @@ class ForgotOtpController extends GetxController {
   verifyOTP(from, frm, language, email) async {
     FocusScope.of(context).unfocus();
     if (otpController.text.isEmpty) {
-      Helper.showGetSnackBar(
-          'Please Enter Otp First.',  AppColors.errorColor);
+      Helper.showGetSnackBar('Please Enter Otp First.', AppColors.errorColor);
     } else {
       Helper.showLoading();
+      print('......${otpController.text}...$email...$uuid');
       await api
           .verifyForgotPasswordOTP(otpController.text, email, uuid, deviceNo,
               deviceName, platform, model, version, language)
@@ -130,7 +136,7 @@ class ForgotOtpController extends GetxController {
         if (value.statusCode == 200) {
           submit(from, frm, email);
         } else {
-          Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+          Helper.showGetSnackBar(value.message!, AppColors.errorColor);
         }
 
         update();
@@ -150,9 +156,9 @@ class ForgotOtpController extends GetxController {
       Helper.hideLoading(context);
       if (value.statusCode == 200) {
         otpValue = value.data!.otp.toString();
-        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
       update();
     }).catchError((error) {

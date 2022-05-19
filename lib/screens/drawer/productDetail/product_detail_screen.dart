@@ -13,8 +13,8 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
-import 'package:tmween/screens/drawer/productDetail/similar_products_container.dart';
 import 'package:tmween/screens/drawer/productDetail/review_product_screen.dart';
+import 'package:tmween/screens/drawer/productDetail/similar_products_container.dart';
 import 'package:tmween/screens/drawer/search/search_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
@@ -34,7 +34,6 @@ import '../address_container.dart';
 import '../cart/cart_screen.dart';
 import '../profile/address/your_addresses_screen.dart';
 import 'all_reviews_screen.dart';
-import 'full_image_attribute_screen.dart';
 import 'full_image_screen.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -228,8 +227,10 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                                     .address.isNotEmpty
                                                 ? productDetailController
                                                     .address
-                                                : LocaleKeys.selectDeliveryAddress.tr
-                                            : LocaleKeys.selectDeliveryAddress.tr,
+                                                : LocaleKeys
+                                                    .selectDeliveryAddress.tr
+                                            : LocaleKeys
+                                                .selectDeliveryAddress.tr,
                                         style: TextStyle(
                                             color: Color(0xFF454545),
                                             fontSize: 12,
@@ -383,86 +384,80 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                       child: Align(
                           alignment: Alignment.topCenter,
                           child: Column(children: [
-                             Stack(
-                                children: [
-                                  Container(
-                                      height: 200,
-                                      width: double.maxFinite,
-                                      child: InkWell(
-                                          onTap: () {
-                                            Get.delete<FullImageController>();
-                                            productDetailController.navigateTo(
-                                                FullImageScreen(
-                                                    image:
-                                                        productDetailController
-                                                            .images,
-                                                    current:
-                                                        productDetailController
-                                                            .current));
-                                          },
-                                          child: CarouselSlider(
-                                            items: productDetailController
-                                                .images
-                                                .map((item) => Container(
-                                                      child: item
-                                                          .setNetworkImage(),
-                                                    ))
-                                                .toList(),
-                                            carouselController:
-                                                productDetailController
-                                                    .controller,
-                                            options: CarouselOptions(
-                                              autoPlay: false,
-                                              enlargeCenterPage: false,
-                                              enableInfiniteScroll: false,
-                                              viewportFraction: 1,
-                                              aspectRatio: 1.6,
-                                              pageSnapping: true,
-                                              onPageChanged: (index, reason) {
-                                                productDetailController
-                                                    .changPage(index);
-                                              },
+                            Stack(
+                              children: [
+                                Container(
+                                    height: 200,
+                                    width: double.maxFinite,
+                                    child: InkWell(
+                                        onTap: () {
+                                          Get.delete<FullImageController>();
+                                          productDetailController.navigateTo(
+                                              FullImageScreen(
+                                                  image: productDetailController
+                                                      .images,
+                                                  current:
+                                                      productDetailController
+                                                          .current));
+                                        },
+                                        child: CarouselSlider(
+                                          items: productDetailController.images
+                                              .map((item) => Container(
+                                                    child:
+                                                        item.setNetworkImage(),
+                                                  ))
+                                              .toList(),
+                                          carouselController:
+                                              productDetailController
+                                                  .controller,
+                                          options: CarouselOptions(
+                                            autoPlay: false,
+                                            enlargeCenterPage: false,
+                                            enableInfiniteScroll: false,
+                                            viewportFraction: 1,
+                                            aspectRatio: 1.6,
+                                            pageSnapping: true,
+                                            onPageChanged: (index, reason) {
+                                              productDetailController
+                                                  .changPage(index);
+                                            },
+                                          ),
+                                        ))),
+                                if (productDetailController.images.length > 1)
+                                  Positioned(
+                                      bottom: 0.0,
+                                      left: 0.0,
+                                      right: 0.0,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: productDetailController.images
+                                            .asMap()
+                                            .entries
+                                            .map((entry) {
+                                          return GestureDetector(
+                                            onTap: () => productDetailController
+                                                .controller
+                                                .animateToPage(entry.key),
+                                            child: Container(
+                                              width: 8.0,
+                                              height: 2,
+                                              margin: EdgeInsets.symmetric(
+                                                  vertical: 8.0,
+                                                  horizontal: 4.0),
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.rectangle,
+                                                  color: productDetailController
+                                                              .current ==
+                                                          entry.key
+                                                      ? AppColors.darkblue
+                                                      : Colors.grey),
                                             ),
-                                          ))),
-                                  if (productDetailController
-                                          .images.length >
-                                      1)
-                                    Positioned(
-                                        bottom: 0.0,
-                                        left: 0.0,
-                                        right: 0.0,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: productDetailController
-                                              .images.asMap()
-                                              .entries
-                                              .map((entry) {
-                                            return GestureDetector(
-                                              onTap: () =>
-                                                  productDetailController
-                                                      .controller
-                                                      .animateToPage(entry.key),
-                                              child: Container(
-                                                width: 8.0,
-                                                height: 2,
-                                                margin: EdgeInsets.symmetric(
-                                                    vertical: 8.0,
-                                                    horizontal: 4.0),
-                                                decoration: BoxDecoration(
-                                                    shape: BoxShape.rectangle,
-                                                    color:
-                                                        productDetailController
-                                                                    .current ==
-                                                                entry.key
-                                                            ? AppColors.darkblue
-                                                            : Colors.grey),
-                                              ),
-                                            );
-                                          }).toList(),
-                                        )),
-                                ],
-                              ),
+                                          );
+                                        }).toList(),
+                                      )),
+                              ],
+                            ),
                             5.heightBox,
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -502,41 +497,40 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
               )),
           5.heightBox,
 
-            Container(
-                height: 80,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: productDetailController.images.length,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                          onTap: () {
-                            productDetailController.controller
-                                .animateToPage(index);
-                            productDetailController.changPage(index);
-                          },
-                          child: Container(
-                              width: 80,
-                              decoration: BoxDecoration(
-                                  color: CupertinoColors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.grey[200]!,
-                                        blurRadius: 5,
-                                        spreadRadius: 5)
-                                  ],
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(2)),
-                                  border: Border.all(
-                                      color: productDetailController.current ==
-                                              index
-                                          ? Color(0xFF1992CE)
-                                          : Colors.white)),
-                              padding: EdgeInsets.all(5),
-                              margin: EdgeInsets.only(right: 5),
-                              child: productDetailController
-                                  .images[index]
-                                  .setNetworkImage()));
-                    })),
+          Container(
+              height: 80,
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: productDetailController.images.length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                        onTap: () {
+                          productDetailController.controller
+                              .animateToPage(index);
+                          productDetailController.changPage(index);
+                        },
+                        child: Container(
+                            width: 80,
+                            decoration: BoxDecoration(
+                                color: CupertinoColors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.grey[200]!,
+                                      blurRadius: 5,
+                                      spreadRadius: 5)
+                                ],
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(2)),
+                                border: Border.all(
+                                    color:
+                                        productDetailController.current == index
+                                            ? Color(0xFF1992CE)
+                                            : Colors.white)),
+                            padding: EdgeInsets.all(5),
+                            margin: EdgeInsets.only(right: 5),
+                            child: productDetailController.images[index]
+                                .setNetworkImage()));
+                  })),
           10.heightBox,
           Text(
             productDetailController
@@ -624,7 +618,8 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
           5.heightBox,
           Align(
               alignment: language == 'ar'
-                  ?Alignment.centerRight:Alignment.centerLeft,
+                  ? Alignment.centerRight
+                  : Alignment.centerLeft,
               child: RichText(
                   textAlign: TextAlign.start,
                   text: TextSpan(
@@ -654,7 +649,8 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
           5.heightBox,
           Align(
               alignment: language == 'ar'
-                  ?Alignment.centerRight:Alignment.centerLeft,
+                  ? Alignment.centerRight
+                  : Alignment.centerLeft,
               child: RichText(
                   textAlign: TextAlign.start,
                   text: TextSpan(
@@ -688,7 +684,8 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
           5.heightBox,
           Align(
               alignment: language == 'ar'
-                  ?Alignment.centerRight:Alignment.centerLeft,
+                  ? Alignment.centerRight
+                  : Alignment.centerLeft,
               child: RichText(
                   textAlign: TextAlign.start,
                   text: TextSpan(
@@ -751,9 +748,9 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
             color: Color(0xFFE9E9E9),
           ),
           if (productDetailController
-              .attributeData!.productMainSupplier!.length !=
+                  .attributeData!.productMainSupplier!.length !=
               0)
-          10.heightBox,
+            10.heightBox,
           /* Align(
               alignment: Alignment.centerLeft,
               child: RichText(
@@ -838,9 +835,9 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                         ),
                                     ]))),
                       if (productDetailController.productDetailData!
-                          .productAssociateAttribute![index].options !=
+                              .productAssociateAttribute![index].options !=
                           null)
-                      5.heightBox,
+                        5.heightBox,
                       if (productDetailController.productDetailData!
                                   .productAssociateAttribute![index].options !=
                               null &&
@@ -980,9 +977,9 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                   return Container();
                                 })),
                       if (productDetailController.productDetailData!
-                          .productAssociateAttribute![index].options !=
+                              .productAssociateAttribute![index].options !=
                           null)
-                      10.heightBox,
+                        10.heightBox,
                     ],
                   ),
                 )),
@@ -1074,6 +1071,8 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
   Widget _bottomView(ProductDetailController productDetailController) {
     if (productDetailController.addedToCart) {
       cartController.cartCount = productDetailController.cartCount;
+      print(
+          '......${cartController.cartCount}....${productDetailController.cartCount}');
     }
     return Expanded(
         child: SingleChildScrollView(
@@ -1453,10 +1452,10 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                         children: [
                                           Align(
                                               alignment: language == 'ar'
-                                                  ?Alignment.centerRight:Alignment.centerLeft,
+                                                  ? Alignment.centerRight
+                                                  : Alignment.centerLeft,
                                               child: RichText(
-                                                  textAlign:
-                                                  TextAlign.start,
+                                                  textAlign: TextAlign.start,
                                                   text: TextSpan(
                                                       text: productDetailController
                                                           .productDetailData!
@@ -1551,7 +1550,8 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                                               .customerProductReview!
                                                               .data![index]
                                                               .id))
-                                                      ? Text(LocaleKeys.helpful.tr,
+                                                      ? Text(
+                                                          LocaleKeys.helpful.tr,
                                                           style: TextStyle(
                                                             color: Color(
                                                                 0xFF333333),
@@ -1629,7 +1629,9 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                                               .customerProductReview!
                                                               .data![index]
                                                               .id))
-                                                      ? Text(LocaleKeys.reportAbuse.tr,
+                                                      ? Text(
+                                                          LocaleKeys
+                                                              .reportAbuse.tr,
                                                           style: TextStyle(
                                                             color: Color(
                                                                 0xFF333333),
@@ -2023,7 +2025,8 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold)),
                                   3.heightBox,
-                                  Text('+ ${'0.00'} ${LocaleKeys.deliveryCharge.tr}',
+                                  Text(
+                                      '+ ${'0.00'} ${LocaleKeys.deliveryCharge.tr}',
                                       style: TextStyle(
                                         color: Color(0xFF7D838B),
                                         fontSize: 13,
@@ -2149,8 +2152,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
         Container(
             padding: EdgeInsets.all(10),
             color: Colors.white,
-            child:
-                Row(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
@@ -2346,7 +2348,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                           height: 40,
                           child: Center(
                               child: Text(
-                           LocaleKeys.discount.tr,
+                            LocaleKeys.discount.tr,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Color(0xFF000000),
@@ -2726,26 +2728,29 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                                   productDetailController
                                       .navigateTo(YourAddressesScreen());
                                 },
-                                child: Container(
-                                    width: 150,
-                                    height: 160,
-                                    padding: EdgeInsets.all(10),
-                                    margin: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border: Border.all(
-                                            color: AppColors.lightBlue),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(2))),
-                                    child: Center(
-                                        child: Text(
-                                            LocaleKeys.addAddressText.tr,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color: AppColors.primaryColor,
-                                                fontSize: 15,
-                                                fontWeight:
-                                                    FontWeight.bold))))),
+                                child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Container(
+                                        width: 150,
+                                        height: 160,
+                                        padding: EdgeInsets.all(10),
+                                        margin: EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            border: Border.all(
+                                                color: AppColors.lightBlue),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(2))),
+                                        child: Center(
+                                            child: Text(
+                                                LocaleKeys.addAddressText.tr,
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    color:
+                                                        AppColors.primaryColor,
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.bold)))))),
                           ),
                           Visibility(
                               visible: !productDetailController.loading &&

@@ -42,9 +42,9 @@ class StoreOwnerSignUpController extends GetxController {
       update();
       print('value....${value.toString()}');
       if (value.statusCode == 200) {
-        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
       /* if(value.message== AppColors.success) {
         navigateToOtpScreen();

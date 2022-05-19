@@ -89,16 +89,15 @@ class SimilarProductsContainer extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 5),
                 child: products.largeImageUrl!.setNetworkImage())),
         5.heightBox,
-          Align(
-              alignment: language == 'ar'
-          ? Alignment.centerRight
-              : Alignment.centerLeft,
-              child:Padding(
-            padding: EdgeInsets.only(left: 5, right: 15),
-            child: Text(products.productName!,
-                textAlign: TextAlign.start,
-                maxLines: 2,
-                style: TextStyle(color: Color(0xFF333333), fontSize: 13)))),
+        Align(
+            alignment:
+                language == 'ar' ? Alignment.centerRight : Alignment.centerLeft,
+            child: Padding(
+                padding: EdgeInsets.only(left: 5, right: 15),
+                child: Text(products.productName!,
+                    textAlign: TextAlign.start,
+                    maxLines: 2,
+                    style: TextStyle(color: Color(0xFF333333), fontSize: 13)))),
         5.heightBox,
         if (true)
           Padding(

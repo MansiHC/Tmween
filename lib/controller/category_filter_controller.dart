@@ -8,7 +8,6 @@ import 'package:tmween/screens/drawer/category/category_product_listing_screen.d
 import '../lang/locale_keys.g.dart';
 import '../model/get_filter_data_model.dart';
 import '../service/api.dart';
-import '../utils/helper.dart';
 
 class League {
   String leagueName;
@@ -57,13 +56,12 @@ class CategoryFilterController extends GetxController {
   double priceRange = 0;
   late RangeValues currentRangeValues;
 
-   List<Map> categoryList = [];
-   List<Map> brandList = [];
-   List<Map> sellerList = [];
+  List<Map> categoryList = [];
+  List<Map> brandList = [];
+  List<Map> sellerList = [];
   List<String> productCatIdList = [];
   List<String> brandIdList = [];
   List<String> sellerIdList = [];
-
 
   final List<Map> collectionList = [
     {'title': 'Other', 'isChecked': false},
@@ -76,9 +74,10 @@ class CategoryFilterController extends GetxController {
 
   final api = Api();
   bool loading = true;
-   GetFilterData? filteredData;
-  int fromPrice=0,toPrice=0,fullFillByTmween=0;
-bool called=false;
+  GetFilterData? filteredData;
+  int fromPrice = 0, toPrice = 0, fullFillByTmween = 0;
+  bool called = false;
+
   @override
   void onInit() {
 //    getFilterData(Get.locale!.languageCode);
@@ -88,45 +87,43 @@ bool called=false;
   Future<void> getFilterData(language) async {
     // Helper.showLoading();
     loading = true;
-    categoryList=[];
-    brandList=[];
-    sellerList=[];
-    await api
-        .getCategoryMobileFilterData(catSlug,language)
-        .then((value) {
+    categoryList = [];
+    brandList = [];
+    sellerList = [];
+    await api.getCategoryMobileFilterData(catSlug, language).then((value) {
       if (value.statusCode == 200) {
-        called=true;
+        called = true;
         filteredData = value.data!;
         if (filteredData!.productCategory != null)
-        for (var i = 0; i < filteredData!.productCategory!.length; i++) {
-          categoryList.add({
-            'title': filteredData!.productCategory![i].categoryName,
-            'id': filteredData!.productCategory![i].id,
-            'count': filteredData!.productCategory![i].count,
-            'isChecked': false
-          });
-        }
+          for (var i = 0; i < filteredData!.productCategory!.length; i++) {
+            categoryList.add({
+              'title': filteredData!.productCategory![i].categoryName,
+              'id': filteredData!.productCategory![i].id,
+              'count': filteredData!.productCategory![i].count,
+              'isChecked': false
+            });
+          }
         if (filteredData!.brand != null)
-        for (var i = 0; i < filteredData!.brand!.length; i++) {
-          brandList.add({
-            'title': filteredData!.brand![i].brandName,
-            'id': filteredData!.brand![i].id,
-            'count': filteredData!.brand![i].count,
-            'isChecked': false
-          });
-        }
+          for (var i = 0; i < filteredData!.brand!.length; i++) {
+            brandList.add({
+              'title': filteredData!.brand![i].brandName,
+              'id': filteredData!.brand![i].id,
+              'count': filteredData!.brand![i].count,
+              'isChecked': false
+            });
+          }
         if (filteredData!.suppliersData != null)
-        for (var i = 0; i < filteredData!.suppliersData!.length; i++) {
-          sellerList.add({
-            'title': filteredData!.suppliersData![i].supplierName,
-            'id': filteredData!.suppliersData![i].supplierId,
-            'count': 0,
-            'isChecked': false
-          });
-        }
+          for (var i = 0; i < filteredData!.suppliersData!.length; i++) {
+            sellerList.add({
+              'title': filteredData!.suppliersData![i].supplierName,
+              'id': filteredData!.suppliersData![i].supplierId,
+              'count': 0,
+              'isChecked': false
+            });
+          }
         currentRangeValues =
             RangeValues(0, double.parse(filteredData!.maxPrice!.toString()));
-        fromPrice =0;
+        fromPrice = 0;
         toPrice = filteredData!.maxPrice!;
       }
       loading = false;
@@ -142,9 +139,9 @@ bool called=false;
 
   Future<void> setFilter(language) async {
     Navigator.of(context).pop(false);
-    productCatIdList=[];
-    brandIdList=[];
-    sellerIdList=[];
+    productCatIdList = [];
+    brandIdList = [];
+    sellerIdList = [];
     var catList = categoryList.where((i) => i['isChecked']).toList();
     for (var i in catList) {
       productCatIdList.add(i['id'].toString());
@@ -157,20 +154,30 @@ bool called=false;
     for (var i in selList) {
       sellerIdList.add(i['id'].toString());
     }
-   fromPrice =currentRangeValues.start.round();
-   toPrice =currentRangeValues.end.round();
-    var showOnlyCheckedList = showOnlyList.where((i) => i['isChecked']).toList();
-    if(showOnlyCheckedList.contains(LocaleKeys.fulfilledBy.tr)){
-      fullFillByTmween =1;
+    fromPrice = currentRangeValues.start.round();
+    toPrice = currentRangeValues.end.round();
+    var showOnlyCheckedList =
+        showOnlyList.where((i) => i['isChecked']).toList();
+    if (showOnlyCheckedList.contains(LocaleKeys.fulfilledBy.tr)) {
+      fullFillByTmween = 1;
     }
 
-    print('object.....$productCatIdList...$brandIdList....$sellerIdList....$fromPrice....$toPrice...$fullFillByTmween');
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>
-        CategoryProductListingScreen(categorySlug: catSlug, categoryName: catName,
-        categoryId: catId,
-        fromFilter: true,catIdList: productCatIdList,
-        brandIdList: brandIdList,sellerIdList: sellerIdList,fromPrice: fromPrice,toPrice: toPrice,fullFillByTmween:fullFillByTmween)));
-
+    print(
+        'object.....$productCatIdList...$brandIdList....$sellerIdList....$fromPrice....$toPrice...$fullFillByTmween');
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => CategoryProductListingScreen(
+                categorySlug: catSlug,
+                categoryName: catName,
+                categoryId: catId,
+                fromFilter: true,
+                catIdList: productCatIdList,
+                brandIdList: brandIdList,
+                sellerIdList: sellerIdList,
+                fromPrice: fromPrice,
+                toPrice: toPrice,
+                fullFillByTmween: fullFillByTmween)));
   }
 
   void updateShowOnlyExpanded() {

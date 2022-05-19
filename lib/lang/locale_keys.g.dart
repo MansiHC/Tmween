@@ -8,9 +8,13 @@ abstract class LocaleKeys {
   static const emptyPhoneNumberEmail = 'emptyPhoneNumberEmail';
   static const emptyPhoneNumber = 'emptyPhoneNumber';
   static const validPhoneNumber = 'validPhoneNumber';
+  static const validEmailPhoneNumber = 'validEmailPhoneNumber';
   static const keepMeSignedIn = 'keepMeSignedIn';
   static const forgotPassword = 'forgotPassword';
   static const login = 'login';
+  static const noTransactionFound = 'noTransactionFound';
+  static const downloading = 'downloading';
+  static const downloaded = 'downloadComplete';
   static const loginWithOTP = 'loginWithOTP';
   static const chooseLocation = 'chooseLocation';
   static const chooseLocationText = 'chooseLocationText';
@@ -358,9 +362,11 @@ abstract class LocaleKeys {
   static const shippingDetails = 'shippingDetails';
   static const buyItAgain = 'buyItAgain';
   static const writeProductReview = 'writeProductReview';
+  static const writeReview = 'writeReview';
   static const paymentInfo = 'paymentInfo';
   static const paymentMethod = 'paymentMethod';
   static const orderSummary = 'orderSummary';
+  static const orderTotal = 'orderTotal';
   static const grandTotal = 'grandTotal';
   static const orderDetails = 'orderDetails';
   static const searchAllOrder = 'searchAllOrder';
@@ -371,6 +377,14 @@ abstract class LocaleKeys {
   static const paymentOption = 'paymentOption';
   static const syberPay = 'syberPay';
   static const fundWallet = 'fundWallet';
+  static const deliveryPayment = 'deliveryPayment';
+  static const orderPlaced = 'orderPlaced';
+  static const orderPlacedText1 = 'orderPlacedText1';
+  static const orderPlacedText2 = 'orderPlacedText2';
+  static const myOrders = 'myOrders';
+  static const paymentFailedText1 = 'paymentFailedText1';
+  static const paymentFailedText2 = 'paymentFailedText2';
+  static const tryAgain = 'tryAgain';
   static const currentBalance = 'currentBalance';
   static const addMoney = 'addMoney';
   static const amount = 'amount';
@@ -380,6 +394,7 @@ abstract class LocaleKeys {
   static const myWallet = 'myWallet';
   static const paymentSuccess = 'paymentSuccess';
   static const paymentFailed = 'paymentFailed';
+  static const pageNotFound = 'pageNotFound';
   static const otherAccount = 'otherAccount';
   static const addedAt = 'addedAt';
   static const walletRefNo = 'walletRefNo';
@@ -390,6 +405,7 @@ abstract class LocaleKeys {
   static const filterPayments = 'filterPayments';
   static const status = 'status';
   static const successful = 'successful';
+  static const processing = 'processing';
   static const pending = 'pending';
   static const failed = 'failed';
   static const type = 'type';
@@ -399,5 +415,4 @@ abstract class LocaleKeys {
   static const applySmall = 'applySmall';
   static const viewHistorySmall = 'viewHistorySmall';
   static const earliestDeliveryInDays = 'earliestDeliveryInDays';
-
 }

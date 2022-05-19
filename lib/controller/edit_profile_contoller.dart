@@ -114,9 +114,9 @@ class EditProfileController extends GetxController {
       Helper.hideLoading(context);
       if (value.statusCode == 200) {
         otpValue = value.data!.otp.toString();
-        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
       update();
     }).catchError((error) {
@@ -152,7 +152,7 @@ class EditProfileController extends GetxController {
             .then((value) {
           if (value.statusCode == 200) {
             Helper.hideLoading(context);
-            Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+            Helper.showGetSnackBar(value.message!, AppColors.successColor);
             exitScreen();
           } else if (value.statusCode == 401) {
             Helper.hideLoading(context);
@@ -162,7 +162,7 @@ class EditProfileController extends GetxController {
             Get.offAll(DrawerScreen());
           } else {
             Helper.hideLoading(context);
-            Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+            Helper.showGetSnackBar(value.message!, AppColors.errorColor);
           }
 
           update();
@@ -196,10 +196,10 @@ class EditProfileController extends GetxController {
       Helper.hideLoading(context);
       if (value.statusCode == 200) {
         // pop();
-        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
         exitScreen();
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
 
       //update();
@@ -218,10 +218,10 @@ class EditProfileController extends GetxController {
       Helper.hideLoading(context);
       if (value.statusCode == 200) {
         //  pop();
-        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
         exitScreen();
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
       // update();
     }).catchError((error) {

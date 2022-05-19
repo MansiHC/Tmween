@@ -11,7 +11,8 @@ class SubCategoryProductListingModel {
     statusCode = json['status_code'];
     statusMessage = json['status_message'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    if (statusCode == 200)
+      data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -36,11 +37,11 @@ class Data {
 
   Data(
       {this.productData,
-        this.totalPages,
-        this.next,
-        this.previous,
-        this.totalRecords,
-        this.maxPrice});
+      this.totalPages,
+      this.next,
+      this.previous,
+      this.totalRecords,
+      this.maxPrice});
 
   Data.fromJson(Map<String, dynamic> json) {
     if (json['product_data'] != null) {
@@ -87,23 +88,21 @@ class ProductData {
   String? retailPriceDisp;
   String? finalPriceDisp;
 
-
   ProductData(
       {this.id,
-        this.attributeSetId,
-        this.productCategoryId,
-        this.productName,
-        this.finalPrice,
-        this.retailPrice,
-        this.reviewsAvg,
-
-        this.productSlug,
-        this.largeImageUrl,
-        this.discountValuePercentage,
-        this.discountValue,
-        this.discountValueDisp,
-        this.retailPriceDisp,
-        this.finalPriceDisp});
+      this.attributeSetId,
+      this.productCategoryId,
+      this.productName,
+      this.finalPrice,
+      this.retailPrice,
+      this.reviewsAvg,
+      this.productSlug,
+      this.largeImageUrl,
+      this.discountValuePercentage,
+      this.discountValue,
+      this.discountValueDisp,
+      this.retailPriceDisp,
+      this.finalPriceDisp});
 
   ProductData.fromJson(Map<String, dynamic> json) {
     id = json['id'];

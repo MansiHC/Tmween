@@ -12,7 +12,23 @@ const Map<String, String> ar_DZ = {
   "personalAddress": "عنوان شخصي",
   "defaultText": "تقصير",
   "officeAddress": "عنوان المكتب",
+  "processing": "يعالج",
+  "noTransactionFound": "لم يتم العثور على معاملة",
+  "orderPlaced": "تم الطلب!",
+  "orderPlacedText1": "تم وضع طلبك بنجاح.",
+  "orderPlacedText2": "لمزيد من التفاصيل ، تحقق من كل طلباتي.",
+  "downloading": "جارى التحميل...",
+  "downloadComplete": "تم التحميل",
+  "pageNotFound": "الصفحة غير موجودة",
+  "myOrders": "طلباتي",
+  "paymentFailedText1": "يبدو أننا لم نتلق المال",
+  "paymentFailedText2": "عفوًا! \n حدث خطأ",
+  "validEmailPhoneNumber": "الرجاء إدخال رقم هاتف / بريد إلكتروني صالح",
+  "writeReview": "أكتب مراجعة",
+  "orderTotal": "الطلب الكلي",
+  "tryAgain": "حاول ثانية",
   "remove": "إزالة",
+  "deliveryPayment": "التسليم والدفع",
   "selectCountry": "حدد الدولة",
   "fullName": "الاسم الكامل",
   "pincode": "الرمز السري",
@@ -192,7 +208,6 @@ const Map<String, String> ar_DZ = {
   "camera": "الة تصوير",
   "gallery": "صالة عرض",
   "crop": "ا & قتصاص",
-
   "failedToGetSMS": "فشل في الحصول على الرسائل القصيرة.",
   "otpIs": "OTP هو",
   "completeVerification": "للمتابعة ، أكمل خطوة التحقق هذه.",
@@ -207,7 +222,8 @@ const Map<String, String> ar_DZ = {
   "phoneNumberCap": "رقم الهاتف",
   "associateWithTmween": "المرتبط بحسابك في تموين.",
   "hasYrEmailChanged": "هل تغير عنوان بريدك الإلكتروني أو رقم هاتفك المحمول؟",
-  "ifNoLongerUse": "إذا لم تعد تستخدم عنوان البريد الإلكتروني المرتبط بحساب Tmween الخاص بك ، فيمكنك الاتصال بـ",
+  "ifNoLongerUse":
+      "إذا لم تعد تستخدم عنوان البريد الإلكتروني المرتبط بحساب Tmween الخاص بك ، فيمكنك الاتصال بـ",
   "restoringAccount": "للمساعدة في استعادة الوصول إلى حسابك.",
   "passwordAssistance": "مساعدة كلمة السر",
   "willAskForPassword": "سنطلب كلمة المرور هذه كلما قمت بتسجيل الدخول.",
@@ -217,8 +233,10 @@ const Map<String, String> ar_DZ = {
   "securePasswordTips": "نصائح حول كلمة المرور الآمنة:",
   "useCharLength": "استخدم 8 أحرف على الأقل ، وأفضل مزيج من الأرقام والحروف.",
   "notUseSamePwd": "لا تستخدم نفس كلمة المرور التي استخدمتها معنا سابقًا.",
-  "notUsePersonalInfo": "لا تستخدم كلمات القاموس أو اسمك أو عنوان بريدك الإلكتروني أو رقم هاتفك المحمول أو أي معلومات شخصية أخرى يمكن الحصول عليها بسهولة.",
-  "notUseSameForMultiple": "لا تستخدم نفس كلمة المرور لحسابات متعددة عبر الإنترنت.",
+  "notUsePersonalInfo":
+      "لا تستخدم كلمات القاموس أو اسمك أو عنوان بريدك الإلكتروني أو رقم هاتفك المحمول أو أي معلومات شخصية أخرى يمكن الحصول عليها بسهولة.",
+  "notUseSameForMultiple":
+      "لا تستخدم نفس كلمة المرور لحسابات متعددة عبر الإنترنت.",
   "agreeToThe": "أنا أوافق على",
   "termsOfUse": "تعليمات الاستخدام",
   "youSave": "أنت أحفظ",
@@ -258,9 +276,11 @@ const Map<String, String> ar_DZ = {
   "proceedToPay": "المضي قدما في الدفع",
   "paymentSmall": "المدفوعات",
   "reviewYourOrder": "راجع طلباتك",
-  "agreeingForPrivacyPolicy": "بالنقر فوق الزر 'تقديم طلبك وادفع' ، فإنك توافق على إشعار الخصوصية وشروط الاستخدام الخاصة بـ Tmween.com.",
+  "agreeingForPrivacyPolicy":
+      "بالنقر فوق الزر 'تقديم طلبك وادفع' ، فإنك توافق على إشعار الخصوصية وشروط الاستخدام الخاصة بـ Tmween.com.",
   "impMessage": "رسالة مهمة",
-  "thisDeliveryOptionForFuture": "حدد هذا المربع لخيارات التسليم والدفع هذه في المستقبل.",
+  "thisDeliveryOptionForFuture":
+      "حدد هذا المربع لخيارات التسليم والدفع هذه في المستقبل.",
   "shippingTo": "يشحن إلى",
   "product": "المنتج",
   "total": "المجموع",
@@ -352,7 +372,8 @@ const Map<String, String> ar_DZ = {
   "orderDetails": "تفاصيل طلبك",
   "searchAllOrder": "بحث في كل الطلبات",
   "reActivateAccount": "أعد تنشيط حسابك من صفحة تسجيل الدخول مع إنشاء otp",
-  "retainAccount": "يحتفظ Tmween ببيانات حسابك لكي تبدأ بسهولة من حيث تركت ، إذا قررت إعادة تنشيط حسابك.",
+  "retainAccount":
+      "يحتفظ Tmween ببيانات حسابك لكي تبدأ بسهولة من حيث تركت ، إذا قررت إعادة تنشيط حسابك.",
   "rechargeAmount": "مبلغ الشحن",
   "totalAmountPayable": "إجمالي المبلغ الواجب دفعه",
   "paymentOption": "خيار الدفع",
@@ -387,5 +408,4 @@ const Map<String, String> ar_DZ = {
   "applySmall": "يتقدم",
   "viewHistorySmall": "عرض السجل",
   "earliestDeliveryInDays": "أقرب تسليم خلال يوم واحد *"
-
 };

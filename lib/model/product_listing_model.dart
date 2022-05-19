@@ -1,4 +1,3 @@
-
 class ProductListingModel {
   int? statusCode;
   String? statusMessage;
@@ -67,6 +66,7 @@ class Data {
     return data;
   }
 }
+
 class SearchProductData {
   int? id;
   int? attributeSetId;

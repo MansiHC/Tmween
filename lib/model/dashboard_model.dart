@@ -87,9 +87,10 @@ class Data {
       });
     }
     try {
-      banners =
-      json['banners'] != null ? new Banners.fromJson(json['banners']) : null;
-    }catch(e){}
+      banners = json['banners'] != null
+          ? new Banners.fromJson(json['banners'])
+          : null;
+    } catch (e) {}
   }
 
   Map<String, dynamic> toJson() {

@@ -41,10 +41,10 @@ class ForgotPasswordController extends GetxController {
           .then((value) {
         Helper.hideLoading(context);
         if (value.statusCode == 200) {
-          Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+          Helper.showGetSnackBar(value.message!, AppColors.successColor);
           submit(from, frm, value.data!.otp.toString());
         } else {
-          Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+          Helper.showGetSnackBar(value.message!, AppColors.errorColor);
         }
 
         update();
@@ -68,13 +68,13 @@ class ForgotPasswordController extends GetxController {
 
   void navigateToLoginScreen(String from, String frm) {
     Get.delete<ForgotOtpController>();
-    if (from ==  AppConstants.individual) {
+    if (from == AppConstants.individual) {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
               builder: (context) => LoginScreen(
                     from: frm,
-                    frm:  AppConstants.individual,
+                    frm: AppConstants.individual,
                     isPassword: true,
                     isStorePassword: false,
                   )));
@@ -84,7 +84,7 @@ class ForgotPasswordController extends GetxController {
           MaterialPageRoute(
               builder: (context) => LoginScreen(
                     from: frm,
-                    frm:  AppConstants.store,
+                    frm: AppConstants.store,
                     isPassword: false,
                     isStorePassword: true,
                   )));

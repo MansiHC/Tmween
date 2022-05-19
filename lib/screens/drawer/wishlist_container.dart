@@ -98,7 +98,8 @@ class WishlistContainer extends StatelessWidget {
                   5.heightBox,
                   Align(
                       alignment: language == 'ar'
-                          ?Alignment.centerRight:Alignment.centerLeft,
+                          ? Alignment.centerRight
+                          : Alignment.centerLeft,
                       child: Padding(
                           padding: EdgeInsets.only(left: 5, right: 15),
                           child: Text(wishlistData.productName!,

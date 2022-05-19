@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
+import 'package:tmween/model/get_wallet_model.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
 import '../../../../controller/payment_status_controller.dart';
 
 class PaymentStatusScreen extends StatefulWidget {
-  final bool? isSuccess;
-  final String? successText;
+  final WalletData? walletData;
 
   PaymentStatusScreen(
-      {Key? key, required this.isSuccess, required this.successText})
+      {Key? key, required this.walletData})
       : super(key: key);
 
   @override
@@ -85,18 +85,20 @@ class PaymentStatusScreenState extends State<PaymentStatusScreen> {
                     ),
                     5.widthBox,
                     SvgPicture.asset(
-                      widget.isSuccess!
+                      /*widget.isSuccess!
                           ? ImageConstanst.walletTickMarkIcon
-                          : ImageConstanst.walletCrossIcon,
+                          :*/ ImageConstanst.walletCrossIcon,
                       height: 24,
                       width: 24,
                     ),
                     5.widthBox,
                     Text(
-                      widget.isSuccess! ? LocaleKeys.paymentSuccess.tr : LocaleKeys.paymentFailed.tr,
+                     /* widget.isSuccess!
+                          ? LocaleKeys.paymentSuccess.tr
+                          :*/ LocaleKeys.paymentFailed.tr,
                       style: TextStyle(
                           fontSize: 14,
-                          color: widget.isSuccess! ? Colors.green : Colors.red),
+                          color: /*widget.isSuccess! ? Colors.green :*/ Colors.red),
                     ),
                   ],
                 )),
@@ -143,7 +145,7 @@ class PaymentStatusScreenState extends State<PaymentStatusScreen> {
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
-                 LocaleKeys.from.tr,
+                  LocaleKeys.from.tr,
                   style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.bold,
@@ -223,7 +225,7 @@ class PaymentStatusScreenState extends State<PaymentStatusScreen> {
             Align(
               alignment: Alignment.center,
               child: Text(
-                widget.successText!,
+                'widget.successText!',
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),

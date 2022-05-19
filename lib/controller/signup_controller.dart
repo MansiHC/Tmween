@@ -42,10 +42,10 @@ class SignUpController extends GetxController {
       Helper.hideLoading(context);
       if (value.statusCode == 200) {
         Helper.isIndividual = true;
-        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
         navigateToOtpScreen(value.data!.otp);
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
 
       update();
@@ -98,7 +98,7 @@ class SignUpController extends GetxController {
         doRequest(language);
       } else {
         Helper.showGetSnackBar(
-            LocaleKeys.emptyAgreeTerms.tr,  AppColors.errorColor);
+            LocaleKeys.emptyAgreeTerms.tr, AppColors.errorColor);
       }
     }
   }

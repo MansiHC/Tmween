@@ -170,8 +170,7 @@ class LoginOtpScreenState extends State<LoginOtpScreen> {
         10.heightBox,
         RichText(
             text: TextSpan(
-                text:
-                    "${LocaleKeys.sentOTP.tr} ",
+                text: "${LocaleKeys.sentOTP.tr} ",
                 style: TextStyle(
                     fontSize: 14,
                     color: Color(0xFF727272),

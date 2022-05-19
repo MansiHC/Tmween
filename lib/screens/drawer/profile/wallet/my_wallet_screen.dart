@@ -18,6 +18,11 @@ class MyWalletScreen extends StatelessWidget {
 
   final myWalletController = Get.put(MyWalletController());
 
+  Future<bool> _onWillPop(MyWalletController myWalletController) async {
+    myWalletController.exitScreen();
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
@@ -25,21 +30,24 @@ class MyWalletScreen extends StatelessWidget {
         init: MyWalletController(),
         builder: (contet) {
           myWalletController.context = context;
-          return Scaffold(
-              body: Container(
-                  color: Color(0xFFF2F2F2),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                          constraints: BoxConstraints(
-                              minWidth: double.infinity, maxHeight: 90),
-                          color: AppColors.appBarColor,
-                          padding: EdgeInsets.only(top: 20),
-                          child: topView(myWalletController)),
-                      _bottomView(myWalletController),
-                    ],
-                  )));
+          return WillPopScope(
+              onWillPop: () => _onWillPop(myWalletController),
+              child: Scaffold(
+                  body: Container(
+                      color: Color(0xFFF2F2F2),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              constraints: BoxConstraints(
+                                  minWidth: double.infinity, maxHeight: 90),
+                              color: AppColors.appBarColor,
+                              padding: EdgeInsets.only(top: 20),
+                              child: topView(myWalletController)),
+                          if (myWalletController.walletData != null)
+                            _bottomView(myWalletController),
+                        ],
+                      ))));
         });
   }
 
@@ -79,7 +87,7 @@ class MyWalletScreen extends StatelessWidget {
                               ),
                               3.heightBox,
                               Text(
-                                '${LocaleKeys.sar.tr} 0',
+                                myWalletController.walletData!.balance!,
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 15,
@@ -184,195 +192,193 @@ class MyWalletScreen extends StatelessWidget {
                       ),
                     ),
                     10.heightBox,
-                    Container(
-                        color: Colors.white,
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            padding: EdgeInsets.zero,
-                            physics: ScrollPhysics(),
-                            itemCount:
-                                myWalletController.walletHistoryList.length,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    color: AppColors.lightBlueBackground,
-                                    width: double.maxFinite,
-                                    padding: EdgeInsets.all(10),
-                                    child: Text(
-                                      myWalletController
-                                          .walletHistoryList[index].title,
-                                      style: TextStyle(
-                                        color: AppColors.primaryColor,
-                                        fontSize: 15,
+                    myWalletController.walletHistoryList.length > 0
+                        ? Container(
+                            color: Colors.white,
+                            child: ListView.builder(
+                                shrinkWrap: true,
+                                padding: EdgeInsets.zero,
+                                physics: ScrollPhysics(),
+                                itemCount:
+                                    myWalletController.walletHistoryList.length,
+                                itemBuilder: (context, index) {
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        color: AppColors.lightBlueBackground,
+                                        width: double.maxFinite,
+                                        padding: EdgeInsets.all(10),
+                                        child: Text(
+                                          myWalletController
+                                              .walletHistoryList[index].month!,
+                                          style: TextStyle(
+                                            color: AppColors.primaryColor,
+                                            fontSize: 15,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  MediaQuery.removePadding(
-                                      context: myWalletController.context,
-                                      removeTop: true,
-                                      child: ListView.builder(
-                                          shrinkWrap: true,
-                                          physics: ScrollPhysics(),
-                                          itemCount: myWalletController
-                                              .walletHistoryList[index]
-                                              .historyItemList
-                                              .length,
-                                          itemBuilder: (context, index2) {
-                                            return Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                10.heightBox,
-                                                InkWell(
-                                                    onTap: () {
-                                                      myWalletController
-                                                          .navigateTo(
-                                                              PaymentStatusScreen(
-                                                        isSuccess:
-                                                            myWalletController
-                                                                .walletHistoryList[
-                                                                    index]
-                                                                .historyItemList[
-                                                                    index2]
-                                                                .isSuccess,
-                                                        successText:
-                                                            myWalletController
-                                                                .walletHistoryList[
-                                                                    index]
-                                                                .historyItemList[
-                                                                    index2]
-                                                                .successText,
-                                                      ));
-                                                    },
-                                                    child: Container(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal: 10),
-                                                        child: Row(
-                                                          children: [
-                                                            SizedBox(
-                                                              width: 42,
-                                                              height: 42,
-                                                              child:
-                                                                  Image.asset(
-                                                                ImageConstanst
-                                                                    .walletLogoIcon,
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                                child: Padding(
-                                                                    padding: EdgeInsets.symmetric(
-                                                                        horizontal:
-                                                                            10),
-                                                                    child:
-                                                                        Column(
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      children: [
-                                                                        Text(
-                                                                          myWalletController
-                                                                              .walletHistoryList[index]
-                                                                              .historyItemList[index2]
-                                                                              .title,
-                                                                          style: TextStyle(
-                                                                              color: Colors.black87,
-                                                                              fontSize: 14,
-                                                                              fontWeight: FontWeight.bold),
-                                                                        ),
-                                                                        Text(
-                                                                          myWalletController
-                                                                              .walletHistoryList[index]
-                                                                              .historyItemList[index2]
-                                                                              .date,
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color:
-                                                                                Colors.black38,
-                                                                            fontSize:
-                                                                                13,
-                                                                          ),
-                                                                        )
-                                                                      ],
-                                                                    ))),
-                                                            Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .end,
+                                      MediaQuery.removePadding(
+                                          context: myWalletController.context,
+                                          removeTop: true,
+                                          child: ListView.builder(
+                                              shrinkWrap: true,
+                                              physics: ScrollPhysics(),
+                                              itemCount: myWalletController
+                                                  .walletHistoryList[index]
+                                                  .monthData!
+                                                  .length,
+                                              itemBuilder: (context, index2) {
+                                                return Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    10.heightBox,
+                                                    InkWell(
+                                                        onTap: () {
+                                                          myWalletController
+                                                              .navigateTo(
+                                                                  PaymentStatusScreen(
+                                                            walletData:
+                                                                myWalletController
+                                                                    .walletData,
+                                                          ));
+                                                        },
+                                                        child: Container(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        10),
+                                                            child: Row(
                                                               children: [
-                                                                Text(
-                                                                  myWalletController
-                                                                          .walletHistoryList[
-                                                                              index]
-                                                                          .historyItemList[
-                                                                              index2]
-                                                                          .isSuccess
-                                                                      ? '+${LocaleKeys.sar.tr} 500'
-                                                                      : '-${LocaleKeys.sar.tr} 500',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: myWalletController
-                                                                            .walletHistoryList[
-                                                                                index]
-                                                                            .historyItemList[
-                                                                                index2]
-                                                                            .isSuccess
-                                                                        ? Colors
-                                                                            .green
-                                                                        : Colors
-                                                                            .red,
-                                                                    fontSize:
-                                                                        14,
+                                                                SizedBox(
+                                                                  width: 42,
+                                                                  height: 42,
+                                                                  child: Image
+                                                                      .asset(
+                                                                    ImageConstanst
+                                                                        .walletLogoIcon,
                                                                   ),
                                                                 ),
-                                                                Text(
-                                                                  myWalletController
-                                                                      .walletHistoryList[
-                                                                          index]
-                                                                      .historyItemList[
-                                                                          index2]
-                                                                      .successText,
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .black38,
-                                                                    fontSize:
-                                                                        13,
-                                                                  ),
+                                                                Expanded(
+                                                                    child: Padding(
+                                                                        padding: EdgeInsets.symmetric(horizontal: 10),
+                                                                        child: Column(
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.start,
+                                                                          children: [
+                                                                            Text(
+                                                                              myWalletController.walletHistoryList[index].monthData![index2].message!,
+                                                                              style: TextStyle(color: Colors.black87, fontSize: 14, fontWeight: FontWeight.bold),
+                                                                            ),
+                                                                            Text(
+                                                                              myWalletController.walletHistoryList[index].monthData![index2].createdAt!.formattedDateTime,
+                                                                              style: TextStyle(
+                                                                                color: Colors.black38,
+                                                                                fontSize: 13,
+                                                                              ),
+                                                                            )
+                                                                          ],
+                                                                        ))),
+                                                                Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .end,
+                                                                  children: [
+                                                                    Text(
+                                                                      myWalletController.walletHistoryList[index].monthData![index2].paymentStatus !=
+                                                                              4
+                                                                          ? '+${myWalletController.walletData!.currencySymbol!} ${myWalletController.walletHistoryList[index].monthData![index2].amount!}'
+                                                                          : '-${myWalletController.walletData!.currencySymbol!} ${myWalletController.walletHistoryList[index].monthData![index2].amount!}',
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: getColor(myWalletController
+                                                                            .walletHistoryList[index]
+                                                                            .monthData![index2]
+                                                                            .paymentStatus!),
+                                                                        fontSize:
+                                                                            14,
+                                                                      ),
+                                                                    ),
+                                                                    Text(
+                                                                      getStatus(myWalletController
+                                                                          .walletHistoryList[
+                                                                              index]
+                                                                          .monthData![
+                                                                              index2]
+                                                                          .paymentStatus!),
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: Colors
+                                                                            .black38,
+                                                                        fontSize:
+                                                                            13,
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                Icon(
+                                                                  Icons
+                                                                      .keyboard_arrow_right_outlined,
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      400],
                                                                 )
                                                               ],
-                                                            ),
-                                                            Icon(
-                                                              Icons
-                                                                  .keyboard_arrow_right_outlined,
-                                                              color: Colors
-                                                                  .grey[400],
-                                                            )
-                                                          ],
-                                                        ))),
-                                                10.heightBox,
-                                                if (index !=
-                                                    (myWalletController
-                                                            .walletHistoryList[
-                                                                index]
-                                                            .historyItemList
-                                                            .length -
-                                                        1))
-                                                  Divider(
-                                                    height: 1,
-                                                    thickness: 1,
-                                                    color: Color(0xFFE6E6E6),
-                                                  )
-                                              ],
-                                            );
-                                          }))
-                                ],
-                              );
-                            }))
+                                                            ))),
+                                                    10.heightBox,
+                                                    if (index !=
+                                                        (myWalletController
+                                                                .walletHistoryList[
+                                                                    index]
+                                                                .monthData!
+                                                                .length -
+                                                            1))
+                                                      Divider(
+                                                        height: 1,
+                                                        thickness: 1,
+                                                        color:
+                                                            Color(0xFFE6E6E6),
+                                                      )
+                                                  ],
+                                                );
+                                              }))
+                                    ],
+                                  );
+                                }))
+                        : Center(
+                            child: Text(
+                            LocaleKeys.noTransactionFound.tr,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 15,
+                            ),
+                          ))
                   ],
                 ))));
+  }
+
+  Color getColor(int paymentStatus) {
+    if (paymentStatus == 1)
+      return Colors.orange;
+    else if (paymentStatus == 2)
+      return Color(0xFFffc107);
+    else if (paymentStatus == 3)
+      return Colors.green;
+    else
+      return Colors.red;
+  }
+
+  String getStatus(int paymentStatus) {
+    if (paymentStatus == 1)
+      return LocaleKeys.pending.tr;
+    else if (paymentStatus == 2)
+      return LocaleKeys.processing.tr;
+    else if (paymentStatus == 3)
+      return LocaleKeys.successful.tr;
+    else
+      return LocaleKeys.failed.tr;
   }
 
   Widget topView(MyWalletController myWalletController) {

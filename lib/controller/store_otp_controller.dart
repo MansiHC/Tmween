@@ -58,9 +58,9 @@ class StoreOtpController extends GetxController {
       update();
       print('value....${value.toString()}');
       if (value.statusCode == 200) {
-        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
       /* if(value.message== AppColors.success) {
         navigateToOtpScreen();
@@ -104,13 +104,13 @@ class StoreOtpController extends GetxController {
   void navigateToLoginScreen(
       String from, String frm, bool isPassword, bool isStorePassword) {
     otpController.clear();
-    if (from ==  AppConstants.individual) {
+    if (from == AppConstants.individual) {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
               builder: (context) => LoginScreen(
                     from: frm,
-                    frm:  AppConstants.individual,
+                    frm: AppConstants.individual,
                     isPassword: true,
                     isStorePassword: isStorePassword,
                   )));
@@ -120,7 +120,7 @@ class StoreOtpController extends GetxController {
           MaterialPageRoute(
               builder: (context) => LoginScreen(
                     from: frm,
-                    frm:  AppConstants.store,
+                    frm: AppConstants.store,
                     isPassword: isPassword,
                     isStorePassword: true,
                   )));
@@ -130,13 +130,13 @@ class StoreOtpController extends GetxController {
   void navigateToLoginEmailScreen(
       String from, String frm, bool isPassword, bool isStorePassword) {
     otpController.clear();
-    if (from ==  AppConstants.individual) {
+    if (from == AppConstants.individual) {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
               builder: (context) => LoginScreen(
                     from: frm,
-                    frm:  AppConstants.individual,
+                    frm: AppConstants.individual,
                     isPassword: false,
                     isStorePassword: isStorePassword,
                   )));
@@ -146,7 +146,7 @@ class StoreOtpController extends GetxController {
           MaterialPageRoute(
               builder: (context) => LoginScreen(
                     from: frm,
-                    frm:  AppConstants.store,
+                    frm: AppConstants.store,
                     isPassword: isPassword,
                     isStorePassword: false,
                   )));

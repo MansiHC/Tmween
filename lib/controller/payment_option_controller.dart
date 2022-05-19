@@ -22,7 +22,7 @@ class PaymentOptionController extends GetxController {
   bool loading = false;
   List<PaymentMethod> paymentOptions = [];
   List<int> radioValue = [];
-  int radioCurrentValue = 1;
+  int radioCurrentValue = 0;
 
   @override
   void onInit() {
@@ -57,9 +57,10 @@ class PaymentOptionController extends GetxController {
       Helper.hideLoading(context);
       loading = false;
       paymentOptions = value.data!.paymentMethod!;
-      for(int i=0;i<paymentOptions.length;i++){
+      for (int i = 0; i < paymentOptions.length; i++) {
         radioValue.add(paymentOptions[i].id!);
       }
+      radioCurrentValue = paymentOptions[0].id!;
       update();
     }).catchError((error) {
       Helper.hideLoading(context);
@@ -73,10 +74,12 @@ class PaymentOptionController extends GetxController {
     Helper.showLoading();
     loading = true;
     update();
-    await api.setPaymentOptions(token,userId, radioCurrentValue,language).then((value) {
+    await api
+        .setPaymentOptions(token, userId, radioCurrentValue, language)
+        .then((value) {
       Helper.hideLoading(context);
       loading = false;
-   navigateTo(ReviewOrderScreen());
+      navigateTo(ReviewOrderScreen());
       update();
     }).catchError((error) {
       Helper.hideLoading(context);

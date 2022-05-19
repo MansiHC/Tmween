@@ -243,13 +243,15 @@ class StoreOwnerSignUpScreen extends StatelessWidget {
                                               RichText(
                                                   textAlign: TextAlign.center,
                                                   text: TextSpan(
-                                                      text: '${LocaleKeys.agreeToThe.tr} ',
+                                                      text:
+                                                          '${LocaleKeys.agreeToThe.tr} ',
                                                       style: TextStyle(
                                                           fontSize: 15,
                                                           color: Colors.grey),
                                                       children: [
                                                         TextSpan(
-                                                          text: '${LocaleKeys.termsOfUse.tr} ',
+                                                          text:
+                                                              '${LocaleKeys.termsOfUse.tr} ',
                                                           style: TextStyle(
                                                             fontSize: 15,
                                                             color: AppColors

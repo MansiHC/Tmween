@@ -31,21 +31,17 @@ class RecentlyViewedProductController extends GetxController {
 
   @override
   void onInit() {
-
-
-
-
     super.onInit();
   }
 
   Future<void> getData(language) async {
     //Helper.showLoading();
-    loading =true;
-    wishListedProduct=[];
+    loading = true;
+    wishListedProduct = [];
     update();
-    await api.getRecentlyViewed(userId,"1", language).then((value) {
-    //  Helper.hideLoading(context);
-      loading=false;
+    await api.getRecentlyViewed(userId, "1", language).then((value) {
+      //  Helper.hideLoading(context);
+      loading = false;
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
         prev =
@@ -53,26 +49,25 @@ class RecentlyViewedProductController extends GetxController {
         next = value.data!.next.runtimeType == int ? value.data!.next : 0;
         totalRecords = value.data!.totalRecords!;
         recentlyViewProduct = value.data!.recentlyViewProduct;
-        for(var i=0;i<recentlyViewProduct!.length;i++){
-          if(recentlyViewProduct![i].isWishlist==1)
+        for (var i = 0; i < recentlyViewProduct!.length; i++) {
+          if (recentlyViewProduct![i].isWishlist == 1)
             wishListedProduct.add(recentlyViewProduct![i].id!);
         }
-
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
 
       update();
     }).catchError((error) {
-     // Helper.hideLoading(context);
-      loading=false;
+      // Helper.hideLoading(context);
+      loading = false;
       update();
       print('error....$error');
     });
   }
 
   Future<void> onRefresh(language) async {
-    await api.getRecentlyViewed(userId,"1", language).then((value) {
+    await api.getRecentlyViewed(userId, "1", language).then((value) {
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
         prev =
@@ -90,7 +85,7 @@ class RecentlyViewedProductController extends GetxController {
 
   Future<bool> loadMore(language) async {
     update();
-    await api.getRecentlyViewed(userId,next, language).then((value) {
+    await api.getRecentlyViewed(userId, next, language).then((value) {
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
         prev =
@@ -99,9 +94,9 @@ class RecentlyViewedProductController extends GetxController {
         totalRecords = value.data!.totalRecords!;
         recentlyViewProduct?.addAll(value.data!.recentlyViewProduct!);
         print('ydgsyudgfyuy.........${recentlyViewProduct!.length}');
-        for(var i=0;i<recentlyViewProduct!.length;i++){
-          if(recentlyViewProduct![i].isWishlist==1)
-          wishListedProduct.add(recentlyViewProduct![i].productId!);
+        for (var i = 0; i < recentlyViewProduct!.length; i++) {
+          if (recentlyViewProduct![i].isWishlist == 1)
+            wishListedProduct.add(recentlyViewProduct![i].productId!);
         }
 
         update();
@@ -116,7 +111,7 @@ class RecentlyViewedProductController extends GetxController {
     return false;
   }
 
-  Future<void> removeWishlistProduct(productId,language) async {
+  Future<void> removeWishlistProduct(productId, language) async {
     //  if (Helper.isIndividual) {
     print('remove......');
     await api
@@ -140,7 +135,6 @@ class RecentlyViewedProductController extends GetxController {
     });
     //  }
   }
-
 
   Future<void> addToWishlist(productId, language) async {
     Helper.showLoading();
@@ -169,7 +163,6 @@ class RecentlyViewedProductController extends GetxController {
       print('error....$error');
     });
   }
-
 
   void exitScreen() {
     Get.delete<RecentlyViewedController>();

@@ -16,7 +16,24 @@ const Map<String, String> es_ES = {
   "remove": "Eliminar",
   "selectCountry": "Seleccionar país",
   "fullName": "Nombre completo",
+  "orderPlaced": "Pedido realizado!",
+  "processing": "Procesando",
+  "noTransactionFound": "No se encontró ninguna transacción",
+  "orderPlacedText1": "Su pedido ha sido realizado con éxito.",
+  "orderPlacedText2": "Para obtener más detalles, consulte Todos mis pedidos.",
+  "myOrders": "Mis ordenes",
+  "paymentFailedText1": "Parece que no hemos recibido dinero.",
+  "paymentFailedText2": "¡Vaya!\nAlgo salió mal",
+  "validEmailPhoneNumber":
+      "Ingrese un número de teléfono/correo electrónico válido",
+  "writeReview": "Escribir un comentario",
+  "orderTotal": "Total del pedido",
+  "downloading": "Descargando...",
+  "pageNotFound": "Página no encontrada",
+  "downloadComplete": "Descargar completo",
+  "tryAgain": "Intentar otra vez",
   "pincode": "Código PIN",
+  "deliveryPayment": "Entrega y pago",
   "filter": "Filtrar",
   "bestMatch": "Mejor partido",
   "previous": "Previo",
@@ -192,11 +209,11 @@ const Map<String, String> es_ES = {
   "inStock": "En stock",
   "orderNowOnly": "Ordene ahora, solo",
   "leftInStock": "quedaban en almacenaje",
-
   "failedToGetSMS": "Error al recibir SMS.",
   "otpIs": "OTP es",
   "completeVerification": "Para continuar, complete este paso de verificación.",
-  "sentOtp": "Hemos enviado una contraseña de un solo uso (OTP) al número de teléfono móvil",
+  "sentOtp":
+      "Hemos enviado una contraseña de un solo uso (OTP) al número de teléfono móvil",
   "pleaseCompleteVerification":
       "Ingréselo a continuación para completar la verificación.",
   "pleaseResendOtp": "Vuelva a enviar el Otp.",
@@ -207,12 +224,15 @@ const Map<String, String> es_ES = {
   "emailAddress": "DIRECCIÓN DE CORREO ELECTRÓNICO",
   "phoneNumberCap": "NÚMERO DE TELÉFONO",
   "associateWithTmween": "asociado con su cuenta de Tmween.",
-  "hasYrEmailChanged": "¿Ha cambiado su dirección de correo electrónico o su número de teléfono móvil?",
+  "hasYrEmailChanged":
+      "¿Ha cambiado su dirección de correo electrónico o su número de teléfono móvil?",
   "ifNoLongerUse":
       "Si ya no usa la dirección de correo electrónico asociada con su cuenta de Tmween, puede comunicarse con",
-  "restoringAccount": "para obtener ayuda para restaurar el acceso a su cuenta.",
+  "restoringAccount":
+      "para obtener ayuda para restaurar el acceso a su cuenta.",
   "passwordAssistance": "Asistencia de contraseña",
-  "willAskForPassword": "Le pediremos esta contraseña cada vez que inicie sesión.",
+  "willAskForPassword":
+      "Le pediremos esta contraseña cada vez que inicie sesión.",
   "enterNewPassword": "Ingrese nueva clave",
   "passwordLengthError": "Las contraseñas deben tener al menos 8 caracteres.",
   "reenterNewPassword": "Re-ingrese nueva contraseña.",

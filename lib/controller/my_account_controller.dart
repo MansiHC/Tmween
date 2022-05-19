@@ -6,8 +6,8 @@ import 'package:tmween/controller/wishlist_controller.dart';
 import 'package:tmween/model/get_customer_data_model.dart';
 import 'package:tmween/model/user_local_model.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
-import 'package:tmween/screens/drawer/profile/updateProfile/update_profile_screen.dart';
 import 'package:tmween/screens/drawer/profile/address/your_addresses_screen.dart';
+import 'package:tmween/screens/drawer/profile/updateProfile/update_profile_screen.dart';
 
 import '../database/db_helper.dart';
 import '../service/api.dart';
@@ -101,6 +101,11 @@ class MyAccountController extends GetxController {
               "${profileData!.cityName} - ${profileData!.zip}");
           MySharedPreferences.instance.addStringToSF(
               SharedPreferencesKeys.addressId, profileData!.id.toString());
+        } else {
+          MySharedPreferences.instance
+              .addStringToSF(SharedPreferencesKeys.address, "");
+          MySharedPreferences.instance
+              .addStringToSF(SharedPreferencesKeys.addressId, 0);
         }
         MySharedPreferences.instance.addStringToSF(
             SharedPreferencesKeys.image, profileData!.largeImageUrl);
@@ -110,7 +115,7 @@ class MyAccountController extends GetxController {
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
 
       update();

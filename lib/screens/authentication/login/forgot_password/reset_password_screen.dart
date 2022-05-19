@@ -207,8 +207,7 @@ class ResetPasswordScreen extends StatelessWidget {
                 ),
                 10.widthBox,
                 Expanded(
-                    child: Text(
-                        LocaleKeys.useCharLength.tr,
+                    child: Text(LocaleKeys.useCharLength.tr,
                         style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
@@ -228,8 +227,7 @@ class ResetPasswordScreen extends StatelessWidget {
                 ),
                 10.widthBox,
                 Expanded(
-                    child: Text(
-                        LocaleKeys.notUseSamePwd.tr,
+                    child: Text(LocaleKeys.notUseSamePwd.tr,
                         style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
@@ -249,8 +247,7 @@ class ResetPasswordScreen extends StatelessWidget {
                 ),
                 10.widthBox,
                 Expanded(
-                    child: Text(
-                        LocaleKeys.notUsePersonalInfo.tr,
+                    child: Text(LocaleKeys.notUsePersonalInfo.tr,
                         style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
@@ -270,8 +267,7 @@ class ResetPasswordScreen extends StatelessWidget {
                 ),
                 10.widthBox,
                 Expanded(
-                    child: Text(
-                        LocaleKeys.notUseSameForMultiple.tr,
+                    child: Text(LocaleKeys.notUseSameForMultiple.tr,
                         style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.bold,

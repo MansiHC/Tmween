@@ -65,36 +65,47 @@ class DrawerControllers extends GetxController {
         .then((value) async {
       isLogin = value!;
       update();
-      if(isLogin){
+      if (isLogin) {
         MySharedPreferences.instance
             .getStringValuesSF(SharedPreferencesKeys.address)
             .then((value) async {
-          if (value != null) address = value;
-          update();
+          if (value != null) {
+            address = value;
+            update();
+          }
         });
         MySharedPreferences.instance
             .getStringValuesSF(SharedPreferencesKeys.image)
             .then((value) async {
-          image = value!;
-          update();
+          if (value != null) {
+            image = value;
+            update();
+          }
         });
       }
     });
 
-
     MySharedPreferences.instance
         .addBoolToSF(SharedPreferencesKeys.isDrawer, true);
     languages = <LanguageModel>[
-      LanguageModel(name: LocaleKeys.english.tr, locale: Locale('en', 'US')),
-      LanguageModel(name: LocaleKeys.arabian.tr, locale: Locale('ar', 'DZ')),
-      LanguageModel(name: LocaleKeys.spanish.tr, locale: Locale('es', 'ES')),
+      LanguageModel(
+          name: LocaleKeys.english.tr,
+          image: ImageConstanst.usFlagIcon,
+          locale: Locale('en', 'US')),
+      LanguageModel(
+          name: LocaleKeys.arabian.tr,
+          image: ImageConstanst.sudanFlagIcon,
+          locale: Locale('ar', 'DZ')),
+      LanguageModel(
+          name: LocaleKeys.spanish.tr,
+          image: ImageConstanst.spainFlagIcon,
+          locale: Locale('es', 'ES')),
     ];
     languageValue = languages[0];
     MySharedPreferences.instance
         .getStringValuesSF(SharedPreferencesKeys.token)
         .then((value) async {
-          if(value!=null)
-      token = value;
+      if (value != null) token = value;
       print('dhsh.....$token');
       MySharedPreferences.instance
           .getIntValuesSF(SharedPreferencesKeys.userId)
@@ -103,7 +114,7 @@ class DrawerControllers extends GetxController {
         MySharedPreferences.instance
             .getIntValuesSF(SharedPreferencesKeys.loginLogId)
             .then((value) async {
-          loginLogId = value!;
+          if (value != null) loginLogId = value;
         });
       });
     });
@@ -125,7 +136,7 @@ class DrawerControllers extends GetxController {
         Get.offAll(DrawerScreen());
       } else {
         Helper.hideLoading(context);
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
       update();
     }).catchError((error) {

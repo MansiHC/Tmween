@@ -91,6 +91,7 @@ class AllReviewController extends GetxController {
       }
       update();
     }).catchError((error) {
+      Helper.hideLoading(context);
       print('error....$error');
     });
   }
@@ -99,7 +100,7 @@ class AllReviewController extends GetxController {
     Helper.showLoading();
     await api
         .addReviewReportAbuse(token, userId, productId, reviewId,
-        titleController.text, descriptionController.text, language)
+            titleController.text, descriptionController.text, language)
         .then((value) {
       if (value.statusCode == 401) {
         Helper.hideLoading(context);
@@ -114,10 +115,10 @@ class AllReviewController extends GetxController {
       }
       update();
     }).catchError((error) {
+      Helper.hideLoading(context);
       print('error....$error');
     });
   }
-
 
   Future<void> getAllReviews(language) async {
     //Helper.showLoading();
@@ -198,7 +199,7 @@ class AllReviewController extends GetxController {
 
       update();
     }).catchError((error) {
-      Helper.hideLoading(context);
+      loading = false;
       update();
       print('error....$error');
     });

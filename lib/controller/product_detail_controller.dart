@@ -81,7 +81,6 @@ class ProductDetailController extends GetxController {
         .then((value) async {
       var isLogin = value!;
       if (isLogin) {
-
         MySharedPreferences.instance
             .getStringValuesSF(SharedPreferencesKeys.address)
             .then((value) async {
@@ -123,10 +122,8 @@ class ProductDetailController extends GetxController {
             });
           });
         });
-
       }
     });
-
 
     super.onInit();
   }
@@ -145,9 +142,9 @@ class ProductDetailController extends GetxController {
     attributeTypeArr = [];
     radioPackItems = [];
     attributeValueArray = [];
-    images=[];
-    galleryImages=[];
-    attributeImages=[];
+    images = [];
+    galleryImages = [];
+    attributeImages = [];
     await api
         .getProductDetailsMobile(productSlug, isLogin, userId, language)
         .then((value) {
@@ -160,8 +157,11 @@ class ProductDetailController extends GetxController {
           radioPackItems
               .add(productDetailData!.productData![0].productPack![i].id!);
         }
-        for(var i=0; i<productDetailData!.productData![0].productGallery!.length;i++){
-          galleryImages.add(productDetailData!.productData![0].productGallery![i].largeImageUrl!);
+        for (var i = 0;
+            i < productDetailData!.productData![0].productGallery!.length;
+            i++) {
+          galleryImages.add(productDetailData!
+              .productData![0].productGallery![i].largeImageUrl!);
         }
         for (var i = 0; i < productDetailData!.productOtherInfo!.length; i++) {
           if (productDetailData!.productOtherInfo![i].position == 1) {
@@ -174,7 +174,8 @@ class ProductDetailController extends GetxController {
             bottomRightInfo = productDetailData!.productOtherInfo![i];
           }
         }
-        print('......${isLogin}....${productDetailData!.productData![0].isWhishlist}');
+        print(
+            '......${isLogin}....${productDetailData!.productData![0].isWhishlist}');
         if (isLogin) {
           if (productDetailData!.productData![0].isWhishlist == 1) {
             isLiked = true;
@@ -205,11 +206,13 @@ class ProductDetailController extends GetxController {
             attributeItems.add(a);
           }
           if (attributeTypeArr.length == 0) {
-            isWithAttribute=false;
+            isWithAttribute = false;
             images.addAll(galleryImages);
+            images = images.toSet().toList();
+
             getAttributeWithoutCombination(language, 0);
           } else {
-            isWithAttribute=true;
+            isWithAttribute = true;
 
             getAttributeCombination(language, 0);
           }
@@ -217,7 +220,6 @@ class ProductDetailController extends GetxController {
           Helper.hideLoading(context);
           update();
         }
-
       } else {
         Helper.hideLoading(context);
         Helper.showGetSnackBar(value.message!, AppColors.errorColor);
@@ -246,6 +248,7 @@ class ProductDetailController extends GetxController {
   changeItemSelection(index, index2, language) async {
     attributeItems[index].setPrimaryIndex = index;
     attributeItems[index].setSecondaryIndex = index2;
+
     print(
         "object${attributeTypeArr.toString()}....${attributeValueArray.toString()}");
     for (var i = 0; i < attributeTypeArr.length; i++) {
@@ -286,12 +289,18 @@ class ProductDetailController extends GetxController {
                   .add(attributeData!.productQtyPackData![i].productPackId!);
             }
           }
-          for(var i=0; i<attributeData!.galleryAndAttributeComArr!.length;i++){
-            attributeImages.add(attributeData!.galleryAndAttributeComArr![i].largeImageUrl!);
+          attributeImages = [];
+          images = [];
+          for (var i = 0;
+              i < attributeData!.galleryAndAttributeComArr!.length;
+              i++) {
+            attributeImages.add(
+                attributeData!.galleryAndAttributeComArr![i].largeImageUrl!);
           }
           print('.......${attributeImages.length}....${galleryImages.length}');
           images.addAll(attributeImages);
           images.addAll(galleryImages);
+          images = images.toSet().toList();
         } else {
           Helper.showGetSnackBar(value.message!, AppColors.errorColor);
         }
@@ -313,7 +322,8 @@ class ProductDetailController extends GetxController {
     };
     print('$attrData.....$productId....$packId');
     radioPackItems = [];
-    attributeImages=[];
+    attributeImages = [];
+    images = [];
     await api
         .getItemIdByAttributeCombination(packId, productId, attrData, language)
         .then((value) {
@@ -328,14 +338,18 @@ class ProductDetailController extends GetxController {
             radioPackItems
                 .add(attributeData!.productQtyPackData![i].productPackId!);
           }
-
         }
-        for(var i=0; i<attributeData!.galleryAndAttributeComArr!.length;i++){
-          attributeImages.add(attributeData!.galleryAndAttributeComArr![i].largeImageUrl!);
+
+        for (var i = 0;
+            i < attributeData!.galleryAndAttributeComArr!.length;
+            i++) {
+          attributeImages
+              .add(attributeData!.galleryAndAttributeComArr![i].largeImageUrl!);
         }
         print('.......${attributeImages.length}....${galleryImages.length}');
         images.addAll(attributeImages);
         images.addAll(galleryImages);
+        images = images.toSet().toList();
       } else {
         Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
@@ -424,6 +438,7 @@ class ProductDetailController extends GetxController {
       }
       update();
     }).catchError((error) {
+      Helper.hideLoading(context);
       print('error....$error');
     });
   }
@@ -447,6 +462,7 @@ class ProductDetailController extends GetxController {
       }
       update();
     }).catchError((error) {
+      Helper.hideLoading(context);
       print('error....$error');
     });
   }
@@ -479,9 +495,11 @@ class ProductDetailController extends GetxController {
       }
       update();
     }).catchError((error) {
+      Helper.hideLoading(context);
       print('error....$error');
     });
   }
+
   Future<void> addToCartBuyNow(productItemId, supplierId, language) async {
     addressList = [];
     Helper.showLoading();
@@ -495,10 +513,10 @@ class ProductDetailController extends GetxController {
         addedToCart = true;
         cartCount = value.data!.cartTotalItems!;
         Helper.hideLoading(context);
-     navigateTo(CartScreen(
+        navigateTo(CartScreen(
           from: AppConstants.productDetail,
         ));
-      //  _showDialog();
+        //  _showDialog();
       } else if (value.statusCode == 401) {
         addedToCart = false;
         Helper.hideLoading(context);
@@ -513,6 +531,7 @@ class ProductDetailController extends GetxController {
       }
       update();
     }).catchError((error) {
+      Helper.hideLoading(context);
       print('error....$error');
     });
   }
@@ -747,15 +766,15 @@ class ProductDetailController extends GetxController {
     Navigator.pop(context);
   }
 
-  void exitScreen(CartController cartController,bool fromDeepLink) {
-
-   if(fromDeepLink){
-     Get.deleteAll();
-     Get.offAll(DrawerScreen());
-   } else{
-     Get.delete<ProductDetailController>();
-    cartController.update();
-    Navigator.of(context).pop(true);}
+  void exitScreen(CartController cartController, bool fromDeepLink) {
+    if (fromDeepLink) {
+      Get.deleteAll();
+      Get.offAll(DrawerScreen());
+    } else {
+      Get.delete<ProductDetailController>();
+      cartController.update();
+      Navigator.of(context).pop(true);
+    }
   }
 
   void pop() {

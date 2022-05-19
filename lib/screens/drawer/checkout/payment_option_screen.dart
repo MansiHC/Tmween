@@ -5,7 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/controller/payment_option_controller.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
-import 'package:tmween/screens/drawer/checkout/review_order_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
@@ -64,74 +63,85 @@ class PaymentOptionScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold),
             ),
             10.heightBox,
-
             Expanded(
-              child:  ListView.builder(
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                physics: ScrollPhysics(),
-                itemCount: paymentOptionController.paymentOptions.length,
-                itemBuilder: (context, index) {
-                  return InkWell(
-                      onTap: (){
-                        paymentOptionController.radioCurrentValue = paymentOptionController.radioValue[index];
-                        paymentOptionController.update();
-                      },
-                      child: Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.grey[300]!),
-                        borderRadius: BorderRadius.all(Radius.circular(2))),
-                    child: Row(children: [
-                      Container(
-                        height: 40,
-                        child: Radio(
-                          value: paymentOptionController.radioValue[index],
-                          visualDensity: const VisualDensity(
-                            horizontal: VisualDensity.minimumDensity,
-                            vertical: VisualDensity.minimumDensity,
-                          ),
-                          groupValue: paymentOptionController.radioCurrentValue,
-                          activeColor: Color(0xFF1992CE),
-                          onChanged: (int? value) {
-                            paymentOptionController.radioCurrentValue = value!;
-                            paymentOptionController.update();
-                          },
-                        ),
-                      ),
-                      5.widthBox,
-                      Expanded(
-                          child: Text(paymentOptionController.paymentOptions[index].methodName!,
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                color: Color(0xFF666666),
-                                fontSize: 15,
-                              ))),
-                      paymentOptionController.paymentOptions[index].smallImageUrl!.isNotEmpty
-                          ? CachedNetworkImage(
-                        imageUrl:
-                        paymentOptionController.paymentOptions[index].smallImageUrl!,
-                          height: MediaQuery.of(context).size.width / 9,
-                          width: MediaQuery.of(context).size.width / 9,
-                        placeholder: (context, url) =>
-                            Center(child: CupertinoActivityIndicator()),
-                        errorWidget: (context, url, error) => Icon(
-                          Icons.image_not_supported,
-                          color: Colors.grey,
-                        ),
-                      )
-                          : Container(
-                          height: MediaQuery.of(context).size.width / 9,
-                          width: MediaQuery.of(context).size.width / 9,
-                          child: Icon(
-                            Icons.image_not_supported,
-                            color: Colors.grey,
-                          ))
-                    ]),
-                  ));
-                }),
-          ),
+              child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  physics: ScrollPhysics(),
+                  itemCount: paymentOptionController.paymentOptions.length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                        onTap: () {
+                          paymentOptionController.radioCurrentValue =
+                              paymentOptionController.radioValue[index];
+                          paymentOptionController.update();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(color: Colors.grey[300]!),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(2))),
+                          child: Row(children: [
+                            Container(
+                              height: 40,
+                              child: Radio(
+                                value:
+                                    paymentOptionController.radioValue[index],
+                                visualDensity: const VisualDensity(
+                                  horizontal: VisualDensity.minimumDensity,
+                                  vertical: VisualDensity.minimumDensity,
+                                ),
+                                groupValue:
+                                    paymentOptionController.radioCurrentValue,
+                                activeColor: Color(0xFF1992CE),
+                                onChanged: (int? value) {
+                                  paymentOptionController.radioCurrentValue =
+                                      value!;
+                                  paymentOptionController.update();
+                                },
+                              ),
+                            ),
+                            5.widthBox,
+                            Expanded(
+                                child: Text(
+                                    paymentOptionController
+                                        .paymentOptions[index].methodName!,
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      color: Color(0xFF666666),
+                                      fontSize: 15,
+                                    ))),
+                            paymentOptionController.paymentOptions[index]
+                                    .smallImageUrl!.isNotEmpty
+                                ? CachedNetworkImage(
+                                    imageUrl: paymentOptionController
+                                        .paymentOptions[index].smallImageUrl!,
+                                    height:
+                                        MediaQuery.of(context).size.width / 9,
+                                    width:
+                                        MediaQuery.of(context).size.width / 9,
+                                    placeholder: (context, url) => Center(
+                                        child: CupertinoActivityIndicator()),
+                                    errorWidget: (context, url, error) => Icon(
+                                      Icons.image_not_supported,
+                                      color: Colors.grey,
+                                    ),
+                                  )
+                                : Container(
+                                    height:
+                                        MediaQuery.of(context).size.width / 9,
+                                    width:
+                                        MediaQuery.of(context).size.width / 9,
+                                    child: Icon(
+                                      Icons.image_not_supported,
+                                      color: Colors.grey,
+                                    ))
+                          ]),
+                        ));
+                  }),
+            ),
             10.heightBox,
             Align(
                 alignment: Alignment.bottomCenter,
@@ -152,7 +162,7 @@ class PaymentOptionScreen extends StatelessWidget {
                         )
                       ]),
                       onPressed: () {
-                       paymentOptionController.setPaymentOption(language);
+                        paymentOptionController.setPaymentOption(language);
                       },
                       style: ButtonStyle(
                         backgroundColor:

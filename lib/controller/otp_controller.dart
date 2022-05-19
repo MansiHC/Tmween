@@ -45,7 +45,7 @@ class OtpController extends GetxController {
         exitScreen();
         //  navigateToDrawerScreen();
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
 
       update();
@@ -59,6 +59,11 @@ class OtpController extends GetxController {
   @override
   void onInit() {
     initPlatformState();
+    MySharedPreferences.instance
+        .getStringValuesSF(SharedPreferencesKeys.fcmToken)
+        .then((value) async {
+      uuid = value!;
+    });
     super.onInit();
   }
 
@@ -77,7 +82,7 @@ class OtpController extends GetxController {
   }
 
   void getAndroidBuildData(AndroidDeviceInfo build) {
-    uuid = build.androidId;
+    // uuid = build.androidId;
     deviceNo = build.id;
     deviceName = build.device;
     platform = "android";
@@ -117,7 +122,7 @@ class OtpController extends GetxController {
   }
 
   void getIosDeviceInfo(IosDeviceInfo data) {
-    uuid = "";
+    //  uuid = "";
     deviceNo = "";
     deviceName = data.systemName;
     platform = "ios";
@@ -166,11 +171,16 @@ class OtpController extends GetxController {
           MySharedPreferences.instance.addStringToSF(
               SharedPreferencesKeys.addressId,
               value.data!.customerAddressData![0].id.toString());
+        } else {
+          MySharedPreferences.instance
+              .addStringToSF(SharedPreferencesKeys.address, "");
+          MySharedPreferences.instance
+              .addStringToSF(SharedPreferencesKeys.addressId, 0);
         }
         Helper.isIndividual = true;
         navigateToDrawerScreen();
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
 
       update();
@@ -192,9 +202,9 @@ class OtpController extends GetxController {
         Get.delete<LoginController>();
         navigateToLoginScreen(
             from, frm, isPasswordScreen, isStorePasswordScreen);
-        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
 
       update();
@@ -213,10 +223,10 @@ class OtpController extends GetxController {
       Helper.hideLoading(context);
       if (value.statusCode == 200) {
         otpValue = value.data!.otp.toString();
-        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
         update();
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
       update();
     }).catchError((error) {
@@ -234,9 +244,9 @@ class OtpController extends GetxController {
       Helper.hideLoading(context);
       if (value.statusCode == 200) {
         otpValue = value.data!.otp.toString();
-        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
       update();
     }).catchError((error) {
@@ -263,13 +273,13 @@ class OtpController extends GetxController {
       String from, String frm, bool isPassword, bool isStorePassword) {
     //  Get.delete<OtpController>();
     otpController.clear();
-    if (from ==  AppConstants.individual) {
+    if (from == AppConstants.individual) {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
               builder: (context) => LoginScreen(
                     from: frm,
-                    frm:  AppConstants.individual,
+                    frm: AppConstants.individual,
                     isPassword: true,
                     isStorePassword: isStorePassword,
                   )));
@@ -279,7 +289,7 @@ class OtpController extends GetxController {
           MaterialPageRoute(
               builder: (context) => LoginScreen(
                     from: frm,
-                    frm:  AppConstants.store,
+                    frm: AppConstants.store,
                     isPassword: isPassword,
                     isStorePassword: true,
                   )));
@@ -290,13 +300,13 @@ class OtpController extends GetxController {
       String from, String frm, bool isPassword, bool isStorePassword) {
     //Get.delete<OtpController>();
     otpController.clear();
-    if (from ==  AppConstants.individual) {
+    if (from == AppConstants.individual) {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
               builder: (context) => LoginScreen(
                     from: frm,
-                    frm:  AppConstants.individual,
+                    frm: AppConstants.individual,
                     isPassword: false,
                     isStorePassword: isStorePassword,
                   )));
@@ -306,7 +316,7 @@ class OtpController extends GetxController {
           MaterialPageRoute(
               builder: (context) => LoginScreen(
                     from: frm,
-                    frm:  AppConstants.store,
+                    frm: AppConstants.store,
                     isPassword: isPassword,
                     isStorePassword: false,
                   )));

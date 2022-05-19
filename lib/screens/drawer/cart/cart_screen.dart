@@ -74,9 +74,11 @@ class CartScreenState extends State<CartScreen> {
                             color: AppColors.appBarColor,
                             padding: EdgeInsets.only(top: 20),
                             child: topView(cartController)),
-                      if (cartController.cartData == null)
+                      if (cartController.cartData == null &&
+                          !cartController.loading)
                         _noCartView(cartController),
-                      if (cartController.cartData != null)
+                      if (cartController.cartData != null &&
+                          !cartController.loading)
                         Expanded(child: _bottomView(cartController))
                     ],
                   )));
@@ -204,8 +206,8 @@ class CartScreenState extends State<CartScreen> {
                       return Column(
                         children: [
                           CartProductContainer(
-                              cartProductModel:
-                                  cartController.cartData!.cartItemDetails![index],
+                              cartProductModel: cartController
+                                  .cartData!.cartItemDetails![index],
                               index: index),
                           15.heightBox
                         ],
@@ -237,8 +239,7 @@ class CartScreenState extends State<CartScreen> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 TextSpan(
-                                  text: cartController.totalAmount
-                                      .toString(),
+                                  text: cartController.totalAmount.toString(),
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 13,
@@ -282,35 +283,36 @@ class CartScreenState extends State<CartScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    if(cartController.recommendedProductsData!.length>0)
-                    Expanded(
-                        child: Text(
-                      LocaleKeys.recommendationForAllProducts.tr,
-                      style: TextStyle(
-                          color: Color(0xFF333333),
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold),
-                    )),
-                    if(cartController.recommendedProductsData!.length>3)
-                    InkWell(
-                        onTap: (){
-cartController.navigateTo(RecommendedProductScreen(productIdList:cartController.productIdList!));
-                        },
-                        child:Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        Text(
-                          LocaleKeys.viewAll.tr,
-                          style:
-                              TextStyle(color: Color(0xFF626262), fontSize: 11),
-                        ),
-                        Icon(
-                          Icons.keyboard_arrow_right,
-                          color: Color(0xFF626262),
-                          size: 16,
-                        )
-                      ],
-                    ))
+                    if (cartController.recommendedProductsData!.length > 0)
+                      Expanded(
+                          child: Text(
+                        LocaleKeys.recommendationForAllProducts.tr,
+                        style: TextStyle(
+                            color: Color(0xFF333333),
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold),
+                      )),
+                    if (cartController.recommendedProductsData!.length > 3)
+                      InkWell(
+                          onTap: () {
+                            cartController.navigateTo(RecommendedProductScreen(
+                                productIdList: cartController.productIdList!));
+                          },
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              Text(
+                                LocaleKeys.viewAll.tr,
+                                style: TextStyle(
+                                    color: Color(0xFF626262), fontSize: 11),
+                              ),
+                              Icon(
+                                Icons.keyboard_arrow_right,
+                                color: Color(0xFF626262),
+                                size: 16,
+                              )
+                            ],
+                          ))
                   ],
                 ),
                 10.heightBox,
@@ -318,13 +320,16 @@ cartController.navigateTo(RecommendedProductScreen(productIdList:cartController.
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     physics: ScrollPhysics(),
-                    itemCount: cartController.recommendedProductsData!.length>3?3:cartController.recommendedProductsData!.length,
+                    itemCount:
+                        cartController.recommendedProductsData!.length > 3
+                            ? 3
+                            : cartController.recommendedProductsData!.length,
                     itemBuilder: (context, index) {
                       return Column(
                         children: [
                           RecommendedProductContainer(
-                              recommendedProductModel:
-                                  cartController.recommendedProductsData![index]),
+                              recommendedProductModel: cartController
+                                  .recommendedProductsData![index]),
                           15.heightBox
                         ],
                       );
@@ -336,36 +341,41 @@ cartController.navigateTo(RecommendedProductScreen(productIdList:cartController.
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    if(cartController.recentlyViewedProducts!.length>0)
-                    Expanded(
-                        child: Text(
-                      LocaleKeys.yourRecentlyViewedItems.tr,
-                      style: TextStyle(
-                          color: Color(0xFF333333),
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold),
-                    )),
-    if(cartController.recentlyViewedProducts!.length>3)
-    InkWell(
-    onTap: (){
-    Navigator.push(context, MaterialPageRoute(builder: (context) => RecentlyViewedProductScreen())).then((value) => cartController.getCartProducts(language));
-    },
-    child:
-                    Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        Text(
-                          LocaleKeys.viewAll.tr,
-                          style:
-                              TextStyle(color: Color(0xFF626262), fontSize: 11),
-                        ),
-                        Icon(
-                          Icons.keyboard_arrow_right,
-                          color: Color(0xFF626262),
-                          size: 16,
-                        )
-                      ],
-                    ))
+                    if (cartController.recentlyViewedProducts!.length > 0)
+                      Expanded(
+                          child: Text(
+                        LocaleKeys.yourRecentlyViewedItems.tr,
+                        style: TextStyle(
+                            color: Color(0xFF333333),
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold),
+                      )),
+                    if (cartController.recentlyViewedProducts!.length > 3)
+                      InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        RecentlyViewedProductScreen())).then(
+                                (value) =>
+                                    cartController.getCartProducts(language));
+                          },
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              Text(
+                                LocaleKeys.viewAll.tr,
+                                style: TextStyle(
+                                    color: Color(0xFF626262), fontSize: 11),
+                              ),
+                              Icon(
+                                Icons.keyboard_arrow_right,
+                                color: Color(0xFF626262),
+                                size: 16,
+                              )
+                            ],
+                          ))
                   ],
                 ),
                 10.heightBox,
@@ -373,7 +383,9 @@ cartController.navigateTo(RecommendedProductScreen(productIdList:cartController.
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     physics: ScrollPhysics(),
-                    itemCount: cartController.recentlyViewedProducts!.length>3?3:cartController.recentlyViewedProducts!.length,
+                    itemCount: cartController.recentlyViewedProducts!.length > 3
+                        ? 3
+                        : cartController.recentlyViewedProducts!.length,
                     itemBuilder: (context, index) {
                       return Column(
                         children: [
@@ -391,181 +403,179 @@ cartController.navigateTo(RecommendedProductScreen(productIdList:cartController.
   Widget _guaranteeSection(CartController cartController) {
     return Container(
         decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Color(0xFFF3F3F3)),
-    ),
-    child: Column(
-      children: [
-        Container(
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(color: Color(0xFF314156),
-          boxShadow: [
-              BoxShadow(
-                  color: Colors.grey[200]!, blurRadius: 5, spreadRadius: 5)
-            ]),
-            width: double.maxFinite,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                10.widthBox,
-                SvgPicture.asset(
-                  ImageConstanst.logo,
-                  height: 30,
-                  width: 30,
-                ),
-                10.heightBox,
-                Expanded(
-                    child: Text(
-                  LocaleKeys.guaranteePurchaseProtection,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, fontSize: 14),
+          color: Colors.white,
+          border: Border.all(color: Color(0xFFF3F3F3)),
+        ),
+        child: Column(
+          children: [
+            Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(color: Color(0xFF314156), boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey[200]!, blurRadius: 5, spreadRadius: 5)
+                ]),
+                width: double.maxFinite,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    10.widthBox,
+                    SvgPicture.asset(
+                      ImageConstanst.logo,
+                      height: 30,
+                      width: 30,
+                    ),
+                    10.heightBox,
+                    Expanded(
+                        child: Text(
+                      LocaleKeys.guaranteePurchaseProtection,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white, fontSize: 14),
+                    ))
+                  ],
+                )),
+            Container(
+                padding: EdgeInsets.all(10),
+                color: Colors.white,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        flex: 2,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              ImageConstanst.warranty,
+                              height: 35,
+                              width: 35,
+                            ),
+                            5.heightBox,
+                            SizedBox(
+                                height: 34,
+                                child: Text(
+                                  LocaleKeys.warranty.tr,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Color(0xFF333333),
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                            Text(
+                              LocaleKeys.asPerWeswox.tr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color(0xFF5C5C5C), fontSize: 12),
+                            ),
+                          ],
+                        )),
+                    Container(
+                      color: Color(0xFFEEEEEE),
+                      height: 70,
+                      width: 1,
+                    ),
+                    Expanded(
+                        flex: 2,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              ImageConstanst.original,
+                              height: 35,
+                              width: 35,
+                            ),
+                            5.heightBox,
+                            SizedBox(
+                                height: 34,
+                                child: Text(
+                                  LocaleKeys.percentOriginal.tr,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Color(0xFF333333),
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                            Text(
+                              "\n${LocaleKeys.products.tr}",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color(0xFF5C5C5C), fontSize: 12),
+                            ),
+                          ],
+                        )),
+                    Container(
+                      color: Color(0xFFEEEEEE),
+                      height: 70,
+                      width: 1,
+                    ),
+                    Expanded(
+                        flex: 2,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              ImageConstanst.secure,
+                              height: 35,
+                              width: 35,
+                            ),
+                            5.heightBox,
+                            SizedBox(
+                                height: 34,
+                                child: Text(
+                                  LocaleKeys.secure.tr,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Color(0xFF333333),
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                            Text(
+                              "\n${LocaleKeys.payments.tr}",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color(0xFF5C5C5C), fontSize: 12),
+                            ),
+                          ],
+                        )),
+                    Container(
+                      color: Color(0xFFEEEEEE),
+                      height: 70,
+                      width: 1,
+                    ),
+                    Expanded(
+                        flex: 2,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              ImageConstanst.protected,
+                              height: 35,
+                              width: 35,
+                            ),
+                            5.heightBox,
+                            SizedBox(
+                                height: 34,
+                                child: Text(
+                                  LocaleKeys.percentBuyer.tr,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Color(0xFF333333),
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                            Text(
+                              "\n${LocaleKeys.protection.tr}",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color(0xFF5C5C5C), fontSize: 12),
+                            ),
+                          ],
+                        )),
+                  ],
                 ))
-              ],
-            )),
-        Container(
-            padding: EdgeInsets.all(10),
-            color: Colors.white,
-            child:
-                Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                    flex: 2,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          ImageConstanst.warranty,
-                          height: 35,
-                          width: 35,
-                        ),
-                        5.heightBox,
-                        SizedBox(
-                            height: 34,
-                            child: Text(
-                              LocaleKeys.warranty.tr,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Color(0xFF333333),
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold),
-                            )),
-                        Text(
-                          LocaleKeys.asPerWeswox.tr,
-                          textAlign: TextAlign.center,
-                          style:
-                              TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
-                        ),
-                      ],
-                    )),
-                Container(
-                  color: Color(0xFFEEEEEE),
-                  height: 70,
-                  width: 1,
-                ),
-                Expanded(
-                    flex: 2,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          ImageConstanst.original,
-                          height: 35,
-                          width: 35,
-                        ),
-                        5.heightBox,
-                        SizedBox(
-                            height: 34,
-                            child: Text(
-                              LocaleKeys.percentOriginal.tr,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Color(0xFF333333),
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold),
-                            )),
-                        Text(
-                          "\n${LocaleKeys.products.tr}",
-                          textAlign: TextAlign.center,
-                          style:
-                              TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
-                        ),
-                      ],
-                    )),
-                Container(
-                  color: Color(0xFFEEEEEE),
-                  height: 70,
-                  width: 1,
-                ),
-                Expanded(
-                    flex: 2,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          ImageConstanst.secure,
-                          height: 35,
-                          width: 35,
-                        ),
-                        5.heightBox,
-                        SizedBox(
-                            height: 34,
-                            child: Text(
-                              LocaleKeys.secure.tr,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Color(0xFF333333),
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold),
-                            )),
-                        Text(
-                          "\n${LocaleKeys.payments.tr}",
-                          textAlign: TextAlign.center,
-                          style:
-                              TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
-                        ),
-                      ],
-                    )),
-                Container(
-                  color: Color(0xFFEEEEEE),
-                  height: 70,
-                  width: 1,
-                ),
-                Expanded(
-                    flex: 2,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          ImageConstanst.protected,
-                          height: 35,
-                          width: 35,
-                        ),
-                        5.heightBox,
-                        SizedBox(
-                            height: 34,
-                            child: Text(
-                              LocaleKeys.percentBuyer.tr,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Color(0xFF333333),
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold),
-                            )),
-                        Text(
-                          "\n${LocaleKeys.protection.tr}",
-                          textAlign: TextAlign.center,
-                          style:
-                              TextStyle(color: Color(0xFF5C5C5C), fontSize: 12),
-                        ),
-                      ],
-                    )),
-              ],
-            ))
-      ],
-    ));
+          ],
+        ));
   }
 
   Widget _noCartView(CartController cartController) {

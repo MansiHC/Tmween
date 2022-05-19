@@ -83,7 +83,7 @@ class LoginController extends GetxController {
   }
 
   void getAndroidBuildData(AndroidDeviceInfo build) {
-    uuid = build.androidId;
+    // uuid = build.androidId;
     deviceNo = build.id;
     deviceName = build.device;
     platform = "android";
@@ -123,7 +123,7 @@ class LoginController extends GetxController {
   }
 
   void getIosDeviceInfo(IosDeviceInfo data) {
-    uuid = "";
+    // uuid = "";
     deviceNo = "";
     deviceName = data.systemName;
     platform = "ios";
@@ -196,6 +196,11 @@ class LoginController extends GetxController {
             MySharedPreferences.instance.addStringToSF(
                 SharedPreferencesKeys.addressId,
                 value.data!.customerAddressData![0].id.toString());
+          } else {
+            MySharedPreferences.instance
+                .addStringToSF(SharedPreferencesKeys.address, "");
+            MySharedPreferences.instance
+                .addStringToSF(SharedPreferencesKeys.addressId, 0);
           }
 
           navigateToDrawerScreen();

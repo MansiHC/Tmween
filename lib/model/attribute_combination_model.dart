@@ -37,7 +37,6 @@ class AttributeData {
   int? selectAttributeWiseImageShow;
   List<GalleryAndAttributeComArr>? galleryAndAttributeComArr;
 
-
   //List<Null>? productAssociateAttributeData;
 
   AttributeData({
@@ -137,13 +136,13 @@ class GalleryAndAttributeComArr {
 
   GalleryAndAttributeComArr(
       {this.id,
-        this.image,
-        this.status,
-        this.fancyBoxUrl,
-        this.smallImageUrl,
-        this.largeImageUrl,
-        this.productId,
-        this.orderBy});
+      this.image,
+      this.status,
+      this.fancyBoxUrl,
+      this.smallImageUrl,
+      this.largeImageUrl,
+      this.productId,
+      this.orderBy});
 
   GalleryAndAttributeComArr.fromJson(Map<String, dynamic> json) {
     id = json['id'];

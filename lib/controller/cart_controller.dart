@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tmween/model/cart_quantity_model.dart';
-import 'package:tmween/model/cart_recent_viewed_product_model.dart';
-import 'package:tmween/model/recommended_product_model.dart';
 import 'package:tmween/screens/drawer/drawer_screen.dart';
 
 import '../model/get_cart_products_model.dart';
@@ -23,15 +21,15 @@ class CartController extends GetxController {
   List<CartQuantityModel> cartQuantityList = [];
   List<int> wishListedProduct = [];
 
-
   final api = Api();
   CartDetails? cartData;
   List<RecommendationProducts>? recommendedProductsData;
   List<RecentlyViewedProducts>? recentlyViewedProducts;
-  List<String>? productIdList=[];
+  List<String>? productIdList = [];
 
   int cartCount = 0;
   bool isLogin = true;
+  bool loading = true;
   late double totalAmount;
   late double shippingAmount;
   late double taxAmount;
@@ -47,7 +45,7 @@ class CartController extends GetxController {
         MySharedPreferences.instance
             .getStringValuesSF(SharedPreferencesKeys.token)
             .then((value) async {
-          token = value!;
+          if (value != null) token = value;
           print('dhsh.....$token');
           MySharedPreferences.instance
               .getIntValuesSF(SharedPreferencesKeys.userId)
@@ -70,42 +68,48 @@ class CartController extends GetxController {
     Helper.showLoading();
     cartQuantityList = [];
     wishListedProduct = [];
-    productIdList=[];
+    productIdList = [];
     cartData = null;
     await api.getCartItems(token, userId, language).then((value) {
       Helper.hideLoading(context);
       if (value.statusCode == 200) {
+        loading = false;
+
         cartData = value.data!.cartDetails;
         recommendedProductsData = value.data!.recommendationProducts;
         recentlyViewedProducts = value.data!.recentlyViewedProducts;
         cartCount = cartData!.totalItems!;
-        totalAmount=cartData!.totalPrice!.toPrecision(1);
-        shippingAmount=cartData!.totalDeliveryPrice!.toPrecision(1);
-        taxAmount=cartData!.totalTaxAmount!;
+        totalAmount = cartData!.totalPrice!.toPrecision(1);
+        shippingAmount = cartData!.totalDeliveryPrice!.toPrecision(1);
+        taxAmount = cartData!.totalTaxAmount!;
         for (var i = 0; i < cartData!.cartItemDetails!.length; i++) {
-          productIdList!.add(cartData!.cartItemDetails![i].productId.toString());
+          productIdList!
+              .add(cartData!.cartItemDetails![i].productId.toString());
           var q = CartQuantityModel();
           q.setQuantity = cartData!.cartItemDetails![i].quantity!;
           q.setProductId = cartData!.cartItemDetails![i].productId!;
           cartQuantityList.add(q);
-
         }
-        for(var i=0;i<recentlyViewedProducts!.length;i++){
-          if(recentlyViewedProducts![i].isWishlist==1)
+        for (var i = 0; i < recentlyViewedProducts!.length; i++) {
+          if (recentlyViewedProducts![i].isWishlist == 1)
             wishListedProduct.add(recentlyViewedProducts![i].id!);
         }
         update();
       } else if (value.statusCode == 401) {
+        loading = false;
+        Helper.hideLoading(context);
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
-      }else{
+      } else {
+        cartCount = 0;
+        loading = false;
         update();
       }
-
-
     }).catchError((error) {
+      loading = false;
+      cartData = null;
       Helper.hideLoading(context);
       update();
       print('error....$error');
@@ -157,7 +161,7 @@ class CartController extends GetxController {
     });
   }
 
-  Future<void> removeWishlistProduct(productId,language) async {
+  Future<void> removeWishlistProduct(productId, language) async {
     //  if (Helper.isIndividual) {
     print('remove......');
     await api
@@ -182,10 +186,8 @@ class CartController extends GetxController {
     //  }
   }
 
-
-
   Future<void> editCartProductDecrease(
-      id, productId,quoteId, qty, language, oldQty, index) async {
+      id, productId, quoteId, qty, language, oldQty, index) async {
     Helper.showLoading();
     var q = qty - 1;
     print('......${q}');
@@ -196,11 +198,12 @@ class CartController extends GetxController {
         Helper.hideLoading(context);
 
         oldQty = qty--;
-        cartQuantityList[index].setQuantity = value.data!.quoteItem![0].quantity!;
+        cartQuantityList[index].setQuantity =
+            value.data!.quoteItem![0].quantity!;
         cartCount = value.data!.cartTotalItems!;
-       totalAmount =  value.data!.quote![0].grandTotal!.toPrecision(1);
-        shippingAmount=value.data!.quote![0].shippingPrice!.toPrecision(1);
-        taxAmount=value.data!.quote![0].taxAmount!;
+        totalAmount = value.data!.quote![0].grandTotal!.toPrecision(1);
+        shippingAmount = value.data!.quote![0].shippingPrice!.toPrecision(1);
+        taxAmount = value.data!.quote![0].taxAmount!;
         update();
 
         Helper.showGetSnackBar(value.message!, AppColors.successColor);
@@ -223,21 +226,22 @@ class CartController extends GetxController {
   }
 
   Future<void> editCartProductIncrease(
-      id,productId,quoteId, qty, language, oldQty, index) async {
+      id, productId, quoteId, qty, language, oldQty, index) async {
     Helper.showLoading();
     var q = qty + 1;
     print('......${q}....$oldQty...$qty');
     await api
-        .editCartItem(token, id, quoteId, userId, q,  language)
+        .editCartItem(token, id, quoteId, userId, q, language)
         .then((value) {
       if (value.statusCode == 200) {
         Helper.hideLoading(context);
         oldQty = qty++;
-        cartQuantityList[index].setQuantity = value.data!.quoteItem![0].quantity!;
+        cartQuantityList[index].setQuantity =
+            value.data!.quoteItem![0].quantity!;
         cartCount = value.data!.cartTotalItems!;
-        totalAmount =  value.data!.quote![0].grandTotal!.toPrecision(1);
-        shippingAmount=value.data!.quote![0].shippingPrice!.toPrecision(1);
-        taxAmount=value.data!.quote![0].taxAmount!;
+        totalAmount = value.data!.quote![0].grandTotal!.toPrecision(1);
+        shippingAmount = value.data!.quote![0].shippingPrice!.toPrecision(1);
+        taxAmount = value.data!.quote![0].taxAmount!;
         update();
         Helper.showGetSnackBar(value.message!, AppColors.successColor);
       } else if (value.statusCode == 401) {
@@ -258,12 +262,10 @@ class CartController extends GetxController {
     });
   }
 
-  Future<void> deleteCartProduct(
-      quoteId, quoteItemId, language, qty) async {
+  Future<void> deleteCartProduct(quoteId, quoteItemId, language, qty) async {
     Helper.showLoading();
     await api
-        .removeCartItem(token, quoteId, userId, quoteItemId,
-            language)
+        .removeCartItem(token, quoteId, userId, quoteItemId, language)
         .then((value) {
       if (value.statusCode == 200) {
         cartCount = cartCount - int.parse(qty.toString());
@@ -287,40 +289,6 @@ class CartController extends GetxController {
     });
   }
 
-  List<RecommendedProductModel> recommendedProducts =
-      const <RecommendedProductModel>[
-    const RecommendedProductModel(
-        title:
-            'Canon EOS 1300D 18MP Digital SLR Camera (Black) with 18-55mm ISII Lens, 16GB Card and Carry Case',
-        offerPrice: '120',
-        price: '1340',
-        isFulFilled: true,
-        isYouSave: true,
-        saveOffer: '39',
-        savePrice: '4,000',
-        image: 'asset/image/my_cart_images/my_cart_img.jpg'),
-    const RecommendedProductModel(
-        title:
-            'Canon EOS 1300D 18MP Digital SLR Camera (Black) with 18-55mm ISII Lens, 16GB Card and Carry Case',
-        offerPrice: '120',
-        price: '1340',
-        isFulFilled: true,
-        isYouSave: true,
-        saveOffer: '39',
-        savePrice: '4,000',
-        image: 'asset/image/my_cart_images/my_cart_img.jpg'),
-    const RecommendedProductModel(
-        title:
-            'Canon EOS 1300D 18MP Digital SLR Camera (Black) with 18-55mm ISII Lens, 16GB Card and Carry Case',
-        offerPrice: '120',
-        price: '1340',
-        isFulFilled: true,
-        isYouSave: true,
-        saveOffer: '39',
-        savePrice: '4,000',
-        image: 'asset/image/my_cart_images/my_cart_img.jpg'),
-  ];
-
   void exitScreen() {
     Navigator.of(context).pop();
   }
@@ -331,6 +299,7 @@ class CartController extends GetxController {
   }
 
   void navigateToDashboardScreen() {
+    Get.deleteAll();
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => DrawerScreen()),
         (Route<dynamic> route) => false);

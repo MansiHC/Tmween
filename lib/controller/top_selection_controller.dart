@@ -28,12 +28,12 @@ class TopSelectionController extends GetxController {
   }
 
   Future<void> getData(language) async {
-  //  Helper.showLoading();
-    loading =true;
+    //  Helper.showLoading();
+    loading = true;
     update();
     await api.getTopSelection("1", language).then((value) {
-     // Helper.hideLoading(context);
-      loading=false;
+      // Helper.hideLoading(context);
+      loading = false;
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
         prev =
@@ -42,13 +42,13 @@ class TopSelectionController extends GetxController {
         totalRecords = value.data!.totalRecords!;
         topSelectionData = value.data!.topSelectionData;
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
 
       update();
     }).catchError((error) {
-     // Helper.hideLoading(context);
-      loading=false;
+      // Helper.hideLoading(context);
+      loading = false;
       update();
       print('error....$error');
     });

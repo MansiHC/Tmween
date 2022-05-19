@@ -53,7 +53,7 @@ class DeactivateAccountController extends GetxController {
             .addStringToSF(SharedPreferencesKeys.image, "");
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
-        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       } else if (value.statusCode == 401) {
@@ -63,7 +63,8 @@ class DeactivateAccountController extends GetxController {
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.hideLoading(context);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
       update();
     }).catchError((error) {

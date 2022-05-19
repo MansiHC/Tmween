@@ -129,7 +129,7 @@ class WishlistController extends GetxController {
     //  if (Helper.isIndividual) {
     await api.deleteWishListDetails(token, id, userId, language).then((value) {
       if (value.statusCode == 200) {
-        Helper.showGetSnackBar(value.message!,  AppColors.successColor);
+        Helper.showGetSnackBar(value.message!, AppColors.successColor);
         getWishListData(Get.locale!.languageCode);
       } else if (value.statusCode == 401) {
         MySharedPreferences.instance
@@ -137,7 +137,7 @@ class WishlistController extends GetxController {
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
       update();
     }).catchError((error) {

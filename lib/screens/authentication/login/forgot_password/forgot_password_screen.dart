@@ -179,8 +179,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             RichText(
                 textAlign: TextAlign.start,
                 text: TextSpan(
-                    text:
-                        '${LocaleKeys.ifNoLongerUse.tr} ',
+                    text: '${LocaleKeys.ifNoLongerUse.tr} ',
                     style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.bold,

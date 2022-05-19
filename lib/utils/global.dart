@@ -27,6 +27,12 @@ abstract class AppColors {
   static const darkblue = Color(0xFF369ED2);
   static Color successColor = Colors.green;
   static Color errorColor = Colors.red[400]!;
+  static Color blueGradient1 = Color(0xFFf6fbff);
+  static Color blueGradient2 = Color(0xFFcaecff);
+  static Color blueGradient3 = Color(0xFFa7e2fd);
+  static Color redGradient1 = Color(0xFFfff0ef);
+  static Color redGradient2 = Color(0xFFffc6bf);
+  static Color redGradient3 = Color(0xFFff9a96);
 }
 
 abstract class AppConstants {
@@ -46,7 +52,6 @@ abstract class AppConstants {
   static String deepLinkUrlPrefix = "https://tmween.page.link";
   static String deepLinkName = "tmween";
   static String appStoreId = "";
-
 }
 
 abstract class UrlConstants {
@@ -102,6 +107,8 @@ abstract class UrlConstants {
       '$baseUrl/customer/update-profile-mobile';
   static const String getCustomerAddressList =
       '$baseUrl/customer/get-customer-address-list-csc';
+  static const String getCustomerWalletData =
+      '$baseUrl/customer/get-customer-wallet-mobile-data';
   static const String getReviewOrder =
       '$baseUrl/customer/get-review-order-mobile';
   static const String deleteCustomerAddress =
@@ -110,9 +117,23 @@ abstract class UrlConstants {
       '$baseUrl/customer/update-customer-address-mobile';
   static const String addCustomerAddress =
       '$baseUrl/customer/add-customer-address';
+  static const String getSyberPayPaymentURL =
+      '$baseUrl/customer/new-order-place';
+  static const String getSyberPayOrderStatus =
+      '$baseUrl/customer/syberpay-payment-response-for-mobile';
   static const String getSearchHistory = '$baseUrl/customer/get-search-history';
+  static const String getNotificationList =
+      '$baseUrl/get-user-notification-list';
+  static const String readUserNotification = '$baseUrl/read-user-notification';
+  static const String deleteUserNotification =
+      '$baseUrl/delete-user-notification';
   static const String clearSearchHistory =
       '$baseUrl/customer/clear-search-history';
+  static const String getOrderList =
+      '$baseUrl/customer/get-customer-order-list';
+  static const String getOrderDetail = '$baseUrl/customer/get-order-details';
+  static const String getInvoice =
+      '$baseUrl/customer/get-customer-invoice-downloads';
   static const String updateAccountStatus =
       '$baseUrl/customer/update-account-status';
   static const String reactivateUserAccount =
@@ -120,15 +141,20 @@ abstract class UrlConstants {
   static const String addCustomerReview =
       '$baseUrl/customer/add-customer-review';
   static const String addToCart = '$baseUrl/customer/add-to-cart';
-  static const String updateCartItem = '$baseUrl/customer/change-cart-item-quantity';
-  static const String removeCartItem = '$baseUrl/customer/remove-item-from-cart';
+  static const String updateCartItem =
+      '$baseUrl/customer/change-cart-item-quantity';
+  static const String removeCartItem =
+      '$baseUrl/customer/remove-item-from-cart';
   static const String getCartItems = '$baseUrl/customer/get-cart-page-details';
-  static const String updateQuoteAddress = '$baseUrl/customer/update-quote-address';
+  static const String updateQuoteAddress =
+      '$baseUrl/customer/update-quote-address';
   static const String addReviewReportAbuse =
       '$baseUrl/customer/add-review-report-abuse';
   static const String addReviewHelpful = '$baseUrl/customer/add-review-helpful';
-  static const String getPaymentOptions = '$baseUrl/get-front-payment-gateway-logo';
-  static const String setPaymentOption = '$baseUrl/customer/add-quote-paymentmethod';
+  static const String getPaymentOptions =
+      '$baseUrl/get-front-payment-gateway-logo';
+  static const String setPaymentOption =
+      '$baseUrl/customer/add-quote-paymentmethod';
   static const String addRecentlyViewed = '$baseUrl/add-recently-view-product';
 
   //e-commerce
@@ -139,8 +165,7 @@ abstract class UrlConstants {
       '$baseUrl/get-home-page-mobile-data';
   static const String getMobileMasterViewData =
       '$baseUrl/get-mobile-master-view-data';
-  static const String getSubCategoriesData =
-      '$baseUrl/get-subcategory-data';
+  static const String getSubCategoriesData = '$baseUrl/get-subcategory-data';
   static const String getRecommendedProduct =
       '$baseUrl/get-recommanded-product';
   static const String getCategoryMobileFilterData =
@@ -149,8 +174,7 @@ abstract class UrlConstants {
       '$baseUrl/get-search-product-left-filter';
   static const String topSearchSuggestionProductList =
       '$baseUrl/top-search-suggestion-product-list-mobile';
-  static const String categoryProductList =
-      '$baseUrl/get-product-list';
+  static const String categoryProductList = '$baseUrl/get-product-list';
   static const String getProductDetailsMobile =
       '$baseUrl/get-product-details-mobile';
   static const String getItemIdByAttributeCombination =
@@ -243,7 +267,12 @@ abstract class ImageConstanst {
       'asset/image/account_setting_icon.svg';
   static const String walletLogoIcon = 'asset/image/wallet_logo.png';
   static const String payIcon = 'asset/image/pay_icon.svg';
-  static const String cashOnDelivertIcon = 'asset/image/cash_on_delivery_icon.svg';
+  static const String cashOnDelivertIcon =
+      'asset/image/cash_on_delivery_icon.svg';
+  static const String deliveryPaymentIcon =
+      'asset/image/delivery_and_payment.svg';
+  static const String pageNotFoundIcon =
+      'asset/image/404_icon.svg';
 }
 
 abstract class SharedPreferencesKeys {
@@ -261,6 +290,7 @@ abstract class SharedPreferencesKeys {
   static const loginLogId = "loginLogId";
   static const isIndividual = "isIndividual";
   static const token = "token";
+  static const fcmToken = "fcmToken";
   static const language = "language";
 }
 

@@ -17,8 +17,9 @@ class SubCategoriesScreen extends StatefulWidget {
   final String categorySlug;
 
   SubCategoriesScreen(
-      {Key? key, required this.subCategoryData, required this.categoryName
-      ,
+      {Key? key,
+      required this.subCategoryData,
+      required this.categoryName,
       required this.categorySlug})
       : super(key: key);
 
@@ -89,17 +90,15 @@ class SubCategoriesScreenState extends State<SubCategoriesScreen> {
                                             '....slug......${subCategoriesController.subCategoryData![index].slugName}');
                                         subCategoriesController.navigateTo(
                                             CategoryProductListingScreen(
-                                                categorySlug:
-                                                    subCategoriesController
-                                                        .categorySlug,
-                                                categoryName:
-                                                    subCategoriesController
-                                                        .subCategoryData![index]
-                                                        .subcategoryName,
-                                              fromSubCategory: true,
-                                              categoryId: subCategoriesController
-                                                  .subCategoryData![index].id,
-                                            ));
+                                          categorySlug: subCategoriesController
+                                              .categorySlug,
+                                          categoryName: subCategoriesController
+                                              .subCategoryData![index]
+                                              .subcategoryName,
+                                          fromSubCategory: true,
+                                          categoryId: subCategoriesController
+                                              .subCategoryData![index].id,
+                                        ));
                                       },
                                       child: SubCategoryContainer(
                                         category: subCategoriesController

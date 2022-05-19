@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
-import '../model/dashboard_model.dart';
 import '../model/get_recommended_product_model.dart';
 import '../service/api.dart';
 import '../utils/global.dart';
@@ -17,7 +16,7 @@ class RecommendedProductController extends GetxController {
   final api = Api();
   bool loading = false;
   List<RecommendationProducts>? recommendedProductData = [];
-List<String> productIdList=[];
+  List<String> productIdList = [];
   int totalPages = 0;
   int prev = 0;
   int next = 0;
@@ -25,44 +24,41 @@ List<String> productIdList=[];
 
   @override
   void onInit() {
-
     super.onInit();
   }
 
   Future<void> getData(language) async {
-   // Helper.showLoading();
-    loading =true;
+    // Helper.showLoading();
+    loading = true;
     update();
-    await api.getRecommendedProduct(productIdList,"1", language).then((value) {
+    await api.getRecommendedProduct(productIdList, "1", language).then((value) {
       if (value.statusCode == 200) {
-
         totalPages = value.data!.totalPages!;
         prev =
             value.data!.previous!.runtimeType == int ? value.data!.previous : 0;
         next = value.data!.next!.runtimeType == int ? value.data!.next : 0;
         totalRecords = value.data!.totalRecords!;
         recommendedProductData = value.data!.recommendationProducts;
-       // Helper.hideLoading(context);
-        loading=false;
-
+        // Helper.hideLoading(context);
+        loading = false;
       } else {
-       // Helper.hideLoading(context);
-        loading=false;
+        // Helper.hideLoading(context);
+        loading = false;
 
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
 
       update();
     }).catchError((error) {
-    //  Helper.hideLoading(context);
-      loading=false;
+      //  Helper.hideLoading(context);
+      loading = false;
       update();
       print('error....$error');
     });
   }
 
   Future<void> onRefresh(language) async {
-    await api.getRecommendedProduct(productIdList,"1", language).then((value) {
+    await api.getRecommendedProduct(productIdList, "1", language).then((value) {
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
         prev =
@@ -79,7 +75,9 @@ List<String> productIdList=[];
 
   Future<bool> loadMore(language) async {
     update();
-    await api.getRecommendedProduct(productIdList,next, language).then((value) {
+    await api
+        .getRecommendedProduct(productIdList, next, language)
+        .then((value) {
       if (value.statusCode == 200) {
         totalPages = value.data!.totalPages!;
         prev =

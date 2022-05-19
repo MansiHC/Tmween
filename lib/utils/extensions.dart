@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../lang/locale_keys.g.dart';
 import 'global.dart';
@@ -42,6 +43,12 @@ extension StringExtension on String {
 
   String get eliminateLast => length > 1 ? "${substring(0, length - 1)}" : "";
 
+  String get formattedDate =>
+      DateFormat('dd MMMM yyyy').format(DateTime.parse(toString()));
+
+String get formattedDateTime =>
+      DateFormat('dd MMMM, hh:mm a').format(DateTime.parse(toString()));
+
   bool get isEmpty => trimLeft().isEmpty;
 
   bool validateEmail() => RegExp(
@@ -49,8 +56,12 @@ extension StringExtension on String {
       .hasMatch(this);
 
   bool validatePassword() =>
-      RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+      RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~_]).{8,}$')
           .hasMatch(this);
+
+  bool validateMobile() => RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)').hasMatch(this);
+
+  bool validateEmailMobileNumber() => RegExp(r'^[a-zA-Z0-9@]+$').hasMatch(this);
 
   setNetworkImage() => toString().isNotEmpty
       ? CachedNetworkImage(
@@ -68,9 +79,10 @@ extension StringExtension on String {
             color: Colors.grey,
           ),
         );
- setNetworkImageProvider() => toString().isNotEmpty
+
+  setNetworkImageProvider() => toString().isNotEmpty
       ? CachedNetworkImageProvider(
-      toString(),
+          toString(),
           errorListener: () => Icon(
             Icons.image_not_supported,
             color: Colors.grey,
@@ -82,7 +94,6 @@ extension StringExtension on String {
             color: Colors.grey,
           ),
         );
-
 }
 
 extension IterableExtensions<E> on Iterable<E> {

@@ -43,16 +43,16 @@ class DashboardController extends GetxController {
     MySharedPreferences.instance
         .getIntValuesSF(SharedPreferencesKeys.userId)
         .then((value) async {
-          if(value!=null) {
-            userId = value;
-          }
+      if (value != null) {
+        userId = value;
+      }
       getDashboardData(Get.locale!.languageCode);
     });
     super.onInit();
   }
 
   Future<void> onRefresh(language) async {
-    await api.getHomePageMobileData(userId,language).then((value) {
+    await api.getHomePageMobileData(userId, language).then((value) {
       if (value.statusCode == 200) {
         recentlyViewProduct = value.data!.recentlyViewProduct;
         topSelectionData = value.data!.topSelectionData;
@@ -75,7 +75,7 @@ class DashboardController extends GetxController {
     //Helper.showLoading();
     loading = true;
     update();
-    await api.getHomePageMobileData(userId,language).then((value) {
+    await api.getHomePageMobileData(userId, language).then((value) {
       if (value.statusCode == 200) {
         recentlyViewProduct = value.data!.recentlyViewProduct;
         topSelectionData = value.data!.topSelectionData;
@@ -89,7 +89,7 @@ class DashboardController extends GetxController {
         centerDownBanners = value.data!.banners!.cENTERDOWN;
         update();
       } else {
-        Helper.showGetSnackBar(value.message!,  AppColors.errorColor);
+        Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
       // Helper.hideLoading();
       loading = false;
