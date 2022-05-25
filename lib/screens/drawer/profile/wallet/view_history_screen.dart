@@ -13,6 +13,11 @@ class ViewHistoryScreen extends StatelessWidget {
 
   final viewHistoryController = Get.put(ViewHistoryController());
 
+  Future<bool> _onWillPop(ViewHistoryController viewHistoryController) async {
+    viewHistoryController.exitScreen();
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     language = Get.locale!.languageCode;
@@ -20,21 +25,24 @@ class ViewHistoryScreen extends StatelessWidget {
         init: ViewHistoryController(),
         builder: (contet) {
           viewHistoryController.context = context;
-          return Scaffold(
-              body: Container(
-                  color: Color(0xFFF2F2F2),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                          constraints: BoxConstraints(
-                              minWidth: double.infinity, maxHeight: 90),
-                          color: AppColors.appBarColor,
-                          padding: EdgeInsets.only(top: 20),
-                          child: topView(viewHistoryController)),
-                      _bottomView(viewHistoryController),
-                    ],
-                  )));
+          return WillPopScope(
+              onWillPop: () => _onWillPop(viewHistoryController),
+              child: Scaffold(
+                  body: Container(
+                      color: Color(0xFFF2F2F2),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              constraints: BoxConstraints(
+                                  minWidth: double.infinity, maxHeight: 90),
+                              color: AppColors.appBarColor,
+                              padding: EdgeInsets.only(top: 20),
+                              child: topView(viewHistoryController)),
+                          if (viewHistoryController.walletData != null)
+                            _bottomView(viewHistoryController),
+                        ],
+                      ))));
         });
   }
 
@@ -80,11 +88,11 @@ class ViewHistoryScreen extends StatelessWidget {
                                 },
                                 child: Text(
                                   viewHistoryController.fromDate.isEmpty
-                                      ? "Choose Date"
+                                      ? LocaleKeys.chooseDate.tr
                                       : viewHistoryController.fromDate,
                                   style: TextStyle(
-                                      color: Colors.black45,
-                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.w600,
                                       fontSize: 14),
                                 ),
                               ),
@@ -128,9 +136,7 @@ class ViewHistoryScreen extends StatelessWidget {
                                         ? LocaleKeys.chooseDate.tr
                                         : viewHistoryController.toDate,
                                     style: TextStyle(
-                                        color: Colors.black45,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14),
+                                        color: Colors.black54, fontWeight: FontWeight.w600, fontSize: 14),
                                   ),
                                 ),
                                 //Text("${selectedDate.day}/${selectedDate.month}/${selectedDate.year}")
@@ -140,18 +146,23 @@ class ViewHistoryScreen extends StatelessWidget {
                         ]),
                     10.widthBox,
                     Expanded(
-                        child: Padding(
-                            padding: EdgeInsets.only(top: 25),
-                            child: Container(
-                              child: Text(
-                                LocaleKeys.submit.tr,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 15),
-                              ),
-                              color: AppColors.primaryColor,
-                              padding: EdgeInsets.all(5),
-                            ))),
+                        child: InkWell(
+                            onTap: () {
+                              viewHistoryController
+                                  .getWalletHistoryData(language);
+                            },
+                            child: Padding(
+                                padding: EdgeInsets.only(top: 25),
+                                child: Container(
+                                  child: Text(
+                                    LocaleKeys.submit.tr,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 15),
+                                  ),
+                                  color: AppColors.primaryColor,
+                                  padding: EdgeInsets.all(5),
+                                )))),
                   ],
                 ),
                 Align(
@@ -182,9 +193,8 @@ class ViewHistoryScreen extends StatelessWidget {
                               ],
                             )))),
                 10.heightBox,
-                Expanded(
-                    child: Container(
-                        color: Colors.white,
+                viewHistoryController.walletHistoryList.length > 0
+                    ? Expanded(
                         child: ListView.builder(
                             shrinkWrap: true,
                             padding: EdgeInsets.zero,
@@ -201,7 +211,7 @@ class ViewHistoryScreen extends StatelessWidget {
                                     padding: EdgeInsets.all(10),
                                     child: Text(
                                       viewHistoryController
-                                          .walletHistoryList[index].title,
+                                          .walletHistoryList[index].month!,
                                       style: TextStyle(
                                         color: AppColors.primaryColor,
                                         fontSize: 15,
@@ -216,162 +226,167 @@ class ViewHistoryScreen extends StatelessWidget {
                                           physics: ScrollPhysics(),
                                           itemCount: viewHistoryController
                                               .walletHistoryList[index]
-                                              .historyItemList
+                                              .monthData!
                                               .length,
                                           itemBuilder: (context, index2) {
-                                            return Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                10.heightBox,
-                                                InkWell(
-                                                    onTap: () {
-                                                      /*viewHistoryController
+                                            return Container(
+                                                color: Colors.white,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    10.heightBox,
+                                                    InkWell(
+                                                        onTap: () {
+                                                          /*viewHistoryController
                                                           .navigateTo(
                                                               PaymentStatusScreen(
                                                         isSuccess:
                                                             viewHistoryController
                                                                 .walletHistoryList[
                                                                     index]
-                                                                .historyItemList[
+                                                                .monthData![
                                                                     index2]
                                                                 .isSuccess,
                                                         successText:
                                                             viewHistoryController
                                                                 .walletHistoryList[
                                                                     index]
-                                                                .historyItemList[
+                                                                .monthData![
                                                                     index2]
                                                                 .successText,
                                                       ));*/
-                                                    },
-                                                    child: Container(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal: 10),
-                                                        child: Row(
-                                                          children: [
-                                                            SizedBox(
-                                                              width: 42,
-                                                              height: 42,
-                                                              child:
-                                                                  Image.asset(
-                                                                ImageConstanst
-                                                                    .walletLogoIcon,
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                                child: Padding(
-                                                                    padding: EdgeInsets.symmetric(
-                                                                        horizontal:
-                                                                            10),
-                                                                    child:
-                                                                        Column(
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      children: [
-                                                                        Text(
-                                                                          viewHistoryController
-                                                                              .walletHistoryList[index]
-                                                                              .historyItemList[index2]
-                                                                              .title,
-                                                                          style: TextStyle(
-                                                                              color: Colors.black87,
-                                                                              fontSize: 14,
-                                                                              fontWeight: FontWeight.bold),
-                                                                        ),
-                                                                        Text(
-                                                                          viewHistoryController
-                                                                              .walletHistoryList[index]
-                                                                              .historyItemList[index2]
-                                                                              .date,
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color:
-                                                                                Colors.black38,
-                                                                            fontSize:
-                                                                                13,
-                                                                          ),
-                                                                        )
-                                                                      ],
-                                                                    ))),
-                                                            Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .end,
+                                                        },
+                                                        child: Container(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        10),
+                                                            child: Row(
                                                               children: [
-                                                                Text(
-                                                                  viewHistoryController
-                                                                          .walletHistoryList[
-                                                                              index]
-                                                                          .historyItemList[
-                                                                              index2]
-                                                                          .isSuccess
-                                                                      ? '+${LocaleKeys.sar.tr} 500'
-                                                                      : '-${LocaleKeys.sar.tr} 500',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: viewHistoryController
-                                                                            .walletHistoryList[
-                                                                                index]
-                                                                            .historyItemList[
-                                                                                index2]
-                                                                            .isSuccess
-                                                                        ? Colors
-                                                                            .green
-                                                                        : Colors
-                                                                            .red,
-                                                                    fontSize:
-                                                                        14,
+                                                                SizedBox(
+                                                                  width: 42,
+                                                                  height: 42,
+                                                                  child: Image
+                                                                      .asset(
+                                                                    ImageConstanst
+                                                                        .walletLogoIcon,
                                                                   ),
                                                                 ),
-                                                                Text(
-                                                                  viewHistoryController
-                                                                      .walletHistoryList[
-                                                                          index]
-                                                                      .historyItemList[
-                                                                          index2]
-                                                                      .successText,
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .black38,
-                                                                    fontSize:
-                                                                        13,
-                                                                  ),
+                                                                Expanded(
+                                                                    child: Padding(
+                                                                        padding: EdgeInsets.symmetric(horizontal: 10),
+                                                                        child: Column(
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.start,
+                                                                          children: [
+                                                                            Text(
+                                                                              viewHistoryController.walletHistoryList[index].monthData![index2].message!,
+                                                                              style: TextStyle(color: Colors.black87, fontSize: 14, fontWeight: FontWeight.bold),
+                                                                            ),
+                                                                            Text(
+                                                                              viewHistoryController.walletHistoryList[index].monthData![index2].createdAt!.formattedDateTime,
+                                                                              style: TextStyle(
+                                                                                color: Colors.black38,
+                                                                                fontSize: 13,
+                                                                              ),
+                                                                            )
+                                                                          ],
+                                                                        ))),
+                                                                Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .end,
+                                                                  children: [
+                                                                    Text(
+                                                                      viewHistoryController.walletHistoryList[index].monthData![index2].transactionType ==
+                                                                              1
+                                                                          ? '+${viewHistoryController.walletData!.currencySymbol!} ${viewHistoryController.walletHistoryList[index].monthData![index2].amount!}'
+                                                                          : '-${viewHistoryController.walletData!.currencySymbol!} ${viewHistoryController.walletHistoryList[index].monthData![index2].amount!}',
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: getColor(viewHistoryController
+                                                                            .walletHistoryList[index]
+                                                                            .monthData![index2]
+                                                                            .transactionType!),
+                                                                        fontSize:
+                                                                            14,
+                                                                      ),
+                                                                    ),
+                                                                    Text(
+                                                                      getStatus(viewHistoryController
+                                                                          .walletHistoryList[
+                                                                              index]
+                                                                          .monthData![
+                                                                              index2]
+                                                                          .paymentStatus!),
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: Colors
+                                                                            .black38,
+                                                                        fontSize:
+                                                                            13,
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                Icon(
+                                                                  Icons
+                                                                      .keyboard_arrow_right_outlined,
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      400],
                                                                 )
                                                               ],
-                                                            ),
-                                                            Icon(
-                                                              Icons
-                                                                  .keyboard_arrow_right_outlined,
-                                                              color: Colors
-                                                                  .grey[400],
-                                                            )
-                                                          ],
-                                                        ))),
-                                                10.heightBox,
-                                                if (index !=
-                                                    (viewHistoryController
-                                                            .walletHistoryList[
-                                                                index]
-                                                            .historyItemList
-                                                            .length -
-                                                        1))
-                                                  Divider(
-                                                    height: 1,
-                                                    thickness: 1,
-                                                    color: Color(0xFFE6E6E6),
-                                                  )
-                                              ],
-                                            );
+                                                            ))),
+                                                    10.heightBox,
+                                                    if (index !=
+                                                        (viewHistoryController
+                                                                .walletHistoryList[
+                                                                    index]
+                                                                .monthData!
+                                                                .length -
+                                                            1))
+                                                      Divider(
+                                                        height: 1,
+                                                        thickness: 1,
+                                                        color:
+                                                            Color(0xFFE6E6E6),
+                                                      )
+                                                  ],
+                                                ));
                                           }))
                                 ],
                               );
-                            })))
+                            }))
+                    : Center(
+                        child: Text(
+                        LocaleKeys.noTransactionFound.tr,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                        ),
+                      ))
               ],
             )));
+  }
+
+  Color getColor(int transactionType) {
+     if (transactionType == 1)
+      return Colors.green;
+    else
+      return Colors.red;
+  }
+
+  String getStatus(int paymentStatus) {
+    if (paymentStatus == 1)
+      return LocaleKeys.pending.tr;
+    else if (paymentStatus == 2)
+      return LocaleKeys.processing.tr;
+    else if (paymentStatus == 3)
+      return LocaleKeys.successful.tr;
+    else
+      return LocaleKeys.failed.tr;
   }
 
   _bottomSheetView(ViewHistoryController viewHistoryController) {
@@ -379,7 +394,7 @@ class ViewHistoryScreen extends StatelessWidget {
         init: ViewHistoryController(),
         builder: (contet) {
           return Container(
-              height: 280,
+              height: 300,
               padding: EdgeInsets.all(15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -403,51 +418,128 @@ class ViewHistoryScreen extends StatelessWidget {
                   10.heightBox,
                   Wrap(
                     spacing: 10,
+                    runSpacing: 10,
                     children: [
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                        decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Text(
-                          LocaleKeys.successful.tr,
-                          style: TextStyle(color: Colors.white, fontSize: 14),
-                        ),
-                      ),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                        decoration: BoxDecoration(
-                            color: Colors.orange,
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Text(
-                          LocaleKeys.pending.tr,
-                          style: TextStyle(color: Colors.white, fontSize: 14),
-                        ),
-                      ),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                        decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Text(
-                          LocaleKeys.failed.tr,
-                          style: TextStyle(color: Colors.white, fontSize: 14),
-                        ),
-                      ),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                        decoration: BoxDecoration(
-                            color: Color(0xFFffc107),
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Text(
-                          LocaleKeys.processing.tr,
-                          style: TextStyle(color: Colors.white, fontSize: 14),
-                        ),
-                      ),
+                      InkWell(
+                          onTap: () {
+                            viewHistoryController.paymentStatus = "3";
+                            viewHistoryController.update();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 5),
+                            decoration: BoxDecoration(
+                                color:
+                                    viewHistoryController.paymentStatus == "3"
+                                        ? Colors.green
+                                        : Colors.white,
+                                borderRadius: BorderRadius.circular(15),
+                                border: Border.all(
+                                    color:
+                                        viewHistoryController.paymentStatus ==
+                                                "3"
+                                            ? Colors.white
+                                            : Colors.green)),
+                            child: Text(
+                              LocaleKeys.successful.tr,
+                              style: TextStyle(
+                                  color:
+                                      viewHistoryController.paymentStatus == "3"
+                                          ? Colors.white
+                                          : Colors.green,
+                                  fontSize: 14),
+                            ),
+                          )),
+                      InkWell(
+                          onTap: () {
+                            viewHistoryController.paymentStatus = "1";
+                            viewHistoryController.update();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 5),
+                            decoration: BoxDecoration(
+                                color:
+                                    viewHistoryController.paymentStatus == "1"
+                                        ? Colors.orange
+                                        : Colors.white,
+                                borderRadius: BorderRadius.circular(15),
+                                border: Border.all(
+                                    color:
+                                        viewHistoryController.paymentStatus ==
+                                                "1"
+                                            ? Colors.white
+                                            : Colors.orange)),
+                            child: Text(
+                              LocaleKeys.pending.tr,
+                              style: TextStyle(
+                                  color:
+                                      viewHistoryController.paymentStatus == "1"
+                                          ? Colors.white
+                                          : Colors.orange,
+                                  fontSize: 14),
+                            ),
+                          )),
+                      InkWell(
+                          onTap: () {
+                            viewHistoryController.paymentStatus = "4";
+                            viewHistoryController.update();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 5),
+                            decoration: BoxDecoration(
+                                color:
+                                    viewHistoryController.paymentStatus == "4"
+                                        ? Colors.red
+                                        : Colors.white,
+                                borderRadius: BorderRadius.circular(15),
+                                border: Border.all(
+                                    color:
+                                        viewHistoryController.paymentStatus ==
+                                                "4"
+                                            ? Colors.white
+                                            : Colors.red)),
+                            child: Text(
+                              LocaleKeys.failed.tr,
+                              style: TextStyle(
+                                  color:
+                                      viewHistoryController.paymentStatus == "4"
+                                          ? Colors.white
+                                          : Colors.red,
+                                  fontSize: 14),
+                            ),
+                          )),
+                      InkWell(
+                          onTap: () {
+                            viewHistoryController.paymentStatus = "2";
+                            viewHistoryController.update();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 5),
+                            decoration: BoxDecoration(
+                                color:
+                                    viewHistoryController.paymentStatus == "2"
+                                        ? Color(0xFFffc107)
+                                        : Colors.white,
+                                borderRadius: BorderRadius.circular(15),
+                                border: Border.all(
+                                    color:
+                                        viewHistoryController.paymentStatus ==
+                                                "2"
+                                            ? Colors.white
+                                            : Color(0xFFffc107))),
+                            child: Text(
+                              LocaleKeys.processing.tr,
+                              style: TextStyle(
+                                  color:
+                                      viewHistoryController.paymentStatus == "2"
+                                          ? Colors.white
+                                          : Color(0xFFffc107),
+                                  fontSize: 14),
+                            ),
+                          )),
                     ],
                   ),
                   10.heightBox,
@@ -462,77 +554,109 @@ class ViewHistoryScreen extends StatelessWidget {
                   Wrap(
                     spacing: 10,
                     children: [
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                            border: Border.all(color: Colors.grey[300]!)),
-                        child: Text(
-                          LocaleKeys.paid.tr,
-                          style: TextStyle(color: Colors.black54, fontSize: 14),
-                        ),
-                      ),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                        decoration: BoxDecoration(
-                            color: AppColors.primaryColor,
-                            borderRadius: BorderRadius.circular(15),
-                            border: Border.all(color: Colors.grey[300]!)),
-                        child: Text(
-                          LocaleKeys.added.tr,
-                          style: TextStyle(color: Colors.white, fontSize: 14),
-                        ),
-                      ),
-                      /*Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                            border: Border.all(color: Colors.grey[300]!)),
-                        child: Text(
-                          LocaleKeys.cashback.tr,
-                          style: TextStyle(color: Colors.black54, fontSize: 14),
-                        ),
-                      ),*/
+                      InkWell(
+                          onTap: () {
+                            viewHistoryController.transactionType = "2";
+                            viewHistoryController.update();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 5),
+                            decoration: BoxDecoration(
+                                color:
+                                    viewHistoryController.transactionType == "2"
+                                        ? AppColors.primaryColor
+                                        : Colors.white,
+                                borderRadius: BorderRadius.circular(15),
+                                border: Border.all(color: Colors.grey[300]!)),
+                            child: Text(
+                              LocaleKeys.paid.tr,
+                              style: TextStyle(
+                                  color:
+                                      viewHistoryController.transactionType ==
+                                              "2"
+                                          ? Colors.white
+                                          : Colors.black54,
+                                  fontSize: 14),
+                            ),
+                          )),
+                      InkWell(
+                          onTap: () {
+                            viewHistoryController.transactionType = "1";
+                            viewHistoryController.update();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 5),
+                            decoration: BoxDecoration(
+                                color:
+                                    viewHistoryController.transactionType == "1"
+                                        ? AppColors.primaryColor
+                                        : Colors.white,
+                                borderRadius: BorderRadius.circular(15),
+                                border: Border.all(color: Colors.grey[300]!)),
+                            child: Text(
+                              LocaleKeys.added.tr,
+                              style: TextStyle(
+                                  color:
+                                      viewHistoryController.transactionType ==
+                                              "1"
+                                          ? Colors.white
+                                          : Colors.black54,
+                                  fontSize: 14),
+                            ),
+                          )),
                     ],
                   ),
                   15.heightBox,
                   Row(
                     children: [
                       Expanded(
-                          child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(2),
-                            border: Border.all(color: AppColors.primaryColor)),
-                        child: Text(
-                          LocaleKeys.clear.tr,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: AppColors.primaryColor, fontSize: 14),
-                        ),
-                      )),
+                          child: InkWell(
+                              onTap: () {
+                                viewHistoryController.transactionType = "";
+                                viewHistoryController.paymentStatus = "";
+                                viewHistoryController.update();
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 5),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(2),
+                                    border: Border.all(
+                                        color: AppColors.primaryColor)),
+                                child: Text(
+                                  LocaleKeys.clear.tr,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: AppColors.primaryColor,
+                                      fontSize: 14),
+                                ),
+                              ))),
                       10.widthBox,
                       Expanded(
-                          child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                        decoration: BoxDecoration(
-                            color: AppColors.primaryColor,
-                            borderRadius: BorderRadius.circular(2),
-                            border: Border.all(color: AppColors.primaryColor)),
-                        child: Text(
-                          LocaleKeys.applySmall.tr,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white, fontSize: 14),
-                        ),
-                      ))
+                          child: InkWell(
+                              onTap: () {
+                                viewHistoryController.pop();
+                                viewHistoryController
+                                    .getWalletHistoryData(language);
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 5),
+                                decoration: BoxDecoration(
+                                    color: AppColors.primaryColor,
+                                    borderRadius: BorderRadius.circular(2),
+                                    border: Border.all(
+                                        color: AppColors.primaryColor)),
+                                child: Text(
+                                  LocaleKeys.applySmall.tr,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 14),
+                                ),
+                              )))
                     ],
                   )
                 ],

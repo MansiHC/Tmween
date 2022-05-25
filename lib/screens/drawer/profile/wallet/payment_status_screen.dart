@@ -1,20 +1,22 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/get_wallet_model.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
+import 'package:tmween/utils/helper.dart';
 
 import '../../../../controller/payment_status_controller.dart';
+import '../../../../utils/number_to_words.dart';
 
 class PaymentStatusScreen extends StatefulWidget {
-  final WalletData? walletData;
+  final MonthData? monthData;
 
-  PaymentStatusScreen(
-      {Key? key, required this.walletData})
-      : super(key: key);
+  PaymentStatusScreen({Key? key, required this.monthData}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -77,7 +79,7 @@ class PaymentStatusScreenState extends State<PaymentStatusScreen> {
                 child: Row(
                   children: [
                     Text(
-                      '${LocaleKeys.sar.tr} 1,990',
+                      '${LocaleKeys.sar.tr} ${widget.monthData!.amount!}',
                       style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
@@ -85,20 +87,16 @@ class PaymentStatusScreenState extends State<PaymentStatusScreen> {
                     ),
                     5.widthBox,
                     SvgPicture.asset(
-                      /*widget.isSuccess!
-                          ? ImageConstanst.walletTickMarkIcon
-                          :*/ ImageConstanst.walletCrossIcon,
+                      getIcon(widget.monthData!.paymentStatus!),
                       height: 24,
                       width: 24,
                     ),
                     5.widthBox,
                     Text(
-                     /* widget.isSuccess!
-                          ? LocaleKeys.paymentSuccess.tr
-                          :*/ LocaleKeys.paymentFailed.tr,
+                      getStatus(widget.monthData!.paymentStatus!),
                       style: TextStyle(
                           fontSize: 14,
-                          color: /*widget.isSuccess! ? Colors.green :*/ Colors.red),
+                          color: getColor(widget.monthData!.paymentStatus!)),
                     ),
                   ],
                 )),
@@ -106,7 +104,7 @@ class PaymentStatusScreenState extends State<PaymentStatusScreen> {
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
-                  'One Thousand Nine Hundred Ninety Only',
+                  NumberToWord().convert(language, widget.monthData!.amount!),
                   style: TextStyle(fontSize: 13, color: Colors.black45),
                 )),
             10.heightBox,
@@ -154,46 +152,102 @@ class PaymentStatusScreenState extends State<PaymentStatusScreen> {
             5.heightBox,
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  children: [
-                    SvgPicture.asset(
-                      ImageConstanst.syberPay,
-                      height: 24,
-                      width: 24,
-                    ),
-                    Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Text(
-                          LocaleKeys.syberPay.tr,
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87),
-                        )),
-                  ],
-                )),
+                child: widget.monthData!.paymentTransactionId != null
+                    ? Row(
+                        children: [
+                          SvgPicture.asset(
+                            ImageConstanst.syberPay,
+                            height: 24,
+                            width: 24,
+                          ),
+                          Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: Text(
+                                LocaleKeys.syberPay.tr,
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black87),
+                              )),
+                        ],
+                      )
+                    : Row(
+                        children: [
+                          Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 0),
+                              child: Text(
+                                LocaleKeys.admin.tr,
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black87),
+                              )),
+                        ],
+                      )),
             10.heightBox,
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
-                  '${LocaleKeys.addedAt.tr} 11:56AM, 20 Mar 2022',
+                  '${LocaleKeys.addedAt.tr} ${widget.monthData!.createdAt!.formattedDateTime}',
                   style: TextStyle(fontSize: 13, color: Colors.black45),
                 )),
+            if(widget.monthData!.paymentTransactionId!=null)
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: RichText(
                     text: TextSpan(
-                        text: '${LocaleKeys.walletRefNo.tr}: 3876543215 ',
+                        text:
+                            '${LocaleKeys.walletRefNo.tr}: ${widget.monthData!.paymentTransactionId} ',
                         style: TextStyle(fontSize: 13, color: Colors.black45),
                         children: [
-                      TextSpan(
+                      /*TextSpan(
                         text: LocaleKeys.copy.tr,
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Clipboard.setData(new ClipboardData(
+                                text: widget.monthData!.paymentTransactionId!));
+                            Helper.showToast(LocaleKeys.copiedToClipBoard.tr);
+                          },
                         style: TextStyle(fontSize: 13, color: AppColors.blue),
-                      )
+                      )*/
                     ]))),
             10.heightBox
           ],
         ));
+  }
+
+  Color getColor(int paymentStatus) {
+    if (paymentStatus == 1)
+      return Colors.orange;
+    else if (paymentStatus == 2)
+      return Color(0xFFffc107);
+    else if (paymentStatus == 3)
+      return Colors.green;
+    else
+      return Colors.red;
+  }
+
+
+  String getStatus(int paymentStatus) {
+    if (paymentStatus == 1)
+      return LocaleKeys.pending.tr;
+    else if (paymentStatus == 2)
+      return LocaleKeys.processing.tr;
+    else if (paymentStatus == 3)
+      return LocaleKeys.paymentSuccess.tr;
+    else
+      return LocaleKeys.paymentFailed.tr;
+  }
+
+  String getIcon(int paymentStatus) {
+    if (paymentStatus == 1)
+      return ImageConstanst.walletPendingIcon;
+    else if (paymentStatus == 2)
+      return ImageConstanst.walletProcessingIcon;
+    else if (paymentStatus == 3)
+      return ImageConstanst.walletTickMarkIcon;
+    else
+      return ImageConstanst.walletCrossIcon;
   }
 
   Widget topView(PaymentStatusController paymentStatusController) {
@@ -225,7 +279,7 @@ class PaymentStatusScreenState extends State<PaymentStatusScreen> {
             Align(
               alignment: Alignment.center,
               child: Text(
-                'widget.successText!',
+                widget.monthData!.message!,
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),

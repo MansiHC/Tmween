@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:tmween/lang/locale_keys.g.dart';
@@ -111,56 +112,88 @@ class MyWalletScreen extends StatelessWidget {
                     Container(
                       color: Colors.white,
                       padding: EdgeInsets.all(10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CustomTextFormField(
-                              isPrefix: false,
-                              controller: myWalletController.amountController,
-                              keyboardType: TextInputType.number,
-                              hintText: LocaleKeys.amount.tr,
-                              prefixIcon: Text(
-                                LocaleKeys.sar.tr,
-                                style: TextStyle(fontSize: 14),
+                      child: Form(
+                          key: myWalletController.formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomTextFormField(
+                                isPrefix: false,
+                                controller: myWalletController.amountController,
+                                keyboardType: TextInputType.number,
+                                hintText: LocaleKeys.amount.tr,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return '${LocaleKeys.emptyEnter.tr} ${LocaleKeys.amount.tr}';
+                                  }
+                                  return null;
+                                },
+                                prefixIcon: Text(
+                                  LocaleKeys.sar.tr,
+                                  style: TextStyle(fontSize: 14),
+                                ),
                               ),
-                              validator: (value) {}),
-                          15.heightBox,
-                          Wrap(
-                              spacing: 10,
-                              children: List.generate(
-                                myWalletController.amounts.length,
-                                (index) => InkWell(
-                                    onTap: () {
-                                      myWalletController.amountController.text =
-                                          myWalletController.amounts[index];
-                                      myWalletController.update();
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.all(6),
-                                      decoration: BoxDecoration(
-                                          color: AppColors.lightBlueBackground,
-                                          border:
-                                              Border.all(color: AppColors.blue),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(6))),
-                                      child: Text(
-                                        '+${LocaleKeys.sar.tr} ${myWalletController.amounts[index]}',
-                                        style: TextStyle(
-                                            color: AppColors.blue,
-                                            fontSize: 12),
-                                      ),
-                                    )),
-                              )),
-                          20.heightBox,
-                          CustomButton(
-                            text: LocaleKeys.fundWalletCap.tr,
-                            onPressed: () {
-                              myWalletController.navigateTo(FundWalletScreen());
-                            },
-                            fontSize: 15,
-                          ),
-                        ],
-                      ),
+                              15.heightBox,
+                              Wrap(
+                                  spacing: 10,
+                                  runSpacing: 10,
+                                  children: List.generate(
+                                    myWalletController.amounts.length,
+                                    (index) => InkWell(
+                                        onTap: () {
+                                          if (myWalletController
+                                              .amountController.text.isNotEmpty)
+                                            myWalletController.amountController
+                                                .text = (int.parse(
+                                                        myWalletController
+                                                            .amountController
+                                                            .text) +
+                                                    int.parse(myWalletController
+                                                        .amounts[index]))
+                                                .toString();
+                                          else
+                                            myWalletController
+                                                    .amountController.text =
+                                                myWalletController
+                                                    .amounts[index];
+                                          myWalletController.update();
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.all(6),
+                                          decoration: BoxDecoration(
+                                              color:
+                                                  AppColors.lightBlueBackground,
+                                              border: Border.all(
+                                                  color: AppColors.blue),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(6))),
+                                          child: Text(
+                                            '+${LocaleKeys.sar.tr} ${myWalletController.amounts[index]}',
+                                            style: TextStyle(
+                                                color: AppColors.blue,
+                                                fontSize: 12),
+                                          ),
+                                        )),
+                                  )),
+                              20.heightBox,
+                              CustomButton(
+                                text: LocaleKeys.fundWalletCap.tr,
+                                onPressed: () {
+                                  if (myWalletController.formKey.currentState!
+                                      .validate()) {
+                                    
+                                    Navigator.push(myWalletController.context, MaterialPageRoute(builder: (context) => FundWalletScreen(
+                                        paymentAmount: myWalletController
+                                            .amountController.text))).then((value) => myWalletController.getWalletData(language));
+                                  }
+                                },
+                                fontSize: 15,
+                              ),
+                            ],
+                          )),
                     ),
                     15.heightBox,
                     Container(
@@ -240,9 +273,10 @@ class MyWalletScreen extends StatelessWidget {
                                                           myWalletController
                                                               .navigateTo(
                                                                   PaymentStatusScreen(
-                                                            walletData:
-                                                                myWalletController
-                                                                    .walletData,
+                                                            monthData: myWalletController
+                                                                .walletHistoryList[
+                                                                    index]
+                                                                .monthData![index2],
                                                           ));
                                                         },
                                                         child: Container(
@@ -287,8 +321,8 @@ class MyWalletScreen extends StatelessWidget {
                                                                           .end,
                                                                   children: [
                                                                     Text(
-                                                                      myWalletController.walletHistoryList[index].monthData![index2].paymentStatus !=
-                                                                              4
+                                                                      myWalletController.walletHistoryList[index].monthData![index2].transactionType ==
+                                                                              1
                                                                           ? '+${myWalletController.walletData!.currencySymbol!} ${myWalletController.walletHistoryList[index].monthData![index2].amount!}'
                                                                           : '-${myWalletController.walletData!.currencySymbol!} ${myWalletController.walletHistoryList[index].monthData![index2].amount!}',
                                                                       style:
@@ -296,7 +330,7 @@ class MyWalletScreen extends StatelessWidget {
                                                                         color: getColor(myWalletController
                                                                             .walletHistoryList[index]
                                                                             .monthData![index2]
-                                                                            .paymentStatus!),
+                                                                            .transactionType!),
                                                                         fontSize:
                                                                             14,
                                                                       ),
@@ -359,12 +393,8 @@ class MyWalletScreen extends StatelessWidget {
                 ))));
   }
 
-  Color getColor(int paymentStatus) {
-    if (paymentStatus == 1)
-      return Colors.orange;
-    else if (paymentStatus == 2)
-      return Color(0xFFffc107);
-    else if (paymentStatus == 3)
+  Color getColor(int transactionType) {
+   if (transactionType == 1)
       return Colors.green;
     else
       return Colors.red;

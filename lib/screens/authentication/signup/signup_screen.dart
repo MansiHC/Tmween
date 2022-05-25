@@ -106,8 +106,36 @@ class _SignUpScreenState extends State<SignUpScreen>
                         body: TabBarView(
                           controller: _tabController,
                           children: [
-                            IndividualSignUpScreen(),
-                            StoreOwnerSignUpScreen()
+                        Column(
+                        children: [
+                        Padding(
+                        padding: EdgeInsets.only(
+                            top: 0,
+                            right: MediaQuery.of(
+                                signUpController
+                                    .context)
+                                .size
+                                .width /
+                                2),
+                              child: SvgPicture.asset(ImageConstanst.downArrowIcon,height: 12,width: 12,
+                                color: AppColors.primaryColor,)),
+                        Expanded(
+                          child:IndividualSignUpScreen())]),
+                      Column(
+                          children: [
+                      Padding(
+                      padding: EdgeInsets.only(
+                      top: 0,
+                          left: MediaQuery.of(
+                              signUpController
+                                  .context)
+                              .size
+                              .width /
+                              2),
+                      child: SvgPicture.asset(ImageConstanst.downArrowIcon,height: 12,width: 12,
+                        color: AppColors.primaryColor,)),
+                Expanded(
+                  child:StoreOwnerSignUpScreen())])
                           ],
                         ),
                       ))));

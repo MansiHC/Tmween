@@ -539,6 +539,7 @@ class ProductDetailController extends GetxController {
   void _showDialog() async {
     await showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (_) {
           Future.delayed(Duration(milliseconds: 1500), () {
             Navigator.of(context).pop(true);

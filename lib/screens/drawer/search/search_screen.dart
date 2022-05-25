@@ -270,7 +270,8 @@ class SearchScreenState extends State<SearchScreen> {
                         if (searchController.isLogin)
                           if (searchController.historyList.length > 0)
                             Wrap(
-                                spacing: 10,
+                                spacing: 15,
+                                runSpacing: 15,
                                 children: List.generate(
                                     searchController.historyList.length,
                                     (index) => InkWell(
@@ -283,8 +284,7 @@ class SearchScreenState extends State<SearchScreen> {
                                         },
                                         child: Container(
                                           padding: EdgeInsets.all(5),
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 2, vertical: 6),
+
                                           decoration: BoxDecoration(
                                               color: Colors.white,
                                               borderRadius:
@@ -315,7 +315,8 @@ class SearchScreenState extends State<SearchScreen> {
                         ),
                         10.heightBox,
                         Wrap(
-                          spacing: 10,
+                          spacing: 15,
+                          runSpacing: 15,
                           children: List.generate(
                               searchController.popularList.length,
                               (index) => InkWell(
@@ -328,8 +329,6 @@ class SearchScreenState extends State<SearchScreen> {
                                   },
                                   child: Container(
                                     padding: EdgeInsets.all(5),
-                                    margin: EdgeInsets.symmetric(
-                                        horizontal: 2, vertical: 6),
                                     decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.circular(6),

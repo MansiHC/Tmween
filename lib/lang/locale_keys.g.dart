@@ -12,6 +12,10 @@ abstract class LocaleKeys {
   static const keepMeSignedIn = 'keepMeSignedIn';
   static const forgotPassword = 'forgotPassword';
   static const login = 'login';
+  static const moneyAdded = 'moneyAdded';
+  static const paymentStatus = 'paymentStatus';
+  static const paymentDetail = 'paymentDetail';
+  static const copiedToClipBoard = 'copiedToClipBoard';
   static const noTransactionFound = 'noTransactionFound';
   static const downloading = 'downloading';
   static const downloaded = 'downloadComplete';
@@ -376,6 +380,7 @@ abstract class LocaleKeys {
   static const totalAmountPayable = 'totalAmountPayable';
   static const paymentOption = 'paymentOption';
   static const syberPay = 'syberPay';
+  static const admin = 'admin';
   static const fundWallet = 'fundWallet';
   static const deliveryPayment = 'deliveryPayment';
   static const orderPlaced = 'orderPlaced';

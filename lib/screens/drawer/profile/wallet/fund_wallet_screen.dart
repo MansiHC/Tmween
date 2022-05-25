@@ -2,16 +2,29 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:tmween/screens/drawer/profile/wallet/payment_gateway_wallet_screen.dart';
 import 'package:tmween/utils/extensions.dart';
 import 'package:tmween/utils/global.dart';
 
 import '../../../../controller/fund_wallet_controller.dart';
 import '../../../../lang/locale_keys.g.dart';
 
-class FundWalletScreen extends StatelessWidget {
+
+class FundWalletScreen extends StatefulWidget {
+  final String? paymentAmount;
+
+  FundWalletScreen({Key? key, this.paymentAmount}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return FundWalletStateScreen();
+  }
+}
+class FundWalletStateScreen extends State<FundWalletScreen> {
   late String language;
 
   final fundWalletController = Get.put(FundWalletController());
+
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +77,7 @@ class FundWalletScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            '${LocaleKeys.sar.tr} 100',
+                            '${LocaleKeys.sar.tr} ${widget.paymentAmount}',
                             style: TextStyle(
                               color: Color(0xFF7D7D7D),
                               fontSize: 14,
@@ -87,7 +100,7 @@ class FundWalletScreen extends StatelessWidget {
                                 fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            '${LocaleKeys.sar.tr} 100',
+                            '${LocaleKeys.sar.tr} ${widget.paymentAmount}',
                             style: TextStyle(
                                 color: Colors.black54,
                                 fontSize: 15,
@@ -106,7 +119,11 @@ class FundWalletScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                     10.heightBox,
-                    Container(
+                    InkWell(
+                        onTap: (){
+                          fundWalletController.navigateTo(PaymentGatewayWalletScreen(paymentAmount:widget.paymentAmount,));
+                        },
+                        child: Container(
                         color: Colors.white,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,7 +158,7 @@ class FundWalletScreen extends StatelessWidget {
                                 )),
                             10.heightBox,
                           ],
-                        ))
+                        )))
                   ],
                 ))));
   }

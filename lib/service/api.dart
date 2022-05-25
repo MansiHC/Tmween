@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:tmween/lang/locale_keys.g.dart';
 import 'package:tmween/model/UserDataModel.dart';
 import 'package:tmween/model/add_to_cart_model.dart';
+import 'package:tmween/model/add_wallet_model.dart';
 import 'package:tmween/model/attribute_combination_model.dart';
 import 'package:tmween/model/best_seller_model.dart';
 import 'package:tmween/model/checkout_model.dart';
@@ -1071,6 +1072,36 @@ class Api {
     return result;
   }
 
+  Future<GetWalletModel> getWalletHistoryData(
+      token, userId,paymentStatus,transactionType,fromDate,toDate, langCode) async {
+    late GetWalletModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.getCustomerWalletTransactionData),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                'username': token,
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "user_id": userId,
+                "lang_code": langCode,
+                "payment_status":paymentStatus,
+                "transaction_type":transactionType,
+                "from_date":fromDate,
+                "to_date":toDate
+              }));
+      var responseJson = _returnResponse(response);
+      result = GetWalletModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
+    }
+    return result;
+  }
+
   Future<ReviewOrderModel> getReviewOrder(token, userId, langCode) async {
     late ReviewOrderModel result;
     try {
@@ -1264,6 +1295,32 @@ class Api {
     return result;
   }
 
+  Future<AddWalletModel> addMoneyInWallet(token, userId, amount,langCode) async {
+    late AddWalletModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.addWallet),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                'username': token,
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "user_id": userId,
+                "amount": amount,
+                "lang_code": langCode
+              }));
+      var responseJson = _returnResponse(response);
+      result = AddWalletModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
+    }
+    return result;
+  }
+
   Future<SuccessModel> getOrderStatus(
       token, userId, salesOrderId, langCode) async {
     late SuccessModel result;
@@ -1290,6 +1347,33 @@ class Api {
     }
     return result;
   }
+ Future<SuccessModel> getWalletStatus(
+      token, userId, salesOrderId, langCode) async {
+    late SuccessModel result;
+    try {
+      final response =
+          await http.post(Uri.parse(UrlConstants.getSyberPayWalletStatus),
+              headers: {
+                HttpHeaders.contentTypeHeader: "application/json",
+                'username': token,
+                HttpHeaders.authorizationHeader:
+                    "Bearer ${AppConstants.customer_token}"
+              },
+              body: json.encode({
+                "entity_type_id": AppConstants.entity_type_id_customer,
+                "device_type": AppConstants.device_type,
+                "user_id": userId,
+                "order_id": salesOrderId,
+                "lang_code": langCode
+              }));
+      var responseJson = _returnResponse(response);
+      result = SuccessModel.fromJson(responseJson);
+    } on SocketException {
+      Helper.showGetSnackBar(LocaleKeys.noInternet.tr, AppColors.errorColor);
+    }
+    return result;
+  }
+
 
   Future<NotificationModel> getNotifications(langCode) async {
     late NotificationModel result;

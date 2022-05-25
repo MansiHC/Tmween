@@ -77,6 +77,9 @@ class CartScreenState extends State<CartScreen> {
                       if (cartController.cartData == null &&
                           !cartController.loading)
                         _noCartView(cartController),
+                      if (cartController.cartData == null &&
+                          cartController.loading)
+                        Container(),
                       if (cartController.cartData != null &&
                           !cartController.loading)
                         Expanded(child: _bottomView(cartController))

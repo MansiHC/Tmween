@@ -126,7 +126,7 @@ class PaymentGatewayStateScreen extends State<PaymentGatewayScreen> {
       },
       onPageFinished: (data) {
         print('....$data');
-        if (data.contains('http://tmween.com/en/syberpay')) {
+        if (data.contains('http://tmween.com/')) {
            paymentGatewayController.orderPlaced = 4;
            paymentGatewayController.update();
           paymentGatewayController.getOrderStatus(language);
@@ -224,17 +224,17 @@ class PaymentGatewayStateScreen extends State<PaymentGatewayScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-         /* paymentGatewayController.orderPlaced == 3
-         ?*/ SvgPicture.asset(
+          paymentGatewayController.orderPlaced == 3
+         ? SvgPicture.asset(
             ImageConstanst.pageNotFoundIcon,
             height: 80,
             width: 80,
-          )/*:
+          ):
           Icon(
             CupertinoIcons.info_circle_fill,
             color: Colors.red,
             size: 62,
-          )*/,
+          ),
           10.heightBox,
           Text(
             paymentGatewayController.orderPlaced == 3

@@ -110,11 +110,13 @@ class MyAccountController extends GetxController {
         MySharedPreferences.instance.addStringToSF(
             SharedPreferencesKeys.image, profileData!.largeImageUrl);
       } else if (value.statusCode == 401) {
+        Helper.hideLoading(context);
         MySharedPreferences.instance
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
       } else {
+        Helper.hideLoading(context);
         Helper.showGetSnackBar(value.message!, AppColors.errorColor);
       }
 

@@ -72,6 +72,9 @@ class MyWalletController extends GetxController {
             .addBoolToSF(SharedPreferencesKeys.isLogin, false);
         Get.deleteAll();
         Get.offAll(DrawerScreen());
+      }else{
+        walletData = value.data;
+        Helper.hideLoading(context);
       }
 
       update();

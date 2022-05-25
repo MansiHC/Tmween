@@ -100,7 +100,7 @@ class MonthData {
   int? paymentStatus;
   String? paymentTransactionId;
   String? paymentRequest;
-  Null? paymentResponse;
+  String? paymentResponse;
 
   MonthData(
       {this.id,

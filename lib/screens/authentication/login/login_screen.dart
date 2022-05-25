@@ -64,9 +64,9 @@ class _LoginScreenState extends State<LoginScreen>
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
       print('Message clicked!');
     });
-   /* loginController.uuid =
+    loginController.uuid =
         "fGwAjgffRhWoXQpWAwuQMD:APA91bGFpr1zZJMNOT15_4bG5HSGiPg-zuPZ5NW5OdsoCOUYHh0P6pGehQsMmcaNLXfoTQ64dmRss_d-J1zg-icMqDZgfMgB_vVrBhi05uYThlQa0QSpkPIo1VNlsT0M4mU5t4TFGWOi";
-  */  print('......${widget.frm}.....${widget.from}...');
+    print('......${widget.frm}.....${widget.from}...');
     if (widget.from != null) {
       if (widget.from == SharedPreferencesKeys.isDrawer) {
         loginController.isPasswordScreen = widget.isPassword!;
@@ -126,12 +126,19 @@ class _LoginScreenState extends State<LoginScreen>
                               ColoredBox(
                                 color: Color.fromRGBO(195, 208, 225, 1),
                                 child: TabBar(
+
                                     onTap: (index) {
                                       loginController.currentTabIndex = index;
                                     },
                                     controller: loginController.tabController,
                                     indicator: BoxDecoration(
-                                        color: AppColors.primaryColor),
+                                        color: AppColors.primaryColor,
+                                      /*border: Border(
+                                        bottom: BorderSide(
+                                            color: AppColors.appBarColor,
+                                            width: 3.0
+                                        ),
+                                      ),*/),
                                     indicatorSize: TabBarIndicatorSize.tab,
                                     labelStyle: TextStyle(
                                         fontSize: 16,
@@ -149,14 +156,48 @@ class _LoginScreenState extends State<LoginScreen>
                                 child: TabBarView(
                                   controller: loginController.tabController,
                                   children: [
-                                    loginController.isPasswordScreen
-                                        ? IndividualLoginPasswordScreen(
-                                            from: widget.from)
-                                        : IndividualLoginScreen(),
-                                    loginController.isStorePasswordScreen
-                                        ? StoreOwnerLoginPasswordScreen(
-                                            from: widget.from)
-                                        : StoreOwnerLoginScreen()
+                                    Column(
+                                      children: [
+                                        Padding(
+                                            padding: EdgeInsets.only(
+                                                top: 0,
+                                                right: MediaQuery.of(
+                                                            loginController
+                                                                .context)
+                                                        .size
+                                                        .width /
+                                                    2),
+                                            child: SvgPicture.asset(ImageConstanst.downArrowIcon,height: 12,width: 12,
+                                            color: AppColors.primaryColor,)),
+                                        Expanded(
+                                            child: loginController
+                                                    .isPasswordScreen
+                                                ? IndividualLoginPasswordScreen(
+                                                    from: widget.from)
+                                                : IndividualLoginScreen())
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Padding(
+                                            padding: EdgeInsets.only(
+                                                top: 0,
+                                                left: MediaQuery.of(
+                                                            loginController
+                                                                .context)
+                                                        .size
+                                                        .width /
+                                                    2),
+                          child: SvgPicture.asset(ImageConstanst.downArrowIcon,height: 12,width: 12,color: AppColors.primaryColor,)),
+
+                                        Expanded(
+                                            child: loginController
+                                                    .isStorePasswordScreen
+                                                ? StoreOwnerLoginPasswordScreen(
+                                                    from: widget.from)
+                                                : StoreOwnerLoginScreen())
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ) //;})

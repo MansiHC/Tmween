@@ -109,6 +109,8 @@ abstract class UrlConstants {
       '$baseUrl/customer/get-customer-address-list-csc';
   static const String getCustomerWalletData =
       '$baseUrl/customer/get-customer-wallet-mobile-data';
+  static const String getCustomerWalletTransactionData =
+      '$baseUrl/customer/get-customer-wallet-transactions-mobile';
   static const String getReviewOrder =
       '$baseUrl/customer/get-review-order-mobile';
   static const String deleteCustomerAddress =
@@ -119,8 +121,12 @@ abstract class UrlConstants {
       '$baseUrl/customer/add-customer-address';
   static const String getSyberPayPaymentURL =
       '$baseUrl/customer/new-order-place';
+  static const String addWallet =
+      '$baseUrl/customer/add-money-in-wallet';
   static const String getSyberPayOrderStatus =
       '$baseUrl/customer/syberpay-payment-response-for-mobile';
+  static const String getSyberPayWalletStatus =
+      '$baseUrl/customer/syberpay-payment-response-for-mobile-wallet';
   static const String getSearchHistory = '$baseUrl/customer/get-search-history';
   static const String getNotificationList =
       '$baseUrl/get-user-notification-list';
@@ -222,9 +228,14 @@ abstract class ImageConstanst {
   static const String townHallIcon = 'asset/image/town_hall.svg';
   static const String emailIcon = 'asset/image/email.svg';
   static const String pinIcon = 'asset/image/pin.svg';
+  static const String downArrowIcon = 'asset/image/arrow_down.svg';
   static const String deliveryInstructionIcon =
       'asset/image/delivery_instruction.svg';
   static const String walletTickMarkIcon = 'asset/image/wallet_tickmark.svg';
+  static const String walletProcessingIcon = 'asset/image/wallet_processing_icon.svg';
+  static const String moneyFailedIcon = 'asset/image/money_add_failed_icon.png';
+  static const String moneySuccessIcon = 'asset/image/money_add_success_icon.png';
+  static const String walletPendingIcon = 'asset/image/wallet_pending_icon.svg';
   static const String walletCrossIcon = 'asset/image/wallet_cross.svg';
   static const String syberPay = 'asset/image/syberpay.svg';
   static const String user = 'asset/image/user.svg';
